@@ -1,0 +1,38 @@
+
+var mysql = require('mysql');
+// The most popular mysql module
+var Promise = require("bluebird");
+// Note that the library's classes are not properties of the main export
+// so we require and promisifyAll them manually
+Promise.promisifyAll(require("mysql/lib/Connection").prototype);
+Promise.promisifyAll(require("mysql/lib/Pool").prototype);
+
+
+/*
+var connection = mysql.createConnection({
+  host:'localhost',
+  user:'root',
+  password:'qq3739225',
+  database: 'zzt_db'
+});
+*/
+var pool = mysql.createPool({
+  connectionLimit:10,
+  host:'localhost',
+  user:'root',
+  password:'qq3739225',
+  database:'zzt_db'
+})
+
+const getConnection = ()=> {
+  return pool.getConnectionAsync().disposer(connection =>{
+      connection.release();
+  });
+}
+
+exports.queryDB = (sql,values) =>{
+  return Promise.using(getConnection(),connection => {
+    return connection.queryAsync(sql,values);
+  });
+}
+exports.pool = pool;
