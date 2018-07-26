@@ -15,7 +15,7 @@ res = {};
 
 function  getStudentInfo(callback) {
   let query =
-  "select * from family;"
+  "select * from studentInfo;"
   let values = [];
   return queryDB(query,values);
 }
