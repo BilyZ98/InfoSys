@@ -1,2 +1,2 @@
 # InfoSys
-Student information management system 
+Students' information management system 
