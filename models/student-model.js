@@ -15,7 +15,7 @@ res = {};
 
 exports.getStudentInfo = async ()=> {
   let query =
-  "select * from studentInfo;"
+  "select * from students;"
   let values = [];
   return queryDB(query,values);
 }
