@@ -10,6 +10,12 @@ var users = require('./routes/users');
 
 var app = express();
 
+//配置与封装功能
+const resBody = require('./utils/resBody.js')
+
+//路由中间件
+var studentsRouter = require('./routes/studentsRoutes.js');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -24,6 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+app.use('/students',studentsRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

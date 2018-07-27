@@ -13,17 +13,21 @@ exports.getStudentInfo = () =>{
 
 res = {};
 
-function  getStudentInfo(callback) {
+exports.getStudentInfo = async ()=> {
   let query =
   "select * from studentInfo;"
   let values = [];
   return queryDB(query,values);
 }
 
+/*
 //下面测试将返回的结果转为json格式
 getStudentInfo().then(function(output){
   console.log(JSON.stringify(output));
 })
+*/
+
+
 
 /*
 getStudentInfo().then(function(output){
