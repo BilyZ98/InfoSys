@@ -16,10 +16,22 @@ $(document).ready(function() {
       dataType: 'json',
       success: function(data) {
         console.log(data);
-        
+        $('#container-info').empty();
+        $('#container-info').append('<ul id="list-student"><li v-for="student in students">{{ student.name }}-{{student.sid}}</li></ul>');
+
+        var app = new Vue({
+          el: "#list-student",
+          data: {
+            students: students
+          }
+        });
+
+        app.students = data.students;
+
       }
     });
   });
+
 
   /*
   var app = new Vue({
@@ -35,12 +47,6 @@ $(document).ready(function() {
     }
   });
 
-  var app2 = new Vue({
-    el: "#infoList",
-    data: {
-      students: students
-    }
-  })
 
   //da wei's js function
   function loadXMLDoc() {
