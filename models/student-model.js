@@ -13,10 +13,10 @@ exports.getStudentInfo = () =>{
 
 res = {};
 
-exports.getStudentInfo = async ()=> {
+exports.getStudentInfo = async (data)=> {
   let query =
-  "select * from students;"
-  let values = [];
+  "select * from students where students.sid = ?\n;"
+  let values = [data.sid];
   return queryDB(query,values);
 }
 

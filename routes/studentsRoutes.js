@@ -3,7 +3,7 @@ var router = express.Router();
 const studentsController = require('../controllers/students-Controller.js');
 
 
-router.get('/', studentsController.getStudentsInfo);
+router.post('/', studentsController.getStudentsInfo);
 
 
 module.exports = router;

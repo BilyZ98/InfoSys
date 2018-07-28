@@ -8,7 +8,7 @@ $(document).ready(function() {
     console.log($('#studentID').val());
     $.ajax({
       type: 'POST',
-      url: '/query',
+      url: '/students',
       data: JSON.stringify({
         'sid': $('#studentID').val()
       }),
@@ -26,7 +26,7 @@ $(document).ready(function() {
           }
         });
 
-        app.students = data.students;
+        app.students = data.content;
 
       }
     });
