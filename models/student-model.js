@@ -11,7 +11,7 @@ exports.getStudentInfo = () =>{
 }
 */
 
-res = {};
+//res = {};
 
 exports.getStudentInfo = async (data)=> {
   let query =
