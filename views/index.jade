@@ -1,5 +1,7 @@
-extends layout
-
-block content
-  h1= title
-  p Welcome to #{title}
+doctype html
+html
+  head
+    title= title
+  body
+    #app
+    script(src='/dist/build.js')
