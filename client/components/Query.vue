@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="col-md-1 col-md-offset-11">
-        <button type="button" class="btn btn-primary" id="btnSend">查询</button>
+        <button type="button" class="btn btn-primary" id="btnSend" @click="sendParams">查询</button>
       </div>
     </div>
   </div>
@@ -81,43 +81,32 @@
 </template>
 
 <script>
-  console.log("123");
-  /*
-var students = [];
-
-$(document).ready(function() {
-  //click query button then post the query and handle the callback
-  $('#btnSend').click(function() {
-    $.ajax({
-      type: 'GET',
-      url: '/list',
-      success: function(data) {
-        console.log(data);
-        $('#container-info').empty();
-        $('#container-info').append(data);
-        $.ajax({
-          type: 'POST',
-          url: '/users/query',
-          data: JSON.stringify({
-            'sid': $('#studentID').val()
-          }),
-          contentType: 'application/json;charset=utf-8',
-          dataType: 'json',
-          success: function(data) {
-            console.log(data);
-            var app = new Vue({
-              el: "#list-student",
-              data: {
-                students: students
-              }
-            });
-            app.students = data.students;
+export default {
+  name: '',
+  data () {
+    return {
+      //msg: 'test message'
+    }
+  },
+  methods: {
+    sendParams () {
+      this.$router.push({
+          path: 'list',
+          //name: '要跳转的路径的 name在 router 文件夹下的 index.js 文件内找',
+          params: {
+              key: 'key',
+              msgKey: this.msg
           }
-        });
-      }
-    });
-  });
-  */
+          /*query: {
+              key: 'key',
+              msgKey: this.msg
+          }*/
+      })
+    }
+  },
+  computed: {},
+  mounted () {}
+}
 </script>
 
 <style>

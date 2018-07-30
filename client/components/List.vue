@@ -6,13 +6,39 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      students:[{name: "zhangsan", sid:123456}]
+      students: []
+    }
+  },
+  created() {
+    // 组件创建完后获取数据，
+    // 此时 data 已经被 observed 了
+    this.fetchData()
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route': 'fetchData'
+  },
+  methods: {
+    fetchData() {
+      //为了把this传进ajax
+      var _self = this;
+      // replace getPost with your data fetching util / API wrapper
+      $.ajax({
+        type: 'POST',
+        url: '/users/query',
+        data: JSON.stringify({
+          //数据丢失问题，要用vue-router路由之间传参数的办法
+          'sid': $('#studentID').val()
+        }),
+        contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          _self.students = [{name:'zhangsan', sid:'123'}];
+        }
+      })
     }
   }
 }
