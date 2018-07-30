@@ -21,12 +21,14 @@ const resBody = require('./utils/resBody.js')
 var studentsRouter = require('./routes/studentsRoutes.js');
 var userRouter = require('./routes/users.js');
 
+/*
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+*/
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'logo.png')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -44,11 +46,8 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
-
-
+//routers
 app.use('/', index);
-//app.use('/users', users);
-
 app.use('/students',studentsRouter);
 app.use('/users',userRouter);
 

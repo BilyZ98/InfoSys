@@ -73,7 +73,7 @@
         </div>
       </div>
       <div class="col-md-1 col-md-offset-11">
-        <button type="button" class="btn btn-primary" id="btnSend" @click="sendParams">查询</button>
+        <button type="button" class="btn btn-primary" id="btnSend" @click="queryClick">查询</button>
       </div>
     </div>
   </div>
@@ -82,30 +82,20 @@
 
 <script>
 export default {
-  name: '',
   data () {
-    return {
-      //msg: 'test message'
-    }
+    return { }
   },
   methods: {
-    sendParams () {
+    queryClick () {
       this.$router.push({
-          path: 'list',
-          //name: '要跳转的路径的 name在 router 文件夹下的 index.js 文件内找',
-          params: {
-              key: 'key',
-              msgKey: this.msg
-          }
-          /*query: {
-              key: 'key',
-              msgKey: this.msg
-          }*/
+        //这里只有用name导航才能通过params成功传递参数，用path就不可以,另一个问题是list页面刷新后会丢失params
+        name:'list',
+        params: {
+            sid: $('#studentID').val()
+        }
       })
     }
-  },
-  computed: {},
-  mounted () {}
+  }
 }
 </script>
 

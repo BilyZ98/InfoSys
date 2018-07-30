@@ -55,7 +55,7 @@ exports.addAward = (data) => {
   "awardJiBie, awardYearMonth， teacher)\n" +
   "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
   let values = [sid, name, stuClass, awardName, awardClass,
-     employer,awardJiBie, awardYearMonth， teacher];
+     employer,awardJiBie, awardYearMonth, teacher];
   return queryDB(query,values);
 }
 

@@ -14,11 +14,8 @@ export default {
   created() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
+    console.log(this.$route.params.sid)
     this.fetchData()
-  },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route': 'fetchData'
   },
   methods: {
     fetchData() {
@@ -27,10 +24,10 @@ export default {
       // replace getPost with your data fetching util / API wrapper
       $.ajax({
         type: 'POST',
-        url: '/users/query',
+        url: '/students/query',
         data: JSON.stringify({
           //数据丢失问题，要用vue-router路由之间传参数的办法
-          'sid': $('#studentID').val()
+          'sid': this.$route.params.sid
         }),
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
