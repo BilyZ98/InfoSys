@@ -8,6 +8,15 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'build.js'
   },
+  mode: 'development',
+  /*
+  resolve: {
+    extensions: ['.js', '.vue']
+  },
+  resolveLoader: {
+    root: path.join(__dirname, 'node_modules')
+  },
+  */
   module: {
     rules: [{
         test: /\.vue$/,
@@ -23,5 +32,10 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
-  ]
+  ],
+  resolve: {
+  alias: {
+    vue: 'vue/dist/vue.js'
+  }
+}
 }
