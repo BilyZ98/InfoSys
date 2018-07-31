@@ -1,5 +1,5 @@
 <template>
-  <div id="container-info">
+  <div>
     <h3 class="text-center">基本信息查询</h3>
     <div class="container">
       <div class="col-md-6">
@@ -100,21 +100,6 @@ export default {
 </script>
 
 <style>
-#container-info {
-  position: absolute;
-  margin-left: 15%;
-  width: 85%;
-  margin-top: 60px;
-  text-align: center;
-
-  /*the section cannot render in front of headbar*/
-  z-index: -100;
-}
-
-#container-info p {
-  margin: 0;
-  padding: 0;
-}
 
 /*-------------*/
 

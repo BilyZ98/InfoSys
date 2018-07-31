@@ -1,20 +1,38 @@
 <template>
 <div>
   <header>
-    <div id="button-home">HOME</div>
+    <div class="button-home" @click="homeClick">HOME</div>
     <p>SDCS学生信息系统</p>
   </header>
   <aside>
     <div class="info-side">some info here</div>
-    <div class="button-side">button1</div>
-    <div class="button-side">button2</div>
+    <div class="button-side" @click="queryClick">query</div>
+    <div class="button-side" @click="insertClick">insert</div>
     <div class="button-side">button3</div>
   </aside>
-  <router-view> </router-view>
+  <div class="container-info">
+    <router-view></router-view>
+  </div>
 </div>
 </template>
 
 <script>
+export default {
+  data () {
+    return { }
+  },
+  methods: {
+    homeClick () {
+      this.$router.push({ name: 'main' })
+    },
+    queryClick(){
+      this.$router.push({ name:'query'})
+    },
+    insertClick(){
+      this.$router.push({ name: 'insert'})
+    }
+  }
+}
 </script>
 
 <style>
@@ -26,8 +44,11 @@
 body {
   width: 100%;
   height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 15px;
+  background-color: lighten(#eceef1, 30%);
+  color: #34495e;
 }
-
 header {
   position: fixed;
   width: 100%;
@@ -37,7 +58,7 @@ header {
   color: white;
 }
 
-#button-home {
+.button-home {
   position: fixed;
   height: 100%;
   width: 15%;
@@ -45,7 +66,7 @@ header {
   padding-top: 20px;
 }
 
-#button-home:hover {
+.button-home:hover {
   background-color: rgb(10, 10, 10);
 }
 
@@ -84,5 +105,15 @@ aside {
 
 .button-side:hover {
   background-color: rgb(120, 120, 120);
+}
+
+.container-info{
+  position: absolute;
+  margin-left: 15%;
+  width: 85%;
+  margin-top: 60px;
+  text-align: center;
+  /*the section cannot render in front of headbar*/
+  z-index: -100;
 }
 </style>

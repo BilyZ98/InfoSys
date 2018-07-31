@@ -1,5 +1,5 @@
 <template>
-<ul id="list-student">
+<ul class="list-student">
   <li v-for="student in students">{{ student.name }}---{{student.sid}}</li>
 </ul>
 </template>
@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      students: []
+      students: [{name:'zhangsan', sid:'123'}, {name:'lisi', sid:'321'}]
     }
   },
   created() {
@@ -42,10 +42,9 @@ export default {
 </script>
 
 <style>
-#list-student {
-  padding-top: 10%;
-  padding-left: 30%;
+.list-student {
   font-size: 20px;
-  text-align: left;
+  text-align: center;
+  padding: 0;
 }
 </style>
