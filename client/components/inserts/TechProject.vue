@@ -57,7 +57,7 @@
             </div>
           </form>
           <div class="col-md-1 col-md-offset-11">
-            <input class="btn btn-primary" type="submit" value="提交" id="subBtn">
+            <input class="btn btn-primary" type="submit" value="提交" id="subBtn" @click="insertClick">
           </div>
         </div>
       </div>
@@ -65,76 +65,81 @@
 </template>
 
 <script>
-$(document).ready(function() {
-	$("#subBtn").click(function() {
-		var stuName = $("#name").val();
-		var stuId = $("#sid").val();
-		var proName = $("#proName").val();
-		var employer = $("#employer").val();
-		var money = $("#money").val();
-		var proId = $("#proId").val();
-		var proClass = $("#class").val();
-		var teacher = $("#teacher").val();
-		var proTime = $("#proTime").val();
+export default {
+  data() {
+    return {}
+  },
+  methods: {
+    insertClick: function() {
+      var stuName = $("#name").val();
+      var stuId = $("#sid").val();
+      var proName = $("#proName").val();
+      var employer = $("#employer").val();
+      var money = $("#money").val();
+      var proId = $("#proId").val();
+      var proClass = $("#class").val();
+      var teacher = $("#teacher").val();
+      var proTime = $("#proTime").val();
 
-		if(isNULL(stuName)||isNULL(stuId)||isNULL(proName)||isNULL(employer)||isNULL(money)||isNULL(proId)||isNULL(proClass)
-			||isNULL(teacher)||isNULL(proTime)) {
-			alert("还有内容未填写，请填写完整！");
-		} else if(!isValidSid(stuId)) {
-			alert("学号格式或长度错误，请检查！");
-		} else if(!money.match(/^([1-9][0-9]*)$/)) {
-			alert("资助金额输入错误！");
-		} else if(!isValidTime(proTime)) {
-			alert("立项时间格式错误！");
-		} else {
-			var data = {
-				"table":"techProject",
-				"name":stuName,
-				"sid":stuId,
-				"proName":proName,
-				"employer":employer,
-				"money":money,
-				"proId":proId,
-				"class":proClass,
-				"teacher":teacher,
-				"proTime":proTime
-			}
-			// alert(JSON.stringify(data));
-			$.ajax({
-          		type: "POST",
-          		url: "/students/insert/techProject",
-          		contentType: "application/json; charset=utf-8",
-          		data: JSON.stringify(data),
-          		dataType: "json",
-          		success: function (message) {
-             		if (message > 0) {
-                		alert("请求已提交！请稍候！");
-              		}
-          		},
-          		error: function (message) {
-              		$("#container-info").html("<b>提交数据失败！</b>");
-          		}	
-     		});
-		}
-	});
-});
-
-function isNULL(data) {
-	if(data.length == 0)
-		return true;
-	else return false;
-}
-
-function isValidSid(data) {
-	if(data.match(/^([0-9]*)$/) && data.length == 8)
-		return true;
-	return false;
-}
-
-function isValidTime(data) {
-	var reg = /[1-2]\d{3}-[0-1]?[0-9]-[0-3]?[0-9]/;
-	if(reg.test(data))
-		return true;
-	else return false;
+      var isNULL = this.isNULL;
+      var isValidSid = this.isValidSid;
+      var isValidTime = this.isValidTime;
+      if (isNULL(stuName) || isNULL(stuId) || isNULL(proName) || isNULL(employer) || isNULL(money) || isNULL(proId) || isNULL(proClass) ||
+        isNULL(teacher) || isNULL(proTime)) {
+        alert("还有内容未填写，请填写完整！");
+      } else if (!isValidSid(stuId)) {
+        alert("学号格式或长度错误，请检查！");
+      } else if (!money.match(/^([1-9][0-9]*)$/)) {
+        alert("资助金额输入错误！");
+      } else if (!isValidTime(proTime)) {
+        alert("立项时间格式错误！");
+      } else {
+        var data = JSON.stringify({
+          "table": "techProject",
+          "name": stuName,
+          "sid": stuId,
+          "proName": proName,
+          "employer": employer,
+          "money": money,
+          "proId": proId,
+          "class": proClass,
+          "teacher": teacher,
+          "proTime": proTime
+        });
+        console.log(data);
+        $.ajax({
+          type: "POST",
+          url: "/students/insert/techProject",
+          contentType: "application/json; charset=utf-8",
+          data: data,
+          dataType: "json",
+          success: function(message) {
+            if (message > 0) {
+              alert("请求已提交！请稍候！");
+            }
+          },
+          error: function(message) {
+            $("#container-info").html("<b>提交数据失败！</b>");
+          }
+        });
+      }
+    },
+    isNULL: function(data) {
+      if (data.length == 0)
+        return true;
+      else return false;
+    },
+    isValidSid: function(data) {
+      if (data.match(/^([0-9]*)$/) && data.length == 8)
+        return true;
+      return false;
+    },
+    isValidTime: function(data) {
+      var reg = /[1-2]\d{3}-[0-1]?[0-9]-[0-3]?[0-9]/;
+      if (reg.test(data))
+        return true;
+      else return false;
+    }
+  }
 }
 </script>

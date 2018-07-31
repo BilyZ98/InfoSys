@@ -69,7 +69,7 @@
             </div>
           </form>
           <div class="col-md-1 col-md-offset-11">
-            <input class="btn btn-primary" type="submit" value="提交" id="subBtn">
+            <input class="btn btn-primary" type="submit" value="提交" id="subBtn" @click="insertClick">
           </div>
         </div>
       </div>
@@ -77,78 +77,83 @@
 </template>
 
 <script>
-  $(document).ready(function() {
-	$("#subBtn").click(function() {
-		var name = $("#name").val();
-		var sid = $("#sid").val();
-		var patentName = $("#patentName").val();
-		var pClass = $("#class").val();
-		var submitTime = $("#submitTime").val();
-		var approvalTime = $("#approvalTime").val();
-		var patentRange = $("#patentRange").val();
-		var unit = $("#unit").val();
-		var patentNumber = $("#patentNumber").val();
-		var creators = $("#creators").val();
+export default {
+  data() {
+    return {}
+  },
+  methods: {
+    insertClick: function() {
+      var name = $("#name").val();
+      var sid = $("#sid").val();
+      var patentName = $("#patentName").val();
+      var pClass = $("#class").val();
+      var submitTime = $("#submitTime").val();
+      var approvalTime = $("#approvalTime").val();
+      var patentRange = $("#patentRange").val();
+      var unit = $("#unit").val();
+      var patentNumber = $("#patentNumber").val();
+      var creators = $("#creators").val();
 
-		if(isNULL(name)||isNULL(sid)||isNULL(patentName)||isNULL(submitTime)||isNULL(approvalTime)||isNULL(unit)
-			||isNULL(patentNumber)||isNULL(creators)) {
-			alert("还有内容未填写，请填写完整！");
-		} else if(!isValidSid(sid)) {
-			alert("学号格式或长度错误，请检查！");
-		} else if(!isValidTime(submitTime)) {
-			alert("申请时间输入错误！");
-		} else if(!isValidTime(approvalTime)) {
-			alert("授权时间格式错误！");
-		} else {
-			var data = {
-				"table":"patent",
-				"name":name,
-				"sid":sid,
-				"patentName":patentName,
-				"class":pClass,
-				"submitTime":submitTime,
-				"approvalTime":approvalTime,
-				"patentRange":patentRange,
-				"unit":unit,
-				"patentNumber":patentNumber,
-				"creators":creators
-			}
-			// alert(JSON.stringify(data));
-			$.ajax({
-          		type: "POST",
-          		url: "/students/insert/patent",
-          		contentType: "application/json; charset=utf-8",
-          		data: JSON.stringify(data),
-          		dataType: "json",
-          		success: function (message) {
-             		if (message > 0) {
-                		alert("请求已提交！请稍候！");
-              		}
-          		},
-          		error: function (message) {
-              		$("#container-info").html("<b>提交数据失败！</b>");
-          		}	
-     		});
-		}
-	});
-});
-
-function isNULL(data) {
-	if(data.length == 0)
-		return true;
-	else return false;
-}
-
-function isValidSid(data) {
-	if(data.match(/^([0-9]*)$/) && data.length == 8)
-		return true;
-	return false;
-}
-
-function isValidTime(data) {
-	var reg = /[1-2]\d{3}-[0-1]?[0-9]-[0-3]?[0-9]/;
-	if(reg.test(data))
-		return true;
-	else return false;
+      var isNULL = this.isNULL;
+      var isValidSid = this.isValidSid;
+      var isValidTime = this.isValidTime;
+      if (isNULL(name) || isNULL(sid) || isNULL(patentName) || isNULL(submitTime) || isNULL(approvalTime) || isNULL(unit) ||
+        isNULL(patentNumber) || isNULL(creators)) {
+        alert("还有内容未填写，请填写完整！");
+      } else if (!isValidSid(sid)) {
+        alert("学号格式或长度错误，请检查！");
+      } else if (!isValidTime(submitTime)) {
+        alert("申请时间输入错误！");
+      } else if (!isValidTime(approvalTime)) {
+        alert("授权时间格式错误！");
+      } else {
+        var data = JSON.stringify({
+          "table": "patent",
+          "name": name,
+          "sid": sid,
+          "patentName": patentName,
+          "class": pClass,
+          "submitTime": submitTime,
+          "approvalTime": approvalTime,
+          "patentRange": patentRange,
+          "unit": unit,
+          "patentNumber": patentNumber,
+          "creators": creators
+        });
+        console.log(data);
+        $.ajax({
+          type: "POST",
+          url: "/students/insert/patent",
+          contentType: "application/json; charset=utf-8",
+          data: data,
+          dataType: "json",
+          success: function(message) {
+            if (message > 0) {
+              alert("请求已提交！请稍候！");
+            }
+          },
+          error: function(message) {
+            $("#container-info").html("<b>提交数据失败！</b>");
+          }
+        });
+      }
+    },
+    isNULL: function(data) {
+      if (data.length == 0)
+        return true;
+      else return false;
+    },
+    isValidSid: function(data) {
+      if (data.match(/^([0-9]*)$/) && data.length == 8)
+        return true;
+      return false;
+    },
+    isValidTime: function(data) {
+      var reg = /[1-2]\d{3}-[0-1]?[0-9]-[0-3]?[0-9]/;
+      if (reg.test(data))
+        return true;
+      else return false;
+    }
+  }
 }
 </script>

@@ -18,7 +18,7 @@
 <style>
 #container-insert {
 	text-align: left;
-	padding-left: 40%;
+	padding-left: 0;
 	padding-top: 10px;
 }
 </style>

@@ -31,13 +31,12 @@
 </template>
 
 <script>
-//获奖学金情况scholarship：姓名name、学号sid、学年year、奖学金类别（校内、政府、捐赠）shipClass、奖学金名称shipName、奖励金额shipAmount；
 export default {
   data () {
     return {}
   },
   methods: {
-    insertClick () {
+    insertClick: function() {
     	var data = JSON.stringify({
           'table': 'carde',
           'name': $('#name').val(),
@@ -48,18 +47,16 @@ export default {
           'shipAmount': $('#shipAmount').val()
         })
     	console.log(data);
-    	/*
       $.ajax({
         type: 'POST',
         url: '/students/insert/scholarship',
-        data: data
+        data: data,
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         success: function(data) {
           console.log(data);
         }
       })
-      */
     }
   }
 }

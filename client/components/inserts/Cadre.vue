@@ -46,7 +46,7 @@ export default {
     return {}
   },
   methods: {
-    insertClick () {
+    insertClick : function() {
     	var data = JSON.stringify({
           'table': 'carde',
           'name': $('#name').val(),
@@ -57,18 +57,16 @@ export default {
           'cadreJiBie': $('#cadreJiBie').val()
         })
     	console.log(data);
-    	/*
       $.ajax({
         type: 'POST',
         url: '/students/insert/cadre',
-        data: data
+        data: data,
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         success: function(data) {
           console.log(data);
         }
       })
-      */
     }
   }
 }
