@@ -1,0 +1,18 @@
+
+
+{
+  'select':{
+    'basicInfo':{
+      'sid':'16340320',
+      'name':'asd'
+    }
+    'paper':{
+
+    }
+  }
+
+  'where':{
+    'basicInfo': ['tel', 'highSchool'],
+    'party':[]
+  }
+}
