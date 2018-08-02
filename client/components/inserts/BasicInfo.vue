@@ -388,18 +388,21 @@ export default {
         });
         console.log(data);
         $.ajax({
-          type: 'POST',
-          url: '/students/insert/basicInfo',
+          type: "POST",
+          url: "/students/insert/techProject",
+          contentType: "application/json; charset=utf-8",
           data: data,
-          contentType: 'application/json;charset=utf-8',
-          dataType: 'json',
-          success: function(data) {
-            //这里填写插入成功还是插入失败
-            //需要与后端确定data的格式，通过data得知具体是否插入成功
+          dataType: "json",
+          //timeous 5s
+          timeout: 5000,
+          success: function(data, xhr) {
+            console.log(xhr.status);
             console.log(data);
+            alert('插入成功！');
           },
-          error: function(err) {
-            alert(err);
+          error: function(data) {
+            console.log(data.status);
+            alert(data.responseJSON.err);
           }
         });
       }

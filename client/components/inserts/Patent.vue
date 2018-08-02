@@ -123,17 +123,20 @@ export default {
         console.log(data);
         $.ajax({
           type: "POST",
-          url: "/students/insert/patent",
+          url: "/students/insert/techProject",
           contentType: "application/json; charset=utf-8",
           data: data,
           dataType: "json",
-          success: function(message) {
-            if (message > 0) {
-              alert("请求已提交！请稍候！");
-            }
+          //timeous 5s
+          timeout: 5000,
+          success: function(data, xhr) {
+            console.log(xhr.status);
+            console.log(data);
+            alert('插入成功！');
           },
-          error: function(message) {
-            $("#container-info").html("<b>提交数据失败！</b>");
+          error: function(data) {
+            console.log(data.status);
+            alert(data.responseJSON.err);
           }
         });
       }

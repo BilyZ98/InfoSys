@@ -48,15 +48,23 @@ export default {
         })
     	console.log(data);
       $.ajax({
-        type: 'POST',
-        url: '/students/insert/scholarship',
+        type: "POST",
+        url: "/students/insert/techProject",
+        contentType: "application/json; charset=utf-8",
         data: data,
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        success: function(data) {
+        dataType: "json",
+        //timeous 5s
+        timeout: 5000,
+        success: function(data, xhr) {
+          console.log(xhr.status);
           console.log(data);
+          alert('插入成功！');
+        },
+        error: function(data) {
+          console.log(data.status);
+          alert(data.responseJSON.err);
         }
-      })
+      });
     }
   }
 }

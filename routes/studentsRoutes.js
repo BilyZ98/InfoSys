@@ -20,5 +20,4 @@ router.post('/insert/patent',studentsController.addPatent);
 router.post('/insert/techProject',studentsController.addTechProject);
 
 
-
 module.exports = router;
