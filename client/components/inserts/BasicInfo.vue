@@ -396,7 +396,10 @@ export default {
           success: function(data) {
             //这里填写插入成功还是插入失败
             //需要与后端确定data的格式，通过data得知具体是否插入成功
-
+            console.log(data);
+          },
+          error: function(err) {
+            alert(err);
           }
         });
       }

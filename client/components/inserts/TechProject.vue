@@ -114,6 +114,7 @@ export default {
           data: data,
           dataType: "json",
           success: function(message) {
+          alert("成功");
             if (message > 0) {
               alert("请求已提交！请稍候！");
             }

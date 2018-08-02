@@ -20,7 +20,7 @@ exports.addBasicInfo = (data) =>{
    "poliFace, idNum, birthDate, tel, mail, \n" +
    "wechat, qq, degree, stuGroup, grade, major, \n" +
    "class, dorm, dormRoom, speciality, highSchool) \n" +
-   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
    let values = [data.sid, data.name, data.gender, data.birthPlace,  data.ethnic,
       data.poliFace,  data.idNum,  data.birthDate,  data.tel,  data.mail,
      data.wechat,  data.qq,  data.degree,  data.stuGroup,  data.grade,  data.major,
@@ -90,8 +90,12 @@ exports.addTechProject = (data) => {
   return queryDB(query,values);
 }
 
-exports.checkStudent = (data) =>{
-  let query = "select sid from basicInfo where sid = ? \n;"
+exports.query = (data) => {
+  let query = "select"
+}
+
+exports.checkStudent = (data, table) =>{
+  let query = "select sid from " + table +" where sid = ? \n;"; //注意有空格
   let values = [data.sid]
   return queryDB(query,values);
 }
