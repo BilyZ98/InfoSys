@@ -14,7 +14,7 @@ export default {
   created() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
-    console.log(this.$route.params.sid)
+    console.log(this.$route.params.data)
     this.fetchData()
   },
   methods: {
@@ -25,10 +25,7 @@ export default {
       $.ajax({
         type: 'POST',
         url: '/students/query',
-        data: JSON.stringify({
-          //数据丢失问题，要用vue-router路由之间传参数的办法
-          'sid': this.$route.params.sid
-        }),
+        data: data,
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         success: function(data) {

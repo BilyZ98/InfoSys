@@ -138,7 +138,7 @@ export default {
         console.log(data);
         $.ajax({
           type: "POST",
-          url: "/students/insert/techProject",
+          url: "/students/insert/paper",
           contentType: "application/json; charset=utf-8",
           data: data,
           dataType: "json",
