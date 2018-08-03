@@ -4,7 +4,7 @@
     <hr>
 
     <div>
-      <h4 @click="headClick">基本信息</h4>
+      <h4 id="basicInfo" @click="headClick">基本信息</h4>
       <div class="table-container hide-container" id="table-basicInfo">
         <h5 @click="headClick">学号</h5>
         <input type="text" class="hide-container" id="sid">
@@ -232,7 +232,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">学籍情况</h4>
+      <h4 id="schoolRoll" @click="headClick">学籍情况</h4>
       <div class="table-container hide-container" id="table-schoolRoll">
         <h5 @click="headClick">学籍状态</h5>
         <select class="hide-container" id="isAtRoll">
@@ -290,7 +290,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">课程成绩记录</h4>
+      <h4 id="course" @click="headClick">课程成绩记录</h4>
       <div class="table-container hide-container" id="table-course">
         <h5 @click="headClick">学年</h5>
         <select class="hide-container" id="year-course">
@@ -365,7 +365,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">党员信息</h4>
+      <h4 id="partyInfo" @click="headClick">党员信息</h4>
       <div class="table-container hide-container" id="table-partyInfo">
         <h5 @click="headClick">是否团员</h5>
         <select class="hide-container" id="isLeaguer">
@@ -462,7 +462,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">奖学金情况</h4>
+      <h4 id="scholarship" @click="headClick">奖学金情况</h4>
       <div class="table-container hide-container" id="table-scholarship">
         <h5 @click="headClick">学年</h5>
         <select class="hide-container" id="year-scholarship">
@@ -494,7 +494,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">获资助情况</h4>
+      <h4 id="aid" @click="headClick">获资助情况</h4>
       <div class="table-container hide-container" id="table-aid">
         <h5 @click="headClick">学年</h5>
         <select class="hide-container" id="year-aid">
@@ -533,7 +533,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">助学贷款</h4>
+      <h4 id="loan" @click="headClick">助学贷款</h4>
       <div class="table-container hide-container" id="table-loan">
         <h5 @click="headClick">申请学年</h5>
         <select class="hide-container" id="submitYear">
@@ -560,7 +560,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">学生干部任职情况</h4>
+      <h4 id="cadre" @click="headClick">学生干部任职情况</h4>
       <div class="table-container hide-container" id="table-cadre">
         <h5 @click="headClick">学年</h5>
         <select class="hide-container" id="year-cadre">
@@ -602,7 +602,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">获得奖励情况</h4>
+      <h4 id="award" @click="headClick">获得奖励情况</h4>
       <div class="table-container hide-container" id="table-award">
         <h5 @click="headClick">学生类别</h5>
         <select class="hide-container" id="stuClass">
@@ -634,7 +634,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">发表论文情况</h4>
+      <h4 id="paper" @click="headClick">发表论文情况</h4>
       <div class="table-container hide-container" id="table-paper">
         <h5 @click="headClick">题目</h5>
         <input type="text" class="hide-container" id="title">
@@ -667,7 +667,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">获得专利情况</h4>
+      <h4 id="patent" @click="headClick">获得专利情况</h4>
       <div class="table-container hide-container" id="table-patent">
         <h5 @click="headClick">专利名称</h5>
         <input type="text" class="hide-container" id="patentName">
@@ -697,7 +697,7 @@
     </div>
 
     <div>
-      <h4 @click="headClick">科研项目情况</h4>
+      <h4 id="techProject" @click="headClick">科研项目情况</h4>
       <div class="table-container hide-container" id="table-techProject">
         <h5 @click="headClick">项目名称</h5>
         <input type="text" class="hide-container" id="proName">
@@ -731,57 +731,66 @@
 var empty = JSON.stringify({});
 
 export default {
-  data () {
-    return {
-    }
+  data() {
+    return {}
   },
   methods: {
     //event是原生dom事件
     //这个函数实现了点击head标签会让紧跟的div实现toggle效果, 要求所操控的div必须有id
-    headClick: function(event){
+    headClick: function(event) {
       //console.log(event.currentTarget.__proto__);
-      //表格标题
-      if(event.currentTarget.nodeName=='H4'){
-        if(this.queryBasicInfo() == empty && !($('#sid').val() || $('#name').val())){
-          $('#'+event.currentTarget.nextElementSibling.id).toggle()
+      if (event.currentTarget.nodeName == 'H4') {
+        var id = event.currentTarget.id
+        //basicInfo表的sid和name要特殊验证
+        if (id == 'basicInfo') {
+          if (JSON.stringify(this.querybasicInfo()) == empty && !($('#sid').val() || $('#name').val())) {
+            $('#' + event.currentTarget.nextElementSibling.id).toggle()
+          }
+        } else {
+          //通用验证方法是，使用queryxxx函数判断内容是否为空，否则不能关闭标签
+          //这个方法不科学，因为以后加入格式验证后再调用会触发判断提示
+          var obj = eval('this.query' + id + '()')
+          if (JSON.stringify(obj) == empty) {
+            $('#' + event.currentTarget.nextElementSibling.id).toggle()
+          }
         }
       }
       //表格内字段标题
-      if($('#'+event.currentTarget.nextElementSibling.id).val()==''){
+      else if ($('#' + event.currentTarget.nextElementSibling.id).val() == '') {
         //只有没有填写内容的时候可以关闭
-        $('#'+event.currentTarget.nextElementSibling.id).toggle()
+        $('#' + event.currentTarget.nextElementSibling.id).toggle()
       }
     },
-    queryClick: function () {
+    queryClick: function() {
       //验证和生成json
       var data = {};
       //有sid/name就不包含其他信息了
-      if($('#sid').val() || $('#name').val()){
+      if ($('#sid').val() || $('#name').val()) {
         data = {
           select: ['basicInfo'],
           where: {
             basicInfo: {}
           }
         }
-        if($('#sid').val()) data['where']['basicInfo']['sid'] = $('#sid').val()
-        if($('#name').val()) data['where']['basicInfo']['name'] = $('#name').val()
+        if ($('#sid').val()) data['where']['basicInfo']['sid'] = $('#sid').val()
+        if ($('#name').val()) data['where']['basicInfo']['name'] = $('#name').val()
       } else {
         data = {
           select: [],
           where: {}
         }
-        var basicInfo = this.queryBasicInfo()
-        var schoolRoll = this.querySchoolRoll()
-        var course = this.queryCourse()
-        var partyInfo = this.queryPartyInfo()
-        var scholarship = this.queryScholarship()
-        var aid = this.queryAid()
-        var loan = this.queryLoan()
-        var cadre = this.queryCadre()
-        var award = this.queryAward()
-        var paper = this.queryPaper()
-        var patent = this.queryPatent()
-        var techProject = this.queryTechProject()
+        var basicInfo = this.querybasicInfo()
+        var schoolRoll = this.queryschoolRoll()
+        var course = this.querycourse()
+        var partyInfo = this.querypartyInfo()
+        var scholarship = this.queryscholarship()
+        var aid = this.queryaid()
+        var loan = this.queryloan()
+        var cadre = this.querycadre()
+        var award = this.queryaward()
+        var paper = this.querypaper()
+        var patent = this.querypatent()
+        var techProject = this.queryTechproject()
         var basicInfoJson = JSON.stringify(basicInfo)
         var schoolRollJson = JSON.stringify(schoolRoll)
         var courseJson = JSON.stringify(course)
@@ -794,230 +803,229 @@ export default {
         var paperJson = JSON.stringify(paper)
         var patentJson = JSON.stringify(patent)
         var techProjectJson = JSON.stringify(techProject)
-        if(basicInfoJson != empty){
+        if (basicInfoJson != empty) {
           data['select'].push('basicInfo')
           data['where']['basicInfo'] = basicInfo
         }
-        if(schoolRollJson != empty){
+        if (schoolRollJson != empty) {
           data['select'].push('schoolRoll')
           data['where']['schoolRoll'] = schoolRoll
         }
-        if(courseJson != empty){
+        if (courseJson != empty) {
           data['select'].push('course')
           data['where']['course'] = course
         }
-        if(partyInfoJson != empty){
+        if (partyInfoJson != empty) {
           data['select'].push('partyInfo')
           data['where']['partyInfo'] = partyInfo
         }
-        if(scholarshipJson != empty){
+        if (scholarshipJson != empty) {
           data['select'].push('scholarship')
           data['where']['scholarship'] = scholarship
         }
-        if(aidJson != empty){
+        if (aidJson != empty) {
           data['select'].push('aid')
           data['where']['aid'] = aid
         }
-        if(loanJson != empty){
+        if (loanJson != empty) {
           data['select'].push('loan')
           data['where']['loan'] = loan
         }
-        if(cadreJson != empty){
+        if (cadreJson != empty) {
           data['select'].push('cadre')
           data['where']['cadre'] = cadre
         }
-        if(awardJson != empty){
+        if (awardJson != empty) {
           data['select'].push('award')
           data['where']['award'] = award
         }
-        if(paperJson != empty){
+        if (paperJson != empty) {
           data['select'].push('paper')
           data['where']['paper'] = paper
         }
-        if(patentJson != empty){
+        if (patentJson != empty) {
           data['select'].push('patent')
           data['where']['patent'] = patent
         }
-        if(techProjectJson != empty){
+        if (techProjectJson != empty) {
           data['select'].push('techProject')
           data['where']['techProject'] = techProject
         }
 
       }
-      console.log(JSON.stringify(data))
+      var dataJson = JSON.stringify(data)
+      //console.log(dataJson)
       //跳转
-      /*
       this.$router.push({
         //这里只有用name导航才能通过params成功传递参数，用path就不可以,另一个问题是list页面刷新后会丢失params
         name:'list',
         params: {
-          data
+          postData: dataJson
         }
       })
-      */
     },
-    queryBasicInfo: function(){
+    querybasicInfo: function() {
       var basicInfo = {}
-      if($('#gender').val()) basicInfo['gender'] = $('#gender').val()
-      if($('#birthPlace').val()) basicInfo['birthPlace'] = $('#birthPlace').val()
-      if($('#ethnic').val()) basicInfo['ethnic'] = $('#ethnic').val()
-      if($('#poliFace').val()) basicInfo['poliFace'] = $('#poliFace').val()
-      if($('#idNum').val()) basicInfo['idNum'] = $('#idNum').val()
-      if($('#birthDate').val()) basicInfo['birthDate'] = $('#birthDate').val()
-      if($('#tel').val()) basicInfo['tel'] = $('#tel').val()
-      if($('#mail').val()) basicInfo['mail'] = $('#mail').val()
-      if($('#wechat').val()) basicInfo['wechat'] = $('#wechat').val()
-      if($('#qq').val()) basicInfo['qq'] = $('#qq').val()
-      if($('#degree').val()) basicInfo['degree'] = $('#degree').val()
-      if($('#stuGroup ').val()) basicInfo['stuGroup '] = $('#stuGroup ').val()
-      if($('#grade').val()) basicInfo['grade'] = $('#grade').val()
-      if($('#major').val()) basicInfo['major'] = $('#major').val()
-      if($('#class-xz').val()) basicInfo['class'] = $('#class-xz').val()
-      if($('#dorm').val()) basicInfo['dorm'] = $('#dorm').val()
-      if($('#dorm-number').val()) basicInfo['dorm-number'] = $('#dorm-number').val()
-      if($('#dormRoom ').val()) basicInfo['dormRoom '] = $('#dormRoom ').val()
-      if($('#speciality').val()) basicInfo['speciality'] = $('#speciality').val()
-      if($('#highSchool').val()) basicInfo['highSchool'] = $('#highSchool').val()
+      if ($('#gender').val()) basicInfo['gender'] = $('#gender').val()
+      if ($('#birthPlace').val()) basicInfo['birthPlace'] = $('#birthPlace').val()
+      if ($('#ethnic').val()) basicInfo['ethnic'] = $('#ethnic').val()
+      if ($('#poliFace').val()) basicInfo['poliFace'] = $('#poliFace').val()
+      if ($('#idNum').val()) basicInfo['idNum'] = $('#idNum').val()
+      if ($('#birthDate').val()) basicInfo['birthDate'] = $('#birthDate').val()
+      if ($('#tel').val()) basicInfo['tel'] = $('#tel').val()
+      if ($('#mail').val()) basicInfo['mail'] = $('#mail').val()
+      if ($('#wechat').val()) basicInfo['wechat'] = $('#wechat').val()
+      if ($('#qq').val()) basicInfo['qq'] = $('#qq').val()
+      if ($('#degree').val()) basicInfo['degree'] = $('#degree').val()
+      if ($('#stuGroup ').val()) basicInfo['stuGroup '] = $('#stuGroup ').val()
+      if ($('#grade').val()) basicInfo['grade'] = $('#grade').val()
+      if ($('#major').val()) basicInfo['major'] = $('#major').val()
+      if ($('#class-xz').val()) basicInfo['class'] = $('#class-xz').val()
+      if ($('#dorm').val()) basicInfo['dorm'] = $('#dorm').val()
+      if ($('#dorm-number').val()) basicInfo['dorm-number'] = $('#dorm-number').val()
+      if ($('#dormRoom ').val()) basicInfo['dormRoom '] = $('#dormRoom ').val()
+      if ($('#speciality').val()) basicInfo['speciality'] = $('#speciality').val()
+      if ($('#highSchool').val()) basicInfo['highSchool'] = $('#highSchool').val()
       return basicInfo
     },
-    querySchoolRoll: function(){
+    queryschoolRoll: function() {
       var schoolRoll = {}
-      if($('#isAtRoll').val()) schoolRoll['isAtRoll'] = $('#isAtRoll').val()
-      if($('#class-jw').val()) schoolRoll['class'] = $('#class-jw').val()
-      if($('#studyYears').val()) schoolRoll['studyYears'] = $('#studyYears').val()
-      if($('#timeInSchool').val()) schoolRoll['timeInSchool'] = $('#timeInSchool').val()
-      if($('#isFee').val()) schoolRoll['isFee'] = $('#isFee').val()
-      if($('#isArrive').val()) schoolRoll['isArrive'] = $('#isArrive').val()
-      if($('#isRollChanged').val()) schoolRoll['isRollChanged'] = $('#isRollChanged').val()
-      if($('#changeTime').val()) schoolRoll['changeTime'] = $('#changeTime').val()
-      if($('#changeClass').val()) schoolRoll['changeClass'] = $('#changeClass').val()
+      if ($('#isAtRoll').val()) schoolRoll['isAtRoll'] = $('#isAtRoll').val()
+      if ($('#class-jw').val()) schoolRoll['class'] = $('#class-jw').val()
+      if ($('#studyYears').val()) schoolRoll['studyYears'] = $('#studyYears').val()
+      if ($('#timeInSchool').val()) schoolRoll['timeInSchool'] = $('#timeInSchool').val()
+      if ($('#isFee').val()) schoolRoll['isFee'] = $('#isFee').val()
+      if ($('#isArrive').val()) schoolRoll['isArrive'] = $('#isArrive').val()
+      if ($('#isRollChanged').val()) schoolRoll['isRollChanged'] = $('#isRollChanged').val()
+      if ($('#changeTime').val()) schoolRoll['changeTime'] = $('#changeTime').val()
+      if ($('#changeClass').val()) schoolRoll['changeClass'] = $('#changeClass').val()
       return schoolRoll
     },
-    queryCourse: function(){
+    querycourse: function() {
       var course = {}
-      if($('#year-course').val()) course['year'] = $('#year-course').val()
-      if($('#semester').val()) course['semester'] = $('#semester').val()
-      if($('#courseName').val()) course['courseName'] = $('#courseName').val()
-      if($('#courseId').val()) course['courseId'] = $('#courseId').val()
-      if($('#courseClass').val()) course['courseClass'] = $('#courseClass').val()
-      if($('#courseProperty').val()) course['courseProperty'] = $('#courseProperty').val()
-      if($('#courseHour').val()) course['courseHour'] = $('#courseHour').val()
-      if($('#credit').val()) course['credit'] = $('#credit').val()
-      if($('#courseGrade').val()) course['courseGrade'] = $('#courseGrade').val()
-      if($('#gpa').val()) course['gpa'] = $('#gpa').val()
-      if($('#isPass').val()) course['isPass'] = $('#isPass').val()
-      if($('#rebuild').val()) course['rebuild'] = $('#rebuild').val()
-      if($('#backup').val()) course['backup'] = $('#backup').val()
+      if ($('#year-course').val()) course['year'] = $('#year-course').val()
+      if ($('#semester').val()) course['semester'] = $('#semester').val()
+      if ($('#courseName').val()) course['courseName'] = $('#courseName').val()
+      if ($('#courseId').val()) course['courseId'] = $('#courseId').val()
+      if ($('#courseClass').val()) course['courseClass'] = $('#courseClass').val()
+      if ($('#courseProperty').val()) course['courseProperty'] = $('#courseProperty').val()
+      if ($('#courseHour').val()) course['courseHour'] = $('#courseHour').val()
+      if ($('#credit').val()) course['credit'] = $('#credit').val()
+      if ($('#courseGrade').val()) course['courseGrade'] = $('#courseGrade').val()
+      if ($('#gpa').val()) course['gpa'] = $('#gpa').val()
+      if ($('#isPass').val()) course['isPass'] = $('#isPass').val()
+      if ($('#rebuild').val()) course['rebuild'] = $('#rebuild').val()
+      if ($('#backup').val()) course['backup'] = $('#backup').val()
       return course
     },
-    queryPartyInfo: function(){
+    querypartyInfo: function() {
       var partyInfo = {}
-      if($('#isLeaguer').val()) partyInfo['isLeaguer'] = $('#isLeaguer').val()
-      if($('#joinGroupTime').val()) partyInfo['joinGroupTime'] = $('#joinGroupTime').val()
-      if($('#submitTime-partyInfo').val()) partyInfo['submitTime'] = $('#submitTime-partyInfo').val()
-      if($('#activerTime').val()) partyInfo['activerTime'] = $('#activerTime').val()
-      if($('#contacter').val()) partyInfo['contacter'] = $('#contacter').val()
-      if($('#isVerified').val()) partyInfo['isVerified'] = $('#isVerified').val()
-      if($('#democracyTime').val()) partyInfo['democracyTime'] = $('#democracyTime').val()
-      if($('#developerTime').val()) partyInfo['developerTime'] = $('#developerTime').val()
-      if($('#partyTrainedTime').val()) partyInfo['partyTrainedTime'] = $('#partyTrainedTime').val()
-      if($('#introducerTime').val()) partyInfo['introducerTime'] = $('#introducerTime').val()
-      if($('#introducer').val()) partyInfo['introducer'] = $('#introducer').val()
-      if($('#hasAutobigraphy').val()) partyInfo['hasAutobigraphy'] = $('#hasAutobigraphy').val()
-      if($('#hasApplicatiionForm').val()) partyInfo['hasApplicatiionForm'] = $('#hasApplicatiionForm').val()
+      if ($('#isLeaguer').val()) partyInfo['isLeaguer'] = $('#isLeaguer').val()
+      if ($('#joinGroupTime').val()) partyInfo['joinGroupTime'] = $('#joinGroupTime').val()
+      if ($('#submitTime-partyInfo').val()) partyInfo['submitTime'] = $('#submitTime-partyInfo').val()
+      if ($('#activerTime').val()) partyInfo['activerTime'] = $('#activerTime').val()
+      if ($('#contacter').val()) partyInfo['contacter'] = $('#contacter').val()
+      if ($('#isVerified').val()) partyInfo['isVerified'] = $('#isVerified').val()
+      if ($('#democracyTime').val()) partyInfo['democracyTime'] = $('#democracyTime').val()
+      if ($('#developerTime').val()) partyInfo['developerTime'] = $('#developerTime').val()
+      if ($('#partyTrainedTime').val()) partyInfo['partyTrainedTime'] = $('#partyTrainedTime').val()
+      if ($('#introducerTime').val()) partyInfo['introducerTime'] = $('#introducerTime').val()
+      if ($('#introducer').val()) partyInfo['introducer'] = $('#introducer').val()
+      if ($('#hasAutobigraphy').val()) partyInfo['hasAutobigraphy'] = $('#hasAutobigraphy').val()
+      if ($('#hasApplicatiionForm').val()) partyInfo['hasApplicatiionForm'] = $('#hasApplicatiionForm').val()
 
-      if($('#partyBranchTime').val()) partyInfo['partyBranchTime'] = $('#partyBranchTime').val()
-      if($('#partyTalkTime').val()) partyInfo['partyTalkTime'] = $('#partyTalkTime').val()
-      if($('#partyTalker').val()) partyInfo['partyTalker'] = $('#partyTalker').val()
-      if($('#probationaryTime').val()) partyInfo['probationaryTime'] = $('#probationaryTime').val()
-      if($('#partyOathTime').val()) partyInfo['partyOathTime'] = $('#partyOathTime').val()
-      if($('#fullSubTime').val()) partyInfo['fullSubTime'] = $('#fullSubTime').val()
-      if($('#fullMeetingTime').val()) partyInfo['fullMeetingTime'] = $('#fullMeetingTime').val()
-      if($('#fullMemberTime').val()) partyInfo['fullMemberTime'] = $('#fullMemberTime').val()
-      if($('#archiveTime').val()) partyInfo['archiveTime'] = $('#archiveTime').val()
-      if($('#temporaryTime').val()) partyInfo['temporaryTime'] = $('#temporaryTime').val()
-      if($('#outTime').val()) partyInfo['outTime'] = $('#outTime').val()
-      if($('#outUnit').val()) partyInfo['outUnit'] = $('#outUnit').val()
+      if ($('#partyBranchTime').val()) partyInfo['partyBranchTime'] = $('#partyBranchTime').val()
+      if ($('#partyTalkTime').val()) partyInfo['partyTalkTime'] = $('#partyTalkTime').val()
+      if ($('#partyTalker').val()) partyInfo['partyTalker'] = $('#partyTalker').val()
+      if ($('#probationaryTime').val()) partyInfo['probationaryTime'] = $('#probationaryTime').val()
+      if ($('#partyOathTime').val()) partyInfo['partyOathTime'] = $('#partyOathTime').val()
+      if ($('#fullSubTime').val()) partyInfo['fullSubTime'] = $('#fullSubTime').val()
+      if ($('#fullMeetingTime').val()) partyInfo['fullMeetingTime'] = $('#fullMeetingTime').val()
+      if ($('#fullMemberTime').val()) partyInfo['fullMemberTime'] = $('#fullMemberTime').val()
+      if ($('#archiveTime').val()) partyInfo['archiveTime'] = $('#archiveTime').val()
+      if ($('#temporaryTime').val()) partyInfo['temporaryTime'] = $('#temporaryTime').val()
+      if ($('#outTime').val()) partyInfo['outTime'] = $('#outTime').val()
+      if ($('#outUnit').val()) partyInfo['outUnit'] = $('#outUnit').val()
       return partyInfo
     },
-    queryScholarship: function(){
+    queryscholarship: function() {
       var scholarship = {}
-      if($('#year-scholarship').val()) scholarship['year'] = $('#year-scholarship').val()
-      if($('#shipClass').val()) scholarship['shipClass'] = $('#shipClass').val()
-      if($('#shipName').val()) scholarship['shipName'] = $('#shipName').val()
-      if($('#shipAmount').val()) scholarship['shipAmount'] = $('#shipAmount').val()
+      if ($('#year-scholarship').val()) scholarship['year'] = $('#year-scholarship').val()
+      if ($('#shipClass').val()) scholarship['shipClass'] = $('#shipClass').val()
+      if ($('#shipName').val()) scholarship['shipName'] = $('#shipName').val()
+      if ($('#shipAmount').val()) scholarship['shipAmount'] = $('#shipAmount').val()
       return scholarship
     },
-    queryAid: function(){
+    queryaid: function() {
       var aid = {}
-      if($('#year-aid').val()) aid['year'] = $('#year-aid').val()
-      if($('#aidClass').val()) aid['aidClass'] = $('#aidClass').val()
-      if($('#aidProperty').val()) aid['aidProperty'] = $('#aidProperty').val()
-      if($('#aidName').val()) aid['aidName'] = $('#aidName').val()
-      if($('#aidAmount').val()) aid['aidAmount'] = $('#aidAmount').val()
+      if ($('#year-aid').val()) aid['year'] = $('#year-aid').val()
+      if ($('#aidClass').val()) aid['aidClass'] = $('#aidClass').val()
+      if ($('#aidProperty').val()) aid['aidProperty'] = $('#aidProperty').val()
+      if ($('#aidName').val()) aid['aidName'] = $('#aidName').val()
+      if ($('#aidAmount').val()) aid['aidAmount'] = $('#aidAmount').val()
       return aid
     },
-    queryLoan: function(){
+    queryloan: function() {
       var loan = {}
-      if($('#submitYear').val()) loan['submitYear'] = $('#submitYear').val()
-      if($('#loanYears').val()) loan['loanYears'] = $('#loanYears').val()
-      if($('#moneyPerYear').val()) loan['moneyPerYear'] = $('#moneyPerYear').val()
-      if($('#loanTotal').val()) loan['loanTotal'] = $('#loanTotal').val()
+      if ($('#submitYear').val()) loan['submitYear'] = $('#submitYear').val()
+      if ($('#loanYears').val()) loan['loanYears'] = $('#loanYears').val()
+      if ($('#moneyPerYear').val()) loan['moneyPerYear'] = $('#moneyPerYear').val()
+      if ($('#loanTotal').val()) loan['loanTotal'] = $('#loanTotal').val()
       return loan
     },
-    queryCadre: function(){
+    querycadre: function() {
       var cadre = {}
-      if($('#year-cadre').val()) cadre['year'] = $('#year-cadre').val()
-      if($('#cadreClass').val()) cadre['cadreClass'] = $('#cadreClass').val()
-      if($('#cadreName').val()) cadre['cadreName'] = $('#cadreName').val()
-      if($('#cadreJiBie').val()) cadre['cadreJiBie'] = $('#cadreJiBie').val()
+      if ($('#year-cadre').val()) cadre['year'] = $('#year-cadre').val()
+      if ($('#cadreClass').val()) cadre['cadreClass'] = $('#cadreClass').val()
+      if ($('#cadreName').val()) cadre['cadreName'] = $('#cadreName').val()
+      if ($('#cadreJiBie').val()) cadre['cadreJiBie'] = $('#cadreJiBie').val()
       return cadre
     },
-    queryAward: function(){
+    queryaward: function() {
       var award = {}
-      if($('#stuClass').val()) award['stuClass'] = $('#stuClass').val()
-      if($('#awardName').val()) award['awardName'] = $('#awardName').val()
-      if($('#awardClass').val()) award['awardClass'] = $('#awardClass').val()
-      if($('#employer-award').val()) award['employer'] = $('#employer-award').val()
-      if($('#awardJiBie').val()) award['awardJiBie'] = $('#awardJiBie').val()
-      if($('#awardYearMonth').val()) award['awardYearMonth'] = $('#awardYearMonth').val()
-      if($('#teacher').val()) award['teacher'] = $('#teacher').val()
+      if ($('#stuClass').val()) award['stuClass'] = $('#stuClass').val()
+      if ($('#awardName').val()) award['awardName'] = $('#awardName').val()
+      if ($('#awardClass').val()) award['awardClass'] = $('#awardClass').val()
+      if ($('#employer-award').val()) award['employer'] = $('#employer-award').val()
+      if ($('#awardJiBie').val()) award['awardJiBie'] = $('#awardJiBie').val()
+      if ($('#awardYearMonth').val()) award['awardYearMonth'] = $('#awardYearMonth').val()
+      if ($('#teacher').val()) award['teacher'] = $('#teacher').val()
       return award
     },
-    queryPaper: function(){
+    querypaper: function() {
       var paper = {}
-      if($('#title').val()) paper['title'] = $('#title').val()
-      if($('#authors').val()) paper['authors'] = $('#authors').val()
-      if($('#journal').val()) paper['journal'] = $('#journal').val()
-      if($('#serialNumber').val()) paper['serialNumber'] = $('#serialNumber').val()
-      if($('#pagesRange').val()) paper['pagesRange'] = $('#pagesRange').val()
-      if($('#paperGrade').val()) paper['paperGrade'] = $('#paperGrade').val()
-      if($('#paperClass').val()) paper['paperClass'] = $('#paperClass').val()
-      if($('#time').val()) paper['time'] = $('#time').val()
-      if($('#insTeacher').val()) paper['insTeacher'] = $('#insTeacher').val()
+      if ($('#title').val()) paper['title'] = $('#title').val()
+      if ($('#authors').val()) paper['authors'] = $('#authors').val()
+      if ($('#journal').val()) paper['journal'] = $('#journal').val()
+      if ($('#serialNumber').val()) paper['serialNumber'] = $('#serialNumber').val()
+      if ($('#pagesRange').val()) paper['pagesRange'] = $('#pagesRange').val()
+      if ($('#paperGrade').val()) paper['paperGrade'] = $('#paperGrade').val()
+      if ($('#paperClass').val()) paper['paperClass'] = $('#paperClass').val()
+      if ($('#time').val()) paper['time'] = $('#time').val()
+      if ($('#insTeacher').val()) paper['insTeacher'] = $('#insTeacher').val()
       return paper
     },
-    queryPatent: function(){
+    querypatent: function() {
       var patent = {}
-      if($('#patentName').val()) patent['patentName'] = $('#patentName').val()
-      if($('#class-patent').val()) patent['class'] = $('#class-patent').val()
-      if($('#submitTime-patent').val()) patent['submitTime'] = $('#submitTime-patent').val()
-      if($('#approvalTime').val()) patent['approvalTime'] = $('#approvalTime').val()
-      if($('#patentRange').val()) patent['patentRange'] = $('#patentRange').val()
-      if($('#unit').val()) patent['unit'] = $('#unit').val()
-      if($('#patentNumber').val()) patent['patentNumber'] = $('#patentNumber').val()
-      if($('#creators').val()) patent['creators'] = $('#creators').val()
+      if ($('#patentName').val()) patent['patentName'] = $('#patentName').val()
+      if ($('#class-patent').val()) patent['class'] = $('#class-patent').val()
+      if ($('#submitTime-patent').val()) patent['submitTime'] = $('#submitTime-patent').val()
+      if ($('#approvalTime').val()) patent['approvalTime'] = $('#approvalTime').val()
+      if ($('#patentRange').val()) patent['patentRange'] = $('#patentRange').val()
+      if ($('#unit').val()) patent['unit'] = $('#unit').val()
+      if ($('#patentNumber').val()) patent['patentNumber'] = $('#patentNumber').val()
+      if ($('#creators').val()) patent['creators'] = $('#creators').val()
       return patent
     },
-    queryTechProject: function(){
+    queryTechproject: function() {
       var techProject = {}
-      if($('#proName').val()) techProject['proName'] = $('#proName').val()
-      if($('#employer-techProject').val()) techProject['employer'] = $('#employer-techProject').val()
-      if($('#money-techProject').val()) techProject['money'] = $('#money-techProject').val()
-      if($('#proId').val()) techProject['proId'] = $('#proId').val()
-      if($('#class-techProject').val()) techProject['class'] = $('#class-techProject').val()
-      if($('#teacher-techProject').val()) techProject['teacher'] = $('#teacher-techProject').val()
-      if($('#proTime').val()) techProject['proTime'] = $('#proTime').val()
+      if ($('#proName').val()) techProject['proName'] = $('#proName').val()
+      if ($('#employer-techProject').val()) techProject['employer'] = $('#employer-techProject').val()
+      if ($('#money-techProject').val()) techProject['money'] = $('#money-techProject').val()
+      if ($('#proId').val()) techProject['proId'] = $('#proId').val()
+      if ($('#class-techProject').val()) techProject['class'] = $('#class-techProject').val()
+      if ($('#teacher-techProject').val()) techProject['teacher'] = $('#teacher-techProject').val()
+      if ($('#proTime').val()) techProject['proTime'] = $('#proTime').val()
       return techProject
     }
   }
