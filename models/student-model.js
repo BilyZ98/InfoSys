@@ -12,6 +12,37 @@ exports.getStudentInfo = async (data)=> {
   return queryDB(query,values);
 }
 
+//批量插入
+/*
+* 查询格式 {
+  'table':'basicInfo',
+  'field':['sid','name','gender','birthPlace'],
+  'batchInfo':[['16340320','zzt','male','zj'],
+['12345679','asd','female','bj']]
+}
+*
+*
+*/
+exports.batchInsert = (data) => {
+  var tmp = true;
+  var field = data['field'];
+  let query =
+  "insert into " + data.table +
+  "  ( ";
+  for(x in field){
+    if(tmp) {
+        query +=field[x];
+        tmp =false;
+    }
+    else {
+      query+=',' + field[x];
+    }
+  }
+  query+=' ) values ?';
+  let values = data['batchInfo'];
+  return queryDB(query, [values]);
+}
+
 
 exports.addBasicInfo = (data) =>{
   let query =

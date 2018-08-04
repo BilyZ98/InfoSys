@@ -35,6 +35,20 @@ async function template(req,res,next,concrete, table){
   }
 }
 
+//写一个导入的函数
+//exports.insertInfo
+
+
+
+//表示查询，传入json 格式见 testJson.js，用于多表连接
+exports.query = async (req,res,next) => {
+  StudentsModel.query(req.body).then(() => {
+    resBody.success(res)
+  })
+  .catch((err) => {
+    resBody.error(res,err)
+  })
+}
 
 
 //数据库插入学生基本信息
