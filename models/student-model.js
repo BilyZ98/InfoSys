@@ -71,6 +71,7 @@ exports.addPaper = (data) => {
 }
 
 exports.addPatent = (data) => {
+  console.log(data);
   let query =
   "insert into patent \n"+
   "(sid, name, patentName, class, submitTime, approvalTime, patentRange,\n"+
@@ -90,8 +91,90 @@ exports.addTechProject = (data) => {
   return queryDB(query,values);
 }
 
+//data 就是传过来的json数据
 exports.query = (data) => {
-  let query = "select"
+  let query = "select ";
+
+  var selectObj = data['select'];
+
+  var whereObj = data['where'];
+  var whereStr = '';
+  var whereValues =[];
+
+  var fromSet = new Set(); //对from 语句整合
+  for(table in whereObj){
+    fromSet.add(table)
+  }
+  for(table in selectObj){
+    fromSet.add(selectObj[table]);
+  }
+
+
+  for(table in selectObj){
+
+    query+=selectObj[table] + '.*,';
+  }
+  query = query.substr(0,query.length -1 ); //选择了表，接下来要 from 哪些表
+
+  query+= ' from ';
+
+  var tmp = true; //用于连接字符串，看要不要加 ‘，’
+  //将select  和where 的表集合连接
+  fromSet.forEach((item, sameItem, s)=>{
+    if(tmp){
+      tmp = false;
+      query+=item;
+    }
+    else{
+      query+= ',' + item
+    }
+
+  })
+
+  query+=' where ';
+
+  var beforeTable = '';
+  tmp =true; //表示 and 的第一次
+  fromSet.forEach((item, sameItem, s) => {
+    if(beforeTable == ''){
+      beforeTable = item;
+    }
+    else{
+      if(tmp){
+          query+=beforeTable + '.sid = ' + item+ '.sid '
+          tmp =false;
+      }
+      else {
+          query+= ' and ' + beforeTable + '.sid = ' + item+ '.sid '
+      }
+      beforeTable = item;
+    }
+  })
+if(!tmp) {
+  query += ' and ';
+}  //这个是针对多个sid,如果只有sid ，则不用加and
+
+tmp = true;
+//从前端传过来的输入的条件
+for (table in whereObj) {
+  for (field in whereObj[table]) {
+    if(tmp){
+      whereStr+= table + '.' + field + '= ?  ';
+      tmp =false;
+    }
+    else {
+      whereStr+=' and ' + table + '.' + field + '= ? ';
+    }
+    whereValues.push(whereObj[table][field])
+  }
+}
+
+query+=whereStr;
+query+=' \n;'
+console.log(query);
+let values= whereValues;
+console.log(values);
+return queryDB(query,values);
 }
 
 exports.checkStudent = (data, table) =>{

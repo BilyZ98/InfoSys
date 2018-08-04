@@ -2,10 +2,7 @@
 
 
 var query =  {
-  'select':{
-    'basicInfo': ['tel', 'highSchool'],
-    'party':['fuck','boynextdoor']
-  },
+  'select':['basicInfo', 'party'],
   'where':{
     'basicInfo':{
       'sid':'16340320',
@@ -19,22 +16,47 @@ var query =  {
 
 }
 
-var selectObj = query['where'];
-var selectStr = '';
-var selectValues =[];
+//'basicInfo.sid=paper.sid and paper.sid = party.sid'
+//'basicInfo.sid = ? and basicInfo.name = ? '
 
-for (table in selectObj) {
-  for (field in selectObj[table]) {
-    //console.log(selectObj[table][field]);
-    selectStr+= table + '.' + field + ', ';
-    selectValues.push(selectObj[table][field])
+var myset = new Set();
+
+var whereObj = query['where'];
+var whereStr = '';
+var whereValues =[];
+
+var selectObj = query['select'];
+for(table in selectObj){
+  myset.add(selectObj[table]);
+}
+for(table in whereObj){
+  myset.add(table)
+}
+
+var tmp = true;
+myset.forEach((item, sameitem, s) =>{
+  if(tmp === true){
+    tmp = false;
+    console.log('true')
+  }
+  else{
+    //tmp = false;
+    console.log('false');
+  }
+  console.log(item);
+})
+
+//console.log(myset);
+
+for (table in whereObj) {
+  for (field in whereObj[table]) {
+    whereStr+= table + '.' + field + ',';
+    whereValues.push(whereObj[table][field])
   }
 }
 
-//console.log(selectObj);
+whereStr = whereStr.substr(0,whereStr.length - 1);
 
-console.log(selectValues);
-console.log(selectStr);
+//console.log(myset);
 
-//console.log(query['where']['basicInfo'][0]);
-//console.log(parseQuery);
+console.log(whereStr);
