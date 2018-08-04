@@ -40,7 +40,6 @@
 </template>
 
 <script>
-//姓名name、学号sid、学年year、职务类别（学生会、团委、研究生会、学生学术发展中心、职发办、社团、院队、班干部）cadreClass、职务名称cadreName、职务级别（校级、校区级、院级）cadreJiBie
 export default {
   data () {
     return {}
@@ -59,7 +58,7 @@ export default {
     	console.log(data);
       $.ajax({
         type: "POST",
-        url: "/students/insert/techProject",
+        url: "/students/insert/cadre",
         contentType: "application/json; charset=utf-8",
         data: data,
         dataType: "json",
