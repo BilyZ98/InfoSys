@@ -15,10 +15,11 @@ export default {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     console.log(this.$route.params.postData)
-    this.fetchData(this.$route.params.postData)
+    console.log(this.$route.params.recordFilter)
+    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
-    fetchData(dataJson) {
+    fetchData(dataJson, recordFilter) {
       //为了把this传进ajax
       var _self = this;
       // replace getPost with your data fetching util / API wrapper

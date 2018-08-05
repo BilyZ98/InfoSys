@@ -1,8 +1,7 @@
 <template>
   <div class="query-container">
-    <h3 class="text-center">信息查询</h3>
-    <hr>
 
+    <h3 class="text-center">查询条件</h3>
     <div>
       <h4 id="basicInfo" @click="headClick">基本信息</h4>
       <div class="table-container hide-container" id="table-basicInfo">
@@ -722,17 +721,34 @@
         <br/>
       </div>
     </div>
+    <hr>
+
+    <!--结果选择部分-->
+    <h3 class="text-center">选择查询结果显示的字段</h3>
+
+    <div class="record-container" v-for="table in tables">
+      <h4 v-bind:id="table.id" @click="recordClick">{{table.name}}</h4>
+      <div class="table-container hide-container" id="record"  v-bind:id="'record-'+table.id">
+        <div v-for="record in table.records">
+          <h5 class="record-original" v-bind:record-id="record.id" @click="recordClick">{{record.name}}</h5>
+        </div>
+      </div>
+    </div>
+    <hr>
 
     <button type="button" @click="queryClick">查询</button>
 </div>
 </template>
 
 <script>
-var empty = JSON.stringify({});
+import tableData from './tableData.js'
+var empty = JSON.stringify({})
 
 export default {
   data() {
-    return {}
+    return {
+      tables: tableData
+    }
   },
   methods: {
     //event是原生dom事件
@@ -763,7 +779,7 @@ export default {
     },
     queryClick: function() {
       //验证和生成json
-      var data = {};
+      var data = {}
       //有sid/name就不包含其他信息了
       if ($('#sid').val() || $('#name').val()) {
         data = {
@@ -790,7 +806,7 @@ export default {
         var award = this.queryaward()
         var paper = this.querypaper()
         var patent = this.querypatent()
-        var techProject = this.queryTechproject()
+        var techProject = this.querytechProject()
         var basicInfoJson = JSON.stringify(basicInfo)
         var schoolRollJson = JSON.stringify(schoolRoll)
         var courseJson = JSON.stringify(course)
@@ -804,55 +820,47 @@ export default {
         var patentJson = JSON.stringify(patent)
         var techProjectJson = JSON.stringify(techProject)
         if (basicInfoJson != empty) {
-          data['select'].push('basicInfo')
           data['where']['basicInfo'] = basicInfo
         }
         if (schoolRollJson != empty) {
-          data['select'].push('schoolRoll')
           data['where']['schoolRoll'] = schoolRoll
         }
         if (courseJson != empty) {
-          data['select'].push('course')
           data['where']['course'] = course
         }
         if (partyInfoJson != empty) {
-          data['select'].push('partyInfo')
           data['where']['partyInfo'] = partyInfo
         }
         if (scholarshipJson != empty) {
-          data['select'].push('scholarship')
           data['where']['scholarship'] = scholarship
         }
         if (aidJson != empty) {
-          data['select'].push('aid')
           data['where']['aid'] = aid
         }
         if (loanJson != empty) {
-          data['select'].push('loan')
           data['where']['loan'] = loan
         }
         if (cadreJson != empty) {
-          data['select'].push('cadre')
           data['where']['cadre'] = cadre
         }
         if (awardJson != empty) {
-          data['select'].push('award')
           data['where']['award'] = award
         }
         if (paperJson != empty) {
-          data['select'].push('paper')
           data['where']['paper'] = paper
         }
         if (patentJson != empty) {
-          data['select'].push('patent')
           data['where']['patent'] = patent
         }
         if (techProjectJson != empty) {
-          data['select'].push('techProject')
           data['where']['techProject'] = techProject
         }
 
       }
+      //显示结果条件的参数
+      var recordFilter = this.recordFilter()
+      //console.log(recordFilter)
+      data['select'] = recordFilter.select
       var dataJson = JSON.stringify(data)
       //console.log(dataJson)
       //跳转
@@ -860,7 +868,8 @@ export default {
         //这里只有用name导航才能通过params成功传递参数，用path就不可以,另一个问题是list页面刷新后会丢失params
         name:'list',
         params: {
-          postData: dataJson
+          postData: dataJson,
+          recordFilter: recordFilter
         }
       })
     },
@@ -933,7 +942,6 @@ export default {
       if ($('#introducer').val()) partyInfo['introducer'] = $('#introducer').val()
       if ($('#hasAutobigraphy').val()) partyInfo['hasAutobigraphy'] = $('#hasAutobigraphy').val()
       if ($('#hasApplicatiionForm').val()) partyInfo['hasApplicatiionForm'] = $('#hasApplicatiionForm').val()
-
       if ($('#partyBranchTime').val()) partyInfo['partyBranchTime'] = $('#partyBranchTime').val()
       if ($('#partyTalkTime').val()) partyInfo['partyTalkTime'] = $('#partyTalkTime').val()
       if ($('#partyTalker').val()) partyInfo['partyTalker'] = $('#partyTalker').val()
@@ -1017,7 +1025,7 @@ export default {
       if ($('#creators').val()) patent['creators'] = $('#creators').val()
       return patent
     },
-    queryTechproject: function() {
+    querytechProject: function() {
       var techProject = {}
       if ($('#proName').val()) techProject['proName'] = $('#proName').val()
       if ($('#employer-techProject').val()) techProject['employer'] = $('#employer-techProject').val()
@@ -1027,6 +1035,55 @@ export default {
       if ($('#teacher-techProject').val()) techProject['teacher'] = $('#teacher-techProject').val()
       if ($('#proTime').val()) techProject['proTime'] = $('#proTime').val()
       return techProject
+    },
+    recordClick: function(event) {
+      //用类名区别是否被选中，也用来判断是否可折叠一个表
+      //console.log(event.currentTarget.__proto__);
+      //点击的是标题
+      if (event.currentTarget.nodeName == 'H4') {
+        var childNodes = event.currentTarget.nextElementSibling.childNodes
+        var check = true
+        for(var i = 0; i < childNodes.length; i++){
+          if(childNodes[i].childNodes[0].className == 'record-clicked'){
+            check = false
+          }
+        }
+        if(check){
+          $('#' + event.currentTarget.nextElementSibling.id).toggle()
+        }
+      }
+      //点击的是表中的记录
+      else{
+        if(event.currentTarget.className == 'record-original'){
+          event.currentTarget.className = 'record-clicked'
+        } else {
+          event.currentTarget.className = 'record-original'
+        }
+      }
+    },
+    recordFilter: function() {
+      var recordFilter = {
+        select: [],
+        show: {}
+      }
+      for(var i = 0; i < $('.record-container').length; i++){
+        var table =  $('.record-container')[i].childNodes[2].childNodes
+        var tableName = $('.record-container')[i].childNodes[0].id
+        //console.log(table)
+        var check = false
+        for(var j = 0; j< table.length; j++){
+          if(table[j].childNodes[0].className == 'record-clicked'){
+            if(!check){
+              recordFilter['select'].push(tableName)
+              recordFilter['show'][tableName]=[]
+              check = true
+            }
+            recordFilter['show'][tableName].push(table[j].childNodes[0].getAttribute('record-id'))
+          }
+        }
+        //console.log(table.childNodes[1].id)
+      }
+      return recordFilter
     }
   }
 }
@@ -1061,6 +1118,10 @@ export default {
   padding-left: 20px;
 }
 
+h3 {
+  color: green;
+}
+
 h4, h5 {
   display: inline-block;
   cursor: default;
@@ -1083,5 +1144,27 @@ h4:hover {
 
 .hide-container {
   display: none;
+}
+
+.record-container {
+  display: inline-block;
+  float: left;
+  padding-left: 5px;
+}
+
+.record-container > div {
+  padding-left: 5px;
+}
+
+.record-clicked {
+  color: red;
+}
+
+hr {
+  clear: both;
+}
+
+button {
+  margin-left: 50%;
 }
 </style>
