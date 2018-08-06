@@ -1,11 +1,16 @@
 <template>
 <div class="tableContainer">
-  <div v-for="student in students" class="tableRow">
-    <div v-for="table in recordFilter.show" class="tableCell">
-      <h4>{{table.name}}</h4>
-      <span  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
-        {{record.name}}: {{student[table.id][record.id]}}
-      </span>
+  <div class="tableRow">
+    <div v-for="table in recordFilter.show" class="tableCol">
+      <div class="tableHead">{{table.name}}</div>
+      <div v-for="record in table.records" class="tableReordHead"><p>{{record.name}}</p></div>
+    </div>
+  </div>
+  <div v-for="table in recordFilter.show" class="tableCol">
+    <div v-for="student in students" class="tableRow">
+      <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
+        <p>{{student[table.id][record.id]}}</p>
+      </div>
     </div>
   </div>
 </div>
@@ -32,7 +37,7 @@ export default {
       "show": [{
         "name": "基本信息",
         "id": "basicInfo",
-        "records": [{ "name": "学号", "id": "sid" }, { "name": "籍贯", "id": "birthPlace" }]
+        "records": [{ "name": "学号", "id": "sid" }, { "name": "性别", "id": "gender" }, { "name": "籍贯", "id": "birthPlace" }]
       }, {
         "name": "学生干部任职情况",
         "id": "cadre",
@@ -42,7 +47,7 @@ export default {
 
     var testData = [
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1', cadreName: '321'}}
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
     ]
     this.students = testData
     this.recordFilter = recordFilter
@@ -72,42 +77,50 @@ export default {
         }
       })
       */
-    },
-    hahaha: function(){
-
-      var result;
-      console.log(testData[0])
-      var student = testData[0]
-      for(var i=0; i<tableData.length; i++){
-        var table = tableData[i]
-        if(student[table.id]!=undefined){
-          result[i]['name']=table.name
-          result[i]['id']=table.id
-          result[i][table.id]['records']=[]
-          for(var j=0; j<table.records; j++){
-            if(student[table.id][table.records[j].id]!=undefined){
-              var record = student[table.id][table.records[j].id]
-              result[i][table.id]['records'].pushback({name:record.name, id: record.name, val:''})
-            }
-          }
-        }
-      }
-      console.log(result)
-
     }
   }
 }
 </script>
 
 <style>
-div.tableContainer{
-    display: table;
+div.tableContainer {
+  display: table;
+  margin-left: 20px;
+  margin-top: 20px;
+  border: 1px solid grey;
 }
-div.tableRow{
-    display: table-row;
+
+div.tableRow {
+  display: table-row;
 }
-div.tableCell{
-    display: table-cell;
-     border: 1px solid red;
+
+div.tableCell {
+  display: table-cell;
+  width: 150px;
+  height: 20px;
+  overflow: hidden;
+  text-align: center;
+  padding-top: 5px;
+}
+
+div.tableCell:hover {
+  background-color: grey;
+}
+
+div.tableHead {
+  border: 1px solid black;
+}
+
+div.tableReordHead {
+  display: table-cell;
+  width: 150px;
+  height: 20px;
+  overflow: hidden;
+  text-align: center;
+  padding-top: 5px;
+}
+
+div.tableCol {
+  float:left;
 }
 </style>
