@@ -29,6 +29,8 @@ var tableData = [{
   name: '家庭情况',
   id: 'family',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '家庭地址', id: 'homeAddress', value: '', isSelect: false },
     { name: '父亲姓名', id: 'fatherName', value: '', isSelect: false },
     { name: '父亲电话', id: 'fatherTel', value: '', isSelect: false },
@@ -45,6 +47,8 @@ var tableData = [{
   name: '学籍情况',
   id: 'schoolRoll',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学籍状态', id: 'isAtRoll', value: '', isSelect: true, options: ['在籍', '在校'] },
     { name: '教务班别', id: 'class', value: '', isSelect: false },
     { name: '学制', id: 'studyYears', value: '', isSelect: true, options: ['四年制', '五年制'] },
@@ -61,6 +65,8 @@ var tableData = [{
   name: '课程成绩记录',
   id: 'course',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学年', id: 'year', value: '', isSelect: true, options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
     { name: '学期', id: 'semester', value: '', isSelect: true, options: ['第一学期', '第二学期', '第三学期'] },
     { name: '课程名称', id: 'courseName', value: '', isSelect: false },
@@ -79,6 +85,8 @@ var tableData = [{
   name: '党员信息',
   id: 'partyInfo',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '是否团员', id: 'isLeaguer', value: '', isSelect: true, options: ['是', '否'] },
     { name: '参加党章学习小组时间', id: 'joinGroupTime', value: '', isSelect: false },
     { name: '递交入党申请书时间', id: 'submitTime', value: '', isSelect: false },
@@ -109,6 +117,8 @@ var tableData = [{
   name: '获奖学金情况',
   id: 'scholarship',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学年', id: 'year', value: '', isSelect: true, options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
     { name: '奖学金类别', id: 'shipClass', value: '', isSelect: true, options: ['校内', '政府', '捐赠'] },
     { name: '奖学金名称', id: 'shipName', value: '', isSelect: false },
@@ -118,6 +128,8 @@ var tableData = [{
   name: '获资助情况',
   id: 'aid',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学年', id: 'year', value: '', isSelect: true, options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
     { name: '资助类别', id: 'aidClass', value: '', isSelect: true, options: ['校内', '政府', '捐赠'] },
     { name: '资助性质', id: 'aidProperty', value: '', isSelect: true, options: ['新评', '续评'] },
@@ -128,6 +140,8 @@ var tableData = [{
   name: '助学贷款',
   id: 'loan',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '申请学年', id: 'submitYear', value: '', isSelect: true, options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
     { name: '贷款年数', id: 'loanYears', value: '', isSelect: false },
     { name: '每年放款金额', id: 'moneyPerYear', value: '', isSelect: false },
@@ -137,6 +151,8 @@ var tableData = [{
   name: '学生干部任职情况',
   id: 'cadre',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学年', id: 'year', value: '', isSelect: true, options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
     { name: '职务类别', id: 'cadreClass', value: '', isSelect: true, options: ['学生会', '团委', '研究生会', '学生学术发展中心', '职发办', '社团', '院队', '班干部'] },
     { name: '职务名称', id: 'cadreName', value: '', isSelect: false },
@@ -146,6 +162,8 @@ var tableData = [{
   name: '获得奖励情况',
   id: 'award',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '学生类别', id: 'stuClass', value: '', isSelect: true, options: ['本科生', '硕士生', '博士生'] },
     { name: '奖励名称', id: 'awardName', value: '', isSelect: false },
     { name: '奖励等级', id: 'awardClass', value: '', isSelect: false },
@@ -158,6 +176,8 @@ var tableData = [{
   name: '发表论文情况',
   id: 'paper',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '题目', id: 'title', value: '', isSelect: false },
     { name: '作者序', id: 'authors', value: '', isSelect: false },
     { name: '刊物', id: 'journal', value: '', isSelect: false },
@@ -172,6 +192,8 @@ var tableData = [{
   name: '获得专利情况',
   id: 'patent',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '专利名称', id: 'patentName', value: '', isSelect: false },
     { name: '类别', id: 'class', value: '', isSelect: false },
     { name: '申请时间', id: 'submitTime', value: '', isSelect: false },
@@ -185,6 +207,8 @@ var tableData = [{
   name: '科研项目情况',
   id: 'techProject',
   records: [
+    { name: '学号', id: 'sid', value: '', isSelect: false },
+    { name: '姓名', id: 'name', value: '', isSelect: false },
     { name: '项目名称', id: 'proName', value: '', isSelect: false },
     { name: '主办单位', id: 'employer', value: '', isSelect: false },
     { name: '资助金额', id: 'money', value: '', isSelect: false },

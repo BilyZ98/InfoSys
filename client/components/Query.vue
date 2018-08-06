@@ -6,7 +6,7 @@
     <div v-for="table in tables" v-if="table.id!='family'">
       <h4 v-bind:id="table.id" @click="headClick">{{table.name}}</h4>
       <div class="table-container hide-container" v-bind:id="'table-'+table.id">
-        <div v-for="record in table.records">
+        <div v-for="record in table.records" v-if="(table.id!='basicInfo'&&record.id!='sid'&&record.id!='name')||(table.id=='basicInfo')">
           <h5 v-bind:record-id="table.id+'-'+record.id" @click="headClick">{{record.name}}</h5>
           <input type="text" class="hide-container" v-if="!record.isSelect" v-bind:id="table.id+'-'+record.id" v-model="record.value">
           <select class="hide-container" v-if="record.isSelect" v-bind:id="table.id+'-'+record.id" v-model="record.value">
@@ -23,9 +23,9 @@
 
     <div class="record-container" v-for="table in tables">
       <h4 v-bind:id="table.id" @click="recordClick">{{table.name}}</h4>
-      <div class="table-container hide-container" v-bind:id="'record-'+table.id">
+      <div class="table-container hide-container" v-bind:id="'record-'+table.id" v-bind:table-id="table.id" v-bind:table-name="table.name">
         <div v-for="record in table.records">
-          <h5 class="record-original" v-bind:record-id="record.id" @click="recordClick">{{record.name}}</h5>
+          <h5 class="record-original" v-if="(table.id!='basicInfo'&&record.id!='sid'&&record.id!='name')||(table.id=='basicInfo')" v-bind:record-id="record.id" v-bind:record-name="record.name" @click="recordClick">{{record.name}}</h5>
         </div>
       </div>
     </div>
@@ -156,7 +156,6 @@ export default {
       }
       //显示结果条件的参数
       var recordFilter = this.recordFilter()
-      //console.log(recordFilter)
       data['select'] = recordFilter.select
       var dataJson = JSON.stringify(data)
       console.log(dataJson)
@@ -361,24 +360,25 @@ export default {
     recordFilter: function() {
       var recordFilter = {
         select: [],
-        show: {}
+        show: []
       }
       for(var i = 0; i < $('.record-container').length; i++){
-        var table =  $('.record-container')[i].childNodes[2].childNodes
-        var tableName = $('.record-container')[i].childNodes[0].id
-        //console.log(table)
-        var check = false
-        for(var j = 0; j< table.length; j++){
-          if(table[j].childNodes[0].className == 'record-clicked'){
-            if(!check){
-              recordFilter['select'].push(tableName)
-              recordFilter['show'][tableName]=[]
-              check = true
-            }
-            recordFilter['show'][tableName].push(table[j].childNodes[0].getAttribute('record-id'))
+        var records =  $('.record-container')[i].childNodes[2].childNodes
+        var tableId = $('.record-container')[i].childNodes[2].getAttribute('table-id')
+        var tableName = $('.record-container')[i].childNodes[2].getAttribute('table-name')
+        var recordsTemp = []
+        for(var j = 0; j< records.length; j++){
+          if(records[j].childNodes[0].className == 'record-clicked'){
+            var recordId = records[j].childNodes[0].getAttribute('record-id')
+            var recordName = records[j].childNodes[0].getAttribute('record-name')
+            recordsTemp.push({name: recordName, id: recordId})
           }
         }
-        //console.log(table.childNodes[1].id)
+        if(recordsTemp.length > 0){
+          recordFilter['select'].push(tableId)
+          recordFilter['show'].push({name: tableName, id: tableId, records: recordsTemp})
+        }
+        //console.log(records.childNodes[1].id)
       }
       return recordFilter
     }

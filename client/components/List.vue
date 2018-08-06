@@ -1,11 +1,10 @@
 <template>
-<div class="list-student">
-  <div v-for="student in students">
-    <h2>姓名：{{ student.name }} 学号：{{student.sid}}</h2>
-    <div v-for="table in tableData">
+<div class="tableContainer">
+  <div v-for="student in students" class="tableRow">
+    <div v-for="table in recordFilter.show" class="tableCell">
       <h4>{{table.name}}</h4>
-      <div v-for="record in table.records">
-        <span v-if="student[record.id]!=undefined">{{record.name}}:{{student[table.id+'-'+record.id]}}</span>
+      <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
+        {{record.name}}: {{student[table.id][record.id]}}
       </div>
     </div>
   </div>
@@ -18,70 +17,40 @@ import tableData from './tableData.js'
 export default {
   data() {
     return {
+      tableData: tableData,
       students: [],
-      tableData: tableData
+      recordFilter: []
     }
   },
   created: function() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
-    console.log(this.$route.params.postData)
-    console.log(this.$route.params.recordFilter)
+    //console.log(this.$route.params.postData)
+    //console.log(JSON.stringify(this.$route.params.recordFilter))
     var recordFilter = {
-      "select": ["basicInfo", "schoolRoll", "cadre", "techProject"],
-      "show": {
-        "basicInfo": ["name", "birthDate", "tel"],
-        "schoolRoll": ["class", "studyYears"],
-        "cadre": ["cadreClass"],
-        "techProject": ["proName", "employer", "money", "teacher"]
-      }
+      "select": ["basicInfo", "cadre", "paper"],
+      "show": [{
+        "name": "基本信息",
+        "id": "basicInfo",
+        "records": [{ "name": "学号", "id": "sid" }, { "name": "籍贯", "id": "birthPlace" }]
+      }, {
+        "name": "学生干部任职情况",
+        "id": "cadre",
+        "records": [{ "name": "学年", "id": "year" }, { "name": "职务类别", "id": "cadreClass" }, { "name": "职务名称", "id": "cadreName" }]
+      }]
     }
 
-    var testData = [{
-      "sid": "12345678",
-      "name": "qqwe",
-      "gender": "男",
-      "birthPlace": "安徽",
-      "ethnic": "阿昌族",
-      "poliFace": "群众",
-      "idNum": "440801199809292612",
-      "birthDate": "1998-09-28T16:00:00.000Z",
-      "tel": "15626278343",
-      "mail": "873421427@qq.com",
-      "wechat": "123214",
-      "qq": "12312414",
-      "degree": "本科",
-      "stuGroup": "统招",
-      "grade": "2012",
-      "major": "123",
-      "basicInfo_class": "1",
-      "dorm": "至善园1号",
-      "dormRoom": "123",
-      "speciality": "123213",
-      "highSchool": "12312"
-    }]
-    var studentFilter = this.iniFilter(recordFilter, testData)
-    var a = 'basicInfo'
-    var b = 'class'
-    var c = a+'_'+b
-    console.log(testData[0][c])
+    var testData = [
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1', cadreName: '321'}}
+    ]
     this.students = testData
-    //this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
+    this.recordFilter = recordFilter
+    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
-    iniFilter: function(recordFilter){
-      var studentFilter = {}
-      for(var i = 0; i < recordFilter['select'].length; i++){
-        var tableName = recordFilter['select'][i]
-        var tableFilter = recordFilter['show'][recordFilter['select'][i]]
-        studentFilter[tableName] = {}
-        for(var j=0; j < tableFilter.length; j++){
-          studentFilter[tableName][tableFilter[j]] = 'nan!'
-        }
-      }
-      return studentFilter
-    },
     fetchData: function(dataJson, recordFilter) {
+          /*
       //为了把this传进ajax
       var _self = this
       // replace getPost with your data fetching util / API wrapper
@@ -102,14 +71,43 @@ export default {
           alert(data.responseJSON.err)
         }
       })
+      */
+    },
+    hahaha: function(){
+
+      var result;
+      console.log(testData[0])
+      var student = testData[0]
+      for(var i=0; i<tableData.length; i++){
+        var table = tableData[i]
+        if(student[table.id]!=undefined){
+          result[i]['name']=table.name
+          result[i]['id']=table.id
+          result[i][table.id]['records']=[]
+          for(var j=0; j<table.records; j++){
+            if(student[table.id][table.records[j].id]!=undefined){
+              var record = student[table.id][table.records[j].id]
+              result[i][table.id]['records'].pushback({name:record.name, id: record.name, val:''})
+            }
+          }
+        }
+      }
+      console.log(result)
+
     }
   }
 }
 </script>
 
 <style>
-.list-student {
-  text-align: left;
-  padding-left: 30px;
+div.tableContainer{
+    display: table;
+}
+div.tableRow{
+    display: table-row;
+}
+div.tableCell{
+    display: table-cell;
+     border: 1px solid red;
 }
 </style>
