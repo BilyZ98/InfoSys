@@ -3,9 +3,9 @@
   <div v-for="student in students" class="tableRow">
     <div v-for="table in recordFilter.show" class="tableCell">
       <h4>{{table.name}}</h4>
-      <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
+      <span  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
         {{record.name}}: {{student[table.id][record.id]}}
-      </div>
+      </span>
     </div>
   </div>
 </div>
