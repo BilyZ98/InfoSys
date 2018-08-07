@@ -42,12 +42,16 @@ async function template(req,res,next,concrete, table){
 
 //表示查询，传入json 格式见 testJson.js，用于多表连接
 exports.query = async (req,res,next) => {
-  StudentsModel.query(req.body).then(() => {
-    resBody.success(res)
+  console.log("query fuck")
+  console.log(req.body)
+  StudentsModel.query(req.body).then((data)=>{
+    console.log(data);
+    resBody.success(res,data)
   })
-  .catch((err) => {
-    resBody.error(res,err)
+  .catch((err)=>{
+    resBody.error(res,err);
   })
+
 }
 
 
