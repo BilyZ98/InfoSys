@@ -3,7 +3,8 @@ var router = express.Router();
 const studentsController = require('../controllers/students-Controller.js');
 
 
-router.post('/query', studentsController.getStudentsInfo);
+//router.post('/query', studentsController.getStudentsInfo);
+router.post('/query', studentsController.query);
 
 router.post('/insert/basicInfo', studentsController.addBasicInfo);
 

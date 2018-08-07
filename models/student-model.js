@@ -205,7 +205,8 @@ query+=' \n;'
 console.log(query);
 let values= whereValues;
 console.log(values);
-return queryDB(query,values);
+
+return queryDB({sql:query,nestTables:true},values);
 }
 
 exports.checkStudent = (data, table) =>{
