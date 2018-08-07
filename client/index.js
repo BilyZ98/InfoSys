@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-
 //.vue components
 import App from './App.vue'
 import Query from './components/Query.vue'

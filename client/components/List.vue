@@ -37,6 +37,7 @@ export default {
     // 此时 data 已经被 observed 了
     //console.log(this.$route.params.postData)
     //console.log(JSON.stringify(this.$route.params.recordFilter))
+    /*
     var recordFilter = {
       "select": ["basicInfo", "cadre", "paper"],
       "show": [{
@@ -49,7 +50,6 @@ export default {
         "records": [{ "name": "学年", "id": "year" }, { "name": "职务类别", "id": "cadreClass" }, { "name": "职务名称", "id": "cadreName" }]
       }]
     }
-
     var testData = [
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
       {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
@@ -72,13 +72,11 @@ export default {
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
       {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
     ]
-    this.students = testData
-    this.recordFilter = recordFilter
+    */
     this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
     fetchData: function(dataJson, recordFilter) {
-          /*
       //为了把this传进ajax
       var _self = this
       // replace getPost with your data fetching util / API wrapper
@@ -90,7 +88,8 @@ export default {
         dataType: 'json',
         timeout: 5000,
         success: function(data, xhr) {
-          //_self.students = [{name:'zhangsan', sid:'123'}];
+          _self.students = data.content
+          _self.recordFilter = recordFilter
           console.log(xhr.status)
           console.log(data)
         },
@@ -99,7 +98,6 @@ export default {
           alert(data.responseJSON.err)
         }
       })
-      */
     }
   }
 }
@@ -126,10 +124,6 @@ export default {
 }
 
 .tableCell:hover {
-  background-color: grey;
-}
-
-.tableHead {
   background-color: grey;
 }
 

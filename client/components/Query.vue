@@ -30,7 +30,9 @@
       </div>
     </div>
     <hr>
-
+<!--
+    <div id="slider"></div>
+    <hr>-->
     <button type="button" @click="queryClick">查询</button>
   </div>
 </template>
@@ -45,6 +47,9 @@ export default {
       tables: tableData
     }
   },
+  mounted: function(){
+    $( "#slider" ).slider()
+  },
   methods: {
     //event是原生dom事件
     //这个函数实现了点击head标签会让紧跟的div实现toggle效果, 要求所操控的div必须有id
@@ -52,6 +57,10 @@ export default {
       //console.log($('#' + event.currentTarget.nextElementSibling.id).val() == '')
       //console.log(event.currentTarget.__proto__);
       if (event.currentTarget.nodeName == 'H4') {
+        if($('#' + event.currentTarget.nextElementSibling.id).is(":hidden")){
+          $('#' + event.currentTarget.nextElementSibling.id).toggle()
+          return
+        }
         var id = event.currentTarget.id
         //basicInfo表的sid和name要特殊验证
         if (id == 'basicInfo') {
@@ -68,13 +77,14 @@ export default {
         }
       }
       //表格内字段标题,'record-id'属性用来传递动态组件的id
-      else if ($('#' + event.currentTarget.getAttribute('record-id')).val() == '') {
+      else if ($('#' + event.currentTarget.getAttribute('record-id')).val() == '' || $('#' + event.currentTarget.nextElementSibling.id).is(":hidden")) {
         //只有没有填写内容的时候可以关闭
         $('#' + event.currentTarget.getAttribute('record-id')).toggle()
       }
       this.querybasicInfo()
     },
     queryClick: function() {
+      console.log($('#slider').slider('value'))
       //验证和生成json
       var data = {}
       //有sid/name就不包含其他信息了
@@ -160,6 +170,7 @@ export default {
       var dataJson = JSON.stringify(data)
       console.log(dataJson)
       //跳转
+      
       this.$router.push({
         //这里只有用name导航才能通过params成功传递参数，用path就不可以,另一个问题是list页面刷新后会丢失params
         name:'list',
@@ -168,6 +179,7 @@ export default {
           recordFilter: recordFilter
         }
       })
+      
     },
     querybasicInfo: function() {
       var basicInfo = {}
