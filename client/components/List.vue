@@ -1,18 +1,23 @@
 <template>
-<div class="tableContainer">
-  <div class="tableRow">
-    <div v-for="table in recordFilter.show" class="tableCol">
-      <div class="tableHead">{{table.name}}</div>
-      <div v-for="record in table.records" class="tableReordHead"><p>{{record.name}}</p></div>
+<div>
+  <div class="tableContainer">
+    <div class="tableRow">
+      <div v-for="table in recordFilter.show" class="tableCol">
+        <div tableHead>{{table.name}}</div>
+        <div v-for="record in table.records" class="tableReordHead"><p>{{record.name}}</p></div>
+      </div>
     </div>
-  </div>
-  <div v-for="table in recordFilter.show" class="tableCol">
-    <div v-for="student in students" class="tableRow">
-      <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
-        <p>{{student[table.id][record.id]}}</p>
+
+    <div v-for="table in recordFilter.show" class="tableCol">
+      <div v-for="student in students" class="tableRow">
+        <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
+          <p>{{student[table.id][record.id]}}</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <hr>
 </div>
 </template>
 
@@ -46,6 +51,24 @@ export default {
     }
 
     var testData = [
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
       {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
     ]
@@ -83,44 +106,43 @@ export default {
 </script>
 
 <style>
-div.tableContainer {
+.tableContainer {
   display: table;
-  margin-left: 20px;
-  margin-top: 20px;
+  margin: 20px;
   border: 1px solid grey;
+  width: 5000px;
 }
 
-div.tableRow {
+.tableRow {
   display: table-row;
 }
 
-div.tableCell {
+.tableCell {
   display: table-cell;
-  width: 150px;
+  width: 120px;
   height: 20px;
-  overflow: hidden;
   text-align: center;
   padding-top: 5px;
 }
 
-div.tableCell:hover {
+.tableCell:hover {
   background-color: grey;
 }
 
-div.tableHead {
-  border: 1px solid black;
+.tableHead {
+  background-color: grey;
 }
 
-div.tableReordHead {
+.tableReordHead {
   display: table-cell;
-  width: 150px;
+  width: 120px;
   height: 20px;
   overflow: hidden;
   text-align: center;
   padding-top: 5px;
 }
 
-div.tableCol {
-  float:left;
+.tableCol {
+  float: left;
 }
 </style>
