@@ -1,23 +1,41 @@
 <template>
-<div>
-  <div class="tableContainer">
-    <div class="tableRow">
-      <div v-for="table in recordFilter.show" class="tableCol">
-        <div tableHead>{{table.name}}</div>
-        <div v-for="record in table.records" class="tableReordHead"><p>{{record.name}}</p></div>
-      </div>
+<div class="tableContainer">
+
+  <div class="tableRow">
+    <!--学号姓名标题-->
+    <div class="tableCol">
+      <div class="tableHead">学号姓名</div>
+      <div class="tableReordHead"><p>学号</p></div>
+      <div class="tableReordHead"><p>姓名</p></div>
     </div>
 
+    <!--表格内容标题-->
     <div v-for="table in recordFilter.show" class="tableCol">
-      <div v-for="student in students" class="tableRow">
-        <div class="tableCell"  v-for="record in table.records" v-if="student[table.id][record.id]!=undefined">
-          <p>{{student[table.id][record.id]}}</p>
-        </div>
+      <div class="tableHead">{{table.name}}</div>
+      <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="tableReordHead"><p>{{record.name}}</p></div>
+    </div>
+  </div>
+
+  <!--学号姓名数据-->
+  <div class="tableCol">
+    <div v-for="student in students" class="tableRow">
+      <div class="tableCell">
+        <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
+      </div>
+      <div class="tableCell">
+        <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
       </div>
     </div>
   </div>
 
-  <hr>
+  <!--表格内容数据-->
+  <div v-for="table in recordFilter.show" class="tableCol">
+    <div v-for="student in students" class="tableRow">
+      <div class="tableCell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
+        <p>{{student[table.id][record.id]}}</p>
+      </div>
+    </div>
+  </div>
 </div>
 </template>
 
@@ -48,8 +66,8 @@ export default {
         "name": "学生干部任职情况",
         "id": "cadre",
         "records": [{ "name": "学年", "id": "year" }, { "name": "职务类别", "id": "cadreClass" }, { "name": "职务名称", "id": "cadreName" }]
-      }]
-    }
+        }
+      ]}
     var testData = [
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
       {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
@@ -72,6 +90,8 @@ export default {
       {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
       {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
     ]
+    this.students = testData
+    this.recordFilter = recordFilter
     */
     this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
