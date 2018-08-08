@@ -1,7 +1,9 @@
 <template>
-  <div class="query-container">
+<div class="query-container">
 
-    <h3 class="text-center">查询条件</h3>
+  <!--条件输入部分-->
+  <div class="container-card-query">
+    <h3>查询条件</h3>
 
     <div v-for="table in tables" v-if="table.id!='family'">
       <h4 v-bind:id="table.id" @click="headClick">{{table.name}}</h4>
@@ -19,25 +21,24 @@
         </div>
       </div>
     </div>
-    <hr>
+  </div>
 
-    <!--结果选择部分-->
-    <h3 class="text-center">选择查询结果显示的字段</h3>
+  <!--结果选择部分-->
+  <div class="container-card-query">
+    <h3>选择查询结果显示的字段</h3>
 
-    <div class="record-container" v-for="table in tables">
+    <div v-for="table in tables">
       <h4 v-bind:id="table.id" @click="recordClick">{{table.name}}</h4>
       <div class="table-container hide-container" v-bind:id="'record-'+table.id" v-bind:table-id="table.id" v-bind:table-name="table.name">
-        <div v-for="record in table.records">
+        <div class="record-span-container" v-for="record in table.records">
           <h5 class="record-original" v-if="(table.id!='basicInfo'&&record.id!='sid'&&record.id!='name')||(table.id=='basicInfo')" v-bind:record-id="record.id" v-bind:record-name="record.name" @click="recordClick">{{record.name}}</h5>
         </div>
       </div>
     </div>
-    <hr>
-<!--
-    <div id="slider"></div>
-    <hr>-->
-    <button type="button" @click="queryClick">查询</button>
   </div>
+
+  <button type="button" @click="queryClick">查询</button>
+</div>
 </template>
 
 <script>
@@ -508,7 +509,7 @@ export default {
 
 .col-md-1 {
   background-color: #fff;
-  border: 0px
+  border: 0px;
 }
 
 .query-container {
@@ -536,6 +537,19 @@ h4:hover {
   color: green;
 }
 
+.container-card-query {
+  margin: 2%;
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 2%;
+  background-color: white;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px #888888;
+}
+
 .table-container {
   padding-left: 20px;
 }
@@ -544,18 +558,17 @@ h4:hover {
   display: none;
 }
 
-.record-container {
+.record-span-container {
   display: inline-block;
-  float: left;
-  padding-left: 5px;
-}
-
-.record-container > div {
   padding-left: 5px;
 }
 
 .record-clicked {
   color: red;
+  transition: 0.2s;
+  -moz-transition: 0.2s;  /* Firefox 4 */
+  -webkit-transition: 0.2s; /* Safari 和 Chrome */
+  -o-transition: 0.2s;  /* Opera */
 }
 
 hr {

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 //.vue components
 import App from './App.vue'
+import Main from './components/Main.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
@@ -16,8 +17,6 @@ import Scholarship from './components/inserts/Scholarship.vue'
 
 Vue.config.debug = true
 Vue.use(VueRouter)
-
-const Main = { template: '<div>this is main page</div>' }
 
 const router = new VueRouter({
   routes: [

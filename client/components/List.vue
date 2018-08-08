@@ -1,37 +1,37 @@
 <template>
-<div class="tableContainer">
+<div class="container-card-list">
 
-  <div class="tableRow">
+  <div class="table-row">
     <!--学号姓名标题-->
-    <div class="tableCol">
-      <div class="tableHead">学号姓名</div>
-      <div class="tableReordHead"><p>学号</p></div>
-      <div class="tableReordHead"><p>姓名</p></div>
+    <div class="table-col">
+      <div class="table-head">学号姓名</div>
+      <div class="table-reord-head"><p>学号</p></div>
+      <div class="table-reord-head"><p>姓名</p></div>
     </div>
 
     <!--表格内容标题-->
-    <div v-for="table in recordFilter.show" class="tableCol">
-      <div class="tableHead">{{table.name}}</div>
-      <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="tableReordHead"><p>{{record.name}}</p></div>
+    <div v-for="table in recordFilter.show" class="table-col">
+      <div class="table-head">{{table.name}}</div>
+      <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="table-reord-head"><p>{{record.name}}</p></div>
     </div>
   </div>
 
   <!--学号姓名数据-->
-  <div class="tableCol">
-    <div v-for="student in students" class="tableRow">
-      <div class="tableCell">
+  <div class="table-col">
+    <div v-for="student in students" class="table-row">
+      <div class="table-cell">
         <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
       </div>
-      <div class="tableCell">
+      <div class="table-cell">
         <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
       </div>
     </div>
   </div>
 
   <!--表格内容数据-->
-  <div v-for="table in recordFilter.show" class="tableCol">
-    <div v-for="student in students" class="tableRow">
-      <div class="tableCell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
+  <div v-for="table in recordFilter.show" class="table-col">
+    <div v-for="student in students" class="table-row">
+      <div class="table-cell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
         <p>{{student[table.id][record.id]}}</p>
       </div>
     </div>
@@ -124,18 +124,25 @@ export default {
 </script>
 
 <style>
-.tableContainer {
+.container-card-list {
   display: table;
-  margin: 20px;
-  border: 1px solid grey;
-  width: 5000px;
+  margin: 2%;
+  text-align: left;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 2%;
+  background-color: white;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px #888888;
 }
 
-.tableRow {
+.table-row {
   display: table-row;
 }
 
-.tableCell {
+.table-cell {
   display: table-cell;
   width: 120px;
   height: 20px;
@@ -143,11 +150,15 @@ export default {
   padding-top: 5px;
 }
 
-.tableCell:hover {
+.table-cell:hover {
   background-color: grey;
 }
 
-.tableReordHead {
+.table-head {
+  text-align: center;
+}
+
+.table-reord-head {
   display: table-cell;
   width: 120px;
   height: 20px;
@@ -156,7 +167,7 @@ export default {
   padding-top: 5px;
 }
 
-.tableCol {
+.table-col {
   float: left;
 }
 </style>

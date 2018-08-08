@@ -1,14 +1,13 @@
 <template>
 <div>
   <header>
-    <div class="button-home" @click="homeClick">HOME</div>
-    <p>SDCS学生信息系统</p>
+    <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
   </header>
   <aside>
-    <div class="info-side">some info here</div>
-    <div class="button-side" @click="queryClick">query</div>
-    <div class="button-side" @click="insertClick">insert</div>
-    <div class="button-side">button3</div>
+    <div class="info-side"></div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">查询</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
+    <div class="button-side" >按钮3</div>
   </aside>
   <div class="container-info">
     <router-view></router-view>
@@ -19,14 +18,17 @@
 <script>
 export default {
   data () {
-    return { }
+    return {
+      //v-bind:class="router=='insert'?'button-clicked':'button-side'"
+      router : 'main'
+    }
   },
   methods: {
     homeClick () {
       this.$router.push({ name: 'main' })
     },
     queryClick(){
-      this.$router.push({ name:'query'})
+      this.$router.push({ name: 'query'})
     },
     insertClick(){
       this.$router.push({ name: 'insert'})
@@ -39,6 +41,10 @@ export default {
 * {
   margin: 0;
   padding: 0;
+  transition: 0.5s;
+  -moz-transition: 0.5s;  /* Firefox 4 */
+  -webkit-transition: 0.5s; /* Safari 和 Chrome */
+  -o-transition: 0.5s;  /* Opera */
 }
 
 body {
@@ -49,45 +55,45 @@ body {
   background-color: lighten(#eceef1, 30%);
   color: #34495e;
 }
+
 header {
   position: fixed;
   width: 100%;
-  height: 60px;
+  height: 10%;
   background-color: rgb(150, 150, 150);
   text-align: center;
   color: white;
+  /*shadow*/
+  box-shadow: 1px 1px 5px #888888;
 }
 
 .button-home {
   position: fixed;
   height: 100%;
   width: 15%;
+  padding-top: 25px;
   background-color: rgb(150, 150, 150);
-  padding-top: 20px;
 }
 
 .button-home:hover {
   background-color: rgb(10, 10, 10);
 }
 
-header p {
-  padding-top: 15px;
-  font-size: 1.3em;
-  font-weight: lighter;
-}
-
 aside {
   position: fixed;
   height: 100%;
   width: 15%;
-  top: 60px;
+  top: 10%;
   background-color: rgb(50, 50, 50);
   color: white;
+  /*shadow*/
+  box-shadow: 1px 1px 5px #888888;
 }
 
 .info-side {
   height: 100px;
   text-align: center;
+  border-bottom: 1px solid black;
   /*make text in div vertical-align to center*/
   line-height: 100px;
   margin: auto;
@@ -97,23 +103,31 @@ aside {
   float: left;
   width: 100%;
   height: 50px;
-  text-align: center;
+  text-align: left;
   line-height: 50px;
   margin: auto;
-  border-top: 1px solid black;
+  /*怎么让文字左右居中？*/
+  padding-left: 40%;
 }
 
 .button-side:hover {
-  background-color: rgb(120, 120, 120);
+  background-color: black;
+}
+
+.button-clicked {
+  background-color: black;
 }
 
 .container-info{
   position: absolute;
+  /*use min-height/min-width so that the div can auto expand when inside div gets bigger */
+  min-width: 85%;
+  min-height: 90%;
   margin-left: 15%;
-  width: 85%;
-  margin-top: 60px;
+  top: 10%;
   text-align: center;
   /*the section cannot render in front of headbar*/
   z-index: -100;
+  background-color: rgb(230, 230, 230);
 }
 </style>
