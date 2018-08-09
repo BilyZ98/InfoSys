@@ -43,6 +43,56 @@ exports.batchInsert = (data) => {
   return queryDB(query, [values]);
 }
 
+//只负责插入，由控制层负责检查是否已经在数据库里面，然后选择更新或者插入
+//oneRecord表示 插入信息数组的每一个子数组
+//测试数据在testBatchInsert.js
+exports.insertOne = (table,field, oneRecord) =>{
+  var tmp = true;
+  //var field = data['field']
+  let query =
+  "insert into " + table +
+  " ( ";
+  for(x in field){
+    if(tmp){
+      query+=field[x]
+      tmp =false
+    }
+    else {
+      query+=',' + field[x]
+    }
+  }
+  query+=' ) values ?;';
+  let values = oneRecord
+  return queryDB(query,values);
+}
+
+//现在的更新是只针对sid一个键连接，还没有考虑到一个表有多个键的情况
+exports.updateOne = (table,field, oneRecord) => {
+  var tmp = true;
+  //var field = data['field']
+  var sid = oneRecord[0] //表示sid，先把sid移除
+  oneRecord.splice(0,1)
+  let query =
+  "update " + table +
+  " set  ";
+  for(x in field){
+    if(field[x]!='sid'){
+      if(tmp){
+        query+=field[x] + ' =? '
+        tmp =false
+      }
+      else {
+        query+=',' + field[x] + '=? '
+      }
+    }
+
+  }
+  query+=' where sid = ?;'
+  oneRecord.push(sid)
+  let values = oneRecord
+  return queryDB(query,values);
+}
+
 
 exports.addBasicInfo = (data) =>{
   let query =
@@ -133,8 +183,16 @@ exports.query = (data) => {
   var whereValues =[];
 
   var fromSet = new Set(); //对from 语句整合
+  /*
   for(table in whereObj){
     fromSet.add(table)
+  }
+  */
+  //迭代---> 支持等值，模糊，范围查询，所以要从三个子json里面拿表
+  for(devide in whereObj){
+    for(table in whereObj[devide]){
+      fromSet.add(table)
+    }
   }
   for(table in selectObj){
     fromSet.add(selectObj[table]);
@@ -187,18 +245,54 @@ if(!tmp) {
 
 tmp = true;
 //从前端传过来的输入的条件
-for (table in whereObj) {
-  for (field in whereObj[table]) {
-    if(tmp){
-      whereStr+= table + '.' + field + '= ?  ';
-      tmp =false;
+//迭代---> 由于要支持模糊查询，范围查询等，因此数据会变化
+for(devide in whereObj){
+  for (table in whereObj[devide]) {
+    for (field in whereObj[devide][table]) {
+      if(tmp){
+        switch(devide){
+          case "equal":
+            whereStr+= table + '.' + field + ' = ?  ';
+            break;
+          case "range":
+            whereStr += table+'.' + field + ' between ? and ? ' ;
+            break;
+          case "fuzzy":
+            whereStr += table+'.'+field + ' like %?% ';
+            break;
+        }
+
+        tmp =false;
+      }
+      else {
+        switch(devide){
+          case "equal":
+            whereStr+= ' and ' + table + '.' + field + ' = ?  ';
+            break;
+          case "range":
+            whereStr += ' and ' + table+'.' + field + ' between ? and ? ' ;
+            break;
+          case "fuzzy":
+            whereStr += ' and ' + table+'.'+field + ' like %?% ';
+            break;
+        }
+        //whereStr+=' and ' + table + '.' + field + '= ? ';
+      }
+
+      switch(devide){
+        case 'equal':
+        case 'fuzzy':
+          whereValues.push(whereObj[devide][table][field]);
+          break;
+        case 'range':
+          whereValues.push(whereObj[devide][table][field]['min'],whereObj[devide][table][field]['max'])
+
+      }
+      //whereValues.push(whereObj[devide][table][field])
     }
-    else {
-      whereStr+=' and ' + table + '.' + field + '= ? ';
-    }
-    whereValues.push(whereObj[table][field])
   }
 }
+
 
 query+=whereStr;
 query+=' \n;'

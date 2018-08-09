@@ -16,9 +16,48 @@ var query =  {
 
 }
 
+var newQuery =  {
+	"select": [],
+	"where": {
+		"equal": {
+			"basicInfo": {
+				"gender": "男"
+			}
+		},
+		"range": {
+			"schoolRoll": {
+				"timeInSchool": {
+					"min": "123",
+					"max": "321"
+				}
+			}
+		},
+		"fuzzy": {
+      'basicInfo':{
+        'name':'zzt'
+      }
+    }
+	}
+}
+
+var newWhereObj = newQuery['where']
+var newWhereArray = []
+
+for(devide in newWhereObj){
+  for(table in newWhereObj[devide]){
+    newWhereArray.push(table)
+  }
+}
+console.log(newWhereArray)
+
+var t = {
+  'a':{}
+}
+
+console.log(JSON.stringify(t['a']) )
 //'basicInfo.sid=paper.sid and paper.sid = party.sid'
 //'basicInfo.sid = ? and basicInfo.name = ? '
-
+/*
 var myset = new Set();
 
 var whereObj = query['where'];
@@ -60,3 +99,4 @@ whereStr = whereStr.substr(0,whereStr.length - 1);
 //console.log(myset);
 
 console.log(whereStr);
+*/
