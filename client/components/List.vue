@@ -36,6 +36,9 @@
       </div>
     </div>
   </div>
+
+  <hr>
+  <button id="button-download" @click="downloadClick">导出Excel</button>
 </div>
 </template>
 
@@ -43,7 +46,7 @@
 import tableData from './tableData.js'
 
 export default {
-  data() {
+  data: function() {
     return {
       tableData: tableData,
       students: [],
@@ -55,7 +58,7 @@ export default {
     // 此时 data 已经被 observed 了
     //console.log(this.$route.params.postData)
     //console.log(JSON.stringify(this.$route.params.recordFilter))
-    /*
+    
     var recordFilter = {
       "select": ["basicInfo", "cadre", "paper"],
       "show": [{
@@ -92,8 +95,8 @@ export default {
     ]
     this.students = testData
     this.recordFilter = recordFilter
-    */
-    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
+
+    //this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
     fetchData: function(dataJson, recordFilter) {
@@ -118,6 +121,154 @@ export default {
           alert(data.responseJSON.err)
         }
       })
+    },
+    //导出函数
+    downloadClick: function() {
+      //alert(this.getExplorer());
+      if(this.getExplorer() == undefined)
+      {
+        //var curTbl = document.getElementById("content");
+        console.log('ie!')
+        var curTbl = this.students
+        var oXL = new ActiveXObject("Excel.Application");
+        var oWB = oXL.Workbooks.Add();
+        var xlsheet = oWB.Worksheets(1);
+        var sel = document.body.createTextRange();
+        sel.moveToElementText(curTbl);
+        sel.select;
+        sel.execCommand("Copy");
+        xlsheet.Paste();
+        oXL.Visible = true;
+
+        try {
+          alert("ie");
+          var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
+        } catch (e) {
+          print("Nested catch caught " + e);
+        } finally {
+          oWB.SaveAs(fname);
+          oWB.Close(savechanges = false);
+          oXL.Quit();
+          oXL = null;
+          idTmr = window.setInterval("Cleanup();", 1);
+        }
+      }
+      else
+      {
+        //这里用的是getTableContent，也可以改成getJsonContent
+        //var str = this.getTableContent("content");
+        var str = this.getJsonContent(this.students);
+        let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+          //通过创建a标签实现
+        var link = document.createElement("a");
+        link.href = uri;
+          //对下载的文件命名，可以改成其他名字
+        link.download = "数据表.csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    },
+    getTableContent: function(id){
+      var mytable = document.getElementById(id);
+      var data = [];
+      var str = "";
+      for(var i=0,rows=mytable.rows.length; i<rows; i++){
+        for(var j=0,cells=mytable.rows[i].cells.length; j<cells; j++){
+          /*if(!data[i]){
+            data[i] = new Array();
+          }
+          data[i][j] = mytable.rows[i].cells[j].innerHTML;*/
+          if( j==0 ) str+=mytable.rows[i].cells[j].innerHTML;
+          else
+          {
+            str+=",";
+            str+=mytable.rows[i].cells[j].innerHTML;
+          }
+        }
+        str += '\n';
+      }
+      //return data;
+      return str;
+    },
+    //给出保存json的全局变量然后导出，格式：[{},{},{}]
+    getJsonContent: function(jsonData){
+      //console.log(tableData.length)
+      var str = ''
+      //表名部分
+      for(let item in jsonData[0]){
+        //id转换name，先找到表
+        let table = {}
+        for(let i = 0; i < tableData.length; i++){
+          if(item == tableData[i].id){
+            table = tableData[i]
+            break
+          }
+        }
+        str += table['name']
+        for(let record in jsonData[0][item]){
+          for(let j = 0; j < table['records'].length-1; j++){
+            if(table['records'][j].id == record){
+              str += ','
+            }
+          }
+        }
+      }
+      str += '\n'
+      //字段名部分
+      for(let item in jsonData[0]){
+        //id转换name，先找到表
+        let table = {}
+        for(let i = 0; i < tableData.length; i++){
+          if(item == tableData[i].id){
+            table = tableData[i]
+            break
+          }
+        }
+        for(let record in jsonData[0][item]){
+          for(let j = 0; j < table['records'].length; j++){
+            if(table['records'][j].id == record){
+              str += table['records'][j].name
+              str += ','
+            }
+          }
+        }
+      }
+      str += '\n'
+      //数据部分
+      for(let i = 0; i < jsonData.length; i++ ){
+        for(let item in jsonData[i]){
+          for(let record in jsonData[i][item]){
+            str += jsonData[i][item][record]
+            str += ','
+          }
+        }
+        str += '\n'
+      }
+      return str
+    },
+    getExplorer: function() {
+      var explorer = window.navigator.userAgent;
+      //ie
+      if (explorer.indexOf("MSIE") >= 0) {
+        return 'ie'
+      }
+      //firefox
+      else if (explorer.indexOf("Firefox") >= 0) {
+        return 'Firefox'
+      }
+      //Chrome
+      else if(explorer.indexOf("Chrome") >= 0){
+        return 'Chrome'
+      }
+      //Opera
+      else if(explorer.indexOf("Opera") >= 0){
+        return 'Opera'
+      }
+      //Safari
+      else if(explorer.indexOf("Safari") >= 0){
+        return 'Safari'
+      }
     }
   }
 }
@@ -169,5 +320,9 @@ export default {
 
 .table-col {
   float: left;
+}
+
+hr, #button-download {
+  clear: both;
 }
 </style>

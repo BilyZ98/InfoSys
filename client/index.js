@@ -1,5 +1,5 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+//import Vue from 'vue'
+//import VueRouter from 'vue-router'
 //.vue components
 import App from './App.vue'
 import Main from './components/Main.vue'
@@ -42,6 +42,10 @@ const router = new VueRouter({
 })
 
 const app = new Vue({
-  router,
-  render: h => h(App)
+  //router,
+  router: router,
+  //render: h => h(App)
+  render: function (h) {
+      return h(App)
+  }
 }).$mount('#app')

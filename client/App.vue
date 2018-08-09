@@ -17,20 +17,20 @@
 
 <script>
 export default {
-  data () {
+  data: function() {
     return {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
   },
   methods: {
-    homeClick () {
+    homeClick: function() {
       this.$router.push({ name: 'main' })
     },
-    queryClick(){
+    queryClick: function(){
       this.$router.push({ name: 'query'})
     },
-    insertClick(){
+    insertClick: function(){
       this.$router.push({ name: 'insert'})
     }
   }

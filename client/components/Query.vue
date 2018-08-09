@@ -47,7 +47,7 @@ var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
 var emptyCell = JSON.stringify({})
 
 export default {
-  data() {
+  data: function() {
     return {
       tables: tableData
     }
