@@ -1,8 +1,6 @@
 <template>
 <div>
-  <div class="container-card">主页面信息</div>
-  <div class="container-card">主页面信息</div>
-  <div class="container-card">主页面信息</div>
+  <div class="container-card">import here</div>
 </div>
 </template>
 

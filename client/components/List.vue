@@ -125,28 +125,38 @@ export default {
     //导出函数
     downloadClick: function() {
       //alert(this.getExplorer());
-      if(this.getExplorer() == undefined)
+      if(this.getExplorer() == 'ie' || this.getExplorer() == undefined)
       {
-        //var curTbl = document.getElementById("content");
-        console.log('ie!')
+        //ie不能用方法检测，返回的是undefined...
+        //console.log($('.container-card-list')[0])
+        //var curTbl = $('.container-card-list')[0]
         var curTbl = this.students
-        var oXL = new ActiveXObject("Excel.Application");
+        var oXL;
+        try {
+          oXL = new ActiveXObject("Excel.Application") //创建AX对象excel
+        } catch (e) {
+          alert("无法启动Excel!\n\n如果您确信您的电脑中已经安装了Excel，" + "那么请调整IE的安全级别。\n\n具体操作：\n\n" + "工具 → Internet选项 → 安全 → 自定义级别 → 对没有标记为安全的ActiveX进行初始化和脚本运行 → 启用")
+          return
+        }
         var oWB = oXL.Workbooks.Add();
         var xlsheet = oWB.Worksheets(1);
+        /*
         var sel = document.body.createTextRange();
         sel.moveToElementText(curTbl);
         sel.select;
         sel.execCommand("Copy");
         xlsheet.Paste();
+        */
+        xlsheet = this.getJsonContentForIE(xlsheet, curTbl)
         oXL.Visible = true;
-
         try {
           alert("ie");
-          var fname = oXL.Application.GetSaveAsFilename("Excel.xls", "Excel Spreadsheets (*.xls), *.xls");
+          var fname = oXL.Application.GetSaveAsFilename("数据表.xls", "Excel Spreadsheets (*.xls), *.xls");
         } catch (e) {
           print("Nested catch caught " + e);
         } finally {
           oWB.SaveAs(fname);
+          //这里在excel生成后不保存关闭会报错，待处理
           oWB.Close(savechanges = false);
           oXL.Quit();
           oXL = null;
@@ -155,8 +165,7 @@ export default {
       }
       else
       {
-        //这里用的是getTableContent，也可以改成getJsonContent
-        //var str = this.getTableContent("content");
+        //叫jsoncontent，实际上传入的是一个对象而不是json
         var str = this.getJsonContent(this.students);
         let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
           //通过创建a标签实现
@@ -168,28 +177,6 @@ export default {
         link.click();
         document.body.removeChild(link);
       }
-    },
-    getTableContent: function(id){
-      var mytable = document.getElementById(id);
-      var data = [];
-      var str = "";
-      for(var i=0,rows=mytable.rows.length; i<rows; i++){
-        for(var j=0,cells=mytable.rows[i].cells.length; j<cells; j++){
-          /*if(!data[i]){
-            data[i] = new Array();
-          }
-          data[i][j] = mytable.rows[i].cells[j].innerHTML;*/
-          if( j==0 ) str+=mytable.rows[i].cells[j].innerHTML;
-          else
-          {
-            str+=",";
-            str+=mytable.rows[i].cells[j].innerHTML;
-          }
-        }
-        str += '\n';
-      }
-      //return data;
-      return str;
     },
     //给出保存json的全局变量然后导出，格式：[{},{},{}]
     getJsonContent: function(jsonData){
@@ -246,6 +233,63 @@ export default {
         str += '\n'
       }
       return str
+    },
+    getJsonContentForIE: function(xlsheet, jsonData){
+      //console.log(tableData.length)
+      //表名部分
+      let y = 0
+      for(let item in jsonData[0]){
+        //id转换name，先找到表
+        let table = {}
+        for(let i = 0; i < tableData.length; i++){
+          if(item == tableData[i].id){
+            table = tableData[i]
+            break
+          }
+        }
+        console.log(table['name'])
+        xlsheet.Cells(1, y + 1).value = table['name']
+        y++
+        console.log(y)
+        for(let record in jsonData[0][item]){
+          for(let j = 0; j < table['records'].length-1; j++){
+            if(table['records'][j].id == record){
+              y++
+            }
+          }
+        }
+      }
+      //字段名部分
+      y = 0
+      for(let item in jsonData[0]){
+        //id转换name，先找到表
+        var table = {}
+        for(let i = 0; i < tableData.length; i++){
+          if(item == tableData[i].id){
+            table = tableData[i]
+            break
+          }
+        }
+        for(let record in jsonData[0][item]){
+          for(let j = 0; j < table['records'].length; j++){
+            if(table['records'][j].id == record){
+              xlsheet.Cells(2, y + 1).value = table['records'][j].name
+              y++
+            }
+          }
+        }
+      }
+      //数据部分
+      for(let i = 0; i < jsonData.length; i++ ){
+        y = 0
+        for(let item in jsonData[i]){
+          for(let record in jsonData[i][item]){
+            xlsheet.Cells(i+3, y+1).value = jsonData[i][item][record]
+            y++
+          }
+        }
+      }
+      return xlsheet
     },
     getExplorer: function() {
       var explorer = window.navigator.userAgent;

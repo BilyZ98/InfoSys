@@ -4,10 +4,10 @@
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
   </header>
   <aside>
-    <div class="info-side"></div>
+    <div class="info-side">信息栏</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">查询</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
-    <div class="button-side" >按钮3</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>
   </aside>
   <div class="container-info">
     <router-view></router-view>
@@ -32,6 +32,9 @@ export default {
     },
     insertClick: function(){
       this.$router.push({ name: 'insert'})
+    },
+    importClick: function(){
+      this.$router.push({ name: 'import'})
     }
   }
 }
@@ -76,7 +79,7 @@ header {
 }
 
 .button-home:hover {
-  background-color: rgb(10, 10, 10);
+  background-color: black;
 }
 
 aside {
@@ -84,7 +87,7 @@ aside {
   height: 100%;
   width: 15%;
   top: 10%;
-  background-color: rgb(50, 50, 50);
+  background-color: rgb(70, 70, 70);
   color: white;
   /*shadow*/
   box-shadow: 1px 1px 5px #888888;
@@ -107,7 +110,7 @@ aside {
   line-height: 50px;
   margin: auto;
   /*怎么让文字左右居中？*/
-  padding-left: 40%;
+  padding-left: 43%;
 }
 
 .button-side:hover {

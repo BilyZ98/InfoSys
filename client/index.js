@@ -1,11 +1,12 @@
-//import Vue from 'vue'
-//import VueRouter from 'vue-router'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 //.vue components
 import App from './App.vue'
 import Main from './components/Main.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
+import Import from './components/Import.vue'
 import BasicInfo from './components/inserts/BasicInfo.vue'
 import Family from './components/inserts/Family.vue'
 import Paper from './components/inserts/Paper.vue'
@@ -23,6 +24,7 @@ const router = new VueRouter({
     { name: 'main', path: '/', component: Main },
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
+    { name: 'import', path: '/import', component: Import},
     {
       name: 'insert',
       path: '/insert',
