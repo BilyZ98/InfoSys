@@ -577,5 +577,6 @@ hr {
 
 button {
   margin-left: 50%;
+  margin-bottom: 20px;
 }
 </style>
