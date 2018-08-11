@@ -64,7 +64,7 @@ export default {
       "show": [{
         "name": "基本信息",
         "id": "basicInfo",
-        "records": [{ "name": "学号", "id": "sid" }, { "name": "性别", "id": "gender" }, { "name": "籍贯", "id": "birthPlace" }]
+        "records": [{ "name": "学号", "id": "sid" }, { "name": "性别", "id": "gender" }, { "name": "籍贯", "id": "birthPlace" }, { "name": "身份证号码", "id": 'idNum'}]
       }, {
         "name": "学生干部任职情况",
         "id": "cadre",
@@ -72,26 +72,26 @@ export default {
         }
       ]}
     var testData = [
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
-      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
-      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏'}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234" }, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234" }, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
+      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
+      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏', idNum: "142701198812221234"}, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}}
     ]
     this.students = testData
     this.recordFilter = recordFilter
@@ -150,7 +150,7 @@ export default {
         xlsheet = this.getJsonContentForIE(xlsheet, curTbl)
         oXL.Visible = true;
         try {
-          alert("ie");
+          //alert("ie");
           var fname = oXL.Application.GetSaveAsFilename("数据表.xls", "Excel Spreadsheets (*.xls), *.xls");
         } catch (e) {
           print("Nested catch caught " + e);
@@ -226,7 +226,8 @@ export default {
       for(let i = 0; i < jsonData.length; i++ ){
         for(let item in jsonData[i]){
           for(let record in jsonData[i][item]){
-            str += jsonData[i][item][record]
+            //在头或尾加入制表符'\t'能让长数字的字符串不显示为科学记数法
+            str =str + '\t' +  jsonData[i][item][record]
             str += ','
           }
         }
@@ -284,7 +285,7 @@ export default {
         y = 0
         for(let item in jsonData[i]){
           for(let record in jsonData[i][item]){
-            xlsheet.Cells(i+3, y+1).value = jsonData[i][item][record]
+            xlsheet.Cells(i+3, y+1).value = '\t' + jsonData[i][item][record]
             y++
           }
         }

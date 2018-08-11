@@ -99,7 +99,7 @@ export default {
       //验证和生成json
       var data = {}
       //有sid/name就不包含其他信息了
-      if ($('#basicInfo-sid').val() || $('#basicInfo-name').val()) {
+      if ($('#basicInfo-sid').val()) {
         data = {
           select: ['basicInfo'],
           where: {
@@ -109,7 +109,6 @@ export default {
           }
         }
         if ($('#basicInfo-sid').val()) data['where']['equal']['basicInfo']['sid'] = $('#basicInfo-sid').val()
-        if ($('#basicInfo-name').val()) data['where']['equal']['basicInfo']['name'] = $('#basicInfo-name').val()
       } else {
         data = {
           select: [],
@@ -198,6 +197,7 @@ export default {
     },
     querybasicInfo: function() {
       var basicInfo = {equal: {}, range: {}, fuzzy: {}}
+      if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
       if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
       if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
       if ($('#basicInfo-ethnic').val()) basicInfo['equal']['ethnic'] = $('#basicInfo-ethnic').val()
