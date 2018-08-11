@@ -29,7 +29,7 @@
 
     <div v-for="table in tables">
       <h4 v-bind:id="table.id" @click="recordClick">{{table.name}}</h4>
-      <div class="table-container hide-container" v-bind:id="'record-'+table.id" v-bind:table-id="table.id" v-bind:table-name="table.name">
+      <div class="table-container hide-container record-container" v-bind:id="'record-'+table.id" v-bind:table-id="table.id" v-bind:table-name="table.name">
         <div class="record-span-container" v-for="record in table.records">
           <h5 class="record-original" v-if="(table.id!='basicInfo'&&record.id!='sid'&&record.id!='name')||(table.id=='basicInfo')" v-bind:record-id="record.id" v-bind:record-name="record.name" @click="recordClick">{{record.name}}</h5>
         </div>
@@ -182,9 +182,10 @@ export default {
       }
       //显示结果条件的参数
       var recordFilter = this.recordFilter()
-      data['select'] = recordFilter.select
+      data['select'] = recordFilter['select']
       var dataJson = JSON.stringify(data)
       console.log(dataJson)
+      console.log(recordFilter)
       //跳转
       this.$router.push({
         //这里只有用name导航才能通过params成功传递参数，用path就不可以,另一个问题是list页面刷新后会丢失params
@@ -465,9 +466,9 @@ export default {
         show: []
       }
       for(var i = 0; i < $('.record-container').length; i++){
-        var records =  $('.record-container')[i].childNodes[2].childNodes
-        var tableId = $('.record-container')[i].childNodes[2].getAttribute('table-id')
-        var tableName = $('.record-container')[i].childNodes[2].getAttribute('table-name')
+        var records =  $('.record-container')[i].childNodes
+        var tableId = $('.record-container')[i].getAttribute('table-id')
+        var tableName = $('.record-container')[i].getAttribute('table-name')
         var recordsTemp = []
         for(var j = 0; j< records.length; j++){
           if(records[j].childNodes[0].className == 'record-clicked'){
@@ -482,6 +483,7 @@ export default {
         }
         //console.log(records.childNodes[1].id)
       }
+      //console.log('111: ' + JSON.stringify(recordFilter))
       return recordFilter
     }
   }
