@@ -127,7 +127,7 @@ export default {
       //上面是验证并生成json数据，下面是发送数据。暂时注释
       $.ajax({
         type: 'POST',
-        url: '/import/' + id,
+        url: '/import',
         data: alldata,
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
