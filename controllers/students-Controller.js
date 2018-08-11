@@ -38,9 +38,11 @@ async function template(req,res,next,concrete, table){
 //写一个导入的函数
 exports.batchInsertInfo = async (req,res,next) => {
   let body = req.body
+  console.log(body)
   let batchInfo = body['batchInfo']
   for(one in batchInfo){
-    let preCheck = await checkConflict(batchInfo[one])
+
+    let preCheck = await checkConflict({'sid':batchInfo[one][0]},body['table'])
     if(preCheck){
       StudentsModel.insertOne(body['table'],body['field'],batchInfo[one])
       .then(()=>{
@@ -51,6 +53,7 @@ exports.batchInsertInfo = async (req,res,next) => {
       })
     }
     else {
+      console.log('update')
       StudentsModel.updateOne(body['table'],body['field'],batchInfo[one])
       .then(()=>{
         resBody.success(res)

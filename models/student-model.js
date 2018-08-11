@@ -23,11 +23,11 @@ exports.getStudentInfo = async (data)=> {
 *
 *
 */
-exports.batchInsert = (data) => {
+exports.batchInsert = (table,field,oneRecord) => {
   var tmp = true;
-  var field = data['field'];
+  //var field = data['field'];
   let query =
-  "insert into " + data.table +
+  "insert into " + table +
   "  ( ";
   for(x in field){
     if(tmp) {
@@ -39,7 +39,8 @@ exports.batchInsert = (data) => {
     }
   }
   query+=' ) values ?';
-  let values = data['batchInfo'];
+  console.log(query)
+  let values = oneRecord;
   return queryDB(query, [values]);
 }
 
@@ -61,8 +62,21 @@ exports.insertOne = (table,field, oneRecord) =>{
       query+=',' + field[x]
     }
   }
-  query+=' ) values ?;';
+  query+=' ) values (';
+  tmp = true;
+  for(x in field){
+    if(tmp){
+      query+='?'
+      tmp =false
+    }
+    else {
+      query+=',?'
+    }
+  }
+  query+=')? ;'
+  console.log(query)
   let values = oneRecord
+
   return queryDB(query,values);
 }
 
@@ -87,7 +101,8 @@ exports.updateOne = (table,field, oneRecord) => {
     }
 
   }
-  query+=' where sid = ?;'
+  query+=' where sid = ? ;'
+  console.log(query)
   oneRecord.push(sid)
   let values = oneRecord
   return queryDB(query,values);
