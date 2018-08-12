@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="container-card">
+  <div class="container-card-import">
     <div v-for="table in tables">
       <label>{{table.name}}</label>
       <input v-bind:id="table.id" type="file">
@@ -149,7 +149,7 @@ export default {
 </script>
 
 <style>
-.container-card {
+.container-card-import {
   margin: 2%;
   padding: 2%;
   text-align: left;
