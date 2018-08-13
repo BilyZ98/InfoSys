@@ -58,7 +58,7 @@ export default {
     // 此时 data 已经被 observed 了
     //console.log(this.$route.params.postData)
     //console.log(JSON.stringify(this.$route.params.recordFilter))
-    
+    /*
     var recordFilter = {
       "select": ["basicInfo", "cadre", "paper"],
       "show": [{
@@ -95,8 +95,8 @@ export default {
     ]
     this.students = testData
     this.recordFilter = recordFilter
-    
-    //this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
+    */
+    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
     fetchData: function(dataJson, recordFilter) {

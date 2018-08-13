@@ -4,10 +4,27 @@
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
   </header>
   <aside>
-    <div class="info-side">信息栏</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">查询</div>
+    <div class="info-side">
+      <label>丘南海</label>
+      <p>数据科学与计算机学院</p>
+    </div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">基本信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">家庭信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">学籍管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">课程成绩</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">党员信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">奖学金</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">资助信息管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">助学贷款</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">学生干部任职情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">获得奖励情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">发表论文情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">获得专利情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">科研项目</div>
+<!--
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
   </aside>
   <div class="container-info">
     <router-view></router-view>
@@ -44,10 +61,11 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  transition: 0.5s;
-  -moz-transition: 0.5s;  /* Firefox 4 */
-  -webkit-transition: 0.5s; /* Safari 和 Chrome */
-  -o-transition: 0.5s;  /* Opera */
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+  /*color: rgb(100, 100, 100);*/
 }
 
 body {
@@ -62,8 +80,9 @@ body {
 header {
   position: fixed;
   width: 100%;
-  height: 10%;
+  height: 8%;
   background-color: rgb(150, 150, 150);
+  /*background-color: rgb(252, 252, 252);*/
   text-align: center;
   color: white;
   /*shadow*/
@@ -71,11 +90,12 @@ header {
 }
 
 .button-home {
-  position: fixed;
+  position: relative;
   height: 100%;
   width: 15%;
-  padding-top: 25px;
+  padding-top: 20px;
   background-color: rgb(150, 150, 150);
+  /*background-color: rgb(252, 252, 252);*/
 }
 
 .button-home:hover {
@@ -86,31 +106,36 @@ aside {
   position: fixed;
   height: 100%;
   width: 15%;
-  top: 10%;
-  background-color: rgb(70, 70, 70);
-  color: white;
+  top: 8%;
+  /*background-color: rgb(70, 70, 70);*/
+  background-color: rgb(252, 252, 252);
+  color: black;
   /*shadow*/
   box-shadow: 1px 1px 5px #888888;
+  z-index: -10;
 }
 
 .info-side {
   height: 100px;
   text-align: center;
-  border-bottom: 1px solid black;
-  /*make text in div vertical-align to center*/
+  border-bottom: 1px solid rgb(50, 50, 50);
+  padding-top: 30px;
+  /*
+  **make text in div vertical-align to center
   line-height: 100px;
   margin: auto;
+  */
 }
 
 .button-side {
   float: left;
   width: 100%;
-  height: 50px;
+  height: 40px;
   text-align: left;
-  line-height: 50px;
+  line-height: 40px;
   margin: auto;
   /*怎么让文字左右居中？*/
-  padding-left: 43%;
+  padding-left: 70px;
 }
 
 .button-side:hover {
@@ -125,12 +150,12 @@ aside {
   position: absolute;
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger */
   min-width: 85%;
-  min-height: 90%;
+  min-height: 92%;
   margin-left: 15%;
-  top: 10%;
+  top: 8%;
   text-align: center;
   /*the section cannot render in front of headbar*/
   z-index: -100;
-  background-color: rgb(230, 230, 230);
+  background-color: rgb(240, 240, 240);
 }
 </style>
