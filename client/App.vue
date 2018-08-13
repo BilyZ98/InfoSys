@@ -8,7 +8,7 @@
       <label>丘南海</label>
       <p>数据科学与计算机学院</p>
     </div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">基本信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">家庭信息</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">学籍管理</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">课程成绩</div>
@@ -43,6 +43,9 @@ export default {
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
+    },
+    basicInfoClick: function() {
+      this.$router.push({ name: 'basicInfo' })
     },
     queryClick: function(){
       this.$router.push({ name: 'query'})
@@ -107,9 +110,9 @@ aside {
   height: 100%;
   width: 15%;
   top: 8%;
-  /*background-color: rgb(70, 70, 70);*/
-  background-color: rgb(252, 252, 252);
-  color: black;
+  background-color: rgb(70, 70, 70);
+  /*background-color: rgb(252, 252, 252);*/
+  color: white;
   /*shadow*/
   box-shadow: 1px 1px 5px #888888;
   z-index: -10;
