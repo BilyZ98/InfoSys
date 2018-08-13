@@ -11,7 +11,7 @@
 
 <style>
 .container-card {
-  margin: 2%;
+  margin: 30px;
   height: 300px;
   text-align: left;
   padding-top: 2%;

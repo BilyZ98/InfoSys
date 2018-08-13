@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import $ from 'jquery'
+
 //.vue components
 import App from './App.vue'
 import Main from './components/Main.vue'

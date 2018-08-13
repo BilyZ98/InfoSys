@@ -2,7 +2,7 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-    //entry: path.join(__dirname, './client/index.js'),
+  //entry: path.join(__dirname, './client/index.js'),
   entry: ['babel-polyfill','./client/index.js'],
   output: {
     path: path.join(__dirname, './dist'),
@@ -32,7 +32,12 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+        $: "jquery",
+        jQuery: "jquery",
+        jquery: 'jquery'
+    })
   ],
   resolve: {
   alias: {

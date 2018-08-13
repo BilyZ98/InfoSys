@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <button type="button" @click="queryClick">查询</button>
+  <button type="button" id="button-query" @click="queryClick">查询</button>
 </div>
 </template>
 
@@ -516,7 +516,6 @@ export default {
 
 .query-container {
   text-align: left;
-  padding-left: 20px;
 }
 
 h3 {
@@ -540,7 +539,7 @@ h4:hover {
 }
 
 .container-card-query {
-  margin: 2%;
+  margin: 30px;
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;
@@ -577,7 +576,7 @@ hr {
   clear: both;
 }
 
-button {
+#button-query {
   margin-left: 50%;
   margin-bottom: 20px;
 }

@@ -4,7 +4,7 @@
     <div v-for="table in tables">
       <label>{{table.name}}</label>
       <input v-bind:id="table.id" type="file">
-      <button v-bind:table-id="table.id" @click="importClick">上传</button>
+      <button class="button-import" v-bind:table-id="table.id" @click="importClick">上传</button>
       <hr>
     </div>
   </div>
@@ -150,7 +150,7 @@ export default {
 
 <style>
 .container-card-import {
-  margin: 2%;
+  margin: 30px;
   padding: 2%;
   text-align: left;
   background-color: white;
@@ -160,7 +160,8 @@ export default {
   box-shadow: -1px 1px 5px #888888;
 }
 
-button {
+.button-import {
   margin-top: 10px;
+  text-align: left;
 }
 </style>

@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "webpack",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -24,17 +25,15 @@
     "body-parser": "~1.18.2",
     "chalk": "^2.4.1",
     "cookie-parser": "~1.4.3",
-    "css-loader": "^0.26.1",
+    "css-loader": "^1.0.0",
     "debug": "~2.6.9",
     "express": "~4.15.5",
-    "file-loader": "^0.9.0",
     "jade": "^1.11.0",
-    "jquery-ui": "^1.12.1",
+    "jquery": "^3.3.1",
     "morgan": "~1.9.0",
     "mysql": "^2.16.0",
     "request": "^2.87.0",
     "serve-favicon": "~2.4.5",
-    "url-loader": "^0.5.7",
     "vue": "^2.1.10",
     "vue-hot-reload-api": "^2.0.8",
     "vue-html-loader": "^1.2.3",
@@ -47,6 +46,5 @@
     "webpack-dev-server": "^2.9.1",
     "webpack-hot-middleware": "^2.22.3",
     "webpack-merge": "^4.1.0"
-  },
-  "devDependencies": {}
+  }
 }
