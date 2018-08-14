@@ -48,7 +48,6 @@ import tableData from './tableData.js'
 export default {
   data: function() {
     return {
-      tableData: tableData,
       students: [],
       recordFilter: []
     }
@@ -96,7 +95,7 @@ export default {
     this.students = testData
     this.recordFilter = recordFilter
     */
-    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
+    //this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
     fetchData: function(dataJson, recordFilter) {
@@ -186,16 +185,16 @@ export default {
       for(let item in jsonData[0]){
         //id转换name，先找到表
         let table = {}
-        for(let i = 0; i < tableData.length; i++){
-          if(item == tableData[i].id){
-            table = tableData[i]
-            break
+        for(let ite in tableData){
+          if(item == ite){
+            table = tableData[ite]
+            break;
           }
         }
         str += table['name']
         for(let record in jsonData[0][item]){
-          for(let j = 0; j < table['records'].length-1; j++){
-            if(table['records'][j].id == record){
+          for(let ite in table['records']){
+            if(ite == record){
               str += ','
             }
           }
@@ -206,16 +205,16 @@ export default {
       for(let item in jsonData[0]){
         //id转换name，先找到表
         let table = {}
-        for(let i = 0; i < tableData.length; i++){
-          if(item == tableData[i].id){
-            table = tableData[i]
+        for(let ite in tableData){
+          if(item == ite){
+            table = tableData[ite]
             break
           }
         }
         for(let record in jsonData[0][item]){
-          for(let j = 0; j < table['records'].length; j++){
-            if(table['records'][j].id == record){
-              str += table['records'][j].name
+          for(let ite in table['records']){
+            if(ite == record){
+              str += table['records'][ite].name
               str += ','
             }
           }
@@ -236,16 +235,16 @@ export default {
       return str
     },
     getJsonContentForIE: function(xlsheet, jsonData){
-      //console.log(tableData.length)
+      //console.log(Test.length)
       //表名部分
       let y = 0
       for(let item in jsonData[0]){
         //id转换name，先找到表
         let table = {}
-        for(let i = 0; i < tableData.length; i++){
-          if(item == tableData[i].id){
-            table = tableData[i]
-            break
+        for(let ite in tableData){
+          if(item == ite){
+            table = tableData[ite]
+            break;
           }
         }
         console.log(table['name'])
@@ -253,8 +252,8 @@ export default {
         y++
         console.log(y)
         for(let record in jsonData[0][item]){
-          for(let j = 0; j < table['records'].length-1; j++){
-            if(table['records'][j].id == record){
+          for(let ite in table['records']){
+            if(ite == record){
               y++
             }
           }
@@ -265,16 +264,16 @@ export default {
       for(let item in jsonData[0]){
         //id转换name，先找到表
         var table = {}
-        for(let i = 0; i < tableData.length; i++){
-          if(item == tableData[i].id){
-            table = tableData[i]
-            break
+        for(let ite in tableData){
+          if(item == ite){
+            table = tableData[ite]
+            break;
           }
         }
         for(let record in jsonData[0][item]){
-          for(let j = 0; j < table['records'].length; j++){
-            if(table['records'][j].id == record){
-              xlsheet.Cells(2, y + 1).value = table['records'][j].name
+          for(let ite in table['records']){
+            if(ite == record){
+              xlsheet.Cells(2, y + 1).value = table['records'][ite].name
               y++
             }
           }

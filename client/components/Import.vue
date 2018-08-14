@@ -92,16 +92,17 @@ export default {
       }
       //parse recordName to recordId
       var records = []
-      for(let i = 0; i < tableData.length; i++){
-          if(id == tableData[i].id){
-            records = tableData[i].records
+      for(let ite in tableData){
+          if(id == ite){
+            records = tableData[ite]['records']
+            //console.log(tableData[ite]['records'])
             break
           }
       }
       for(let item in temp2[0]){
-        for(let j = 0; j < records.length; j++){
-          if(item == records[j].name) {
-            field.push(records[j].id)
+        for(let ite in records){
+          if(item == records[ite].name) {
+            field.push(ite)
           }
         }
       }
@@ -110,8 +111,8 @@ export default {
         batchInfo.push([]);
         for(let item in temp2[i])
         {
-          for(let j = 0; j < records.length; j++){
-            if(item == records[j].name){
+          for(let ite in records){
+            if(item == records[ite].name){
               batchInfo[i].push(temp2[i][item])
             }
           }
