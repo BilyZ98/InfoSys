@@ -21,7 +21,7 @@ var tableData = {
       major: { name: '专业', id: 'major', value: '', valueType: 'input' },
       'class': { name: '行政班别', id: 'class', value: '', valueType: 'select', options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
       dorm: { name: '宿舍楼栋', id: 'dorm', value: '', valueType: 'select', options: ['至善园', '明德园', '慎思园', '格致园'] },
-      'dorm-number': { name: '楼栋号', id: 'dorm-number', value: '', valueType: 'select', options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
+      dormNumber: { name: '楼栋号', id: 'dormNumber', value: '', valueType: 'select', options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
       dormRoom: { name: '宿舍房号', id: 'dormRoom', value: '', valueType: 'input' },
       speciality: { name: '特长', id: 'speciality', value: '', valueType: 'input' },
       highSchool: { name: '毕业中学', id: 'highSchool ', value: '', valueType: 'input' }
