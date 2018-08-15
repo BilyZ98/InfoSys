@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container-insert-family">
   <h3 class="text-center">家庭信息插入</h3>
   <div class="container">
     <div class="col-md-6">

@@ -1,5 +1,5 @@
 <template>
-<div id="container-info">
+<div id="container-insert-patent">
     <h3 class="text-center">获得专利情况</h3>
       <div class="container">
         <div class="col-md-12">

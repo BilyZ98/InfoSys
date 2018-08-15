@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container-insert-cadre">
 	<p>学生干部任职情况</p>
   姓名:
   <input type="text" name="name" id="name" placeholder="姓名">
@@ -80,7 +80,7 @@ export default {
 </script>
 
 <style>
-input, select, button{
+#container-insert-cadre input, select, button{
 	margin-top: 10px;
 }
 </style>

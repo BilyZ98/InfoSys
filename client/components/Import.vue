@@ -1,6 +1,6 @@
 <template>
-<div>
-  <div class="container-card-import">
+<div id="container-import">
+  <div class="container-card">
     <div v-for="table in tables">
       <label>{{table.name}}</label>
       <input v-bind:id="table.id" type="file">
@@ -150,7 +150,7 @@ export default {
 </script>
 
 <style>
-.container-card-import {
+#container-import .container-card {
   margin: 30px;
   padding: 2%;
   text-align: left;
@@ -158,7 +158,7 @@ export default {
   /*radius*/
   border-radius: 3px;
   /*shadow*/
-  box-shadow: -1px 1px 5px #888888;
+  box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
 .button-import {

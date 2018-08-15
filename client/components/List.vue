@@ -1,44 +1,46 @@
 <template>
-<div class="container-card-list">
+<div id="container-list">
+  <div class="container-card">
 
-  <div class="table-row">
-    <!--学号姓名标题-->
+    <div class="table-row">
+      <!--学号姓名标题-->
+      <div class="table-col">
+        <div class="table-head">学号姓名</div>
+        <div class="table-reord-head"><p>学号</p></div>
+        <div class="table-reord-head"><p>姓名</p></div>
+      </div>
+
+      <!--表格内容标题-->
+      <div v-for="table in recordFilter.show" class="table-col">
+        <div class="table-head">{{table.name}}</div>
+        <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="table-reord-head"><p>{{record.name}}</p></div>
+      </div>
+    </div>
+
+    <!--学号姓名数据-->
     <div class="table-col">
-      <div class="table-head">学号姓名</div>
-      <div class="table-reord-head"><p>学号</p></div>
-      <div class="table-reord-head"><p>姓名</p></div>
+      <div v-for="student in students" class="table-row">
+        <div class="table-cell">
+          <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
+        </div>
+        <div class="table-cell">
+          <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
+        </div>
+      </div>
     </div>
 
-    <!--表格内容标题-->
+    <!--表格内容数据-->
     <div v-for="table in recordFilter.show" class="table-col">
-      <div class="table-head">{{table.name}}</div>
-      <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="table-reord-head"><p>{{record.name}}</p></div>
-    </div>
-  </div>
-
-  <!--学号姓名数据-->
-  <div class="table-col">
-    <div v-for="student in students" class="table-row">
-      <div class="table-cell">
-        <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
-      </div>
-      <div class="table-cell">
-        <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
+      <div v-for="student in students" class="table-row">
+        <div class="table-cell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
+          <p>{{student[table.id][record.id]}}</p>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!--表格内容数据-->
-  <div v-for="table in recordFilter.show" class="table-col">
-    <div v-for="student in students" class="table-row">
-      <div class="table-cell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
-        <p>{{student[table.id][record.id]}}</p>
-      </div>
-    </div>
+    <hr>
+    <button id="button-download" @click="downloadClick">导出Excel</button>
   </div>
-
-  <hr>
-  <button id="button-download" @click="downloadClick">导出Excel</button>
 </div>
 </template>
 
@@ -110,7 +112,7 @@ export default {
         dataType: 'json',
         timeout: 5000,
         success: function(data, xhr) {
-          _self.students = data.content
+          _self.students = data['content']
           _self.recordFilter = recordFilter
           console.log(xhr.status)
           console.log(data)
@@ -319,7 +321,7 @@ export default {
 </script>
 
 <style>
-.container-card-list {
+#container-list .container-card {
   display: table;
   width: 2000px;
   margin: 30px;
@@ -331,14 +333,14 @@ export default {
   /*radius*/
   border-radius: 3px;
   /*shadow*/
-  box-shadow: -1px 1px 5px #888888;
+  box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-.table-row {
+#container-list .table-row {
   display: table-row;
 }
 
-.table-cell {
+#container-list .table-cell {
   display: table-cell;
   width: 120px;
   height: 20px;
@@ -346,15 +348,15 @@ export default {
   padding-top: 5px;
 }
 
-.table-cell:hover {
+#container-list .table-cell:hover {
   background-color: grey;
 }
 
-.table-head {
+#container-list .table-head {
   text-align: center;
 }
 
-.table-reord-head {
+#container-list .table-reord-head {
   display: table-cell;
   width: 120px;
   height: 20px;
@@ -363,11 +365,11 @@ export default {
   padding-top: 5px;
 }
 
-.table-col {
+#container-list .table-col {
   float: left;
 }
 
-hr, #button-download {
+#container-list hr, #button-download {
   clear: both;
 }
 </style>

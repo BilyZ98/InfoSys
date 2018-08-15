@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container-insert-paper">
   <h3 class="text-center">发表论文情况</h3>
     <div class="container">
       <div class="col-md-12">

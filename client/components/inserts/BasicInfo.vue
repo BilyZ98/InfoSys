@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container-insert-basicInfo">
   <h3 class="text-center">基本信息插入</h3>
   <div class="container">
     <div class="col-md-6">

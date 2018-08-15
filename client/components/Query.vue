@@ -1,8 +1,8 @@
 <template>
-<div class="query-container">
+<div id="container-query">
 
   <!--条件输入部分-->
-  <div class="container-card-query">
+  <div class="container-card">
     <h3>查询条件</h3>
 
     <div v-for="table in tables" v-if="table.id!='family'">
@@ -24,7 +24,7 @@
   </div>
 
   <!--结果选择部分-->
-  <div class="container-card-query">
+  <div class="container-card">
     <h3>选择查询结果显示的字段</h3>
 
     <div v-for="table in tables">
@@ -515,15 +515,15 @@ export default {
   border: 0px;
 }
 
-.query-container {
+#container-query {
   text-align: left;
 }
 
-h3 {
+#container-query h3 {
   color: green;
 }
 
-h4, h5, h6 {
+#container-query h4, h5, h6 {
   display: inline-block;
   cursor: default;
   /*设置文字不可被选中*/
@@ -535,11 +535,11 @@ h4, h5, h6 {
   user-select: none;
 }
 
-h4:hover {
+#container-query h4:hover {
   color: green;
 }
 
-.container-card-query {
+#container-query .container-card {
   margin: 30px;
   text-align: left;
   padding-top: 5px;
@@ -549,23 +549,23 @@ h4:hover {
   /*radius*/
   border-radius: 3px;
   /*shadow*/
-  box-shadow: -1px 1px 5px #888888;
+  box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-.table-container {
+#container-query .table-container {
   padding-left: 20px;
 }
 
-.hide-container {
+#container-query .hide-container {
   display: none;
 }
 
-.record-span-container {
+#container-query .record-span-container {
   display: inline-block;
   padding-left: 5px;
 }
 
-.record-clicked {
+#container-query .record-clicked {
   color: red;
   transition: 0.2s;
   -moz-transition: 0.2s;  /* Firefox 4 */
@@ -573,11 +573,11 @@ h4:hover {
   -o-transition: 0.2s;  /* Opera */
 }
 
-hr {
+#container-query hr {
   clear: both;
 }
 
-#button-query {
+#container-query #button-query {
   margin-left: 50%;
   margin-bottom: 20px;
 }

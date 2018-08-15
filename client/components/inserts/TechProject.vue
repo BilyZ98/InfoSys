@@ -1,5 +1,5 @@
 <template>
-<div id="container-info">
+<div id="container-insert-techProject">
     <h3 class="text-center">科研项目情况</h3>
     <div class="container">
       <div class="col-md-12">

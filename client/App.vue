@@ -61,6 +61,15 @@ export default {
 </script>
 
 <style>
+:root {
+  --blue: rgb(0, 132, 255);
+  --blue-hover: rgb(15, 79, 207);
+  --grey-menu: rgb(88, 88, 106);
+  --grey-hover: rgb(210, 210, 210);
+  --grey-shadow: rgb(190, 190, 190);
+  --grey-background: rgb(240, 240, 240);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -68,7 +77,6 @@ export default {
   -moz-transition: 0.3s;  /* Firefox 4 */
   -webkit-transition: 0.3s; /* Safari 和 Chrome */
   -o-transition: 0.3s;  /* Opera */
-  /*color: rgb(100, 100, 100);*/
 }
 
 body {
@@ -76,33 +84,36 @@ body {
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   font-size: 15px;
+  /*
   background-color: lighten(#eceef1, 30%);
   color: #34495e;
+  */
 }
 
 header {
   position: fixed;
   width: 100%;
   height: 8%;
-  background-color: rgb(150, 150, 150);
-  /*background-color: rgb(252, 252, 252);*/
+  background-color: var(--blue);
   text-align: center;
-  color: white;
   /*shadow*/
-  box-shadow: 1px 1px 5px #888888;
+  box-shadow: 1px 1px 5px var(--grey-shadow);
 }
 
 .button-home {
   position: relative;
   height: 100%;
   width: 15%;
-  padding-top: 20px;
-  background-color: rgb(150, 150, 150);
-  /*background-color: rgb(252, 252, 252);*/
+  padding-top: 15px;
+  background-color: var(--blue);
+  font-size: 20px;
+  font-weight: lighter;
+  color: white;
 }
 
 .button-home:hover {
-  background-color: black;
+  background-color: var(--blue-hover);
+  cursor: pointer;
 }
 
 aside {
@@ -110,18 +121,17 @@ aside {
   height: 100%;
   width: 15%;
   top: 8%;
-  background-color: rgb(70, 70, 70);
-  /*background-color: rgb(252, 252, 252);*/
-  color: white;
+  background-color: white;
+  color: var(--grey-menu);
   /*shadow*/
-  box-shadow: 1px 1px 5px #888888;
+  box-shadow: 1px 1px 5px var(--grey-shadow);
   z-index: -10;
 }
 
 .info-side {
   height: 100px;
   text-align: center;
-  border-bottom: 1px solid rgb(50, 50, 50);
+  border-bottom: 1px solid black;
   padding-top: 30px;
   /*
   **make text in div vertical-align to center
@@ -138,15 +148,16 @@ aside {
   line-height: 40px;
   margin: auto;
   /*怎么让文字左右居中？*/
-  padding-left: 70px;
+  padding-left: 67px;
 }
 
 .button-side:hover {
-  background-color: black;
+  background-color: var(--grey-hover);
+  cursor: pointer;
 }
 
 .button-clicked {
-  background-color: black;
+  background-color: var(--grey-hover);
 }
 
 .container-info{
@@ -159,6 +170,6 @@ aside {
   text-align: center;
   /*the section cannot render in front of headbar*/
   z-index: -100;
-  background-color: rgb(240, 240, 240);
+  background-color: var(--grey-background);
 }
 </style>

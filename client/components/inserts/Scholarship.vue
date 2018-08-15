@@ -1,5 +1,5 @@
 <template>
-<div>
+<div id="container-insert-scholarship">
 	<p>获得奖学金情况</p>
   姓名:
   <input type="text" name="name" id="name" placeholder="姓名">
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style>
-input, select, button{
+#container-insert-scholarship input, select, button{
 	margin-top: 10px;
 }
 </style>
