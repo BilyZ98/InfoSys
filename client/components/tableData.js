@@ -210,7 +210,7 @@ var tableData = {
       'class': { name: '类别', id: 'class', value: '', valueType: 'input' },
       submitTime: { name: '申请时间', id: 'submitTime', value: '', valueType: 'input' },
       approvalTime: { name: '授权时间', id: 'approvalTime', value: '', valueType: 'input' },
-      patentRange: { name: '专利范围', id: 'patentRange ', value: '', valueType: 'input' },
+      patentRange: { name: '专利范围', id: 'patentRange', value: '', valueType: 'input' },
       unit: { name: '申请单位', id: 'unit', value: '', valueType: 'input' },
       patentNumber: { name: '专利申请号', id: 'patentNumber', value: '', valueType: 'input' },
       creators: { name: '发明人', id: 'creators', value: '', valueType: 'input' }

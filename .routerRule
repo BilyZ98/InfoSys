@@ -1,0 +1,99 @@
+###前端路由
+项目采用前后端分离的结构，把部分逻辑下方到前端，页面中所有除数据外的跳转都在前端路由中实现
+/client/index.js是前端路由的入口，使用vue-router
+
+主页面:'/'
+查询输入页面:'/query'
+查询结果:'/list'
+插入输入页面:'/insert/tablename'
+导入：'/import'
+每个表的管理页面：'/tablename'
+
+
+
+
+###后端路由
+/routes/index.js是后端路由，数据请求都要发往后端路由
+
+查询：
+POST:'/students/query'
+例: {
+	"select": ["basicInfo"],
+	"where": {
+		"equal": {
+			"award": {
+				"awardJiBie": "1"
+			}
+		},
+		"range": {
+			"paper": {
+				"pagesRange": {
+					"min": "123",
+					"max": "456"
+				}
+			}
+		},
+		"fuzzy": {
+			"award": {
+				"awardClass": "2"
+			}
+		}
+	}
+}
+返回例：{
+	"content": [{
+		"basicInfo": {
+			"sid": "id",
+			"name": "name",
+			"gender": "男",
+			"birthPlace": "新疆",
+			"idNum": "142701198812221234"
+		},
+		"cadre": {
+			"year": "2013",
+			"cadreClass": "homeAddress",
+			"cadreName": "321"
+		}
+	}, {
+		"basicInfo": {
+			"sid": "id1",
+			"name": "name1",
+			"gender": "男1",
+			"birthPlace": "西藏",
+			"idNum": "142701198812221234"
+		},
+		"cadre": {
+			"year": "2013",
+			"cadreClass": "homeAddress1289",
+			"cadreName": "321"
+		}
+	}]
+}
+
+
+插入:
+POST:'/students/insert/tablename'
+POST:'/students/insert/basicInfo'(插入基本信息basicInfo这张表)
+POST:'/students/insert/schoolRoll'(插入学籍情况schoolRoll这张表)
+
+导入：
+POPST:'/students/import'
+例：{
+	"table": "basicInfo",
+	"field": ["sid", "name", "gender", "birthPlace"],
+	"batchInfo": [
+		["id", "name", "男", "新疆"],
+		["id1", "name1", "男1", "西藏"],
+		["id", "name", "男", "新疆"],
+		["id1", "name1", "男1", "西藏"],
+		["id", "name", "男", "新疆"],
+		["id1", "name1", "男1", "西藏"],
+		["id", "name", "男", "新疆"],
+		["id1", "name1", "男1", "西藏"]
+	]
+}
+
+
+
+用户登录/注册：
+POST:'/users/...'
