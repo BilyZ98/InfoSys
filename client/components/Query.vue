@@ -540,7 +540,7 @@ export default {
 }
 
 #container-query .container-card {
-  margin: 30px;
+  margin: 20px;
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;

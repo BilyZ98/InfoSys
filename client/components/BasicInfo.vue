@@ -5,8 +5,8 @@
 		<div class="header-button">
 			<span>上传学生照片</span>
 			<span>修改密码</span>
-			<span>导出</span>
-			<span>导入</span>
+			<span @click="downloadClick">导出</span>
+			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span>下载模板</span>
 			<span>删除</span>
 			<span>编辑</span>
@@ -17,15 +17,16 @@
 	<div class="container-card">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="table.id+'-'+record.id" v-model="record.value">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="table.id+'-'+record.id" v-model="record.value">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
+      	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="table.id+'-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
         <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
       </span>
     </div>
-    <button class="manager-button">查询</button>
+    <button class="manager-button" @click="queryClick">查询</button>
 	</div>
 	<div class="container-card-list">
 		<table border="1">
@@ -33,10 +34,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
 		  	<td>{{index}}</td>
 		  	<td v-for="record in table.records">
-		  		<span v-if="student['basicInfo'][record.id] != undefined">{{student['basicInfo'][record.id]}}</span>
+		  		<span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -47,12 +48,16 @@
 
 <script>
 import tableData from './tableData.js'
+import downloadModule from './downloadModule.js'
+import importModule from './importModule.js'
+var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
+var emptyCell = JSON.stringify({})
 
 export default {
 	data: function(){
 		return {
 			table: tableData['basicInfo'],
-			students:   [
+			students: [
 	      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
 	      {basicInfo: {sid: 'id1', name: 'name1', gender: '男1', birthPlace: '西藏' }, cadre: {year: '2013', cadreClass: 'homeAddress1289', cadreName: '321'}},
 	      {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆'}, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}},
@@ -79,6 +84,87 @@ export default {
 	mounted: function(){
 		//alert(window.innerWidth)
 		//1536*728
+	},
+	methods: {
+		queryClick: function(){
+			var basicInfo = {equal: {}, range: {}, fuzzy: {}}
+			var data = {
+        select: ['basicInfo'],
+        where: {
+          equal: {},
+          range: {},
+          fuzzy: {}
+        }
+      }
+			if ($('#basicInfo-sid').val()) {
+        basicInfo['equal']['sid'] = $('#basicInfo-sid').val()
+      } else {
+	      if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
+	      if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
+	      if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
+	      if ($('#basicInfo-ethnic').val()) basicInfo['equal']['ethnic'] = $('#basicInfo-ethnic').val()
+	      if ($('#basicInfo-poliFace').val()) basicInfo['equal']['poliFace'] = $('#basicInfo-poliFace').val()
+	      if ($('#basicInfo-idNum').val()) basicInfo['equal']['idNum'] = $('#basicInfo-idNum').val()
+	      if ($('#basicInfo-birthDate').val()) basicInfo['equal']['birthDate'] = $('#basicInfo-birthDate').val()
+	      if ($('#basicInfo-tel').val()) basicInfo['equal']['tel'] = $('#basicInfo-tel').val()
+	      if ($('#basicInfo-mail').val()) basicInfo['equal']['mail'] = $('#basicInfo-mail').val()
+	      if ($('#basicInfo-wechat').val()) basicInfo['equal']['wechat'] = $('#basicInfo-wechat').val()
+	      if ($('#basicInfo-qq').val()) basicInfo['equal']['qq'] = $('#basicInfo-qq').val()
+	      if ($('#basicInfo-degree').val()) basicInfo['equal']['degree'] = $('#basicInfo-degree').val()
+	      if ($('#basicInfo-stuGroup ').val()) basicInfo['equal']['stuGroup '] = $('#basicInfo-stuGroup ').val()
+	      if ($('#basicInfo-grade').val()) basicInfo['equal']['grade'] = $('#basicInfo-grade').val()
+	      if ($('#basicInfo-major').val()) basicInfo['equal']['major'] = $('#basicInfo-major').val()
+	      if ($('#basicInfo-class').val()) basicInfo['equal']['class'] = $('#basicInfo-class').val()
+	      //格式：'dorm+dormNumber'，至善园2号，明德园10号
+	      if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val() + $('#basicInfo-dormNumber').val() + '号'
+	      //if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
+	      if ($('#basicInfo-dormRoom ').val()) basicInfo['equal']['dormRoom '] = $('#basicInfo-dormRoom ').val()
+	      if ($('#basicInfo-speciality').val()) basicInfo['equal']['speciality'] = $('#basicInfo-speciality').val()
+	      if ($('#basicInfo-highSchool').val()) basicInfo['equal']['highSchool'] = $('#basicInfo-highSchool').val()
+	      if(JSON.stringify(basicInfo) == empty){
+	      	alert('请输入查询条件！')
+	      	return
+	      }
+	    }
+      if(JSON.stringify(basicInfo['equal']) != emptyCell) data['where']['equal']['basicInfo'] = basicInfo['equal']
+      if(JSON.stringify(basicInfo['range']) != emptyCell) data['where']['range']['basicInfo'] = basicInfo['range']
+      if(JSON.stringify(basicInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['basicInfo'] = basicInfo['fuzzy']
+      var postData = JSON.stringify(data)
+      console.log(postData)
+      //post
+      var _self = this
+      // replace getPost with your data fetching util / API wrapper
+      $.ajax({
+        type: 'POST',
+        url: '/students/query',
+        data: dataJson,
+        contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
+        timeout: 5000,
+        success: function(data, xhr) {
+          _self.students = data['content']
+          console.log(xhr.status)
+          console.log(data)
+        },
+        error: function(data) {
+          console.log(data.status)
+          alert(data.responseJSON.err)
+        }
+      })
+		},
+		downloadClick: function(){
+			downloadModule.downloadClick(this.students)
+		},
+		importClick: function(){
+			$('#button-import').click()
+		},
+		//onchange时调用这个函数实现文件选择后上传
+		importUpload: function(){
+			importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
+		},
+		studentClick: function(event){
+			alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
+		}
 	}
 }
 </script>
@@ -90,8 +176,8 @@ export default {
 	height: 70px;
 	line-height: 70px;
 	margin: auto;
-	text-align: left;
 	padding-left: 30px;
+	text-align: left;
 	background-color: white;
 	/*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
@@ -125,7 +211,7 @@ export default {
 }
 
 #manager-basicInfo .container-card {
-  margin: 30px;
+  margin: 20px;
   text-align: left;
   padding: 20px;
   background-color: white;
@@ -165,12 +251,12 @@ export default {
 }
 
 #manager-basicInfo .container-card-list {
-  margin: 30px;
+  margin: 20px;
   text-align: left;
   padding: 20px;
   /*alert($('#manager-basicInfo .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
-  width: 1231.32px;
+  width: 1251.32px;
   background-color: white;
   /*radius*/
   border-radius: 3px;
@@ -190,12 +276,24 @@ export default {
 }
 
 #manager-basicInfo .container-card-list th, td {
-	padding: 8px;
+	padding-left: 8px;
+	padding-right: 8px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
 #manager-basicInfo .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-
+#manager-basicInfo #button-import {
+	/*
+	position: relative;
+	opacity: 0;
+	display: inline;
+	width: 60px;
+	height: 20px;
+	*/
+	display: none;
+}
 </style>

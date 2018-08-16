@@ -151,7 +151,7 @@ export default {
 
 <style>
 #container-import .container-card {
-  margin: 30px;
+  margin: 20px;
   padding: 2%;
   text-align: left;
   background-color: white;

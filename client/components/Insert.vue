@@ -18,7 +18,7 @@
 
 <style>
 #container-insert #container-router {
-  margin: 30px;
+  margin: 20px;
   text-align: left;
   padding: 2%;
   background-color: white;
@@ -29,7 +29,7 @@
 }
 
 #container-insert #container-main {
-	margin: 30px;
+	margin: 20px;
   text-align: left;
   padding: 2%;
   background-color: white;

@@ -180,7 +180,7 @@ var tableData = {
       employer: { name: '颁发（主办）单位', id: 'employer', value: '', valueType: 'input' },
       awardJiBie: { name: '级别', id: 'awardJiBie', value: '', valueType: 'input' },
       awardYearMonth: { name: '获奖年月', id: 'awardYearMonth', value: '', valueType: 'range' },
-      awardYearMonth: { name: '指导老师', id: 'teacher', value: '', valueType: 'input' }
+      teacher: { name: '指导老师', id: 'teacher', value: '', valueType: 'input' }
     }
   },
   paper: {
@@ -228,7 +228,7 @@ var tableData = {
       proId: { name: '项目编号', id: 'proId', value: '', valueType: 'input' },
       'class': { name: '类别', id: 'class', value: '', valueType: 'input' },
       teacher: { name: '指导老师', id: 'teacher', value: '', valueType: 'input' },
-      teacher: { name: '立项时间', id: 'teacher', value: '', valueType: 'range' }
+      proTime: { name: '立项时间', id: 'proTime', value: '', valueType: 'range' }
     }
   }
 }
