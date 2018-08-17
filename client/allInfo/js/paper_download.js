@@ -33,7 +33,6 @@ downLoad.prototype.getBase64Image = function(image,ext){
 	var context = canvas.getContext("2d");
 	context.drawImage(image,0,0,image.width,image.height);
 	
-	// 杩欓噷鏄笉鏀寔璺ㄥ煙鐨�
 	var base64 = canvas.toDataURL("image/"+ext);
 	return base64;
 }
@@ -47,10 +46,10 @@ downLoad.prototype.init = function(dom,target,fileName,paperSize){
 		document.body.scrollTop = document.body.scrollHeight - screen.height;
 		document.body.scrollTop = 0;
 		try{
-			//杩欓噷鍙互闅愯棌椤甸潰澶氫綑鐨勫唴瀹�
+			
 			//$('.test-lists').find('.test-lists-bottom,.test-lists-sy,.test-lists-xy,.test-lists-score,.test-lists-remove').hide();
 		}catch(e){
-			console.log('涓嶆槸鍐呭');
+			console.log('导出失败');
 		}
 		target.style.background = 'white';
 		if(_this.imgCount == _this.imgArray.length){
@@ -66,10 +65,10 @@ downLoad.prototype.init = function(dom,target,fileName,paperSize){
 			renderPDF(target,fileName,paperSize, function(){
 				_this.arr = [];
 				try{
-					//杞崲鎴愬姛鍚庤繕鍘熼殣钘忕殑鍐呭
+					
 					//$('.test-lists').find('.test-lists-bottom,.test-lists-sy,.test-lists-xy,.test-lists-score,.test-lists-remove').show();
 				}catch(e){
-					console.log('涓嶆槸鍐呭');
+					console.log('导出失败');
 				}
         	});
 		}
