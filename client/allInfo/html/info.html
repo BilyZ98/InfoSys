@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>学生信息</title>
+	<link rel='stylesheet' href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css'>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	<script src="../js/html2canvas.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/jspdf.debug.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/renderPDF.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/paper_download.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+	<div class="container ">
+		<h3 class="text-center heading">学生信息</h3>
+		<div class="info col-md-12">
+			<div class="info-heading">基本信息</div>
+			<div class="clearfix">
+				<span class="col-md-offset-1 col-md-3 info-text">姓名：{{basicInfo.name}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">学号：{{basicInfo.sid}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">性别：{{basicInfo.gender}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">籍贯：{{basicInfo.birthPlace}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">民族：{{basicInfo.ethnic}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">政治面貌：{{basicInfo.poliFace}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">身份证号码：{{basicInfo.idNum}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">出生日期：{{basicInfo.birthDate}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">联系电话：{{basicInfo.tel}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">邮箱：{{basicInfo.mail}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">微信：{{basicInfo.wechat}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">QQ号：{{basicInfo.qq}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">培养层次：{{basicInfo.degree}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">学生类别：{{basicInfo.stuGroup}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">年级：{{basicInfo.grade}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">专业：{{basicInfo.major}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">行政班别：{{basicInfo.class}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">宿舍楼栋：{{basicInfo.dorm}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">宿舍房号：{{basicInfo.dormRoom}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">特长：{{basicInfo.speciality}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">毕业中学：{{basicInfo.highSchool}}</span>
+			</div>
+			<div class="info-heading">家庭情况</div>
+			<div class="clearfix">
+				<span class="col-md-offset-1 col-md-12 info-text">家庭地址：{{family.homeAddress}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">父亲姓名：{{family.fatherName}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">父亲电话：{{family.fatherTel}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">父亲工作单位及职务：{{family.fatherJob}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">母亲姓名：{{family.motherName}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">母亲电话：{{family.motherTel}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">母亲工作单位及职务：{{family.motherJob}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">家庭人均月收入：{{family.familyAveIncome}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">是否家庭经济困难学生：{{family.isHard}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">困难等级：{{family.hardDegree}}</span>
+				<span class="col-md-offset-1 col-md-12 info-text">家庭经济困难情况简述：{{family.hardFamDes}}</span>
+			</div>
+			<div class="info-heading">学籍情况</div>
+			<div class="clearfix">
+				<span class="col-md-offset-1 col-md-3 info-text">学籍状态：{{schoolRoll.isAtRoll}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">教务班别：{{schoolRoll.class}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">学年制：{{schoolRoll.studyYears}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">入学年月：{{schoolRoll.timeInSchool}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">学籍状态：{{schoolRoll.isAtRoll}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">缴费状态：{{schoolRoll.isFee}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">注册（报到）状态：{{schoolRoll.isArrive}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">在校期间学籍是否有变动：{{schoolRoll.isRollChanged}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">变动时间：{{schoolRoll.changeTime}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">变动类别：{{schoolRoll.changeClass}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">变动原因：{{schoolRoll.changeReason}}</span>
+				<span class="col-md-offset-1 col-md-3 info-text">学校批文：{{schoolRoll.changeSchoolPage}}</span>
+			</div>
+			<div class="info-heading">党员信息</div>
+			<div class="clearfix">
+				<span class="col-md-offset-1 col-md-5 info-text">是否团员：{{partyInfo.isLeaguer}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">参加党章学习小组时间：{{partyInfo.joinGroupTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">递交入党申请书时间：{{partyInfo.submitTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">确定为入党积极分子时间：{{partyInfo.activerTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党培养联系人：{{partyInfo.contacter}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">是否完成政审：{{partyInfo.isVerifid}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">民主评议时间：{{partyInfo.democracyTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">确定为重点发展对象时间：{{partyInfo.developerTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">选送党校培训时间：{{partyInfo.partyTrainedTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">确定入党介绍人时间：{{partyInfo.introducerTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党介绍人{{partyInfo.introducer}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">是否有自传：{{partyInfo.hasAutobigraphy}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">是否有入党志愿书：{{partyInfo.hasApplicatiionForm}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党支部大会时间：{{partyInfo.partyBranchTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党谈话时间：{{partyInfo.partyTalkTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党谈话人：{{partyInfo.partyTalker}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">预备党员起始时间：{{partyInfo.probationaryTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">入党宣誓时间：{{partyInfo.partyOathTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">转正申请书时间：{{partyInfo.fullSubTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">转正支部大会时间：{{partyInfo.fullMeetingTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">正式党员起始时间：{{partyInfo.fullMemberTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">移交档案馆时间：{{partyInfo.archiveTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">暂缓就业起始时间：{{partyInfo.temporaryTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">关系转出时间：{{partyInfo.outTime}}</span>
+				<span class="col-md-offset-1 col-md-5 info-text">关系转往单位名称：{{partyInfo.outUnit}}</span>
+			</div>
+			<div class="info-heading">课程成绩记录</div>
+			<div class="clearfix" id="test">
+				<table border="1">
+  					<tr>
+    					<th>学年</th>
+    					<th>学期</th>
+    					<th>课程名称</th>
+    					<th>课程编号</th>
+    					<th>课程类别</th>
+    					<th>课程性质</th>
+    					<th>学时</th>
+    					<th>学分</th>
+    					<th>成绩</th>
+    					<th>绩点</th>
+    					<th>是否已通过</th>
+    					<th>重修补考标识</th>
+    					<th>备注</th>
+  					</tr>
+  					<tr v-if="JSON.stringify(course) == '{}'"><!-- 当该列表数据为空时的显示 -->
+  						<td colspan="13">当前数据为空</td>
+  					</tr>
+  					<tr v-for="cous in course">
+    					<td>{{cous.year}}</td>
+    					<td>{{cous.semester}}</td>
+    					<td>{{cous.courseName}}</td>
+    					<td>{{cous.courseId}}</td>
+    					<td>{{cous.courseClass}}</td>
+    					<td>{{cous.courseProperty}}</td>
+    					<td>{{cous.courseHour}}</td>
+    					<td>{{cous.credit}}</td>
+    					<td>{{cous.courseGrade}}</td>
+    					<td>{{cous.GPA}}</td>
+    					<td>{{cous.isPass}}</td>
+    					<td>{{cous.rebuild}}</td>
+    					<td>{{cous.backup}}</td>
+  					</tr>
+				</table>
+			</div>
+			<div class="info-heading">获奖学金情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>学年</th>
+						<th>奖学金类别</th>
+						<th>奖学金名称</th>
+						<th>奖励金额</th>
+					</tr>
+					<tr v-for="schsp in scholarship">
+						<td>{{schsp.year}}</td>
+						<td>{{schsp.shipClass}}</td>
+						<td>{{schsp.shipName}}</td>
+						<td>{{schsp.shipAmount}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">获资助情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>学年</th>
+						<th>资助类别</th>
+						<th>资助性质</th>
+						<th>资助名称</th>
+						<th>资助金额</th>
+					</tr>
+					<tr v-for="a in aid">
+						<td>{{a.year}}</td>
+						<td>{{a.aidClass}}</td>
+						<td>{{a.aidProperty}}</td>
+						<td>{{a.aidName}}</td>
+						<td>{{a.aidAmount}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">助学贷款</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>申请学年</th>
+						<th>贷款年数</th>
+						<th>每年放款金额</th>
+						<th>贷款总额</th>
+					</tr>
+					<tr v-for="ln in loan">
+						<td>{{ln.submitYear}}</td>
+						<td>{{ln.loanYears}}</td>
+						<td>{{ln.moneyPerYear}}</td>
+						<td>{{ln.loanTotal}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">学生干部任职情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>学年</th>
+						<th>职务类别</th>
+						<th>职务名称</th>
+						<th>职务级别</th>
+					</tr>
+					<tr v-for="cd in cadre">
+						<td>{{cd.year}}</td>
+						<td>{{cd.cadreClass}}</td>
+						<td>{{cd.cadreName}}</td>
+						<td>{{cd.cadreJiBie}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">获得奖励情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>学生类别</th>
+						<th>奖励名称</th>
+						<th>奖励等级</th>
+						<th>颁发（主办）单位</th>
+						<th>级别</th>
+						<th>获奖年月</th>
+						<th>指导老师</th>
+					</tr>
+					<tr v-for="aw in award">
+						<td>{{aw.stuClass}}</td>
+						<td>{{aw.awardName}}</td>
+						<td>{{aw.awardClass}}</td>
+						<td>{{aw.employer}}</td>
+						<td>{{aw.awardJiBie}}</td>
+						<td>{{aw.awardYearMonth}}</td>
+						<td>{{aw.teacher}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">发表论文情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>题目</th>
+						<th>作者序</th>
+						<th>刊物</th>
+						<th>期号</th>
+						<th>页码范围</th>
+						<th>刊物级别</th>
+						<th>论文类型</th>
+						<th>发表时间</th>
+						<th>指导老师</th>
+					</tr>
+					<tr v-for="pp in paper">
+						<td>{{pp.title}}</td>
+						<td>{{pp.authors}}</td>
+						<td>{{pp.journal}}</td>
+						<td>{{pp.serialNumber}}</td>
+						<td>{{pp.pagesRange}}</td>
+						<td>{{pp.paperGrade}}</td>
+						<td>{{pp.paperClass}}</td>
+						<td>{{pp.time}}</td>
+						<td>{{pp.insTeacher}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">获得专利情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>专利名称</th>
+						<th>类别</th>
+						<th>申请时间</th>
+						<th>授权时间</th>
+						<th>专利范围</th>
+						<th>申请单位</th>
+						<th>专利申请号</th>
+						<th>发明人</th>
+					</tr>
+					<tr v-for="pt in patent">
+						<td>{{pt.patentName}}</td>
+						<td>{{pt.class}}</td>
+						<td>{{pt.submitTime}}</td>
+						<td>{{pt.approvalTime}}</td>
+						<td>{{pt.patentRange}}</td>
+						<td>{{pt.unit}}</td>
+						<td>{{pt.patentNumber}}</td>
+						<td>{{pt.creators}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="info-heading">科研项目情况</div>
+			<div class="clearfix">
+				<table border="1">
+					<tr>
+						<th>项目名称</th>
+						<th>主办单位</th>
+						<th>资助金额</th>
+						<th>项目编号</th>
+						<th>类别</th>
+						<th>指导老师</th>
+						<th>立项时间</th>
+					</tr>
+					<tr v-for="tp in techProject">
+						<td>{{tp.proName}}</td>
+						<td>{{tp.employer}}</td>
+						<td>{{tp.money}}</td>
+						<td>{{tp.proId}}</td>
+						<td>{{tp.class}}</td>
+						<td>{{tp.teacher}}</td>
+						<td>{{tp.proTime}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+	<div class="btn-show">
+		<button class="btn btn-info btn-sm" id="info-print">导出</button>
+	</div>
+</body>
+<script type="text/javascript">
+	var imgArray = $('.container')[0].getElementsByTagName('img');
+	var down = new downLoad(imgArray);
+	down.init(document.getElementById('info-print'),$('.container')[0],'[学生姓名]信息','a4');
+	// new Vue({
+	// 	el:".container",
+	// 	data: {
+	// 		basicInfo : {
+	// 			name : "dawe",
+	// 			sid : "dagie"
+	// 		}
+	// 	}
+	// })
+	// new Vue({
+	// 	el:"#test",
+	// 	data: {
+	// 		course: {}
+	// 	}
+	// });
+	// function down() {
+ //            var dd = {
+ //                content: [
+ //                    $(".container").html()
+ //                ],
+ //                defaultStyle: {
+ //                    font: '方正姚体'
+ //                }
+ //            };
+ //            pdfMake.fonts = {
+ //                Roboto: {
+ //                    normal: 'Roboto-Regular.ttf',
+ //                    bold: 'Roboto-Medium.ttf',
+ //                    italics: 'Roboto-Italic.ttf',
+ //                    bolditalics: 'Roboto-Italic.ttf'
+ //                },
+ //                方正姚体: {
+ //                    normal: 'FZYTK.TTF',
+ //                    bold: 'FZYTK.TTF',
+ //                    italics: 'FZYTK.TTF',
+ //                    bolditalics: 'FZYTK.TTF',
+ //                }
+ //            };
+ //            pdfMake.createPdf(dd).download();
+ //        }
+ // $(document).ready(function(){
+ // 	$("#info-print").click(function() {
+ // 		html2canvas($(".container"), {
+ //        onrendered: function(canvas) {
+
+ //            //通过html2canvas将html渲染成canvas，然后获取图片数据
+ //            var imgData = canvas.toDataURL('jpeg');
+
+ //            //初始化pdf，设置相应格式
+ //            var doc = new jsPDF("p", "mm", "a4");
+
+ //            //这里设置的是a4纸张尺寸
+ //            doc.addImage(imgData, 'JPEG', 0, 0,210,297);
+
+ //            //输出保存命名为content的pdf
+ //            doc.save('content.pdf');
+ //        }
+ //    });
+ // 	})
+ // });
+
+// $(document).ready(function() {
+// 	$("#info-print").click(function(){
+// 		html2canvas($(".container"), {
+//         onrendered: function(canvas) {
+
+//             //通过html2canvas将html渲染成canvas，然后获取图片数据
+//             var imgData = canvas.toDataURL('image/jpeg');
+
+//             //初始化pdf，设置相应格式
+//             var doc = new jsPDF("p", "mm", "a4");
+
+//             //这里设置的是a4纸张尺寸
+//             doc.addImage(imgData, 'JPEG', 0, 0,210,297);
+
+//             //输出保存命名为content的pdf
+//             doc.save('content.pdf');
+//         }
+//     	});
+// 	})
+// });
+</script>
+</html>

@@ -97,12 +97,13 @@ export default {
     this.students = testData
     this.recordFilter = recordFilter
     */
-    //this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
+    this.fetchData(this.$route.params.postData, this.$route.params.recordFilter)
   },
   methods: {
     fetchData: function(dataJson, recordFilter) {
       //为了把this传进ajax
       var _self = this
+      console.log('postdata: ' + dataJson)
       // replace getPost with your data fetching util / API wrapper
       $.ajax({
         type: 'POST',
