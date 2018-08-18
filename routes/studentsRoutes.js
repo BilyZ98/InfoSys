@@ -22,4 +22,8 @@ router.post('/insert/techProject',studentsController.addTechProject);
 
 router.post('/import',studentsController.batchInsertInfo );
 
+router.post('/queryOne',studentsController.queryOne);
+
+router.post('/queryAll',studentsController.queryAll);
+
 module.exports = router;

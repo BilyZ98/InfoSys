@@ -4,6 +4,7 @@ const {queryDB} = require('../utils/dbConn');
 const resBody = require('../utils/resBody.js');
 
 
+//这个是最开始的测试用
 exports.getStudentInfo = async (data)=> {
   let query =
   "select * from students where students.sid = ?\n;"
@@ -316,6 +317,25 @@ let values= whereValues;
 console.log(values);
 
 return queryDB({sql:query,nestTables:true},values);
+}
+
+/*
+由于南海老师要求前端页面更矮，所以原来的后端查询函数就不再适用了，
+因此如果是查看一个人的所有信息就是单独的查询每个表，把结果放到一个数组里边
+再返回给前端，在控制层循环执行每个表的查询，
+先写一个对单个表查询的model函数，可以利用以前的query函数
+{
+'tables':['basicInfo','family']
+'id':'16340320'
+}
+
+*/
+exports.queryAll = (data) => {
+  let query = "" ;
+  for(table in data['tables']){
+    query+="select * from " + table + ' where sid = ' + data['id'] + ' ; \n'
+  }
+  return queryDB(query)
 }
 
 exports.checkStudent = (data, table) =>{

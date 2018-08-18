@@ -22,7 +22,8 @@ var pool = mysql.createPool({
   user:'sdcs',
   password:'sysu_sdcs_123',
   database:'InfoSys',
-  port:'3307'
+  port:'3307',
+  multipleStatements: true
 })
 
 const getConnection = ()=> {

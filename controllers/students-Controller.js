@@ -70,7 +70,6 @@ exports.batchInsertInfo = async (req,res,next) => {
 
 //表示查询，传入json 格式见 testJson.js，用于多表连接
 exports.query = async (req,res,next) => {
-  console.log("query fuck")
   console.log(req.body)
   StudentsModel.query(req.body).then((data)=>{
     console.log(data);
@@ -80,6 +79,32 @@ exports.query = async (req,res,next) => {
     resBody.error(res,err);
   })
 
+}
+//只查询一个表，用原来的方法就可以，可以增加一个检查，判断传过来的select 里面是不是只有一个表，
+//如果不是，则报错
+exports.queryOne = async (req,res,next) => {
+  if(req.body['select'].length !=1) {
+    resBody.fail(res,443,'only_support_one_table_query');
+    return;
+  }
+  StudentsModel.query(req.body).then((data)=>{
+    console.log(data);
+    resBody.success(res,data)
+  })
+  .catch((err)=>{
+    resBody.error(res,err);
+  })
+}
+
+//点击学生学号，返回学生所有信息
+exports.queryAll = async(req,res,next) => {
+  StudentsModel.queryAll(req.body).then((data)=>{
+    console.log('queryAll:')
+    console.log(data)
+    resBody.success(res,data)
+  }).catch((err)=> {
+    resBody.error(res,err)
+  })
 }
 
 
