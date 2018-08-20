@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import tableData from './tableData.js'
+import tableData from './javascripts/tableData.js'
 
 export default {
   data: function() {

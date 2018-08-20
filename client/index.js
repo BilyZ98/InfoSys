@@ -9,6 +9,7 @@ import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
 import Import from './components/Import.vue'
+import Detail from './components/Detail.vue'
 
 import BasicInfo from './components/BasicInfo.vue'
 
@@ -32,6 +33,7 @@ const router = new VueRouter({
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import},
+    { name: 'detail', path: '/detail', component: Detail},
     {
       name: 'insert',
       path: '/insert',

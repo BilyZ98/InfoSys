@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import tableData from './tableData.js'
+import tableData from './javascripts/tableData.js'
 var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
 var emptyCell = JSON.stringify({})
 
@@ -533,6 +533,10 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 #container-query h4:hover {

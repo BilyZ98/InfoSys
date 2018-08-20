@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import tableData from './tableData.js'
+import tableData from './javascripts/tableData.js'
 
 export default {
   data: function() {
@@ -347,6 +347,10 @@ export default {
   height: 20px;
   text-align: center;
   padding-top: 5px;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 #container-list .table-cell:hover {

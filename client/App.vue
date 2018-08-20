@@ -73,10 +73,6 @@ export default {
 * {
   margin: 0;
   padding: 0;
-  transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
 }
 
 body {
@@ -109,6 +105,10 @@ header {
   font-size: 20px;
   font-weight: lighter;
   color: white;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 .button-home:hover {
@@ -149,6 +149,10 @@ aside {
   margin: auto;
   /*怎么让文字左右居中？*/
   padding-left: 67px;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 .button-side:hover {

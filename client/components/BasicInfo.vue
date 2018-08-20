@@ -47,9 +47,9 @@
 </template>
 
 <script>
-import tableData from './tableData.js'
-import downloadModule from './downloadModule.js'
-import importModule from './importModule.js'
+import tableData from './javascripts/tableData.js'
+import downloadModule from './javascripts/downloadModule.js'
+import importModule from './javascripts/importModule.js'
 var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
 var emptyCell = JSON.stringify({})
 
@@ -137,7 +137,7 @@ export default {
       $.ajax({
         type: 'POST',
         url: '/students/query',
-        data: dataJson,
+        data: postData,
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         timeout: 5000,
@@ -164,6 +164,13 @@ export default {
 		},
 		studentClick: function(event){
 			alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
+			//跳转,在跳转完成后再请求数据
+      this.$router.push({
+        name: 'detail',
+        params: {
+          sid: event.currentTarget.getAttribute('sid')
+        }
+      })
 		}
 	}
 }
@@ -203,6 +210,10 @@ export default {
 #manager-basicInfo .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
+	transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 #manager-basicInfo .header-button span:hover {
@@ -244,6 +255,10 @@ export default {
 	color: white;
 	background-color: var(--blue);
 	border: none;
+	transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 #manager-basicInfo .manager-button:hover {
@@ -280,6 +295,13 @@ export default {
 	padding-right: 8px;
 	padding-top: 5px;
 	padding-bottom: 5px;
+}
+
+#manager-basicInfo .container-card-list tr{
+	transition: background 0.3s;
+  -moz-transition: background 0.3s;  /* Firefox 4 */
+  -webkit-transition: background 0.3s; /* Safari 和 Chrome */
+  -o-transition: background 0.3s;  /* Opera */
 }
 
 #manager-basicInfo .container-card-list tr:not(.table-head):hover{
