@@ -48,9 +48,8 @@ export default {
 		}
 		var postData = JSON.stringify(data)
     console.log(postData)
-    /*this.student = {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}}
+    this.student = {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}}
     console.log(this.student['basicInfo']['sid'])
-    */
     //post
     var _self = this
     $.ajax({
@@ -70,7 +69,6 @@ export default {
         alert(data.responseJSON.err)
       }
      })
-    
     //导出按钮的初始化，要在数据加载完后进行
     var imgArray = $('.container')[0].getElementsByTagName('img');
 		var down = new downLoad(imgArray);

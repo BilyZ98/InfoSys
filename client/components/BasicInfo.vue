@@ -1,5 +1,6 @@
 <template>
 <div id="manager-basicInfo">
+	<!--顶部菜单-->
 	<div class="container-header">
 		<p class="header-text">基本信息管理</p>
 		<div class="header-button">
@@ -11,9 +12,10 @@
 			<span>删除</span>
 			<span>编辑</span>
 			<span>转毕业生</span>
-			<span>自定义列</span>
+			<span @click="diycolClick">自定义列</span>
 		</div>
 	</div>
+	<!--查询输入-->
 	<div class="container-card">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
@@ -28,20 +30,32 @@
     </div>
     <button class="manager-button" @click="queryClick">查询</button>
 	</div>
+	<!--显示数据-->
 	<div class="container-card-list">
 		<table border="1">
 			<tr class="table-head">
 				<th>#</th>
-		    <th v-for="record in table.records">{{record.name}}</th>
+		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
 		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
 		  	<td>{{index}}</td>
-		  	<td v-for="record in table.records">
+		  	<td v-for="record in table.records" v-if="record['display']==true">
 		  		<span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
 		</table>
+	</div>
+	<!-- 弹窗 -->
+	<div id="popup" class="popup-background">
+	  <!-- 弹窗内容 -->
+	  <div class="popup-content">
+	    <span id="popup-close" @click="modalCloseClick">&times;</span>
+	    <div class="popup-cell" v-for="record in table.records">
+	    	{{record.name}}
+	    	<input type="checkbox" v-model:checked="record.display">
+	    </div>
+	  </div>
 	</div>
 </div>
 </template>
@@ -81,7 +95,7 @@ export default {
 	    ]
 		}
 	},
-	mounted: function(){
+	created: function(){
 		//alert(window.innerWidth)
 		//1536*728
 	},
@@ -161,6 +175,12 @@ export default {
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
 			importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
+		},
+		diycolClick: function(){
+			$('#popup').show()
+		},
+		modalCloseClick: function() {
+			$('#popup').hide()
 		},
 		studentClick: function(event){
 			alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
@@ -317,5 +337,57 @@ export default {
 	height: 20px;
 	*/
 	display: none;
+}
+
+/* 弹窗 (background) */
+#manager-basicInfo .popup-background {
+  display: none; /* 默认隐藏 */
+  position: absolute; /* 定位 */
+  z-index: 10; /* 设置在顶层 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+/* 弹窗内容 */
+#manager-basicInfo .popup-content {
+  background-color: white;
+  margin: 8% auto;
+  padding: 30px;
+  width: 600px;
+	height: 400px;
+	/*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px var(--grey-shadow);
+}
+
+#manager-basicInfo .popup-cell {
+	float: left;
+	width: 160px;
+	height: 40px;
+	text-align: left;
+}
+
+/* 关闭按钮 */
+#manager-basicInfo #popup-close {
+	position: relative;
+	float: right;
+	width: 50px;
+	height: 50px;
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: right;
+}
+
+#manager-basicInfo #popup-close:hover, #popup-close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
