@@ -46,8 +46,8 @@
 		  </tr>
 		</table>
 	</div>
-	<button class="manager-button" @click="queryClick">修改</button>
-	<button class="manager-button" @click="queryClick">提交</button>
+	<button>修改</button>
+	<button>提交</button>
 
 	<!-- 弹窗 -->
 	<div id="popup" class="popup-background">
@@ -310,7 +310,6 @@ export default {
 	min-width: 100%;
 	font-size: 14px;
 	border-color: var(--grey-shadow);
-	margin-right: 100px;
 }
 
 #manager-basicInfo .container-card-list th, td {
@@ -332,13 +331,6 @@ export default {
 }
 
 #manager-basicInfo #button-import {
-	/*
-	position: relative;
-	opacity: 0;
-	display: inline;
-	width: 60px;
-	height: 20px;
-	*/
 	display: none;
 }
 

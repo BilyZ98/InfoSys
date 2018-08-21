@@ -9,18 +9,18 @@
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">家庭信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">学籍管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">课程成绩</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">党员信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">奖学金</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">资助信息管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">助学贷款</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">学生干部任职情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">获得奖励情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">发表论文情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">获得专利情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" @click="importClick">科研项目</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >家庭信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >学籍管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >课程成绩</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >党员信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >奖学金</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >资助信息管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >助学贷款</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >学生干部任职情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >获得奖励情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >发表论文情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >获得专利情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >科研项目</div>
 <!--
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
