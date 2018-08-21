@@ -333,8 +333,9 @@ return queryDB({sql:query,nestTables:true},values);
 exports.queryAll = (data) => {
   let query = "" ;
   for(table in data['tables']){
-    query+="select * from " + table + ' where sid = ' + data['id'] + ' ; \n'
+    query+="select * from " + data['tables'][table] + ' where sid = ' + data['id'] + ' ; \n'
   }
+  console.log(query)
   return queryDB(query)
 }
 
