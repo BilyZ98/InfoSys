@@ -39,13 +39,16 @@
 		  </tr>
 		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
 		  	<td>{{index}}</td>
-		  	<td v-for="record in table.records" v-if="record['display']==true">
+		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
 		  		<span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
 		</table>
 	</div>
+	<button class="manager-button" @click="queryClick">修改</button>
+	<button class="manager-button" @click="queryClick">提交</button>
+
 	<!-- 弹窗 -->
 	<div id="popup" class="popup-background">
 	  <!-- 弹窗内容 -->

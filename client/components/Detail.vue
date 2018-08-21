@@ -8,10 +8,12 @@
 				<div class="info-heading">{{table.name}}</div>
 				<!--若表中有数据，以字段循环-->
 				<div class="clearfix" v-if="student[table.id]!=undefined">
-					<span class="col-md-offset-1 col-md-3 info-text" v-for="record in table.records">
-						<span v-if="student[table.id][record.id]!=undefined">{{record.name}}: {{student[table.id][record.id]}}</span>
-						<span v-else>{{record.name}}: ---</span>
-					</span>
+					<div class="table-array" v-for="tableArr in student[table.id]">
+						<span class="info-text" v-for="record in table.records">
+							<span v-if="tableArr[record.id]!=undefined">{{record.name}}: {{tableArr[record.id]}}</span>
+							<span v-else>{{record.name}}: ---</span>
+						</span>
+					</div>
 				</div>
 				<div v-else>---</div>
 			</div>
@@ -23,6 +25,7 @@
 	</div>
 </div>
 </template>
+
 
 <script>
 import tableData from './javascripts/tableData.js'
@@ -48,8 +51,7 @@ export default {
 		}
 		var postData = JSON.stringify(data)
     console.log(postData)
-    this.student = {basicInfo: {sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }, cadre: {year: '2013', cadreClass: 'homeAddress', cadreName: '321'}}
-    console.log(this.student['basicInfo']['sid'])
+    this.student = {basicInfo: [{sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' },{sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }], cadre: [{year: '2013', cadreClass: 'homeAddress', cadreName: '321'}], paper: [{serialNumber: '2012'}, {serialNumber: '2013'}]}
     //post
     var _self = this
     $.ajax({
@@ -128,9 +130,15 @@ export default {
 	margin: 10px;
 }
 
-#container-detail  .info-text {
-	margin-top: 5px;
-	margin-bottom: 5px;
+#container-detail .table-array{
+	margin: 5px;
+	float: left;
+}
+
+#container-detail .info-text {
+	float: left;
+	margin: 5px;
+	width: 300px;
 }
 
 #container-detail .clearfix {
