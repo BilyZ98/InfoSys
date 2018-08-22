@@ -26,4 +26,8 @@ router.post('/queryOne',studentsController.queryOne);
 
 router.post('/queryAll',studentsController.queryAll);
 
+router.post('/statistic',studentsController.statistic);
+
+router.post('/updateInfo',studentsController.updateInfo);
+
 module.exports = router;
