@@ -202,10 +202,8 @@ export default {
 <style>
 
 #manager-basicInfo .container-header {
-	width:100%;
 	height: 70px;
 	line-height: 70px;
-	margin: auto;
 	padding-left: 30px;
 	text-align: left;
 	background-color: white;
@@ -245,9 +243,9 @@ export default {
 }
 
 #manager-basicInfo .container-card {
-  margin: 20px;
-  text-align: left;
+  margin: 25px;
   padding: 20px;
+  text-align: left;
   background-color: white;
   /*radius*/
   border-radius: 3px;
@@ -289,12 +287,13 @@ export default {
 }
 
 #manager-basicInfo .container-card-list {
-  margin: 20px;
+  margin: 25px;
   text-align: left;
   padding: 20px;
   /*alert($('#manager-basicInfo .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
-  width: 1251.32px;
+  /*width: 1251.32px;*/
+  width: calc(100vw - 275px);
   background-color: white;
   /*radius*/
   border-radius: 3px;

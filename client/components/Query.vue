@@ -544,7 +544,7 @@ export default {
 }
 
 #container-query .container-card {
-  margin: 20px;
+  margin: 25px;
   text-align: left;
   padding-top: 5px;
   padding-bottom: 5px;

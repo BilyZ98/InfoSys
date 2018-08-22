@@ -79,7 +79,6 @@ body {
   width: 100%;
   height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  font-size: 15px;
   /*
   background-color: lighten(#eceef1, 30%);
   color: #34495e;
@@ -89,20 +88,23 @@ body {
 header {
   position: fixed;
   width: 100%;
-  height: 8%;
+  height: 60px;
+  top: 0;
+  left: 0;
   background-color: var(--blue);
   text-align: center;
   /*shadow*/
   box-shadow: 1px 1px 5px var(--grey-shadow);
+  z-index: 100;
 }
 
 .button-home {
   position: relative;
   height: 100%;
-  width: 15%;
+  width: 225px;
   padding-top: 15px;
   background-color: var(--blue);
-  font-size: 20px;
+  font-size: 1.5em;
   font-weight: lighter;
   color: white;
   transition: 0.3s;
@@ -119,13 +121,14 @@ header {
 aside {
   position: fixed;
   height: 100%;
-  width: 15%;
-  top: 8%;
+  width: 225px;
+  top: 60px;
+  left: 0;
   background-color: white;
   color: var(--grey-menu);
   /*shadow*/
   box-shadow: 1px 1px 5px var(--grey-shadow);
-  z-index: -10;
+  z-index: 99;
 }
 
 .info-side {
@@ -165,15 +168,16 @@ aside {
 }
 
 .container-info{
-  position: absolute;
-  /*use min-height/min-width so that the div can auto expand when inside div gets bigger */
-  min-width: 85%;
-  min-height: 92%;
-  margin-left: 15%;
-  top: 8%;
+  /*use min-height/min-width so that the div can auto expand when inside div gets bigger
+  使用calc可以实现响应式布局*/
+  min-width: calc(100vw - 225px);
+  min-height: calc(100vh - 60px);
+  margin-left: 225px;
+  margin-top: 60px;
   text-align: center;
   /*the section cannot render in front of headbar*/
   z-index: -100;
   background-color: var(--grey-background);
+  overflow: hidden;
 }
 </style>

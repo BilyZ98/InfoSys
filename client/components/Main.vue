@@ -18,7 +18,7 @@
 <style>
 #container-home .container-card {
   float: left;
-  margin: 20px;
+  margin: 25px;
   margin-right: 0;
   height: 500px;
   width: 400px;

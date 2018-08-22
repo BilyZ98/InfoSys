@@ -53,6 +53,7 @@ import downLoad from './javascripts/js/paper_download.js'
 export default {
 	data: function(){
 		return {
+			sid: null,
 			tables: tableData,
 			student: {},
 			//backup用于更新数据后判断哪些被更新了
@@ -61,11 +62,11 @@ export default {
 	},
 	created: function(){
 		//这样传参刷新页面就会丢失参数
-		var sid = this.$route.params.sid
+		this.sid = this.$route.params.sid
 		//alert('sid: ' + sid)
 		var data = {
 			tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
-			id: sid
+			id: this.sid
 		}
 		var postData = JSON.stringify(data)
     console.log('请求全部信息的data： ' + postData)
@@ -93,10 +94,11 @@ export default {
         alert(data.responseJSON.err)
       }
      })
-    //导出按钮的初始化，要在数据加载完后进行
-    var imgArray = document.getElementsByTagName('img');
-		var down = new downLoad(imgArray);
-		down.init(document.getElementById('info-print'),$('.container')[0],'[学生姓名]信息','a4');
+    /*
+    var imgArray = $('.container')[0]
+		var down = new downLoad.downLoad(imgArray)
+		down.init($('#info-print') ,$('.container')[0], '[学生姓名]信息','a4')
+		*/
 	},
 	methods: {
 		dataMakeup: function(data) {
@@ -121,13 +123,13 @@ export default {
 				$('#info-update').attr('button-type', 'end')
 				$('.record-changable').each(function(){
 					$(this).attr('disabled', false)
-					$(this).css('border', '1px solid')
+					//$(this).css('border', '1px solid')
 				})
 			} else if ($('#info-update').attr('button-type') == 'end'){
 				//修改完成进行上传
 				$('.record-changable').each(function(){
 					$(this).attr('disabled', true)
-					$(this).css('border', 'none')
+					//$(this).css('border', 'none')
 				})
 				$('#info-update').text('修改')
 				$('#info-update').attr('button-type', 'begin')
@@ -141,7 +143,7 @@ export default {
 								//console.log(record + ': ' + tableArr[record])
 								if(data[table] == undefined){
 									data[table] = {primary: {}, new: {}}
-									//把这个表的主键加入old
+									//把这个表的主键写入
 									for(let recordInOld in tableData[table]['records']){
 										if(tableData[table]['records'][recordInOld]['isPrimary']){
 											data[table]['primary'][recordInOld] = this.studentBackup[table][i][recordInOld]
@@ -177,6 +179,7 @@ export default {
 			}
 		},
   	printClick: function() {
+  		/*
   		html2canvas($(".container"), {
 				onrendered: function(canvas) {
 				  //通过html2canvas将html渲染成canvas，然后获取图片数据
@@ -186,27 +189,32 @@ export default {
 				   var doc = new jsPDF("p", "mm", "a4")
 
 				   //这里设置的是a4纸张尺寸
-				   doc.addImage(imgData, 'JPEG', 0, 0,210,297)
+				   doc.addImage(imgData, 'JPEG', 0, 0, 210, 297)
 
 				   //输出保存命名为content的pdf
-				   doc.save('content.pdf')
+				   doc.save(this.sid + '.pdf')
 				}
      })
   	}
-
+		*/
+		}
 	}
 }
 </script>
 
 <style>
 #container-detail {
-	margin: 20px;
+	margin: 25px;
   text-align: left;
   background-color: white;
   /*radius*/
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
+}
+
+#container-detail .container {
+	padding-bottom: 20px;
 }
 
 #container-detail .container .heading {
@@ -259,8 +267,8 @@ export default {
 }
 
 #container-detail table {
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 25px;
+	margin-right: 25px;
 	font-size: 14px;
 	border-color: var(--grey-shadow);
 	min-width: 96%;
@@ -283,7 +291,7 @@ export default {
 }
 
 #container-detail #info-update {
-	right: 20px;
+	right: 25px;
 	bottom: 45px;
 	font-size: 15px;
 	color: white;
@@ -305,7 +313,7 @@ export default {
 }
 
 #container-detail #info-print {
-	right: 20px;
+	right: 25px;
 	bottom: 8px;
 	font-size: 15px;
 	color: white;

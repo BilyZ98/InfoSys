@@ -325,7 +325,7 @@ export default {
 #container-list .container-card {
   display: table;
   width: 2000px;
-  margin: 20px;
+  margin: 25px;
   padding-top: 5px;
   padding-bottom: 5px;
   padding-left: 2%;
