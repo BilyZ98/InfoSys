@@ -140,11 +140,11 @@ export default {
 							if(tableArr[record] != this.studentBackup[table][i][record]){
 								//console.log(record + ': ' + tableArr[record])
 								if(data[table] == undefined){
-									data[table] = {old: {}, new: {}}
+									data[table] = {primary: {}, new: {}}
 									//把这个表的主键加入old
 									for(let recordInOld in tableData[table]['records']){
 										if(tableData[table]['records'][recordInOld]['isPrimary']){
-											data[table]['old'][recordInOld] = this.studentBackup[table][i][recordInOld]
+											data[table]['primary'][recordInOld] = this.studentBackup[table][i][recordInOld]
 										}
 									}
 								}
