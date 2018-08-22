@@ -12,7 +12,7 @@
 					<div class="table-array" v-for="tableArr in student[table.id]">
 						<span class="info-text" v-for="record in table.records">
 							{{record.name}}:
-							<input v-bind:style="{width: 20+tableArr[record.id].length*10+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
+							<input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
 							<input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 						</span>
 					</div>
@@ -24,7 +24,7 @@
 					</tr>
 					<tr v-for="tableArr in student[table.id]">
   					<td v-for="record in table.records">
-							<input v-bind:style="{width: 20+tableArr[record.id].length*10+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
+							<input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
 							<input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 						</td>
 					</tr>
@@ -69,7 +69,7 @@ export default {
 			id: this.sid
 		}
 		var postData = JSON.stringify(data)
-    console.log('请求全部信息的data： ' + postData)
+    //console.log('请求全部信息的data： ' + postData)
     var testdata = {basicInfo: [{sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }], cadre: [{year: '2013', cadreClass: 'homeAddress', cadreName: '321'}], paper: [{serialNumber: '2012'}, {serialNumber: '2013'}]}
     this.student = this.dataMakeup(testdata)
     //深复制，才能起到backup之用
@@ -247,7 +247,7 @@ export default {
 #container-detail .info-text {
 	float: left;
 	margin: 5px;
-	width: 300px;
+	width: 350px;
 }
 
 #container-detail .clearfix {
