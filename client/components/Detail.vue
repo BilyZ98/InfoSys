@@ -8,7 +8,7 @@
 				<div class="info-heading">{{table.name}}</div>
 				<!--若表中有数据，以字段循环-->
 				<!--最多有一条数据的-->
-				<div class="clearfix" v-if="student[table.id]!=undefined&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
+				<div class="clearfix" v-if="student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
 					<div class="table-array" v-for="tableArr in student[table.id]">
 						<span class="info-text" v-for="record in table.records">
 							{{record.name}}:
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<!--有多条数据的-->
-				<table border="1" v-else-if="student[table.id]!=undefined">
+				<table border="1" v-else-if="student[table.id].length!=0">
 					<tr>
   					<th v-for="record in table.records">{{record.name}}</th>
 					</tr>
@@ -85,9 +85,10 @@ export default {
       success: function(data, xhr) {
       	console.log(xhr.status)
         console.log(data)
-        _self.student = this.dataMakeup(data['content'])
+        _self.student = _self.dataMakeup(data['content'])
         //深复制，才能起到backup之用
     		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+    		console.log(data['content']['scholarship'].length!=0)
       },
       error: function(data) {
         console.log(data.status)
