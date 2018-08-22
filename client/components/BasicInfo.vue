@@ -4,6 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">基本信息管理</p>
 		<div class="header-button">
+			<span @click="insertClick">插入数据</span>
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -16,7 +17,7 @@
 		</div>
 	</div>
 	<!--查询输入-->
-	<div class="container-card">
+	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
@@ -46,8 +47,14 @@
 		  </tr>
 		</table>
 	</div>
-	<button>修改</button>
-	<button>提交</button>
+	<!--统计-->
+	<div class="container-card">
+		<div class="stat-cell" v-for="record in table.records">
+	    	{{record.name}}
+	    	<input class="input-stat" type="checkbox" v-bind:record-id="record">
+	    </div>
+		<button class="manager-button" @click="statClick">统计</button>
+	</div>
 
 	<!-- 弹窗 -->
 	<div id="popup" class="popup-background">
@@ -103,6 +110,11 @@ export default {
 		//1536*728
 	},
 	methods: {
+		insertClick: function(){
+			this.$router.push({
+        name: 'basicInfoInsert'
+      })
+		},
 		queryClick: function(){
 			var basicInfo = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
@@ -194,6 +206,23 @@ export default {
           sid: event.currentTarget.getAttribute('sid')
         }
       })
+		},
+		statClick: function(){
+			var data = {
+				table: 'basicInfo',
+				fields: [],
+				condition: {}
+			}
+			$('.input-stat').each(function(){
+				if($(this).prop("checked")){
+					var recordId = $(this).attr('record-id')
+					data['fields'].push(recordId)
+					//data['condition'][recordId] = 
+				}
+			})
+			alert('请选择要统计的字段！')
+			var postData = JSON.stringify(data)
+			console.log(postData)
 		}
 	}
 }
@@ -263,6 +292,7 @@ export default {
 }
 
 #manager-basicInfo .container-record input, select, span {
+	height: 24px;
 	width: 200px;
 }
 
@@ -314,8 +344,8 @@ export default {
 #manager-basicInfo .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-top: 4px;
+	padding-bottom: 4px;
 }
 
 #manager-basicInfo .container-card-list tr{
@@ -383,5 +413,12 @@ export default {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+#manager-basicInfo .stat-cell {
+	float: left;
+	width: 100px;
+	height: 30px;
+	text-align: left;
 }
 </style>

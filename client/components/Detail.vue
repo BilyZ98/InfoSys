@@ -78,7 +78,7 @@ export default {
     $.ajax({
       type: 'POST',
       url: '/students/queryAll',
-      data: data,
+      data: postData,
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
       timeout: 5000,
