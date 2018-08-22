@@ -99,9 +99,12 @@ exports.queryOne = async (req,res,next) => {
 //点击学生学号，返回学生所有信息
 exports.queryAll = async(req,res,next) => {
   StudentsModel.queryAll(req.body).then((data)=>{
-    console.log('queryAll:')
-    console.log(data)
-    resBody.success(res,data)
+    let content={}
+    for(i in req.body['tables']){
+      content[req.body['tables'][i]] = data[i]
+    }
+    console.log(content)
+    resBody.success(res,content)
   }).catch((err)=> {
     resBody.error(res,err)
   })
@@ -162,7 +165,25 @@ exports.addTechProject = async (req,res,next) => {
   template(req,res,next, StudentsModel.addTechProject,"techProject");
 }
 
+exports.statistic = async (req,res,next) => {
+  StudentsModel.statistic(req.body).then((data)=>{
+    console.log('statistic')
+    console.log(data)
+    resBody.success(res,data)
+  }).catch((err)=>{
+    resBody.error(res,err)
+  })
+}
 
+exports.updateInfo = async (req,res,next)=>{
+  StudentsModel.updateInfo(req.body).then((data)=>{
+    console.log(data)
+    resBody.success(res,data)
+  })
+  .catch((err)=>{
+    resBody.error(res,err)
+  })
+}
 
 //检测数据库中是否已有记录
 async function checkConflict(body, table) {

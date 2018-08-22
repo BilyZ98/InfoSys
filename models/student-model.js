@@ -82,6 +82,7 @@ exports.insertOne = (table,field, oneRecord) =>{
 }
 
 //现在的更新是只针对sid一个键连接，还没有考虑到一个表有多个键的情况
+//用于批量导入时，更新一条数据
 exports.updateOne = (table,field, oneRecord) => {
   var tmp = true;
   //var field = data['field']
@@ -337,6 +338,119 @@ exports.queryAll = (data) => {
   }
   console.log(query)
   return queryDB(query)
+}
+
+/*
+学生信息统计
+查询数据格式
+/students/statistic
+{
+'table':'basicInfo',
+'fields':['grade','major'],
+'condition':{
+  'grade':'2016'
+}
+}
+现在先做没有condition 的
+然后还有奖学金要球平均金额
+*/
+exports.statistic = (data) => {
+  console.log(data)
+  let query = "select ";
+  var tmp = true
+  for(i in data['fields']){
+    console.log(data['fields'][i])
+    if(tmp){
+        query+=data['fields'][i]
+        tmp =false
+    }
+    else {
+      query+=',' + data['fields'][i]
+    }
+  }
+  query+=',count(*) as statistic from '+ data['table'] ;
+
+  var hasCondition = true;
+  if(JSON.stringify(data['condition']) === '{}') hasCondition=false;
+  if(hasCondition){
+    query+= ' where ';
+    tmp = true;
+    for(i in data['condition']){
+      if(tmp){
+        query+= i + ' = '  + data['condition'][i]
+        tmp = false
+      }
+      else {
+        query+=' and ' + i +' = ' + data['condition'][i]
+      }
+    }
+  }
+
+  query+=' group by ';
+  tmp = true;
+  for(i in data['fields']){
+    if(tmp){
+        query+=data['fields'][i]
+        tmp =false
+    }
+    else {
+      query+=',' + data['fields'][i]
+    }
+  }
+  query+=';'
+  console.log(query)
+  return queryDB(query);
+}
+
+//对单人表所有信息修改
+/*
+数据格式
+{
+  'basicInfo':{
+    'primary':{
+      'sid':'16340320',
+    },
+    'new':{
+      'sid':'12345678'
+    }
+  },
+  'family':{
+
+  }
+}
+*/
+exports.updateInfo = (data)=>{
+
+  let query = ''
+  for(i in data){
+     var tmp =  true;
+     query += 'update ' + data[i] + ' set ';
+     for(field in data[i]['new']){
+       if(tmp){
+         query+= field + '=' + data[i]['new'][field]
+         tmp=false;
+       }
+       else {
+         query+=',' +  field + '=' + data[i]['new'][field]
+       }
+     }
+     tmp = true
+     query+=' where '
+     for(field in data[i]['primary']){
+       if(tmp){
+         query+=field + '=' + data[i]['primary'][field]
+         tmp =false;
+       }
+       else {
+          query+= ' and ' + field + '=' + data[i]['primary'][field]
+       }
+     }
+
+     query+=';'
+  }
+  console.log('updateOneInfo:')
+  console.log(query)
+  return queryDB(query);
 }
 
 exports.checkStudent = (data, table) =>{
