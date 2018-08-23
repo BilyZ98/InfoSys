@@ -23,7 +23,7 @@
       <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
       <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
       	<option></option>
-        <option v-for="option in record.options">{{option}}</option>
+        <option v-for="option in record.optionsBar">{{option}}</option>
       </select>
       <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
         <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
@@ -55,11 +55,12 @@
       <input class="hide-container" type="text" v-if="record.valueType=='input'" v-bind:id="'basicInfo-stat-'+record.id">
       <select class="hide-container" v-else v-bind:id="'basicInfo-stat-'+record.id">
       	<option></option>
-        <option v-for="option in record.options">{{option}}</option>
+        <option v-for="option in record.optionsBar">{{option}}</option>
       </select>
     </div>
     <button class="manager-button" @click="statClick">统计</button>
-		<div id="stat-chart"></div>
+		<span id="stat-chart-bar"></span>
+		<span id="stat-chart-pie"></span>
 	</div>
 
 	<!-- 弹窗 -->
@@ -220,12 +221,12 @@ export default {
 			var postData = JSON.stringify(data)
 			console.log(postData)
 			// 图表配置
-      var options = {
+      var optionsBar = {
         chart: {
           type: 'bar'
         },
         title: {
-          text: '基本信息表统计'
+          text: '条形统计图'
         },
         xAxis: {
           categories: []   // x 轴分类
@@ -237,11 +238,45 @@ export default {
           allowDecimals: false
         },
         series: [],
-        credits: {
-        	enabled: true
+        credits: { //右下角链接
+        	enabled: false
         }
       }
-	    /*$.ajax({
+      var optionsPie = {
+      	chart: {
+					plotBackgroundColor: null,
+					plotBorderWidth: null,
+					plotShadow: false,
+   			},
+				title: {
+		      text: '饼状统计图'
+		    },
+				tooltip: {
+				  pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				},
+				plotOptions: {
+				  pie: {
+						allowPointSelect: true,
+						cursor: 'pointer',
+						dataLabels: {
+						  enabled: true,
+						  format: '<b>{point.name}%</b>: {point.percentage:.1f} %',
+						  style: {
+						     color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+						  }
+						}
+				  }
+				},
+				series: [{
+				  type: 'pie',
+				  name: '人数',
+				  data: []
+				}],
+				credits: {
+        	enabled: false
+        }
+      }
+	    $.ajax({
 	      type: 'POST',
 	      url: '/students/statistic',
 	      data: postData,
@@ -250,9 +285,43 @@ export default {
 	      timeout: 5000,
 	      success: function(result, xhr) {
 	      	for(let key in result){
-	      		if(key == 'content'){
+					  if(key == 'content'){
 	      			//操作成功，配置图表
-	      			
+	      			/*let statData = [
+						    {gender: '女', major: null, statistic: 2},
+						    {gender: '女', major: 123, statistic: 1},
+						    {gender: '男', major: 123, statistic: 3},
+						    {gender: '男', major: '数学', statistic: 1}
+					    ]*/
+					    let statData = result['content']
+					    //pie
+					    var pieArr = []
+					    var totalNum = 0
+					    for(let i = 0; i < statData.length; i++){
+					    	totalNum += statData[i]['statistic']
+					    }
+					    //bar
+							for(let i = 0; i < statData.length; i++){
+								let statArr = statData[i]
+								//xAxis
+								let str = ''
+								for(let item in statArr){
+									if(item != 'statistic')
+									str = str + tableData['basicInfo']['records'][item]['name'] + ':' + statArr[item] + ' '
+								}
+								optionsBar['xAxis']['categories'].push(str)
+								//series
+								let arr = []
+								for(let j = 0; j < statData.length; j++){
+									arr[j] = 0
+								}
+								arr[i] = statArr['statistic']
+								optionsBar['series'][i] = {}
+								optionsBar['series'][i]['name'] = str
+								optionsBar['series'][i]['data'] = arr
+								//pie
+								optionsPie['series'][0]['data'][i] = [str, 100 * statArr['statistic'] / totalNum]
+							}
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -264,35 +333,10 @@ export default {
 	        //console.log(result)
 	        alert('服务器连接错误: ' + xhr)
 	      }
-	    })*/
-	    let statData = [
-		    {gender: '女', major: null, statistic: 2},
-		    {gender: '女', major: 123, statistic: 1},
-		    {gender: '男', major: 123, statistic: 3},
-		    {gender: '男', major: '数学', statistic: 1}
-	    ]
-			for(let i = 0; i < statData.length; i++){
-				let statArr = statData[i]
-				//xAxis
-				let str = ''
-				for(let item in statArr){
-					if(item != 'statistic')
-					str = str + tableData['basicInfo']['records'][item]['name'] + ':' + statArr[item] + ' '
-				}
-				options['xAxis']['categories'].push(str)
-				//series
-				let arr = []
-				for(let j = 0; j < statData.length; j++){
-					arr[j] = 0
-				}
-				arr[i] = statArr['statistic']
-				options['series'][i] = {}
-				options['series'][i]['name'] = str
-				options['series'][i]['data'] = arr
-			}
-			console.log(JSON.stringify(options))
+	    })
       // 图表初始化函数
-      var chart = Highcharts.chart('stat-chart', options)
+      Highcharts.chart('stat-chart-bar', optionsBar)
+      Highcharts.chart('stat-chart-pie', optionsPie)
 		}
 	}
 }
@@ -515,7 +559,15 @@ export default {
 	height: 10px;
 }
 
-#manager-basicInfo #stat-chart {
-	margin-top: 120px;
+#manager-basicInfo #stat-chart-bar {
+	float: left;
+	margin-top: 20px;
+	width: 50%;
+}
+
+#manager-basicInfo #stat-chart-pie {
+	float: left;
+	margin-top: 20px;
+	width: 50%;
 }
 </style>
