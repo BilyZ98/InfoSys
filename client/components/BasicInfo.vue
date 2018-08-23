@@ -23,7 +23,7 @@
       <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
       <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
       	<option></option>
-        <option v-for="option in record.optionsBar">{{option}}</option>
+        <option v-for="option in record.options">{{option}}</option>
       </select>
       <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
         <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
@@ -55,7 +55,7 @@
       <input class="hide-container" type="text" v-if="record.valueType=='input'" v-bind:id="'basicInfo-stat-'+record.id">
       <select class="hide-container" v-else v-bind:id="'basicInfo-stat-'+record.id">
       	<option></option>
-        <option v-for="option in record.optionsBar">{{option}}</option>
+        <option v-for="option in record.options">{{option}}</option>
       </select>
     </div>
     <button class="manager-button" @click="statClick">统计</button>
@@ -210,7 +210,7 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#basicInfo-stat-' + String(recordId)) != ''){
+					if( $('#basicInfo-stat-' + recordId).val() != ''){
 						data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
 					}
 				}
@@ -293,7 +293,8 @@ export default {
 						    {gender: '男', major: 123, statistic: 3},
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
-					    let statData = result['content']
+					    console.log(result[key])
+					    let statData = result[key]
 					    //pie
 					    var pieArr = []
 					    var totalNum = 0
@@ -321,6 +322,9 @@ export default {
 								optionsBar['series'][i]['data'] = arr
 								//pie
 								optionsPie['series'][0]['data'][i] = [str, 100 * statArr['statistic'] / totalNum]
+								// 图表初始化函数
+					      Highcharts.chart('stat-chart-bar', optionsBar)
+					      Highcharts.chart('stat-chart-pie', optionsPie)
 							}
 	      		} else if (key == 'err'){
 	      			//操作错误
@@ -334,9 +338,6 @@ export default {
 	        alert('服务器连接错误: ' + xhr)
 	      }
 	    })
-      // 图表初始化函数
-      Highcharts.chart('stat-chart-bar', optionsBar)
-      Highcharts.chart('stat-chart-pie', optionsPie)
 		}
 	}
 }
