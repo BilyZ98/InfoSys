@@ -49,11 +49,14 @@
 	</div>
 	<!--统计-->
 	<div class="container-card">
-		<div class="stat-cell" v-for="record in table.records">
+		<div>
+			<div class="stat-cell" v-for="record in table.records">
 	    	{{record.name}}
-	    	<input class="input-stat" type="text" v-bind:record-id="record">
+	    	<input class="input-stat" type="checkbox" v-bind:record-id="record">
 	    </div>
-		<button class="manager-button" @click="statClick">统计</button>
+			<button class="manager-button" @click="statClick">统计</button>
+		</div>
+		<div id="stat-chart"></div>
 	</div>
 
 	<!-- 弹窗 -->
@@ -236,6 +239,36 @@ export default {
 	      }
 	    })
 	    */
+      // 图表配置
+      var options = {
+        chart: {
+            type: 'bar'                          //指定图表的类型，默认是折线图（line）
+        },
+        title: {
+            text: '我的第一个图表'                 // 标题
+        },
+        xAxis: {
+            categories: ['2015', '2016', '2017']   // x 轴分类
+        },
+        yAxis: {
+          title: {
+              text: '入学年份人数'                // y 轴标题
+          },
+          allowDecimals: false
+        },
+        series: [{                              // 数据列
+            name: '河南',                        // 数据列名
+            data: [1, 0, 4]                     // 数据
+        }, {
+            name: '东北',
+            data: [5, 7, 3]
+        }],
+        credits: {
+        	enabled: true
+        }
+      };
+      // 图表初始化函数
+      var chart = Highcharts.chart('stat-chart', options);
 		}
 	}
 }
@@ -314,7 +347,7 @@ export default {
 	clear: both;
 	width: 110px;
 	height: 36px;
-	margin-left: 44%;
+	margin-left: calc(50% - 55px);
 	font-size: 17px;
 	color: white;
 	background-color: var(--blue);
@@ -430,8 +463,12 @@ export default {
 
 #manager-basicInfo .stat-cell {
 	float: left;
-	width: 300px;
+	width: 100px;
 	height: 30px;
 	text-align: left;
+}
+
+#manager-basicInfo #stat-chart {
+	margin-top: 120px;
 }
 </style>
