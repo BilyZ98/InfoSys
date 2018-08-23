@@ -28,6 +28,6 @@ router.post('/queryAll',studentsController.queryAll);
 
 router.post('/statistic',studentsController.statistic);
 
-router.post('/updateInfo',studentsController.updateInfo);
+router.post('/update',studentsController.updateInfo);
 
 module.exports = router;

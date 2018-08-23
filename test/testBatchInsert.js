@@ -1,5 +1,5 @@
 
-const stuModel = require('../models/student-model.js')
+const stuModel = require('../models/student-model.js');
 
 
 let query =  {
@@ -13,7 +13,7 @@ for(one in query['batchInfo']){
   console.log(query['batchInfo'][one])
 }
 
-var a = [1,2,4]
+var a = [1,2,4];
 
 function test(a){
   var b =a

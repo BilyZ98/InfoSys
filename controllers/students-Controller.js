@@ -10,18 +10,18 @@ exports.getStudentsInfo = async (req,res,next) => {
 
 //范式， 用于学生插入基本信息
 async function template(req,res,next,concrete, table){
-  let preCheck1 = await checkConflict(req.body, table)
-  let preCheck2 = checkIDValid(req.body)
+  let preCheck1 = await checkConflict(req.body, table);
+  let preCheck2 = checkIDValid(req.body);
 
   if(preCheck1 && preCheck2)
   {
     //StudentsModel.addFamily(req.body)
     concrete(req.body).then(() => {
-      resBody.success(res)
+      resBody.success(res);
     })
     .catch((err) => {
-      resBody.error(res,err)
-    })
+      resBody.error(res,err);
+    });
   }
   else
   {
@@ -37,7 +37,7 @@ async function template(req,res,next,concrete, table){
 
 //写一个导入的函数
 exports.batchInsertInfo = async (req,res,next) => {
-  let body = req.body
+  let body = req.body;
   console.log(body)
   let batchInfo = body['batchInfo']
   for(one in batchInfo){

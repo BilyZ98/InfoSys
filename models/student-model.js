@@ -18,6 +18,7 @@ exports.getStudentInfo = async (data)=> {
 * 查询格式 {
   'table':'basicInfo',
   'field':['sid','name','gender','birthPlace'],
+  'primary':['sid'],
   'batchInfo':[['16340320','zzt','male','zj'],
 ['12345679','asd','female','bj']]
 }
@@ -30,7 +31,7 @@ exports.batchInsert = (table,field,oneRecord) => {
   let query =
   "insert into " + table +
   "  ( ";
-  for(x in field){
+  for(let x in field){
     if(tmp) {
         query +=field[x];
         tmp =false;
@@ -54,7 +55,7 @@ exports.insertOne = (table,field, oneRecord) =>{
   let query =
   "insert into " + table +
   " ( ";
-  for(x in field){
+  for(let x in field){
     if(tmp){
       query+=field[x]
       tmp =false
@@ -65,7 +66,7 @@ exports.insertOne = (table,field, oneRecord) =>{
   }
   query+=' ) values (';
   tmp = true;
-  for(x in field){
+  for(let x in field){
     if(tmp){
       query+='?'
       tmp =false
@@ -91,7 +92,7 @@ exports.updateOne = (table,field, oneRecord) => {
   let query =
   "update " + table +
   " set  ";
-  for(x in field){
+  for(let x in field){
     if(field[x]!='sid'){
       if(tmp){
         query+=field[x] + ' =? '
@@ -263,9 +264,9 @@ if(!tmp) {
 tmp = true;
 //从前端传过来的输入的条件
 //迭代---> 由于要支持模糊查询，范围查询等，因此数据会变化
-for(devide in whereObj){
-  for (table in whereObj[devide]) {
-    for (field in whereObj[devide][table]) {
+for(let devide in whereObj){
+  for (let table in whereObj[devide]) {
+    for (let field in whereObj[devide][table]) {
       if(tmp){
         switch(devide){
           case "equal":
@@ -333,11 +334,13 @@ return queryDB({sql:query,nestTables:true},values);
 */
 exports.queryAll = (data) => {
   let query = "" ;
-  for(table in data['tables']){
-    query+="select * from " + data['tables'][table] + ' where sid = ' + data['id'] + ' ; \n'
+  let values = []
+  for(let table in data['tables']){
+    query+="select * from " + data['tables'][table] + ' where sid = ?; \n'//+ data['id']
+    values.push(data['id'])
   }
   console.log(query)
-  return queryDB(query)
+  return queryDB(query,values);
 }
 
 /*
@@ -357,8 +360,9 @@ exports.queryAll = (data) => {
 exports.statistic = (data) => {
   console.log(data)
   let query = "select ";
+  let values = [];
   var tmp = true
-  for(i in data['fields']){
+  for(let i in data['fields']){
     console.log(data['fields'][i])
     if(tmp){
         query+=data['fields'][i]
@@ -375,20 +379,21 @@ exports.statistic = (data) => {
   if(hasCondition){
     query+= ' where ';
     tmp = true;
-    for(i in data['condition']){
+    for(let i in data['condition']){
       if(tmp){
-        query+= i + ' = '  + data['condition'][i]
+        query+= i + ' = ?' // + data['condition'][i]
         tmp = false
       }
       else {
-        query+=' and ' + i +' = ' + data['condition'][i]
+        query+=' and ' + i +' = ?'// + data['condition'][i]
       }
+      values.push(data['condition'][i])
     }
   }
 
   query+=' group by ';
   tmp = true;
-  for(i in data['fields']){
+  for(let i in data['fields']){
     if(tmp){
         query+=data['fields'][i]
         tmp =false
@@ -399,7 +404,7 @@ exports.statistic = (data) => {
   }
   query+=';'
   console.log(query)
-  return queryDB(query);
+  return queryDB(query,values);
 }
 
 //对单人表所有信息修改
@@ -421,42 +426,64 @@ exports.statistic = (data) => {
 */
 exports.updateInfo = (data)=>{
 
-  let query = ''
-  for(i in data){
+  let query = ""
+  let values= []
+  for(let i in data){
+    if(JSON.stringify(data[i]) === '{}') continue; //如果为空，则跳过
      var tmp =  true;
-     query += 'update ' + data[i] + ' set ';
-     for(field in data[i]['new']){
+     query += 'update ' + i + ' set ';
+     for(let field in data[i]['new']){
        if(tmp){
-         query+= field + '=' + data[i]['new'][field]
+         query+= field + "= ? " //+ data[i]['new'][field]
          tmp=false;
        }
        else {
-         query+=',' +  field + '=' + data[i]['new'][field]
+         query+=',' +  field + '=? ' //+ data[i]['new'][field]
        }
+       values.push(data[i]['new'][field])
      }
      tmp = true
      query+=' where '
-     for(field in data[i]['primary']){
+     for(let field in data[i]['primary']){
        if(tmp){
-         query+=field + '=' + data[i]['primary'][field]
+         query+=field + '=?' //+ data[i]['primary'][field]
          tmp =false;
        }
        else {
-          query+= ' and ' + field + '=' + data[i]['primary'][field]
+          query+= ' and ' + field + '=?' //+ data[i]['primary'][field]
        }
+       values.push(data[i]['primary'][field])
      }
 
-     query+=';'
+     query+=';\n'
   }
   console.log('updateOneInfo:')
   console.log(query)
-  return queryDB(query);
+  console.log(values)
+  return queryDB(query,values);
 }
 
 exports.checkStudent = (data, table) =>{
   let query = "select sid from " + table +" where sid = ? \n;"; //注意有空格
   let values = [data.sid]
   return queryDB(query,values);
+}
+
+/*
+  通过输入表名得到表的主键
+  返回数组
+*/
+exports.getTablePriKey = async (table) =>{
+  let query = "show columns from  " + table+"  where `Key` = \"PRI\" ;"
+  //console.log(query);
+  let out = await queryDB(query);
+  let back = []
+  for(let i in out){
+    let json = JSON.stringify(out[i])
+    let obj = JSON.parse(json)
+    back.push(obj['Field'])
+  }
+  return back;
 }
 /*
 //下面测试将返回的结果转为json格式
