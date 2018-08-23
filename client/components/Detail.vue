@@ -87,7 +87,7 @@ export default {
       },
       error: function(data) {
         console.log(data.status)
-        alert(data.responseJSON.err)
+        alert('请求详细信息错误！ ' + data.responseJSON.err)
       }
      })
     /*
@@ -166,10 +166,11 @@ export default {
 		        console.log(data)
 		        //成功后backup变为现在的数据
 		    		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+		    		alert('更新数据成功！')
 		      },
 		      error: function(data) {
 		        console.log(data.status)
-		        alert(data.responseJSON.err)
+		        alert('更新错误！ ' + data.responseJSON.err)
 		      }
 		     })
 			}
