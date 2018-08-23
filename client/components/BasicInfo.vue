@@ -51,7 +51,7 @@
 	<div class="container-card">
 		<div class="stat-cell" v-for="record in table.records">
 	    	{{record.name}}
-	    	<input class="input-stat" type="checkbox" v-bind:record-id="record">
+	    	<input class="input-stat" type="text" v-bind:record-id="record">
 	    </div>
 		<button class="manager-button" @click="statClick">统计</button>
 	</div>
@@ -149,15 +149,22 @@ export default {
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         timeout: 5000,
-        success: function(data, xhr) {
-          _self.students = data['content']
-          console.log(xhr.status)
-          console.log(data)
-        },
-        error: function(data) {
-          console.log(data.status)
-          alert(data.responseJSON.err)
-        }
+        success: function(result, xhr) {
+	      	for(let key in result){
+	      		if(key == 'content'){
+	      			//操作成功
+	      			_self.students = result['content']
+	      		} else if (key == 'err'){
+	      			//操作错误
+	      			alert('查询信息错误: ' + result[key]['sqlMessage'])
+	      		}
+	      	}
+	      },
+	      error: function(result, xhr) {
+	      	//连接错误
+	        //console.log(result)
+	        alert('服务器连接错误: ' + xhr)
+	      }
       })
 		},
 		downloadClick: function(){
@@ -211,13 +218,21 @@ export default {
 	      contentType: 'application/json;charset=utf-8',
 	      dataType: 'json',
 	      timeout: 5000,
-	      success: function(data, xhr) {
-	      	console.log(xhr.status)
-	        console.log(JSON.stringify(data))
+	      success: function(result, xhr) {
+	      	for(let key in result){
+	      		if(key == 'content'){
+	      			//操作成功
+	      			_self.students = result['content']
+	      		} else if (key == 'err'){
+	      			//操作错误
+	      			alert('查询信息错误: ' + result[key]['sqlMessage'])
+	      		}
+	      	}
 	      },
-	      error: function(data) {
-	        console.log(data.status)
-	        alert(data.responseJSON.err)
+	      error: function(result, xhr) {
+	      	//连接错误
+	        //console.log(result)
+	        alert('服务器连接错误: ' + xhr)
 	      }
 	    })
 	    */
@@ -415,7 +430,7 @@ export default {
 
 #manager-basicInfo .stat-cell {
 	float: left;
-	width: 100px;
+	width: 300px;
 	height: 30px;
 	text-align: left;
 }

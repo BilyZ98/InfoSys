@@ -78,18 +78,23 @@ export default {
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
       timeout: 5000,
-      success: function(data, xhr) {
-      	console.log(xhr.status)
-        console.log(JSON.stringify(data))
-        _self.student = _self.dataMakeup(data['content'])
-        //深复制，才能起到backup之用
-    		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+      success: function(result, xhr) {
+      	for(let key in result){
+      		if(key == 'content'){
+      			_self.student = _self.dataMakeup(result['content'])
+			      //深复制，才能起到backup之用
+			    	_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+      		} else if (key == 'err'){
+      			alert('请求详细信息错误: ' + result[key]['sqlMessage'])
+      		}
+      	}
       },
-      error: function(data) {
-        console.log(data.status)
-        alert('请求详细信息错误！ ' + data.responseJSON.err)
+      error: function(result, xhr) {
+      	//连接错误
+        //console.log(result)
+        alert('服务器连接错误: ' + xhr)
       }
-     })
+    })
     /*
     var imgArray = $('.container')[0]
 		var down = new downLoad.downLoad(imgArray)
@@ -152,7 +157,11 @@ export default {
 					}
 				}
 				var postData = JSON.stringify(data)
-				console.log(postData)
+				if(postData == JSON.stringify({})){
+					alert('没有修改任何数据哦')
+					return
+				}
+				//console.log(postData)
 				var _self = this
 		    $.ajax({
 		      type: 'POST',
@@ -161,18 +170,24 @@ export default {
 		      contentType: 'application/json;charset=utf-8',
 		      dataType: 'json',
 		      timeout: 5000,
-		      success: function(data, xhr) {
-		      	console.log(xhr.status)
-		        console.log(data)
-		        //成功后backup变为现在的数据
-		    		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
-		    		alert('更新数据成功！')
+		      success: function(result, xhr) {
+		      	for(let key in result){
+		      		if(key == 'content'){
+		      			//成功后backup变为现在的数据
+				    		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+				    		alert('更新数据成功！')
+		      		} else if (key == 'err'){
+		      			alert('更新数据失败: ' + result[key]['sqlMessage'])
+		      			//失败，还原更新前的数据，也需要深复制
+		      			_self.student = JSON.parse(JSON.stringify(_self.studentBackup))
+		      		}
+		      	}
 		      },
-		      error: function(data) {
-		        console.log(data.status)
-		        alert('更新错误！ ' + data.responseJSON.err)
+		      error: function(result, xhr) {
+		        //console.log(result)
+		        alert('服务器连接错误: ' + xhr)
 		      }
-		     })
+		    })
 			}
 		},
   	printClick: function() {

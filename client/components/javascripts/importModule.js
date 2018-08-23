@@ -109,15 +109,21 @@ export default {
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
       timeout: 5000,
-      success: function(data, xhr) {
-        //这里填写插入成功还是插入失败
-        //需要与后端确定data的格式，通过data得知具体是否插入成功
-        console.log(xhr.status)
-        console.log(data)
+      success: function(result, xhr) {
+        for(let key in result){
+          if(key == 'content'){
+            //操作成功
+            alert('导入成功！')
+          } else if (key == 'err'){
+            //操作错误
+            alert('导入错误: ' + result[key]['sqlMessage'])
+          }
+        }
       },
-      error: function(data) {
-        console.log(data.status)
-        alert(data.responseJSON.err)
+      error: function(result, xhr) {
+        //连接错误
+        //console.log(result)
+        alert('服务器连接错误: ' + xhr)
       }
     })
   }

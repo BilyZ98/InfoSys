@@ -112,15 +112,22 @@ export default {
         contentType: 'application/json;charset=utf-8',
         dataType: 'json',
         timeout: 5000,
-        success: function(data, xhr) {
-          _self.students = data['content']
-          _self.recordFilter = recordFilter
-          console.log(xhr.status)
-          console.log(data)
+        success: function(result, xhr) {
+          for(let key in result){
+            if(key == 'content'){
+              //操作成功
+              _self.students = result['content']
+               _self.recordFilter = recordFilter
+            } else if (key == 'err'){
+              //操作错误
+              alert('查询信息错误: ' + result[key]['sqlMessage'])
+            }
+          }
         },
-        error: function(data) {
-          console.log(data.status)
-          alert(data.responseJSON.err)
+        error: function(result, xhr) {
+          //连接错误
+          //console.log(result)
+          alert('服务器连接错误: ' + xhr)
         }
       })
     },

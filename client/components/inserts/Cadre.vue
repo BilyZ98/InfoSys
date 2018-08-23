@@ -64,15 +64,22 @@ export default {
         dataType: "json",
         //timeous 5s
         timeout: 5000,
-        success: function(data, xhr) {
-          console.log(xhr.status);
-          console.log(data);
-          alert('插入成功！');
-        },
-        error: function(data) {
-          console.log(data.status);
-          alert(data.responseJSON.err);
-        }
+        success: function(result, xhr) {
+            for(let key in result){
+              if(key == 'content'){
+                //操作成功
+                alert('插入成功！')
+              } else if (key == 'err'){
+                //操作错误
+                alert('插入错误: ' + result[key]['sqlMessage'])
+              }
+            }
+          },
+          error: function(result, xhr) {
+            //连接错误
+            //console.log(result)
+            alert('服务器连接错误: ' + xhr)
+          }
       });
     }
   }
