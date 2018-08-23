@@ -49,13 +49,16 @@
 	</div>
 	<!--统计-->
 	<div class="container-card">
-		<div>
-			<div class="stat-cell" v-for="record in table.records">
-	    	{{record.name}}
-	    	<input class="input-stat" type="checkbox" v-bind:record-id="record">
-	    </div>
-			<button class="manager-button" @click="statClick">统计</button>
-		</div>
+		<div class="stat-record" v-for="record in table.records">
+      <span>{{record.name}}:</span>
+      <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
+      <input class="hide-container" type="text" v-if="record.valueType=='input'" v-bind:id="'basicInfo-stat-'+record.id">
+      <select class="hide-container" v-else v-bind:id="'basicInfo-stat-'+record.id">
+      	<option></option>
+        <option v-for="option in record.options">{{option}}</option>
+      </select>
+    </div>
+    <button class="manager-button" @click="statClick">统计</button>
 		<div id="stat-chart"></div>
 	</div>
 
@@ -202,19 +205,43 @@ export default {
 				fields: [],
 				condition: {}
 			}
-			$('.input-stat').each(function(){
+			$('.stat-checkbox').each(function(){
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					//data['condition'][recordId] = 
+					if( $('#basicInfo-stat-' + String(recordId)) != ''){
+						data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
+					}
 				}
 			})
-			alert('请选择要统计的字段！')
+			if(data['fields'].length == 0 ){
+				alert('请选择想要统计的字段打勾！')
+			}
 			var postData = JSON.stringify(data)
 			console.log(postData)
-			/*
-			var _self = this
-	    $.ajax({
+			// 图表配置
+      var options = {
+        chart: {
+          type: 'bar'
+        },
+        title: {
+          text: '基本信息表统计'
+        },
+        xAxis: {
+          categories: []   // x 轴分类
+        },
+        yAxis: {
+          title: {
+              text: ''       // y 轴标题
+          },
+          allowDecimals: false
+        },
+        series: [],
+        credits: {
+        	enabled: true
+        }
+      }
+	    /*$.ajax({
 	      type: 'POST',
 	      url: '/students/statistic',
 	      data: postData,
@@ -224,11 +251,11 @@ export default {
 	      success: function(result, xhr) {
 	      	for(let key in result){
 	      		if(key == 'content'){
-	      			//操作成功
-	      			_self.students = result['content']
+	      			//操作成功，配置图表
+	      			
 	      		} else if (key == 'err'){
 	      			//操作错误
-	      			alert('查询信息错误: ' + result[key]['sqlMessage'])
+	      			alert('统计错误: ' + result[key]['sqlMessage'])
 	      		}
 	      	}
 	      },
@@ -237,38 +264,35 @@ export default {
 	        //console.log(result)
 	        alert('服务器连接错误: ' + xhr)
 	      }
-	    })
-	    */
-      // 图表配置
-      var options = {
-        chart: {
-            type: 'bar'                          //指定图表的类型，默认是折线图（line）
-        },
-        title: {
-            text: '我的第一个图表'                 // 标题
-        },
-        xAxis: {
-            categories: ['2015', '2016', '2017']   // x 轴分类
-        },
-        yAxis: {
-          title: {
-              text: '入学年份人数'                // y 轴标题
-          },
-          allowDecimals: false
-        },
-        series: [{                              // 数据列
-            name: '河南',                        // 数据列名
-            data: [1, 0, 4]                     // 数据
-        }, {
-            name: '东北',
-            data: [5, 7, 3]
-        }],
-        credits: {
-        	enabled: true
-        }
-      };
+	    })*/
+	    let statData = [
+		    {gender: '女', major: null, statistic: 2},
+		    {gender: '女', major: 123, statistic: 1},
+		    {gender: '男', major: 123, statistic: 3},
+		    {gender: '男', major: '数学', statistic: 1}
+	    ]
+			for(let i = 0; i < statData.length; i++){
+				let statArr = statData[i]
+				//xAxis
+				let str = ''
+				for(let item in statArr){
+					if(item != 'statistic')
+					str = str + tableData['basicInfo']['records'][item]['name'] + ':' + statArr[item] + ' '
+				}
+				options['xAxis']['categories'].push(str)
+				//series
+				let arr = []
+				for(let j = 0; j < statData.length; j++){
+					arr[j] = 0
+				}
+				arr[i] = statArr['statistic']
+				options['series'][i] = {}
+				options['series'][i]['name'] = str
+				options['series'][i]['data'] = arr
+			}
+			console.log(JSON.stringify(options))
       // 图表初始化函数
-      var chart = Highcharts.chart('stat-chart', options);
+      var chart = Highcharts.chart('stat-chart', options)
 		}
 	}
 }
@@ -337,7 +361,7 @@ export default {
 	text-align: right;
 }
 
-#manager-basicInfo .container-record input, select, span {
+#manager-basicInfo .container-record .hide-container {
 	height: 24px;
 	width: 200px;
 }
@@ -463,9 +487,32 @@ export default {
 
 #manager-basicInfo .stat-cell {
 	float: left;
-	width: 100px;
+	width: 300px;
 	height: 30px;
 	text-align: left;
+}
+
+#manager-basicInfo .stat-record {
+	float: left;
+	width: 300px;
+	height: 35px;
+	text-align: right;
+	font-size: 14px;
+}
+
+#manager-basicInfo .stat-record .hide-container {
+	height: 22px;
+	width: 150px;
+}
+
+#manager-basicInfo .stat-record input[type="checkbox"] {
+	width: 13px;
+	height: 13px;
+}
+
+#manager-basicInfo .stat-input {
+	width: 10px;
+	height: 10px;
 }
 
 #manager-basicInfo #stat-chart {
