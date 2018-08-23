@@ -8,7 +8,7 @@
 				<div class="info-heading">{{table.name}}</div>
 				<!--若表中有数据，以字段循环-->
 				<!--最多有一条数据的-->
-				<div class="clearfix" v-if="student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
+				<div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
 					<div class="table-array" v-for="tableArr in student[table.id]">
 						<span class="info-text" v-for="record in table.records">
 							{{record.name}}:
@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<!--有多条数据的-->
-				<table border="1" v-else-if="student[table.id].length!=0">
+				<table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0">
 					<tr>
   					<th v-for="record in table.records">{{record.name}}</th>
 					</tr>
@@ -70,10 +70,6 @@ export default {
 		}
 		var postData = JSON.stringify(data)
     //console.log('请求全部信息的data： ' + postData)
-    var testdata = {basicInfo: [{sid: 'id', name: 'name', gender: '男', birthPlace: '新疆', tel: '15521336318', mail: 'jack@126.com', wechat: 'wxid_123456', qq: '12345678', idNum: '142701198912221549' }], cadre: [{year: '2013', cadreClass: 'homeAddress', cadreName: '321'}], paper: [{serialNumber: '2012'}, {serialNumber: '2013'}]}
-    this.student = this.dataMakeup(testdata)
-    //深复制，才能起到backup之用
-    this.studentBackup = JSON.parse(JSON.stringify(this.student))
     var _self = this
     $.ajax({
       type: 'POST',
@@ -84,11 +80,10 @@ export default {
       timeout: 5000,
       success: function(data, xhr) {
       	console.log(xhr.status)
-        console.log(data)
+        console.log(JSON.stringify(data))
         _self.student = _self.dataMakeup(data['content'])
         //深复制，才能起到backup之用
     		_self.studentBackup = JSON.parse(JSON.stringify(_self.student))
-    		console.log(data['content']['scholarship'].length!=0)
       },
       error: function(data) {
         console.log(data.status)
@@ -162,7 +157,7 @@ export default {
 		    $.ajax({
 		      type: 'POST',
 		      url: '/students/update',
-		      data: data,
+		      data: postData,
 		      contentType: 'application/json;charset=utf-8',
 		      dataType: 'json',
 		      timeout: 5000,
