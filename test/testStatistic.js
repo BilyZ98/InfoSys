@@ -5,7 +5,7 @@ var data = {
   'table':'basicInfo',
   'fields':['gender','major'],
   'condition':{
-    'grade':'2016'
+    //'grade':'2016'
   },
 
 }
@@ -15,7 +15,7 @@ async function testSta(data){
   console.log(out);
 }
 
-//testSta(data)
+testSta(data)
 
 //console.log(data['bake'].toString());
 //if(JSON.stringify(data['bake']) == '{}' ) console.log('fuck ass')
@@ -52,4 +52,7 @@ async function t(table){
     console.log(back)
 }
 
-t('techProject')
+//t('techProject')
+
+let arr = ['fuck','shit','ass']
+console.log(arr.indexOf('fuck'));

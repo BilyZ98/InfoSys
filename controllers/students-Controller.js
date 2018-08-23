@@ -1,5 +1,6 @@
 const resBody = require('../utils/resBody.js');
 var StudentsModel = require('../models/student-model.js');
+var asynchronous = require('async');
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -40,7 +41,7 @@ exports.batchInsertInfo = async (req,res,next) => {
   let body = req.body;
   console.log(body)
   let batchInfo = body['batchInfo']
-  for(one in batchInfo){
+  for(let one in batchInfo){
 
     let preCheck = await checkConflict({'sid':batchInfo[one][0]},body['table'])
     if(preCheck){
@@ -181,11 +182,18 @@ exports.updateInfo = async (req,res,next)=>{
     resBody.success(res,data)
   })
   .catch((err)=>{
+    console.log('error occurred')
     resBody.error(res,err)
   })
 }
 
 //检测数据库中是否已有记录
+/**
+* @checkConflict 检查某个学生在某个表中是否存在，需要主键
+* @param data JSON 学生信息
+* @param table string 要查询得表
+  @return bool 是否存在这个学生记录， true表示没有矛盾
+**/
 async function checkConflict(body, table) {
   let check = await StudentsModel.checkStudent(body,table)
   return check.length === 0;

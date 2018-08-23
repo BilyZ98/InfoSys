@@ -84,30 +84,55 @@ exports.insertOne = (table,field, oneRecord) =>{
 
 //现在的更新是只针对sid一个键连接，还没有考虑到一个表有多个键的情况
 //用于批量导入时，更新一条数据
-exports.updateOne = (table,field, oneRecord) => {
+//对于更新的想法是，把一条数组，先合成json，这样查找起来方便，
+//然后主键和要更新的数据就可以很好的分开
+/**
+ * @updateOne 更新一条记录
+ * @param table string 表名
+ * @param filed array 要插入的表字段数组
+ * @param oneRecord array 对应field 的具体值
+ * @return 返回更新的数据库执行语句结果
+**/
+exports.updateOne = async (table,field, oneRecord) => {
+  let json = {};
+  for(let i in field){
+    json[field[i]] = oneRecord[i]
+  }
+  let primary = await this.getTablePriKey(table);  //得到表的主键
   var tmp = true;
-  //var field = data['field']
-  var sid = oneRecord[0] //表示sid，先把sid移除
-  oneRecord.splice(0,1)
+  let values = []
   let query =
   "update " + table +
   " set  ";
-  for(let x in field){
-    if(field[x]!='sid'){
+  for(let x in json){
+    if(primary.indexOf(x) == -1){  //在primary里面找不到，不是主键
       if(tmp){
-        query+=field[x] + ' =? '
+        query+=x + ' =? '
         tmp =false
       }
       else {
-        query+=',' + field[x] + '=? '
+        query+=',' + x + '=? '
       }
+      values.push(json[x])
     }
-
   }
-  query+=' where sid = ? ;'
+  query+=" where "//' where sid = ? ;'
+  tmp = true
+  for(let x in json){
+    if(primary.indexOf(x) != -1){  //在primary里面找不到，不是主键
+      if(tmp){
+        query+=x + ' =? '
+        tmp =false
+      }
+      else {
+        query+=' and ' + x + '=? '
+      }
+      values.push(json[x])
+    }
+  }
+  console.log('import_updateOne:');
   console.log(query)
-  oneRecord.push(sid)
-  let values = oneRecord
+  console.log(values);
   return queryDB(query,values);
 }
 
@@ -322,12 +347,12 @@ return queryDB({sql:query,nestTables:true},values);
 }
 
 /*
-由于南海老师要求前端页面更矮，所以原来的后端查询函数就不再适用了，
+由于南海老师要求前端页面更改，所以原来的后端查询函数就不再适用了，
 因此如果是查看一个人的所有信息就是单独的查询每个表，把结果放到一个数组里边
 再返回给前端，在控制层循环执行每个表的查询，
 先写一个对单个表查询的model函数，可以利用以前的query函数
 {
-'tables':['basicInfo','family']
+'tables':['basicInfo','family'],
 'id':'16340320'
 }
 
@@ -463,9 +488,26 @@ exports.updateInfo = (data)=>{
   return queryDB(query,values);
 }
 
-exports.checkStudent = (data, table) =>{
-  let query = "select sid from " + table +" where sid = ? \n;"; //注意有空格
-  let values = [data.sid]
+/**
+* @checkStudent 检查某个学生在某个表中是否存在，需要主键
+* @param data JSON 学生信息
+* @param table string 要查询得表
+  @return array 数据库得查询结果
+**/
+exports.checkStudent = async (data, table) =>{
+  let query = "select * " ;
+  let primary = await this.getTablePriKey(table);
+  let values= []
+  query+=  " from " + table +" where "//"sid = ? \n;"; //注意有空格
+  let tmp = true;
+  for(let i in primary){
+    if(tmp) query+=primary[i]+'=? '
+    else {
+      query+=' and '+primary[i]+'=?'
+    }
+    values.push(data[primary[i]])
+  }
+
   return queryDB(query,values);
 }
 
