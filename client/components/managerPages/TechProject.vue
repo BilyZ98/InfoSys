@@ -25,7 +25,7 @@
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'techProject-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -123,6 +123,7 @@ export default {
 	      if ($('#techProject-class').val()) techProject['equal']['class'] = $('#techProject-class').val()
 	      if ($('#techProject-teacher').val()) techProject['equal']['teacher'] = $('#techProject-teacher').val()
 	      //range value
+	    	console.log($('#techProject-proTime .min').val())
 	      var rangeVal = {min: $('#techProject-proTime .min').val(), max: $('#techProject-proTime .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
 	        techProject['range']['proTime'] = rangeVal
