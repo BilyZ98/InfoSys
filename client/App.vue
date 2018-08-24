@@ -10,17 +10,17 @@
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >学籍管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >课程成绩</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >党员信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >奖学金</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >资助信息管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >助学贷款</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >学生干部任职情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >获得奖励情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >发表论文情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >获得专利情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >科研项目</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='schoolRoll'}" @click="schoolRollClick">学籍管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='course'}" @click="courseClick" >课程成绩</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='partyInfo'}" @click="partyInfoClick">党员信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='scholarship'}" @click="scholarshipClick">奖学金</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='aid'}" @click="aidClick">资助信息管理</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='loan'}" @click="loanClick">助学贷款</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='cadre'}" @click="cadreClick">学生干部任职情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='award'}" @click="awardClick">获得奖励情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
 <!--
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
@@ -49,6 +49,39 @@ export default {
     },
     familyClick: function() {
       this.$router.push({ name: 'family' })
+    },
+    schoolRollClick: function() {
+      this.$router.push({ name: 'schoolRoll' })
+    },
+    courseClick: function() {
+      this.$router.push({ name: 'course' })
+    },
+    partyInfoClick: function() {
+      this.$router.push({ name: 'partyInfo' })
+    },
+    scholarshipClick: function() {
+      this.$router.push({ name: 'scholarship' })
+    },
+    aidClick: function() {
+      this.$router.push({ name: 'aid' })
+    },
+    loanClick: function() {
+      this.$router.push({ name: 'loan' })
+    },
+    cadreClick: function() {
+      this.$router.push({ name: 'cadre' })
+    },
+    awardClick: function() {
+      this.$router.push({ name: 'award' })
+    },
+    paperClick: function() {
+      this.$router.push({ name: 'paper' })
+    },
+    patentClick: function() {
+      this.$router.push({ name: 'patent' })
+    },
+    techProjectClick: function() {
+      this.$router.push({ name: 'techProject' })
     },
     queryClick: function(){
       this.$router.push({ name: 'query'})

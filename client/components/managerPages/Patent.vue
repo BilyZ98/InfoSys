@@ -1,8 +1,8 @@
 <template>
-<div id="manager-family">
+<div id="manager-patent">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">基本信息管理</p>
+		<p class="header-text">专利情况管理</p>
 		<div class="header-button">
 			<span @click="insertClick">插入数据</span>
 			<span>上传学生照片</span>
@@ -20,13 +20,13 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'family-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'family-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'patent-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'patent-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'family-'+record.id">
-        <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+        <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
     <button class="manager-button" @click="queryClick">查询</button>
@@ -38,10 +38,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['family']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['patent']['sid']">
 		  	<td>{{index}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['family'][record.id]!=undefined">{{student['family'][record.id]}}</span>
+		  		<span v-if="student['patent'][record.id]!=undefined">{{student['patent'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -52,11 +52,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <input class="hide-container" type="text" v-if="record.valueType=='input'" v-bind:id="'family-stat-'+record.id">
-      <select class="hide-container" v-else v-bind:id="'family-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'patent-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
+      <input class="hide-container" type="text" v-else v-bind:id="'patent-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -78,17 +78,17 @@
 </template>
 
 <script>
-import tableData from './javascripts/tableData.js'
-import downloadModule from './javascripts/downloadModule.js'
-import importModule from './javascripts/importModule.js'
-import statModule from './javascripts/statisticModule.js'
+import tableData from '../javascripts/tableData.js'
+import downloadModule from '../javascripts/downloadModule.js'
+import importModule from '../javascripts/importModule.js'
+import statModule from '../javascripts/statisticModule.js'
 var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
 var emptyCell = JSON.stringify({})
 
 export default {
 	data: function(){
 		return {
-			table: tableData['family'],
+			table: tableData['patent'],
 			students: []
 		}
 	},
@@ -99,42 +99,39 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'familyInsert'
+        name: 'patentInsert'
       })
 		},
 		queryClick: function(){
-			var family = {equal: {}, range: {}, fuzzy: {}}
+			var patent = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['family'],
+        select: ['patent'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#family-sid').val()) {
-        family['equal']['sid'] = $('#family-sid').val()
+			if ($('#patent-sid').val()) {
+        patent['equal']['sid'] = $('#patent-sid').val()
       } else {
-	      if ($('#family-name').val()) family['equal']['name'] = $('#family-name').val()
-	      if ($('#family-homeAddress').val()) family['equal']['homeAddress'] = $('#family-homeAddress').val()
-	      if ($('#family-fatherName').val()) family['equal']['fatherName'] = $('#family-fatherName').val()
-	      if ($('#family-fatherTel').val()) family['equal']['fatherTel'] = $('#family-fatherTel').val()
-	      if ($('#family-fatherJob').val()) family['equal']['fatherJob'] = $('#family-fatherJob').val()
-	      if ($('#family-motherName').val()) family['equal']['motherName'] = $('#family-motherName').val()
-	      if ($('#family-motherTel').val()) family['equal']['motherTel'] = $('#family-motherTel').val()
-	      if ($('#family-motherJob').val()) family['equal']['motherJob'] = $('#family-motherJob').val()
-	      if ($('#family-familyAveIncome').val()) family['equal']['familyAveIncome'] = $('#family-familyAveIncome').val()
-	      if ($('#family-isHard').val()) family['equal']['isHard'] = $('#family-isHard').val()
-	      if ($('#family-hardDegree').val()) family['equal']['hardDegree'] = $('#family-hardDegree').val()
-	      if ($('#family-hardFamDes').val()) family['equal']['hardFamDes'] = $('#family-hardFamDes').val()
-	      if(JSON.stringify(family) == empty){
+	      if ($('#patent-name').val()) patent['equal']['name'] = $('#patent-name').val()
+	      if ($('#patent-patentName').val()) patent['equal']['patentName'] = $('#patent-patentName').val()
+	      if ($('#patent-class').val()) patent['equal']['class'] = $('#patent-class').val()
+	      if ($('#patent-submitTime').val()) patent['equal']['submitTime'] = $('#patent-submitTime').val()
+	      if ($('#patent-approvalTime').val()) patent['equal']['approvalTime'] = $('#patent-approvalTime').val()
+	      if ($('#patent-patentRange').val()) patent['equal']['patentRange'] = $('#patent-patentRange').val()
+	      if ($('#patent-unit').val()) patent['equal']['unit'] = $('#patent-unit').val()
+	      if ($('#patent-patentNumber').val()) patent['equal']['patentNumber'] = $('#patent-patentNumber').val()
+	      if ($('#patent-creators').val()) patent['equal']['creators'] = $('#patent-creators').val()
+	      if(JSON.stringify(patent) == empty){
 	      	alert('请输入查询条件！')
 	      	return
 	      }
 	    }
-      if(JSON.stringify(family['equal']) != emptyCell) data['where']['equal']['family'] = family['equal']
-      if(JSON.stringify(family['range']) != emptyCell) data['where']['range']['family'] = family['range']
-      if(JSON.stringify(family['fuzzy']) != emptyCell) data['where']['fuzzy']['family'] = family['fuzzy']
+      if(JSON.stringify(patent['equal']) != emptyCell) data['where']['equal']['patent'] = patent['equal']
+      if(JSON.stringify(patent['range']) != emptyCell) data['where']['range']['patent'] = patent['range']
+      if(JSON.stringify(patent['fuzzy']) != emptyCell) data['where']['fuzzy']['patent'] = patent['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -173,7 +170,7 @@ export default {
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'family')
+			importModule.importClick($('#button-import').prop('files')[0], 'patent')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -182,7 +179,7 @@ export default {
 			$('#popup').hide()
 		},
 		studentClick: function(event){
-			alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
+			//alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
 			//跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
       var routeData = this.$router.resolve({
         name: 'detail',
@@ -194,7 +191,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'family',
+				table: 'patent',
 				fields: [],
 				condition: {}
 			}
@@ -202,13 +199,14 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#family-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#family-stat-' + recordId).val()
+					if( $('#patent-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#patent-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
 				alert('请选择想要统计的字段打勾！')
+				return
 			}
 			var postData = JSON.stringify(data)
 			console.log(postData)
@@ -230,7 +228,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('family', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('patent', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -249,7 +247,7 @@ export default {
 </script>
 
 <style>
-#manager-family .container-header {
+#manager-patent .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -266,17 +264,17 @@ export default {
   user-select: none;
 }
 
-#manager-family .header-text {
+#manager-patent .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-family .header-button {
+#manager-patent .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-family .header-button span{
+#manager-patent .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -285,12 +283,12 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-family .header-button span:hover {
+#manager-patent .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-family .container-card {
+#manager-patent .container-card {
   margin: 25px;
   padding: 20px;
   text-align: left;
@@ -303,19 +301,27 @@ export default {
   overflow: hidden;
 }
 
-#manager-family .container-record {
+#manager-patent .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-family .container-record .hide-container {
+#manager-patent .container-record .text-range {
+	font-size: 12px;
+}
+
+#manager-patent .container-record .min, #manager-patent .container-record .max {
+	width: 50px;
+}
+
+#manager-patent .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-family .manager-button {
+#manager-patent .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -331,15 +337,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-family .manager-button:hover {
+#manager-patent .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-family .container-card-list {
+#manager-patent .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-family .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-patent .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -351,7 +357,7 @@ export default {
   overflow: auto;
 }
 
-#manager-family .container-card-list table {
+#manager-patent .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -360,30 +366,30 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-family .container-card-list th, td {
+#manager-patent .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-family .container-card-list tr{
+#manager-patent .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-family .container-card-list tr:not(.table-head):hover{
+#manager-patent .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-family #button-import {
+#manager-patent #button-import {
 	display: none;
 }
 
 /* 弹窗 (background) */
-#manager-family .popup-background {
+#manager-patent .popup-background {
   display: none; /* 默认隐藏 */
   position: absolute; /* 定位 */
   z-index: 10; /* 设置在顶层 */
@@ -397,7 +403,7 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-family .popup-content {
+#manager-patent .popup-content {
   background-color: white;
   margin: 8% auto;
   padding: 30px;
@@ -409,7 +415,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-family .popup-cell {
+#manager-patent .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -417,7 +423,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-family #popup-close {
+#manager-patent #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -428,13 +434,13 @@ export default {
   text-align: right;
 }
 
-#manager-family #popup-close:hover, #popup-close:focus {
+#manager-patent #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-#manager-family .stat-record {
+#manager-patent .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -442,28 +448,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-family .stat-record .hide-container {
+#manager-patent .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-family .stat-record input[type="checkbox"] {
+#manager-patent .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-family .stat-input {
+#manager-patent .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-family #stat-chart-bar {
+#manager-patent #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-family #stat-chart-pie {
+#manager-patent #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

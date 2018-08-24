@@ -419,11 +419,7 @@ export default {
     },
     querytechProject: function() {
       var techProject = {equal: {}, range: {}, fuzzy: {}}
-      //range value
-      var rangeVal = {min: $('#techProject-proName .min').val(), max: $('#techProject-proName .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        techProject['range']['proName'] = rangeVal
-      }
+      if ($('#techProject-proName').val()) techProject['equal']['proName'] = $('#techProject-proName').val()
       if ($('#techProject-employer').val()) techProject['equal']['employer'] = $('#techProject-employer').val()
       if ($('#techProject-money').val()) techProject['equal']['money'] = $('#techProject-money').val()
       if ($('#techProject-proId').val()) techProject['equal']['proId'] = $('#techProject-proId').val()

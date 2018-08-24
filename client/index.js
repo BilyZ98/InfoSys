@@ -11,8 +11,19 @@ import Insert from './components/Insert.vue'
 import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
 
-import BasicInfo from './components/BasicInfo.vue'
-import Family from './components/Family.vue'
+import BasicInfo from './components/managerPages/BasicInfo.vue'
+import Family from './components/managerPages/Family.vue'
+import SchoolRoll from './components/managerPages/SchoolRoll.vue'
+import Course from './components/managerPages/Course.vue'
+import PartyInfo from './components/managerPages/PartyInfo.vue'
+import Scholarship from './components/managerPages/Scholarship.vue'
+import Aid from './components/managerPages/Aid.vue'
+import Loan from './components/managerPages/Loan.vue'
+import Cadre from './components/managerPages/Cadre.vue'
+import Award from './components/managerPages/Award.vue'
+import Paper from './components/managerPages/Paper.vue'
+import Patent from './components/managerPages/Patent.vue'
+import TechProject from './components/managerPages/TechProject.vue'
 
 import BasicInfoInsert from './components/inserts/BasicInfo.vue'
 import FamilyInsert from './components/inserts/Family.vue'
@@ -32,6 +43,17 @@ const router = new VueRouter({
     { name: 'main', path: '/', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
+    { name: 'schoolRoll', path: '/schoolRoll', component: SchoolRoll },
+    { name: 'course', path: '/course', component: Course },
+    { name: 'partyInfo', path: '/partyInfo', component: PartyInfo },
+    { name: 'scholarship', path: '/scholarship', component: Scholarship },
+    { name: 'aid', path: '/aid', component: Aid },
+    { name: 'loan', path: '/loan', component: Loan },
+    { name: 'cadre', path: '/cadre', component: Cadre },
+    { name: 'award', path: '/award', component: Award },
+    { name: 'paper', path: '/paper', component: Paper },
+    { name: 'patent', path: '/patent', component: Patent },
+    { name: 'techProject', path: '/techProject', component: TechProject },
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import},

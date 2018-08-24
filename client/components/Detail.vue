@@ -12,7 +12,11 @@
 					<div class="table-array" v-for="tableArr in student[table.id]">
 						<span class="info-text" v-for="record in table.records">
 							{{record.name}}:
-							<input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
+							<select v-bind:style="{width: 40 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+								<option></option>
+        				<option v-for="option in record.options">{{option}}</option>
+        			</select>
+							<input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 							<input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 						</span>
 					</div>
