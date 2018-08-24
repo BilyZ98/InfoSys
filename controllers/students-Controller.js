@@ -37,34 +37,53 @@ async function template(req,res,next,concrete, table){
 }
 
 //写一个导入的函数
+//批量插入
+/*
+* 查询格式 {
+  'table':'basicInfo',
+  'field':['sid','name','gender','birthPlace'],
+  'batchInfo':[['16340320','zzt','male','zj'],
+['12345679','asd','female','bj']]
+}
+
+*/
 exports.batchInsertInfo = async (req,res,next) => {
   let body = req.body;
   console.log(body)
   let batchInfo = body['batchInfo']
+  let errInfo = []
+  let primary = StudentsModel.getTablePriKey(body['table'])
+  var hasError = false
   for(let one in batchInfo){
-
-    let preCheck = await checkConflict({'sid':batchInfo[one][0]},body['table'])
-    if(preCheck){
-      StudentsModel.insertOne(body['table'],body['field'],batchInfo[one])
-      .then(()=>{
-        resBody.success(res)
-      })
-      .catch((err)=>{
-        resBody.error(res,err);
-      })
+    //将每条记录的学生转 为json 对象格式，用于checkConflict
+    var json ={}
+    for(let i in body['field']){
+      json[body['field'][i]] = batchInfo[one][i]
     }
-    else {
-      console.log('update')
-      StudentsModel.updateOne(body['table'],body['field'],batchInfo[one])
-      .then(()=>{
-        resBody.success(res)
-      })
-      .catch((err)=>{
-        resBody.error(res,err)
-      })
+    //查找在数据库里是否存在相同键的记录，有就更新，没有就插入
+    let preCheck = await checkConflict(json,body['table'])
+    try{
+      if(preCheck){
+        await  StudentsModel.insertOne(body['table'],body['field'],batchInfo[one])
+      }
+      else {
+        console.log('update')
+        await  StudentsModel.updateOne(body['table'],body['field'],batchInfo[one])
+      }
+    }
+    catch(err){
+      hasError=true;
+      console.log(err)
+      let stuKey = {}
+      for(let i in primary){
+        stuKey[primary[i]] = json[primary[i]]
+      }
+      errInfo.push(stuKey)
     }
   }
 
+  if(hasError) resBody.error(res,errInfo)
+  else resBody.success(res)
 }
 
 

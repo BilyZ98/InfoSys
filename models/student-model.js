@@ -18,7 +18,6 @@ exports.getStudentInfo = async (data)=> {
 * 查询格式 {
   'table':'basicInfo',
   'field':['sid','name','gender','birthPlace'],
-  'primary':['sid'],
   'batchInfo':[['16340320','zzt','male','zj'],
 ['12345679','asd','female','bj']]
 }

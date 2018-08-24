@@ -4,7 +4,7 @@ const studentsController = require('../controllers/students-Controller.js');
 
 
 //router.post('/query', studentsController.getStudentsInfo);
-router.post('/query', studentsController.query);
+router.post('/query', studentsController.queryOne);
 
 router.post('/insert/basicInfo', studentsController.addBasicInfo);
 
