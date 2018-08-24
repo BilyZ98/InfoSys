@@ -9,7 +9,7 @@
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >家庭信息</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >学籍管理</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >课程成绩</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name==''}" >党员信息</div>
@@ -46,6 +46,9 @@ export default {
     },
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })
+    },
+    familyClick: function() {
+      this.$router.push({ name: 'family' })
     },
     queryClick: function(){
       this.$router.push({ name: 'query'})

@@ -45,10 +45,12 @@
 
 <script>
 import tableData from './javascripts/tableData.js'
+/*
 import html2canvas from './javascripts/js/html2canvas.js'
 import jsPDF from './javascripts/js/jspdf.debug.js'
-import './javascripts/js/renderPDF.js'
+import renderPDF from './javascripts/js/renderPDF.js'
 import downLoad from './javascripts/js/paper_download.js'
+*/
 
 export default {
 	data: function(){
@@ -95,11 +97,6 @@ export default {
         alert('服务器连接错误: ' + xhr)
       }
     })
-    /*
-    var imgArray = $('.container')[0]
-		var down = new downLoad.downLoad(imgArray)
-		down.init($('#info-print') ,$('.container')[0], '[学生姓名]信息','a4')
-		*/
 	},
 	methods: {
 		dataMakeup: function(data) {
@@ -191,24 +188,7 @@ export default {
 			}
 		},
   	printClick: function() {
-  		/*
-  		html2canvas($(".container"), {
-				onrendered: function(canvas) {
-				  //通过html2canvas将html渲染成canvas，然后获取图片数据
-				   var imgData = canvas.toDataURL('jpeg')
-
-				   //初始化pdf，设置相应格式
-				   var doc = new jsPDF("p", "mm", "a4")
-
-				   //这里设置的是a4纸张尺寸
-				   doc.addImage(imgData, 'JPEG', 0, 0, 210, 297)
-
-				   //输出保存命名为content的pdf
-				   doc.save(this.sid + '.pdf')
-				}
-     })
-  	}
-		*/
+  		//
 		}
 	}
 }

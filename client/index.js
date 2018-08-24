@@ -12,6 +12,7 @@ import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
 
 import BasicInfo from './components/BasicInfo.vue'
+import Family from './components/Family.vue'
 
 import BasicInfoInsert from './components/inserts/BasicInfo.vue'
 import FamilyInsert from './components/inserts/Family.vue'
@@ -30,6 +31,7 @@ const router = new VueRouter({
   routes: [
     { name: 'main', path: '/', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
+    { name: 'family', path: '/family', component: Family },
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import},

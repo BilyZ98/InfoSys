@@ -42,9 +42,9 @@ var tableData = {
       motherTel: { name: '母亲电话', id: 'motherTel', isPrimary: false, display: true, value: '', valueType: 'input' },
       motherJob: { name: '母亲工作单位及职务', id: 'motherJob', isPrimary: false, display: true, value: '', valueType: 'input' },
       familyAveIncome: { name: '家庭人均月收入', id: 'familyAveIncome', isPrimary: false, display: true, value: '', valueType: 'input' },
-      isHard: { name: '是否家庭经济困难学生(经学校认定)', id: 'isHard', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
+      isHard: { name: '是否家庭经济困难', id: 'isHard', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
       hardDegree: { name: '困难等级', id: 'hardDegree', isPrimary: false, display: true, value: '', valueType: 'input' },
-      hardFamDes: { name: '家庭经济困难情况简述', id: 'hardFamDes', isPrimary: false, display: true, value: '', valueType: 'input' }
+      hardFamDes: { name: '家庭经济困难情况', id: 'hardFamDes', isPrimary: false, display: true, value: '', valueType: 'input' }
     }
   },
   schoolRoll: {
