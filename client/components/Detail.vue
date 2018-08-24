@@ -63,8 +63,7 @@ export default {
 		}
 	},
 	created: function(){
-		//这样传参刷新页面就会丢失参数
-		this.sid = this.$route.params.sid
+		this.sid = this.$route.query.sid
 		//alert('sid: ' + sid)
 		var data = {
 			tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
@@ -333,5 +332,13 @@ export default {
 	padding-bottom: 2px;
 	border: none;
 	background-color: white;
+}
+
+header, aside {
+	display: none;
+}
+
+.container-info {
+	margin: 0;
 }
 </style>

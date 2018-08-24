@@ -193,13 +193,14 @@ export default {
 		},
 		studentClick: function(event){
 			alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
-			//跳转,在跳转完成后再请求数据
-      this.$router.push({
+			//跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
+      var routeData = this.$router.resolve({
         name: 'detail',
-        params: {
+        query: {
           sid: event.currentTarget.getAttribute('sid')
         }
       })
+      window.open(routeData.href, '_blank')
 		},
 		statClick: function(){
 			var data = {
