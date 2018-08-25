@@ -8,6 +8,10 @@ var webpack = require('webpack');
 var webpackDevMiddleware = require('webpack-dev-middleware');
 var webpackHotMiddleware = require('webpack-hot-middleware');
 var config = require('./webpack.config');
+var session = require('express-session')
+var MySQLStore = require('express-mysql-session')(session)
+
+
 
 var index = require('./routes/index');
 //var users = require('./routes/users');
@@ -16,6 +20,7 @@ var app = express();
 
 //配置与封装功能
 const resBody = require('./utils/resBody.js')
+var sessConfig = require('./config/config.js')
 
 //路由中间件
 var studentsRouter = require('./routes/studentsRoutes.js');
@@ -26,6 +31,11 @@ var userRouter = require('./routes/users.js');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 */
+
+//session 配置
+const sc = sessConfig.session_schema
+sc.store = new MySQLStore(sessConfig.session_config)
+app.use(session(sc))
 
 // uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'logo.png')));
@@ -46,6 +56,18 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 app.use(webpackHotMiddleware(compiler));
+
+/*
+检查session，如果没有，则不往下继续执行，否则下面的路由可以执行
+*/
+app.use((req,res,next)=>{
+  if(!res.session.user){
+    resBody.fail(res,440,'NOT_LOGIN')
+  }
+  else {
+    next()
+  }
+})
 
 //routers
 //app.use('/', index);

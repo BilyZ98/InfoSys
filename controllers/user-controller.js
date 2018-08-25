@@ -19,7 +19,7 @@ exports.register = async(req,res,next) => {
 }
 
 exports.checkSession = (req,res,next) =>{
-  if(req.session.use){
+  if(req.session.user){
     resBody.success(res,req.session.user)
   }
   else {
@@ -37,6 +37,11 @@ exports.login = async(req,res,next)=>{
     req.session.user = data[0]
     resBody.success(res,data[0])
   }
+}
+
+exports.logout = (req,res,next)=>{
+  req.session.user = null
+  resBody.success(res)
 }
 
 async function checkConflict(body){
