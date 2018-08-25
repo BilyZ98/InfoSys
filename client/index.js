@@ -41,8 +41,8 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { name: 'main', path: '/main', component: Main },
     { name: 'login', path: '/', component: Login },
+    { name: 'main', path: '/main', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
     { name: 'schoolRoll', path: '/schoolRoll', component: SchoolRoll },

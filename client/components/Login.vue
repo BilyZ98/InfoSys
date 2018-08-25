@@ -20,15 +20,16 @@
             <input type="password" class="form-control" id="inputPassword" placeholder="密　码">
             <i class="fa fa-lock"></i>
             <a href="#" class="fa fa-question-circle"></a>
-            <span style="color:#f00" id="warning"></span>
           </div>
+          <div id="warning"></div>
           <div class="form-group">
             <div class="main-checkbox">
               <input type="checkbox" value="None" id="ck_rmbUser" name="check" />
               <label for="ck_rmbUser"></label>
-              </div>
+            </div>
             <span class="text">Remember me</span>
-            <button class="btn btn-default" id="login" @click="loginClick">登录</button>
+            <!--<button class="btn btn-default" @click="loginClick">登录</button>-->
+            <div class="btn btn-default" @click="loginClick">登录</div>
           </div>
         </form>
       </div>
@@ -46,11 +47,19 @@ export default {
       sdcsLogo: sdcsLogo
     }
   },
+  mounted: function(){
+    $(".app-bar-display").attr("class", "app-bar-hide")
+    $(".container-info-display").attr("class", "container-info-all")
+  },
+  beforeDestroy: function(){
+    $(".app-bar-hide").attr("class", "app-bar-display")
+    $(".container-info-all").attr("class", "container-info-display")
+  },
   methods: {
     loginClick: function() {
-      var id = $("#inputId").val();
-      var password = $("#inputPassword").val();
-      alert('id: ' + id)
+      var id = $("#inputId").val()
+      var password = $("#inputPassword").val()
+      //alert('id: ' + id)
       /*if ($.cookie("rmbUser") == "true") {
         $("#ck_rmbUser").attr("checked", true);
         $("#inputId").val($.cookie("username"));
@@ -59,35 +68,36 @@ export default {
       */
       if (this.isNULL(id)) {
         //alert("请填写学号或学工号！");
-        $("#warning").text("请填写学号或学工号！");
+        $("#warning").text("请填写学号或学工号！")
         // return;
       } else if (this.isNULL(password)) {
         //alert("请填写密码！");
-        $("#warning").text("请填写密码！");
+        $("#warning").text("请填写密码！")
       } else if (!this.isValidId(id)) {
         //alert("学号或学工号不正确！");
-        $("#warning").text("学号或学工号不正确！");
+        $("#warning").text("学号或学工号不正确！")
       } else {
         //this.Save();
         var data = {
           "account": id,
           "password": password
         }
-        // alert(JSON.stringify(data));
+        var postData = JSON.stringify(data)
+        //alert(postData)
+        var _self = this
         $.ajax({
-          type: "POST",
-          url: "/users/login",
-          contentType: "application/json; charset=utf-8",
-          data: JSON.stringify(data),
-          dataType: "json",
+          type: 'POST',
+          url: '/users/login',
+          data: postData,
+          contentType: 'application/json;charset=utf-8',
+          dataType: 'json',
+          timeout: 5000,
           success: function(result, xhr) {
-            console.log(result)
             for(let key in result){
-              if(key =='content'){
+              if(key == 'content'){
                 alert("登陆成功")
-                this.$router.push({ name: 'main'})
-              }
-              else if(key =='err'){
+                _self.$router.push({ name: 'main' })
+              } else if (key == 'err'){
                 alert("用户名或密码错误")
               }
             }
@@ -101,9 +111,9 @@ export default {
             }
             */
           },
-          error: function(message) {
-            console.log(message)
-            alert("登录出错");
+          error: function(result, xhr) {
+            //console.log(result)
+            alert('服务器连接错误: ' + xhr)
           }
         })
       }
@@ -118,7 +128,7 @@ export default {
       if (data.match(/^([0-9]*)$/) && data.length == 8)
         return true;
       return false;
-    },
+    }/*,
     //记住用户名密码
     Save: function() {
       if ($("#ck_rmbUser").attr("checked")) {
@@ -132,20 +142,12 @@ export default {
         $.cookie("username", "", { expires: -1 });
         $.cookie("password", "", { expires: -1 });
       }
-    }
+    }*/
   }
 }
 </script>
 
 <style>
-header, aside {
-  display: none;
-}
-
-.container-info {
-  margin: 0;
-}
-
 #container-login {
   position: absolute;
   width: 100%;
@@ -300,5 +302,9 @@ header, aside {
   .form-horizontal .btn {
     padding: 10px 20px;
   }
+}
+
+#container-login #warning {
+   color: #f00;
 }
 </style>

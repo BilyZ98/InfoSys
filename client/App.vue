@@ -1,9 +1,9 @@
 <template>
 <div>
-  <header>
+  <header class="app-bar-display">
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
   </header>
-  <aside>
+  <aside class="app-bar-display">
     <div class="info-side">
       <label>丘南海</label>
       <p>数据科学与计算机学院</p>
@@ -26,7 +26,7 @@
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
   </aside>
-  <div class="container-info">
+  <div class="container-info-display">
     <router-view></router-view>
   </div>
 </div>
@@ -134,6 +134,10 @@ header {
   z-index: 100;
 }
 
+.app-bar-hide {
+  display: none;
+}
+
 .button-home {
   position: relative;
   height: 100%;
@@ -203,7 +207,7 @@ aside {
   background-color: var(--grey-hover);
 }
 
-.container-info{
+.container-info-display{
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger
   使用calc可以实现响应式布局*/
   min-width: calc(100vw - 225px);
@@ -216,4 +220,14 @@ aside {
   background-color: var(--grey-background);
   overflow: hidden;
 }
+
+.container-info-all {
+  margin: 0;
+  text-align: center;
+  /*the section cannot render in front of headbar*/
+  z-index: -100;
+  background-color: var(--grey-background);
+  overflow: hidden;
+}
+
 </style>

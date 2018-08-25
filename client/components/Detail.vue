@@ -101,6 +101,10 @@ export default {
       }
     })
 	},
+	mounted: function(){
+    $(".app-bar-display").attr("class", "app-bar-hide")
+    $(".container-info-display").attr("class", "container-info-all")
+  },
 	methods: {
 		dataMakeup: function(data) {
 			//把数据中不全的表中没有的字段全部赋值为空
@@ -200,6 +204,8 @@ export default {
 <style>
 #container-detail {
 	margin: 25px;
+	margin-left: 100px;
+	margin-right: 100px;
   text-align: left;
   background-color: white;
   /*radius*/
@@ -336,13 +342,5 @@ export default {
 	padding-bottom: 2px;
 	border: none;
 	background-color: white;
-}
-
-header, aside {
-	display: none;
-}
-
-.container-info {
-	margin: 0;
 }
 </style>
