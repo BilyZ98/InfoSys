@@ -39,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 //use webpack
 const compiler = webpack(config);
 
+
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath,
   stats: { colors: true }
@@ -47,7 +48,7 @@ app.use(webpackDevMiddleware(compiler, {
 app.use(webpackHotMiddleware(compiler));
 
 //routers
-app.use('/', index);
+//app.use('/', index);
 app.use('/students',studentsRouter);
 app.use('/users',userRouter);
 

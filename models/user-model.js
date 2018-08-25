@@ -10,9 +10,19 @@ exports.addUser =  (data)=> {
   return queryDB(query,values);
 }
 
+/*
+  用于检查注册时账号，手机号，邮箱号手机否重复
+*/
 exports.checkUser = (data) =>{
   let query = "select * from user\n" +
   "where account = ?;"
   let values = [data.account];
   return queryDB(query,values);
+}
+/*
+  用账号检查用户列表是否重复
+*/
+exports.getUser = async (data) => {
+  let query = "select * from user where account = ?";
+  return queryDB(query,[data.account])
 }

@@ -18,7 +18,26 @@ exports.register = async(req,res,next) => {
   }
 }
 
+exports.checkSession = (req,res,next) =>{
+  if(req.session.use){
+    resBody.success(res,req.session.user)
+  }
+  else {
+    resBody.fail(res,441,'NO_SESSION_INFO')
+  }
+}
 
+exports.login = async(req,res,next)=>{
+  let data = await userModel.getUser(req.body)
+  if((data.length !== 0 && data[0].password !==req.body.password) || data.length ===0){
+    resBody.fail(res,441,'PASSWORD_INCORRECT')
+  }
+  else {
+    //let n_user = await userModel.getUser
+    req.session.user = data[0]
+    resBody.success(res,data[0])
+  }
+}
 
 async function checkConflict(body){
   let check = await userModel.checkUser(body)
