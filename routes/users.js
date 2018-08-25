@@ -4,7 +4,7 @@ var router_after_login = express.Router();
 var userController = require('../controllers/user-controller.js');
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
+router_before_login.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 

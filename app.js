@@ -24,8 +24,8 @@ var sessConfig = require('./config/config.js')
 
 //路由中间件
 var studentsRouter = require('./routes/studentsRoutes.js');
-var userRouter = require('./routes/users.js');
-
+var userRouter_b = require('./routes/users.js').beforeLogin;
+var userRouter_a = require('./routes/users.js').afterLogin
 /*
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -57,11 +57,15 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler));
 
+app.use('/users',userRouter_b);
+
 /*
 检查session，如果没有，则不往下继续执行，否则下面的路由可以执行
 */
 app.use((req,res,next)=>{
-  if(!res.session.user){
+  console.log('session request:')
+  console.log(req.session)
+  if(!req.session.user){
     resBody.fail(res,440,'NOT_LOGIN')
   }
   else {
@@ -72,7 +76,7 @@ app.use((req,res,next)=>{
 //routers
 //app.use('/', index);
 app.use('/students',studentsRouter);
-app.use('/users',userRouter);
+app.use('/users',userRouter_a);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

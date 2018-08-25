@@ -68,19 +68,30 @@ export default {
         //alert("学号或学工号不正确！");
         $("#warning").text("学号或学工号不正确！");
       } else {
-        this.Save();
+        //this.Save();
         var data = {
-          "id": id,
+          "account": id,
           "password": password
         }
         // alert(JSON.stringify(data));
         $.ajax({
           type: "POST",
-          url: "/home/login",
+          url: "/users/login",
           contentType: "application/json; charset=utf-8",
           data: JSON.stringify(data),
           dataType: "json",
-          success: function(message) {
+          success: function(result, xhr) {
+            console.log(result)
+            for(let key in result){
+              if(key =='content'){
+                alert("登陆成功")
+                this.$router.push({ name: 'main'})
+              }
+              else if(key =='err'){
+                alert("用户名或密码错误")
+              }
+            }
+            /*
             if (message['state'] == false) {
               //alert('账号或密码错误！');
               $("#warning").text("账号或密码错误！")
@@ -88,13 +99,15 @@ export default {
               //load mainPage
               alert("登录成功");
             }
+            */
           },
           error: function(message) {
+            console.log(message)
             alert("登录出错");
           }
         })
       }
-      this.$router.push({ name: 'main'})
+      //this.$router.push({ name: 'main'})
     },
     isNULL: function(data) {
       if (data.length == 0)
@@ -115,7 +128,7 @@ export default {
         $.cookie("username", str_username, { expires: 7 });
         $.cookie("password", str_password, { expires: 7 });
       } else {
-        $.cookie("rmbUser", "false", { expire: -1 });
+        //$.cookie("rmbUser", "false", { expire: -1 });
         $.cookie("username", "", { expires: -1 });
         $.cookie("password", "", { expires: -1 });
       }
