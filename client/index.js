@@ -5,6 +5,7 @@ import $ from 'jquery'
 //.vue components
 import App from './App.vue'
 import Main from './components/Main.vue'
+import Login from './components/Login.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
@@ -40,7 +41,8 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
   routes: [
-    { name: 'main', path: '/', component: Main },
+    { name: 'main', path: '/main', component: Main },
+    { name: 'login', path: '/', component: Login },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
     { name: 'schoolRoll', path: '/schoolRoll', component: SchoolRoll },
