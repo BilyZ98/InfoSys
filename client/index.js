@@ -81,6 +81,8 @@ const router = new VueRouter({
   ]
 })
 
+
+
 const app = new Vue({
   //router,
   router: router,
@@ -90,3 +92,27 @@ const app = new Vue({
       return h(App)
   }
 }).$mount('#app')
+
+/*
+不加这个的话，如果已经登陆，再把当前的路径改为'http://localhost:3000/#/'
+还是会跳到登陆页面，所以我用了 APP.vue 的beforemount 方法，每次这么做，
+先检查
+*/
+router.beforeEach((to, from, next)=>{
+
+    app.$store.dispatch('GET',{
+      url:'users/session'
+    }).then((res)=>{
+      app.$store.commit('updateUserStatus',res.body.content.userType)
+      app.$store.commit('updateUserInfo',res.body.content)
+    }).then(()=>{
+      //app.$router.replace({name:'main'})
+      if(to.path == '/')  app.$router.replace({name:'main'})
+      else next()
+    }).catch((res)=>{
+      if(res.status === 441)
+      app.$router.replace({name:'login'})
+    })
+
+  next()
+})

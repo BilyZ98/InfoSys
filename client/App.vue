@@ -40,7 +40,7 @@ export default {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
-  },
+  },/*
   beforeMount(){
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
@@ -70,7 +70,7 @@ export default {
       if(res.status === 441)
       this.$router.replace({name:'login'})
     })
-  },
+  },*/
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
