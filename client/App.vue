@@ -40,7 +40,7 @@ export default {
       router : 'main'
     }
   },
-/*
+
   beforeMount: function(){
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
@@ -70,7 +70,7 @@ export default {
       if(res.status === 441)
       this.$router.replace({name:'login'})
     })
-  },*/
+  },
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })

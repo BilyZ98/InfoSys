@@ -130,7 +130,7 @@ export default {
     isValidId: function(data) {
       if (data.match(/^([0-9]*)$/) && data.length == 8)
         return true;
-      return false;
+      return true;
     }/*,
     //记住用户名密码
     Save: function() {

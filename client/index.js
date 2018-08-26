@@ -97,7 +97,6 @@ const app = new Vue({
 先检查
 */
 router.beforeEach((to, from, next) => {
-
   app.$store.dispatch('GET', {
     url: 'users/session'
   }).then((res) => {
@@ -105,8 +104,9 @@ router.beforeEach((to, from, next) => {
     app.$store.commit('updateUserInfo', res.body.content)
   }).then(() => {
     //app.$router.replace({name:'main'})
-    if (to.path == '/') app.$router.replace({ name: 'main' })
-    else next()
+    if (to.path == '/') {
+      app.$router.replace({ name: 'main' })
+    }
   }).catch((res) => {
     if (res.status === 441)
       app.$router.replace({ name: 'login' })
