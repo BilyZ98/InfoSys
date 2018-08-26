@@ -5,7 +5,7 @@
   </header>
   <aside class="app-bar-display">
     <div class="info-side">
-      <label>丘南海</label>
+      <label>王麻子</label>
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
@@ -21,8 +21,7 @@
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
-<!--
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
+<!--<div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
   </aside>
@@ -40,13 +39,9 @@ export default {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
-<<<<<<< HEAD
   },
+/*
   beforeMount: function(){
-=======
-  },/*
-  beforeMount(){
->>>>>>> 6874a66c456ba6db14757013cc9f10f7bd7f47b8
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
         delete request.body.silent
