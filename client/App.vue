@@ -41,7 +41,7 @@ export default {
       router : 'main'
     }
   },
-  beforeMount(){
+  beforeMount: function(){
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
         delete request.body.silent

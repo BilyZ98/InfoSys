@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 import $ from 'jquery'
 import store from './store/store'
-import VueResource from 'vue-resource'
 
 //.vue components
 import App from './App.vue'
