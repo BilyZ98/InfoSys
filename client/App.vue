@@ -33,12 +33,43 @@
 </template>
 
 <script>
+import Vue from 'vue'
 export default {
   data: function() {
     return {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
+  },
+  beforeMount(){
+    Vue.http.interceptors.push((request, next)=> {
+      if (request.method === 'POST' && request.body.silent) {
+        delete request.body.silent
+        return next()
+      } else if (request.silent) {
+        delete request.silent
+        return next()
+      }
+      next((res)=>{
+        console.log(res.status)
+        console.log(res.body)
+        if(res.status === 440){
+          this.$router.replace({name:'login'})
+        }
+        return res
+      })
+    })
+    this.$store.dispatch('GET',{
+      url:'users/session'
+    }).then((res)=>{
+      this.$store.commit('updateUserStatus',res.body.content.userType)
+      this.$store.commit('updateUserInfo',res.body.content)
+    }).then(()=>{
+      this.$router.replace({name:'main'})
+    }).catch((res)=>{
+      if(res.status === 441)
+      this.$router.replace({name:'login'})
+    })
   },
   methods: {
     homeClick: function() {

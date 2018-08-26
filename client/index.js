@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import $ from 'jquery'
+import store from './store/store'
+import VueResource from 'vue-resource'
 
 //.vue components
 import App from './App.vue'
@@ -38,6 +40,7 @@ import ScholarshipInsert from './components/inserts/Scholarship.vue'
 
 Vue.config.debug = true
 Vue.use(VueRouter)
+Vue.use(VueResource)
 
 const router = new VueRouter({
   routes: [
@@ -81,6 +84,7 @@ const router = new VueRouter({
 const app = new Vue({
   //router,
   router: router,
+  store,
   //render: h => h(App)
   render: function(h) {
       return h(App)

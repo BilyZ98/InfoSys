@@ -98,7 +98,7 @@ export default {
                 alert("登陆成功")
                 _self.$router.push({ name: 'main' })
               } else if (key == 'err'){
-                alert("用户名或密码错误")
+                alert("服务器错误")
               }
             }
             /*
@@ -112,8 +112,11 @@ export default {
             */
           },
           error: function(result, xhr) {
-            //console.log(result)
-            alert('服务器连接错误: ' + xhr)
+            console.log(result)
+            //表示密码错误
+            if(result.status == 441){
+              alert("账号或密码错误")
+            }
           }
         })
       }
