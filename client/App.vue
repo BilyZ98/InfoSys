@@ -40,8 +40,13 @@ export default {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
+<<<<<<< HEAD
   },
   beforeMount: function(){
+=======
+  },/*
+  beforeMount(){
+>>>>>>> 6874a66c456ba6db14757013cc9f10f7bd7f47b8
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
         delete request.body.silent
@@ -70,7 +75,7 @@ export default {
       if(res.status === 441)
       this.$router.replace({name:'login'})
     })
-  },
+  },*/
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
