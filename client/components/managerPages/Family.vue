@@ -127,10 +127,6 @@ export default {
 	      if ($('#family-isHard').val()) family['equal']['isHard'] = $('#family-isHard').val()
 	      if ($('#family-hardDegree').val()) family['equal']['hardDegree'] = $('#family-hardDegree').val()
 	      if ($('#family-hardFamDes').val()) family['equal']['hardFamDes'] = $('#family-hardFamDes').val()
-	      if(JSON.stringify(family) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(family['equal']) != emptyCell) data['where']['equal']['family'] = family['equal']
       if(JSON.stringify(family['range']) != emptyCell) data['where']['range']['family'] = family['range']

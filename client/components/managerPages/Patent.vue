@@ -124,10 +124,6 @@ export default {
 	      if ($('#patent-unit').val()) patent['equal']['unit'] = $('#patent-unit').val()
 	      if ($('#patent-patentNumber').val()) patent['equal']['patentNumber'] = $('#patent-patentNumber').val()
 	      if ($('#patent-creators').val()) patent['equal']['creators'] = $('#patent-creators').val()
-	      if(JSON.stringify(patent) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(patent['equal']) != emptyCell) data['where']['equal']['patent'] = patent['equal']
       if(JSON.stringify(patent['range']) != emptyCell) data['where']['range']['patent'] = patent['range']

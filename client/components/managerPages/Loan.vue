@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">助学贷款管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -120,10 +120,6 @@ export default {
 	      if ($('#loan-loanYears').val()) loan['equal']['loanYears'] = $('#loan-loanYears').val()
 	      if ($('#loan-moneyPerYear').val()) loan['equal']['moneyPerYear'] = $('#loan-moneyPerYear').val()
 	      if ($('#loan-loanTotal').val()) loan['equal']['loanTotal'] = $('#loan-loanTotal').val()
-	      if(JSON.stringify(loan) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(loan['equal']) != emptyCell) data['where']['equal']['loan'] = loan['equal']
       if(JSON.stringify(loan['range']) != emptyCell) data['where']['range']['loan'] = loan['range']

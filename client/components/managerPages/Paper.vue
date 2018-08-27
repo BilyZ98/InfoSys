@@ -25,7 +25,7 @@
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'paper-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -133,10 +133,6 @@ export default {
 	        paper['range']['time'] = rangeVal
 	      }
 	      if ($('#paper-insTeacher').val()) paper['equal']['insTeacher'] = $('#paper-insTeacher').val()
-	      if(JSON.stringify(paper) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(paper['equal']) != emptyCell) data['where']['equal']['paper'] = paper['equal']
       if(JSON.stringify(paper['range']) != emptyCell) data['where']['range']['paper'] = paper['range']

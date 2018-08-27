@@ -34,7 +34,6 @@ import FamilyInsert from './components/inserts/Family.vue'
 import PaperInsert from './components/inserts/Paper.vue'
 import PatentInsert from './components/inserts/Patent.vue'
 import TechProjectInsert from './components/inserts/TechProject.vue'
-import CourseInsert from './components/inserts/Course.vue'
 import CadreInsert from './components/inserts/Cadre.vue'
 import ScholarshipInsert from './components/inserts/Scholarship.vue'
 
@@ -76,7 +75,6 @@ const router = new VueRouter({
         { name: 'paperInsert', path: 'paper', component: PaperInsert },
         { name: 'patentInsert', path: 'patent', component: PatentInsert },
         { name: 'techProjectInsert', path: 'techProject', component: TechProjectInsert },
-        { name: 'courseInsert', path: 'course', component: CourseInsert },
         { name: 'cadreInsert', path: 'cadre', component: CadreInsert },
         { name: 'scholarshipInsert', path: 'scholarship', component: ScholarshipInsert }
       ]
@@ -87,7 +85,7 @@ const router = new VueRouter({
 const app = new Vue({
   //router,
   router: router,
-  store,
+  store: store,
   beforeMount: function() {
     this.$store.dispatch('GET', {
       url: 'users/session'

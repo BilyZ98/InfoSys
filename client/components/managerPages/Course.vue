@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">课程成绩管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -145,10 +145,6 @@ export default {
 	      if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
 	      if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()
 	      if ($('#course-backup').val()) course['equal']['backup'] = $('#course-backup').val()
-	      if(JSON.stringify(course) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(course['equal']) != emptyCell) data['where']['equal']['course'] = course['equal']
       if(JSON.stringify(course['range']) != emptyCell) data['where']['range']['course'] = course['range']

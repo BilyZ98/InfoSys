@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">党员信息管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -117,62 +117,58 @@ export default {
       } else {
 	      if ($('#partyInfo-name').val()) partyInfo['equal']['name'] = $('#partyInfo-name').val()
 	      if ($('#partyInfo-isLeaguer').val()) partyInfo['equal']['isLeaguer'] = $('#partyInfo-isLeaguer').val()
-      if ($('#partyInfo-joinGroupTime').val()) partyInfo['equal']['joinGroupTime'] = $('#partyInfo-joinGroupTime').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-submitTime .min').val(), max: $('#partyInfo-submitTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['submitTime'] = rangeVal
-      }
-      if ($('#partyInfo-activerTime').val()) partyInfo['equal']['activerTime'] = $('#apartyInfo-ctiverTime').val()
-      if ($('#partyInfo-contacter').val()) partyInfo['equal']['contacter'] = $('#partyInfo-contacter').val()
-      if ($('#partyInfo-isVerified').val()) partyInfo['equal']['isVerified'] = $('#partyInfo-isVerified').val()
-      if ($('#partyInfo-democracyTime').val()) partyInfo['equal']['democracyTime'] = $('#partyInfo-democracyTime').val()
-      if ($('#partyInfo-developerTime').val()) partyInfo['equal']['developerTime'] = $('#partyInfo-developerTime').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-partyTrainedTime .min').val(), max: $('#partyInfo-partyTrainedTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['partyTrainedTime'] = rangeVal
-      }
-      if ($('#partyInfo-introducerTime').val()) partyInfo['equal']['introducerTime'] = $('#partyInfo-introducerTime').val()
-      if ($('#partyInfo-introducer').val()) partyInfo['equal']['introducer'] = $('#partyInfo-introducer').val()
-      if ($('#partyInfo-hasAutobigraphy').val()) partyInfo['equal']['hasAutobigraphy'] = $('#partyInfo-hasAutobigraphy').val()
-      if ($('#partyInfo-hasApplicatiionForm').val()) partyInfo['equal']['hasApplicatiionForm'] = $('#partyInfo-hasApplicatiionForm').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-partyBranchTime .min').val(), max: $('#partyInfo-partyBranchTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['partyBranchTime'] = rangeVal
-      }
-      if ($('#partyInfo-partyTalkTime').val()) partyInfo['equal']['partyTalkTime'] = $('#partyInfo-partyTalkTime').val()
-      if ($('#partyInfo-partyTalker').val()) partyInfo['equal']['partyTalker'] = $('#partyInfo-partyTalker').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-probationaryTime .min').val(), max: $('#partyInfo-probationaryTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['probationaryTime'] = rangeVal
-      }
-      if ($('#partyInfo-partyOathTime').val()) partyInfo['equal']['partyOathTime'] = $('#partyInfo-partyOathTime').val()
-      if ($('#partyInfo-fullSubTime').val()) partyInfo['equal']['fullSubTime'] = $('#partyInfo-fullSubTime').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-fullMeetingTime .min').val(), max: $('#partyInfo-fullMeetingTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['fullMeetingTime'] = rangeVal
-      }
-      //range value
-      var rangeVal = {min: $('#partyInfo-fullMemberTime .min').val(), max: $('#partyInfo-fullMemberTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['fullMemberTime'] = rangeVal
-      }
-      if ($('#partyInfo-archiveTime').val()) partyInfo['equal']['archiveTime'] = $('#partyInfo-archiveTime').val()
-      if ($('#partyInfo-temporaryTime').val()) partyInfo['equal']['temporaryTime'] = $('#partyInfo-temporaryTime').val()
-      //range value
-      var rangeVal = {min: $('#partyInfo-outTime .min').val(), max: $('#partyInfo-outTime .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        partyInfo['range']['outTime'] = rangeVal
-      }
-      if ($('#partyInfo-outUnit').val()) partyInfo['equal']['outUnit'] = $('#partyInfo-outUnit').val()
-	      if(JSON.stringify(partyInfo) == empty){
-	      	alert('请输入查询条件！')
-	      	return
+	      if ($('#partyInfo-joinGroupTime').val()) partyInfo['equal']['joinGroupTime'] = $('#partyInfo-joinGroupTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-submitTime .min').val(), max: $('#partyInfo-submitTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['submitTime'] = rangeVal
 	      }
+	      if ($('#partyInfo-activerTime').val()) partyInfo['equal']['activerTime'] = $('#apartyInfo-ctiverTime').val()
+	      if ($('#partyInfo-contacter').val()) partyInfo['equal']['contacter'] = $('#partyInfo-contacter').val()
+	      if ($('#partyInfo-isVerified').val()) partyInfo['equal']['isVerified'] = $('#partyInfo-isVerified').val()
+	      if ($('#partyInfo-democracyTime').val()) partyInfo['equal']['democracyTime'] = $('#partyInfo-democracyTime').val()
+	      if ($('#partyInfo-developerTime').val()) partyInfo['equal']['developerTime'] = $('#partyInfo-developerTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-partyTrainedTime .min').val(), max: $('#partyInfo-partyTrainedTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['partyTrainedTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-introducerTime').val()) partyInfo['equal']['introducerTime'] = $('#partyInfo-introducerTime').val()
+	      if ($('#partyInfo-introducer').val()) partyInfo['equal']['introducer'] = $('#partyInfo-introducer').val()
+	      if ($('#partyInfo-hasAutobigraphy').val()) partyInfo['equal']['hasAutobigraphy'] = $('#partyInfo-hasAutobigraphy').val()
+	      if ($('#partyInfo-hasApplicatiionForm').val()) partyInfo['equal']['hasApplicatiionForm'] = $('#partyInfo-hasApplicatiionForm').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-partyBranchTime .min').val(), max: $('#partyInfo-partyBranchTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['partyBranchTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-partyTalkTime').val()) partyInfo['equal']['partyTalkTime'] = $('#partyInfo-partyTalkTime').val()
+	      if ($('#partyInfo-partyTalker').val()) partyInfo['equal']['partyTalker'] = $('#partyInfo-partyTalker').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-probationaryTime .min').val(), max: $('#partyInfo-probationaryTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['probationaryTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-partyOathTime').val()) partyInfo['equal']['partyOathTime'] = $('#partyInfo-partyOathTime').val()
+	      if ($('#partyInfo-fullSubTime').val()) partyInfo['equal']['fullSubTime'] = $('#partyInfo-fullSubTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-fullMeetingTime .min').val(), max: $('#partyInfo-fullMeetingTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['fullMeetingTime'] = rangeVal
+	      }
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-fullMemberTime .min').val(), max: $('#partyInfo-fullMemberTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['fullMemberTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-archiveTime').val()) partyInfo['equal']['archiveTime'] = $('#partyInfo-archiveTime').val()
+	      if ($('#partyInfo-temporaryTime').val()) partyInfo['equal']['temporaryTime'] = $('#partyInfo-temporaryTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-outTime .min').val(), max: $('#partyInfo-outTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['outTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-outUnit').val()) partyInfo['equal']['outUnit'] = $('#partyInfo-outUnit').val()
 	    }
       if(JSON.stringify(partyInfo['equal']) != emptyCell) data['where']['equal']['partyInfo'] = partyInfo['equal']
       if(JSON.stringify(partyInfo['range']) != emptyCell) data['where']['range']['partyInfo'] = partyInfo['range']

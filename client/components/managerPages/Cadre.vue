@@ -120,10 +120,6 @@ export default {
 	      if ($('#cadre-cadreClass').val()) cadre['equal']['cadreClass'] = $('#cadre-cadreClass').val()
 	      if ($('#cadre-cadreName').val()) cadre['equal']['cadreName'] = $('#cadre-cadreName').val()
 	      if ($('#cadre-cadreJiBie').val()) cadre['equal']['cadreJiBie'] = $('#cadre-cadreJiBie').val()
-	      if(JSON.stringify(cadre) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(cadre['equal']) != emptyCell) data['where']['equal']['cadre'] = cadre['equal']
       if(JSON.stringify(cadre['range']) != emptyCell) data['where']['range']['cadre'] = cadre['range']

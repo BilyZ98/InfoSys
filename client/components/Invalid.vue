@@ -20,9 +20,13 @@ export default {
 		}
 	},
 	mounted: function(){
-	  $(".app-bar-display").attr("class", "app-bar-hide")
-	  $(".container-info-display").attr("class", "container-info-all")
-	}
+    $(".app-bar-display").attr("class", "app-bar-hide")
+    $(".container-info-display").attr("class", "container-info-all")
+  },
+  beforeDestroy: function(){
+    $(".app-bar-hide").attr("class", "app-bar-display")
+    $(".container-info-all").attr("class", "container-info-display")
+  },
 }
 </script>
 

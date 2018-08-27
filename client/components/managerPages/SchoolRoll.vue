@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">学籍管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -115,24 +115,20 @@ export default {
 			if ($('#schoolRoll-sid').val()) {
         schoolRoll['equal']['sid'] = $('#schoolRoll-sid').val()
       } else {
-      if ($('#schoolRoll-name').val()) schoolRoll['equal']['name'] = $('#schoolRoll-name').val()
-      if ($('#schoolRoll-isAtRoll').val()) schoolRoll['equal']['isAtRoll'] = $('#schoolRoll-isAtRoll').val()
-      if ($('#schoolRoll-class').val()) schoolRoll['equal']['class'] = $('#schoolRoll-class').val()
-      if ($('#schoolRoll-studyYears').val()) schoolRoll['equal']['studyYears'] = $('#schoolRoll-studyYears').val()
-      //range value
-      var rangeVal = {min: $('#schoolRoll-timeInSchool .min').val(), max: $('#schoolRoll-timeInSchool .max').val()}
-      if(rangeVal['min']!='' && rangeVal['max']!=''){
-        schoolRoll['range']['timeInSchool'] = rangeVal
-      }
-      if ($('#schoolRoll-isFee').val()) schoolRoll['equal']['isFee'] = $('#schoolRoll-isFee').val()
-      if ($('#schoolRoll-isArrive').val()) schoolRoll['equal']['isArrive'] = $('#schoolRoll-isArrive').val()
-      if ($('#schoolRoll-isRollChanged').val()) schoolRoll['equal']['isRollChanged'] = $('#schoolRoll-isRollChanged').val()
-      if ($('#schoolRoll-changeTime').val()) schoolRoll['equal']['changeTime'] = $('#schoolRoll-changeTime').val()
-      if ($('#schoolRoll-changeClass').val()) schoolRoll['equal']['changeClass'] = $('#schoolRoll-changeClass').val()
-	      if(JSON.stringify(schoolRoll) == empty){
-	      	alert('请输入查询条件！')
-	      	return
+	      if ($('#schoolRoll-name').val()) schoolRoll['equal']['name'] = $('#schoolRoll-name').val()
+	      if ($('#schoolRoll-isAtRoll').val()) schoolRoll['equal']['isAtRoll'] = $('#schoolRoll-isAtRoll').val()
+	      if ($('#schoolRoll-class').val()) schoolRoll['equal']['class'] = $('#schoolRoll-class').val()
+	      if ($('#schoolRoll-studyYears').val()) schoolRoll['equal']['studyYears'] = $('#schoolRoll-studyYears').val()
+	      //range value
+	      var rangeVal = {min: $('#schoolRoll-timeInSchool .min').val(), max: $('#schoolRoll-timeInSchool .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        schoolRoll['range']['timeInSchool'] = rangeVal
 	      }
+	      if ($('#schoolRoll-isFee').val()) schoolRoll['equal']['isFee'] = $('#schoolRoll-isFee').val()
+	      if ($('#schoolRoll-isArrive').val()) schoolRoll['equal']['isArrive'] = $('#schoolRoll-isArrive').val()
+	      if ($('#schoolRoll-isRollChanged').val()) schoolRoll['equal']['isRollChanged'] = $('#schoolRoll-isRollChanged').val()
+	      if ($('#schoolRoll-changeTime').val()) schoolRoll['equal']['changeTime'] = $('#schoolRoll-changeTime').val()
+	      if ($('#schoolRoll-changeClass').val()) schoolRoll['equal']['changeClass'] = $('#schoolRoll-changeClass').val()
 	    }
       if(JSON.stringify(schoolRoll['equal']) != emptyCell) data['where']['equal']['schoolRoll'] = schoolRoll['equal']
       if(JSON.stringify(schoolRoll['range']) != emptyCell) data['where']['range']['schoolRoll'] = schoolRoll['range']

@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">资助信息管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
@@ -25,7 +25,7 @@
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'aid-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -123,11 +123,8 @@ export default {
 	      //range value
 	      var rangeVal = {min: $('#aid-aidAmount .min').val(), max: $('#aid-aidAmount .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	      	alert('123')
 	        aid['range']['aidAmount'] = rangeVal
-	      }
-	      if(JSON.stringify(aid) == empty){
-	      	alert('请输入查询条件！')
-	      	return
 	      }
 	    }
       if(JSON.stringify(aid['equal']) != emptyCell) data['where']['equal']['aid'] = aid['equal']
@@ -137,7 +134,6 @@ export default {
       console.log(postData)
       //post
       var _self = this
-      // replace getPost with your data fetching util / API wrapper
       $.ajax({
         type: 'POST',
         url: '/students/query',

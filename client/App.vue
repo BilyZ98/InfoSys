@@ -2,10 +2,12 @@
 <div>
   <header class="app-bar-display">
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
+    <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
+    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" title="用户信息"></div>
   </header>
   <aside class="app-bar-display">
     <div class="info-side">
-      <label>王麻子</label>
+      <label id="info-account">王麻子</label>
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
@@ -32,13 +34,17 @@
 </template>
 
 <script>
-import Vue from 'vue'
+//import store from './store/store'
+
 export default {
   data: function() {
     return {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
+  },
+  mounted: function() {
+    $('#info-account').text(this.$store.getters.getUserAccount)
   },
   /*
   beforeMount: function(){
@@ -81,6 +87,24 @@ export default {
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
+    },
+    logoutClick: function() {
+      var _self = this
+      $.ajax({
+        type: 'GET',
+        url: '/users/logout',
+        contentType: 'application/json;charset=utf-8',
+        timeout: 5000,
+        success: function(result, xhr) {
+          //console.log(result)
+          _self.$router.push({ name: 'login' })
+        },
+        error: function(result, xhr) {
+          //连接错误
+          //console.log(result)
+          alert('服务器连接错误: ' + xhr)
+        }
+      })
     },
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })
@@ -166,7 +190,6 @@ header {
   top: 0;
   left: 0;
   background-color: var(--blue);
-  text-align: center;
   /*shadow*/
   box-shadow: 1px 1px 5px var(--grey-shadow);
   z-index: 100;
@@ -178,8 +201,10 @@ header {
 
 .button-home {
   position: relative;
+  display: inline-block;
   height: 100%;
   width: 225px;
+  text-align: center;
   padding-top: 15px;
   background-color: var(--blue);
   font-size: 1.5em;
@@ -193,6 +218,27 @@ header {
 
 .button-home:hover {
   background-color: var(--blue-hover);
+  cursor: pointer;
+}
+
+.button-icon {
+  float: right;
+  margin-right: 40px;
+  padding-top: 20px;
+  height: 100%;
+  width: 10px;
+  text-align: center;
+  color: black;
+  font-size: 20px;
+  font-weight: bold;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
+
+.button-icon:hover {
+  color: white;
   cursor: pointer;
 }
 

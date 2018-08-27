@@ -128,10 +128,6 @@ export default {
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
 	        techProject['range']['proTime'] = rangeVal
 	      }
-	      if(JSON.stringify(techProject) == empty){
-	      	alert('请输入查询条件！')
-	      	return
-	      }
 	    }
       if(JSON.stringify(techProject['equal']) != emptyCell) data['where']['equal']['techProject'] = techProject['equal']
       if(JSON.stringify(techProject['range']) != emptyCell) data['where']['range']['techProject'] = techProject['range']
