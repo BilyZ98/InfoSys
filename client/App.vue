@@ -40,7 +40,7 @@ export default {
       router : 'main'
     }
   },
-
+  /*
   beforeMount: function(){
     Vue.http.interceptors.push((request, next)=> {
       if (request.method === 'POST' && request.body.silent) {
@@ -51,8 +51,8 @@ export default {
         return next()
       }
       next((res)=>{
-        console.log(res.status)
-        console.log(res.body)
+        //console.log(res.status)
+        //console.log(res.body)
         if(res.status === 440){
           this.$router.replace({name:'login'})
         }
@@ -60,17 +60,24 @@ export default {
       })
     })
     this.$store.dispatch('GET',{
-      url:'users/session'
-    }).then((res)=>{
-      this.$store.commit('updateUserStatus',res.body.content.userType)
-      this.$store.commit('updateUserInfo',res.body.content)
-    }).then(()=>{
-      this.$router.replace({name:'main'})
-    }).catch((res)=>{
-      if(res.status === 441)
-      this.$router.replace({name:'login'})
+      url: 'users/session'
+    }).then((res) => {
+      app.$store.commit('updateUserStatus', res.body.content.userType)
+      app.$store.commit('updateUserInfo', res.body.content)
+    }).then(() => {
+      //app.$router.replace({name:'main'})
+      if (to.matched.length === 0) {
+        app.$router.replace({ name: 'main' })
+      }
+      else if ((to.path == '/')||(to.path == '/login'))  {
+        app.$router.replace({ name: 'main' })
+      }
+    }).catch((res) => {
+      if (res.status === 441)
+        app.$router.replace({ name: 'login' })
     })
   },
+  */
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })

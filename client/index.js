@@ -6,6 +6,7 @@ import store from './store/store'
 
 //.vue components
 import App from './App.vue'
+import Invalid from './components/Invalid.vue'
 import Main from './components/Main.vue'
 import Login from './components/Login.vue'
 import Query from './components/Query.vue'
@@ -44,7 +45,9 @@ Vue.use(VueResource)
 
 const router = new VueRouter({
   routes: [
-    { name: 'login', path: '/', component: Login },
+    { path: '/', redirect: 'main' },
+    { name: 'invalid', path: '/invalid', component: Invalid },
+    { name: 'login', path: '/login', component: Login },
     { name: 'main', path: '/main', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
@@ -85,6 +88,24 @@ const app = new Vue({
   //router,
   router: router,
   store,
+  beforeMount: function() {
+    this.$store.dispatch('GET', {
+      url: 'users/session'
+    }).then((res) => {
+      app.$store.commit('updateUserStatus', res.body.content.userType)
+      app.$store.commit('updateUserInfo', res.body.content)
+    }).then(() => {
+      //app.$router.replace({name:'main'})
+      if (to.matched.length === 0) {
+        app.$router.replace({ name: 'invalid' })
+      } else if ((to.path == '/') || (to.path == '/login')) {
+        app.$router.replace({ name: 'main' })
+      }
+    }).catch((res) => {
+      if (res.status === 441)
+        app.$router.replace({ name: 'login' })
+    })
+  },
   //render: h => h(App)
   render: function(h) {
     return h(App)
@@ -104,7 +125,9 @@ router.beforeEach((to, from, next) => {
     app.$store.commit('updateUserInfo', res.body.content)
   }).then(() => {
     //app.$router.replace({name:'main'})
-    if (to.path == '/') {
+    if (to.matched.length === 0) {
+      app.$router.replace({ name: 'invalid' })
+    } else if ((to.path == '/') || (to.path == '/login')) {
       app.$router.replace({ name: 'main' })
     }
   }).catch((res) => {
