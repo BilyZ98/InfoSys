@@ -215,6 +215,31 @@ exports.addTechProject = (data) => {
 }
 
 //data 就是传过来的json数据
+/*
+var newQuery =  {
+	"select": [],
+	"where": {
+		"equal": {
+			"basicInfo": {
+				"gender": "男"
+			}
+		},
+		"range": {
+			"schoolRoll": {
+				"timeInSchool": {
+					"min": "123",
+					"max": "321"
+				}
+			}
+		},
+		"fuzzy": {
+      'basicInfo':{
+        'name':'zzt'
+      }
+    }
+	}
+}
+*/
 exports.query = (data) => {
   let query = "select ";
 
@@ -261,7 +286,13 @@ exports.query = (data) => {
     }
 
   })
-
+  var whereNull = true;
+  for(let i in whereObj){
+    if(JSON.stringify(whereObj[i]) != '{}') whereNull = false;
+  }
+  if(whereNull){
+    return queryDB({sql:query,nestTables:true});
+  }
   query+=' where ';
 
   var beforeTable = '';
