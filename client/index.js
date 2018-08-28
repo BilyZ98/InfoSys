@@ -30,13 +30,13 @@ import Paper from './components/managerPages/Paper.vue'
 import Patent from './components/managerPages/Patent.vue'
 import TechProject from './components/managerPages/TechProject.vue'
 
-import BasicInfoInsert from './components/inserts/BasicInfo.vue'
-import FamilyInsert from './components/inserts/Family.vue'
-import PaperInsert from './components/inserts/Paper.vue'
-import PatentInsert from './components/inserts/Patent.vue'
-import TechProjectInsert from './components/inserts/TechProject.vue'
-import CadreInsert from './components/inserts/Cadre.vue'
-import ScholarshipInsert from './components/inserts/Scholarship.vue'
+import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
+import FamilyInsert from './components/inserts/FamilyInsert.vue'
+import PaperInsert from './components/inserts/PaperInsert.vue'
+import PatentInsert from './components/inserts/PatentInsert.vue'
+import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
+import CadreInsert from './components/inserts/CadreInsert.vue'
+import ScholarshipInsert from './components/inserts/ScholarshipInsert.vue'
 
 
 Vue.config.debug = true

@@ -187,6 +187,7 @@ export default {
   font-weight: bold;
   width: 50px;
   margin-left: 100px;
+  text-align: right;
 }
 
 #container-login .container-input input {

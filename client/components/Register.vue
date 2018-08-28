@@ -121,6 +121,7 @@ export default {
   font-weight: bold;
   width: 80px;
   margin-left: 70px;
+  text-align: right;
 }
 
 #container-register .container-input input {
