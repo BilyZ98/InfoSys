@@ -3,7 +3,7 @@
   <header class="app-bar-display">
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
     <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" title="用户信息"></div>
+    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
   </header>
   <aside class="app-bar-display">
     <div class="info-side">
@@ -40,11 +40,17 @@ export default {
   data: function() {
     return {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
-      router : 'main'
+      router : 'main',
+      sid: null
     }
   },
   mounted: function() {
-    $('#info-account').text(this.$store.getters.getUserAccount)
+    sid = this.$route.params.sid
+    //alert(this.$route.params.sid)
+    if(this.$route.params.sid != undefined){
+      $('#info-account').text(this.$route.params.sid)
+    }
+    //$('#info-account').text(this.$store.getters.getUserAccount)
   },
   /*
   beforeMount: function(){
@@ -88,23 +94,28 @@ export default {
     homeClick: function() {
       this.$router.push({ name: 'main' })
     },
+    userInfoClick: function(){
+      $('#info-account').text(this.$store.getters.getUserAccount)
+    },
     logoutClick: function() {
-      var _self = this
-      $.ajax({
-        type: 'GET',
-        url: '/users/logout',
-        contentType: 'application/json;charset=utf-8',
-        timeout: 5000,
-        success: function(result, xhr) {
-          //console.log(result)
-          _self.$router.push({ name: 'login' })
-        },
-        error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
+      if (confirm("您确定要退出登录吗？")) {
+        var _self = this
+        $.ajax({
+          type: 'GET',
+          url: '/users/logout',
+          contentType: 'application/json;charset=utf-8',
+          timeout: 5000,
+          success: function(result, xhr) {
+            //console.log(result)
+            _self.$router.push({ name: 'login' })
+          },
+          error: function(result, xhr) {
+            //连接错误
+            //console.log(result)
+            alert('服务器连接错误: ' + xhr)
+          }
+        })
+      }
     },
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })

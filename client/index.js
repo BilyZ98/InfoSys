@@ -9,6 +9,7 @@ import App from './App.vue'
 import Invalid from './components/Invalid.vue'
 import Main from './components/Main.vue'
 import Login from './components/Login.vue'
+import Register from './components/Register.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
@@ -47,6 +48,7 @@ const router = new VueRouter({
     { path: '/', redirect: 'main' },
     { name: 'invalid', path: '/invalid', component: Invalid },
     { name: 'login', path: '/login', component: Login },
+    { name: 'register', path: '/register', component: Register },
     { name: 'main', path: '/main', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
