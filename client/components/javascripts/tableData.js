@@ -173,7 +173,7 @@ export default {
     name: '获得奖励情况',
     id: 'award',
     records: {
-      award: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', valueType: 'input' },
+      sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', valueType: 'input' },
       stuClass: { name: '学生类别', id: 'stuClass', isPrimary: false, display: true, value: '', valueType: 'select', options: ['本科生', '硕士生', '博士生'] },
       awardName: { name: '奖励名称', id: 'awardName', isPrimary: true, display: true, value: '', valueType: 'input' },

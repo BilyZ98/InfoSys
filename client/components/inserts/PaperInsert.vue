@@ -46,6 +46,7 @@ export default {
         $('#warning').text(message)
         return
       } else {
+        $('#warning').text('')
         var data = {
           table: this.tableId
         }

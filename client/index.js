@@ -36,7 +36,7 @@ import PaperInsert from './components/inserts/PaperInsert.vue'
 import PatentInsert from './components/inserts/PatentInsert.vue'
 import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
 import CadreInsert from './components/inserts/CadreInsert.vue'
-import ScholarshipInsert from './components/inserts/ScholarshipInsert.vue'
+import AwardInsert from './components/inserts/AwardInsert.vue'
 
 
 Vue.config.debug = true
@@ -78,7 +78,7 @@ const router = new VueRouter({
         { name: 'patentInsert', path: 'patent', component: PatentInsert },
         { name: 'techProjectInsert', path: 'techProject', component: TechProjectInsert },
         { name: 'cadreInsert', path: 'cadre', component: CadreInsert },
-        { name: 'scholarshipInsert', path: 'scholarship', component: ScholarshipInsert }
+        { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
     }
   ]

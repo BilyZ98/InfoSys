@@ -4,7 +4,7 @@
 	<div class="container-header">
 		<p class="header-text">奖励情况管理</p>
 		<div class="header-button">
-			<!--<span @click="insertClick">插入数据</span>-->
+			<span @click="insertClick">插入数据</span>
 			<span>上传学生照片</span>
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>

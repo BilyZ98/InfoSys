@@ -1,6 +1,6 @@
 <template>
-<div id="container-insert-scholarship">
-  <div class="text-header">奖学金信息插入</div>
+<div id="container-insert-award">
+  <div class="text-header">获得奖励情况插入</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
@@ -24,8 +24,8 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'scholarship',
-      table: tableData['scholarship']
+      tableId: 'award',
+      table: tableData['award']
     }
   },
   methods: {
@@ -46,6 +46,7 @@ export default {
         $('#warning').text(message)
         return
       } else {
+        $('#warning').text('')
         var data = {
           table: this.tableId
         }
@@ -89,7 +90,7 @@ export default {
 </script>
 
 <style>
-#container-insert-scholarship {
+#container-insert-award {
   margin: 25px;
   text-align: left;
   padding: 30px;
@@ -102,37 +103,37 @@ export default {
   overflow: hidden;
 }
 
-#container-insert-scholarship .text-header {
+#container-insert-award .text-header {
   text-align: center;
   font-size: 25px;
   font-weight: bolder;
 }
 
-#container-insert-scholarship .container-input {
+#container-insert-award .container-input {
   margin-left: 50px;
 }
 
-#container-insert-scholarship .container-record {
+#container-insert-award .container-record {
   float: left;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-#container-insert-scholarship .container-record span {
+#container-insert-award .container-record span {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
 }
 
-#container-insert-scholarship .container-record select, #container-insert-scholarship .container-record input {
+#container-insert-award .container-record select, #container-insert-award .container-record input {
   margin-left: 10px;
   width: 400px;
   height: 30px;
   padding: 5px;
 }
 
-#container-insert-scholarship #warning {
+#container-insert-award #warning {
   float: left;
   clear: both;
   text-align: left;
@@ -145,7 +146,7 @@ export default {
   color: #f00;
 }
 
-#container-insert-scholarship .button-insert {
+#container-insert-award .button-insert {
   float: left;
   clear: both;
   width: 110px;
@@ -163,7 +164,7 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#container-insert-scholarship .button-insert:hover {
+#container-insert-award .button-insert:hover {
   background-color: var(--blue-hover);
 }
 </style>

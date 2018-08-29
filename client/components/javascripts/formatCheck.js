@@ -23,14 +23,6 @@ export default {
     speciality: { canNull: true, reg: null, msg: '' },
     highSchool: { canNull: true, reg: null, msg: '' }
   },
-  cadre: {
-    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
-    name: { canNull: false, reg: null, msg: '' },
-    year: { canNull: false, reg: null, msg: '' },
-    cadreClass: { canNull: false, reg: null, msg: '' },
-    cadreName: { canNull: false, reg: null, msg: '' },
-    cadreJiBie: { canNull: false, reg: null, msg: '' }
-  },
   family: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
     name: { canNull: false, reg: null, msg: '' },
@@ -45,6 +37,38 @@ export default {
     isHard: { canNull: false, reg: null, msg: '' },
     hardDegree: { canNull: true, reg: null, msg: '' },
     hardFamDes: { canNull: true, reg: null, msg: '' }
+  },
+  schoolRoll: {},
+  course: {},
+  partyInfo: {},
+  scholarship: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    year: { canNull: false, reg: null, msg: '' },
+    shipClass: { canNull: false, reg: null, msg: '' },
+    shipName: { canNull: false, reg: null, msg: '' },
+    shipAmount: { canNull: false, reg: null, msg: '' }
+  },
+  aid: {},
+  loan: {},
+  cadre: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    year: { canNull: false, reg: null, msg: '' },
+    cadreClass: { canNull: false, reg: null, msg: '' },
+    cadreName: { canNull: false, reg: null, msg: '' },
+    cadreJiBie: { canNull: false, reg: null, msg: '' }
+  },
+  award: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    stuClass: { canNull: false, reg: null, msg: '' },
+    awardName: { canNull: false, reg: null, msg: '' },
+    awardClass: { canNull: false, reg: null, msg: '' },
+    employer: { canNull: false, reg: null, msg: '' },
+    awardJiBie: { canNull: false, reg: null, msg: '' },
+    awardYearMonth: { canNull: false, reg: null, msg: '' },
+    teacher: { canNull: false, reg: null, msg: '' }
   },
   paper: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
