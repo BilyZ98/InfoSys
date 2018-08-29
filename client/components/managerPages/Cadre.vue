@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,28 @@ export default {
         }
       }
 			if ($('#cadre-sid').val()) {
-        cadre['equal']['sid'] = $('#cadre-sid').val()
+				var sid = $('#cadre-sid').val()
+				if(!formatCheck['cadre']['sid']['reg'].test(sid)){
+					alert(formatCheck['cadre']['sid']['msg'])
+					return
+				} else {
+					cadre['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['cadre']){
+      		if(formatCheck['cadre'][item]['reg'] != null){
+      			let record = $('#cadre-' + item).val()
+      			if(record != '' && !formatCheck['cadre'][item]['reg'].test(record)){
+      				message = message + formatCheck['cadre'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
 	      if ($('#cadre-name').val()) cadre['equal']['name'] = $('#cadre-name').val()
 	      if ($('#cadre-year').val()) cadre['equal']['year'] = $('#cadre-year').val()
 	      if ($('#cadre-cadreClass').val()) cadre['equal']['cadreClass'] = $('#cadre-cadreClass').val()

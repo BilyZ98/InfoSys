@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#schoolRoll-sid').val()) {
-        schoolRoll['equal']['sid'] = $('#schoolRoll-sid').val()
+				var sid = $('#schoolRoll-sid').val()
+				if(!formatCheck['schoolRoll']['sid']['reg'].test(sid)){
+					alert(formatCheck['schoolRoll']['sid']['msg'])
+					return
+				} else {
+					schoolRoll['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['schoolRoll']){
+      		if(formatCheck['schoolRoll'][item]['reg'] != null){
+      			let record = $('#schoolRoll-' + item).val()
+      			if(record != '' && !formatCheck['schoolRoll'][item]['reg'].test(record)){
+      				message = message + formatCheck['schoolRoll'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#schoolRoll-name').val()) schoolRoll['equal']['name'] = $('#schoolRoll-name').val()
 	      if ($('#schoolRoll-isAtRoll').val()) schoolRoll['equal']['isAtRoll'] = $('#schoolRoll-isAtRoll').val()
 	      if ($('#schoolRoll-class').val()) schoolRoll['equal']['class'] = $('#schoolRoll-class').val()

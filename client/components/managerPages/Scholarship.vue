@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#scholarship-sid').val()) {
-        scholarship['equal']['sid'] = $('#scholarship-sid').val()
+				var sid = $('#scholarship-sid').val()
+				if(!formatCheck['scholarship']['sid']['reg'].test(sid)){
+					alert(formatCheck['scholarship']['sid']['msg'])
+					return
+				} else {
+					scholarship['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['scholarship']){
+      		if(formatCheck['scholarship'][item]['reg'] != null){
+      			let record = $('#scholarship-' + item).val()
+      			if(record != '' && !formatCheck['scholarship'][item]['reg'].test(record)){
+      				message = message + formatCheck['scholarship'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#scholarship-name').val()) scholarship['equal']['name'] = $('#scholarship-name').val()
 	      if ($('#scholarship-year').val()) scholarship['equal']['year'] = $('#scholarship-year').val()
 	      if ($('#scholarship-shipClass').val()) scholarship['equal']['shipClass'] = $('#scholarship-shipClass').val()

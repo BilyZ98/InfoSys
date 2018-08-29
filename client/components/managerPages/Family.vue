@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,28 @@ export default {
         }
       }
 			if ($('#family-sid').val()) {
-        family['equal']['sid'] = $('#family-sid').val()
+				var sid = $('#family-sid').val()
+				if(!formatCheck['family']['sid']['reg'].test(sid)){
+					alert(formatCheck['family']['sid']['msg'])
+					return
+				} else {
+					family['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['family']){
+      		if(formatCheck['family'][item]['reg'] != null){
+      			let record = $('#family-' + item).val()
+      			if(record != '' && !formatCheck['family'][item]['reg'].test(record)){
+      				message = message + formatCheck['family'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
 	      if ($('#family-name').val()) family['equal']['name'] = $('#family-name').val()
 	      if ($('#family-homeAddress').val()) family['equal']['homeAddress'] = $('#family-homeAddress').val()
 	      if ($('#family-fatherName').val()) family['equal']['fatherName'] = $('#family-fatherName').val()

@@ -1,3 +1,5 @@
+//canNull:在插入页面限制字段是否为空，reg：正则表达式，msg：格式错误的提示。（长度限制在页面检查）
+//tableData中规定为select的字段不需要格式验证
 export default {
   basicInfo: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
@@ -38,19 +40,92 @@ export default {
     hardDegree: { canNull: true, reg: null, msg: '' },
     hardFamDes: { canNull: true, reg: null, msg: '' }
   },
-  schoolRoll: {},
-  course: {},
-  partyInfo: {},
+  schoolRoll: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    isAtRoll: { canNull: false, reg: null, msg: '' },
+    'class': { canNull: false, reg: null, msg: '' },
+    studyYears: { canNull: false, reg: null, msg: '' },
+    timeInSchool: { canNull: false, reg: null, msg: '' },
+    isFee: { canNull: false, reg: null, msg: '' },
+    isArrive: { canNull: false, reg: null, msg: '' },
+    isRollChanged: { canNull: false, reg: null, msg: '' },
+    changeTime: { canNull: false, reg: null, msg: '' },
+    changeClass: { canNull: false, reg: null, msg: '' },
+    changeReason: { canNull: false, reg: null, msg: '' },
+    changeSchoolPage: { canNull: false, reg: null, msg: '' }
+  },
+  course: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    year: { canNull: false, reg: null, msg: '' },
+    semester: { canNull: false, reg: null, msg: '' },
+    courseName: { canNull: false, reg: null, msg: '' },
+    courseId: { canNull: false, reg: null, msg: '' },
+    courseClass: { canNull: false, reg: null, msg: '' },
+    courseProperty: { canNull: false, reg: null, msg: '' },
+    courseHour: { canNull: false, reg: null, msg: '' },
+    credit: { canNull: false, reg: null, msg: '' },
+    courseGrade: { canNull: false, reg: null, msg: '' },
+    gpa: { canNull: false, reg: null, msg: '' },
+    isPass: { canNull: false, reg: null, msg: '' },
+    rebuild: { canNull: false, reg: null, msg: '' },
+    backup: { canNull: false, reg: null, msg: '' }
+  },
+  partyInfo: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    isLeaguer: { canNull: false, reg: null, msg: '' },
+    joinGroupTime: { canNull: false, reg: null, msg: '' },
+    submitTime: { canNull: false, reg: null, msg: '' },
+    activerTime: { canNull: false, reg: null, msg: '' },
+    contacter: { canNull: false, reg: null, msg: '' },
+    isVerified: { canNull: false, reg: null, msg: '' },
+    democracyTime: { canNull: false, reg: null, msg: '' },
+    developerTime: { canNull: false, reg: null, msg: '' },
+    partyTrainedTime: { canNull: false, reg: null, msg: '' },
+    introducerTime: { canNull: false, reg: null, msg: '' },
+    introducer: { canNull: false, reg: null, msg: '' },
+    hasAutobigraphy: { canNull: false, reg: null, msg: '' },
+    hasApplicatiionForm: { canNull: false, reg: null, msg: '' },
+    partyBranchTime: { canNull: false, reg: null, msg: '' },
+    partyTalkTime: { canNull: false, reg: null, msg: '' },
+    partyTalker: { canNull: false, reg: null, msg: '' },
+    probationaryTime: { canNull: false, reg: null, msg: '' },
+    partyOathTime: { canNull: false, reg: null, msg: '' },
+    fullSubTime: { canNull: false, reg: null, msg: '' },
+    fullMeetingTime: { canNull: false, reg: null, msg: '' },
+    fullMemberTime: { canNull: false, reg: null, msg: '' },
+    archiveTime: { canNull: false, reg: null, msg: '' },
+    temporaryTime: { canNull: false, reg: null, msg: '' },
+    outTime: { canNull: false, reg: null, msg: '' },
+    outUnit: { canNull: false, reg: null, msg: '' }
+  },
   scholarship: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
     name: { canNull: false, reg: null, msg: '' },
     year: { canNull: false, reg: null, msg: '' },
     shipClass: { canNull: false, reg: null, msg: '' },
     shipName: { canNull: false, reg: null, msg: '' },
-    shipAmount: { canNull: false, reg: null, msg: '' }
+    shipAmount: { canNull: false, reg: /^[\d]{1,12}$/, msg: '奖学金金额格式错误' }
   },
-  aid: {},
-  loan: {},
+  aid: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    year: { canNull: false, reg: null, msg: '' },
+    aidClass: { canNull: false, reg: null, msg: '' },
+    aidProperty: { canNull: false, reg: null, msg: '' },
+    aidName: { canNull: false, reg: null, msg: '' },
+    aidAmount: { canNull: false, reg: null, msg: '' }
+  },
+  loan: {
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    name: { canNull: false, reg: null, msg: '' },
+    submitYear: { canNull: false, reg: null, msg: '' },
+    loanYears: { canNull: false, reg: null, msg: '' },
+    moneyPerYear: { canNull: false, reg: /^[\d]{1,12}$/, msg: '每年放款金额格式错误' },
+    loanTotal: { canNull: false, reg: /^[\d]{1,12}$/, msg: '贷款总额格式错误' }
+  },
   cadre: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
     name: { canNull: false, reg: null, msg: '' },

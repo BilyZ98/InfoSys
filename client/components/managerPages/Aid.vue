@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#aid-sid').val()) {
-        aid['equal']['sid'] = $('#aid-sid').val()
+				var sid = $('#aid-sid').val()
+				if(!formatCheck['aid']['sid']['reg'].test(sid)){
+					alert(formatCheck['aid']['sid']['msg'])
+					return
+				} else {
+					aid['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['aid']){
+      		if(formatCheck['aid'][item]['reg'] != null){
+      			let record = $('#aid-' + item).val()
+      			if(record != '' && !formatCheck['aid'][item]['reg'].test(record)){
+      				message = message + formatCheck['aid'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#aid-name').val()) aid['equal']['name'] = $('#aid-name').val()
 	      if ($('#aid-year').val()) aid['equal']['year'] = $('#aid-year').val()
 	      if ($('#aid-aidClass').val()) aid['equal']['aidClass'] = $('#aid-aidClass').val()

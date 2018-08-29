@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,28 @@ export default {
         }
       }
 			if ($('#award-sid').val()) {
-        award['equal']['sid'] = $('#award-sid').val()
+				var sid = $('#award-sid').val()
+				if(!formatCheck['award']['sid']['reg'].test(sid)){
+					alert(formatCheck['award']['sid']['msg'])
+					return
+				} else {
+					award['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['award']){
+      		if(formatCheck['award'][item]['reg'] != null){
+      			let record = $('#award-' + item).val()
+      			if(record != '' && !formatCheck['award'][item]['reg'].test(record)){
+      				message = message + formatCheck['award'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
 	      if ($('#award-name').val()) award['equal']['name'] = $('#award-name').val()
 	      if ($('#award-stuClass').val()) award['equal']['stuClass'] = $('#award-stuClass').val()
 	      if ($('#award-awardName').val()) award['fuzzy']['awardName'] = $('#award-awardName').val()
