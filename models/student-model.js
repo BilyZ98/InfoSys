@@ -142,12 +142,12 @@ exports.addBasicInfo = (data) =>{
   "(sid, name, gender, birthPlace, ethnic, \n" +
    "poliFace, idNum, birthDate, tel, mail, \n" +
    "wechat, qq, degree, stuGroup, grade, major, \n" +
-   "class, dorm, dormRoom, speciality, highSchool) \n" +
-   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+   "class, dorm, dormRoom, speciality, highSchool, dormNumber) \n" +
+   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
    let values = [data.sid, data.name, data.gender, data.birthPlace,  data.ethnic,
       data.poliFace,  data.idNum,  data.birthDate,  data.tel,  data.mail,
      data.wechat,  data.qq,  data.degree,  data.stuGroup,  data.grade,  data.major,
-   data.class,  data.dorm,  data.dormRoom,  data.speciality,  data.highSchool];
+   data.class,  data.dorm,  data.dormRoom,  data.speciality,  data.highSchool, data.dormNumber];
    return queryDB(query,values);
 }
 
