@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#paper-sid').val()) {
-        paper['equal']['sid'] = $('#paper-sid').val()
+				var sid = $('#paper-sid').val()
+				if(!formatCheck['paper']['sid']['reg'].test(sid)){
+					alert(formatCheck['paper']['sid']['msg'])
+					return
+				} else {
+					paper['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['paper']){
+      		if(formatCheck['paper'][item]['reg'] != null){
+      			let record = $('#paper-' + item).val()
+      			if(record != '' && !formatCheck['paper'][item]['reg'].test(record)){
+      				message = message + formatCheck['paper'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#paper-name').val()) paper['equal']['name'] = $('#paper-name').val()
 	      if ($('#paper-title').val()) paper['equal']['title'] = $('#paper-title').val()
 	      if ($('#paper-authors').val()) paper['equal']['authors'] = $('#paper-authors').val()

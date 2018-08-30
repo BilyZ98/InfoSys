@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,28 @@ export default {
         }
       }
 			if ($('#course-sid').val()) {
-        course['equal']['sid'] = $('#course-sid').val()
+				var sid = $('#course-sid').val()
+				if(!formatCheck['course']['sid']['reg'].test(sid)){
+					alert(formatCheck['course']['sid']['msg'])
+					return
+				} else {
+					course['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['course']){
+      		if(formatCheck['course'][item]['reg'] != null){
+      			let record = $('#course-' + item).val()
+      			if(record != '' && !formatCheck['course'][item]['reg'].test(record)){
+      				message = message + formatCheck['course'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
 	      if ($('#course-name').val()) course['equal']['name'] = $('#course-name').val()
 	      //range value
 	      var rangeVal = {min: $('#course-year .min').val(), max: $('#course-year .max').val()}

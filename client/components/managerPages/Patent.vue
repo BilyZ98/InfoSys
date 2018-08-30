@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#patent-sid').val()) {
-        patent['equal']['sid'] = $('#patent-sid').val()
+				var sid = $('#patent-sid').val()
+				if(!formatCheck['patent']['sid']['reg'].test(sid)){
+					alert(formatCheck['patent']['sid']['msg'])
+					return
+				} else {
+					patent['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['patent']){
+      		if(formatCheck['patent'][item]['reg'] != null){
+      			let record = $('#patent-' + item).val()
+      			if(record != '' && !formatCheck['patent'][item]['reg'].test(record)){
+      				message = message + formatCheck['patent'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#patent-name').val()) patent['equal']['name'] = $('#patent-name').val()
 	      if ($('#patent-patentName').val()) patent['equal']['patentName'] = $('#patent-patentName').val()
 	      if ($('#patent-class').val()) patent['equal']['class'] = $('#patent-class').val()

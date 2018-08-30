@@ -3,11 +3,11 @@
   <header class="app-bar-display">
     <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
     <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" title="用户信息"></div>
+    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
   </header>
   <aside class="app-bar-display">
     <div class="info-side">
-      <label id="info-account">王麻子</label>
+      <label id="info-account"></label>
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
@@ -15,7 +15,7 @@
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='schoolRoll'}" @click="schoolRollClick">学籍管理</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='course'}" @click="courseClick" >课程成绩</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='partyInfo'}" @click="partyInfoClick">党员信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='scholarship'}" @click="scholarshipClick">奖学金</div>
+    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='scholarship'}" @click="scholarshipClick">奖学金管理</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='aid'}" @click="aidClick">资助信息管理</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='loan'}" @click="loanClick">助学贷款</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='cadre'}" @click="cadreClick">学生干部任职情况</div>
@@ -42,9 +42,6 @@ export default {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
-  },
-  mounted: function() {
-    $('#info-account').text(this.$store.getters.getUserAccount)
   },
   /*
   beforeMount: function(){
@@ -88,23 +85,28 @@ export default {
     homeClick: function() {
       this.$router.push({ name: 'main' })
     },
+    userInfoClick: function(){
+      //
+    },
     logoutClick: function() {
-      var _self = this
-      $.ajax({
-        type: 'GET',
-        url: '/users/logout',
-        contentType: 'application/json;charset=utf-8',
-        timeout: 5000,
-        success: function(result, xhr) {
-          //console.log(result)
-          _self.$router.push({ name: 'login' })
-        },
-        error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
+      if (confirm("您确定要退出登录吗？")) {
+        var _self = this
+        $.ajax({
+          type: 'GET',
+          url: '/users/logout',
+          contentType: 'application/json;charset=utf-8',
+          timeout: 5000,
+          success: function(result, xhr) {
+            //console.log(result)
+            _self.$router.push({ name: 'login' })
+          },
+          error: function(result, xhr) {
+            //连接错误
+            //console.log(result)
+            alert('服务器连接错误: ' + xhr)
+          }
+        })
+      }
     },
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })

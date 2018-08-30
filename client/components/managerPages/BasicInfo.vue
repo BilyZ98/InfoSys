@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,28 @@ export default {
         }
       }
 			if ($('#basicInfo-sid').val()) {
-        basicInfo['equal']['sid'] = $('#basicInfo-sid').val()
+				var sid = $('#basicInfo-sid').val()
+				if(!formatCheck['basicInfo']['sid']['reg'].test(sid)){
+					alert(formatCheck['basicInfo']['sid']['msg'])
+					return
+				} else {
+					basicInfo['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['basicInfo']){
+      		if(formatCheck['basicInfo'][item]['reg'] != null){
+      			let record = $('#basicInfo-' + item).val()
+      			if(record != '' && !formatCheck['basicInfo'][item]['reg'].test(record)){
+      				message = message + formatCheck['basicInfo'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
 	      if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
 	      if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
 	      if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
@@ -131,9 +152,8 @@ export default {
 	      if ($('#basicInfo-grade').val()) basicInfo['equal']['grade'] = $('#basicInfo-grade').val()
 	      if ($('#basicInfo-major').val()) basicInfo['equal']['major'] = $('#basicInfo-major').val()
 	      if ($('#basicInfo-class').val()) basicInfo['equal']['class'] = $('#basicInfo-class').val()
-	      //格式：'dorm+dormNumber'，至善园2号，明德园10号
-	      if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val() + $('#basicInfo-dormNumber').val() + '号'
-	      //if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
+	      if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val()
+	      if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
 	      if ($('#basicInfo-dormRoom ').val()) basicInfo['equal']['dormRoom '] = $('#basicInfo-dormRoom ').val()
 	      if ($('#basicInfo-speciality').val()) basicInfo['equal']['speciality'] = $('#basicInfo-speciality').val()
 	      if ($('#basicInfo-highSchool').val()) basicInfo['equal']['highSchool'] = $('#basicInfo-highSchool').val()

@@ -105,6 +105,10 @@ export default {
     $(".app-bar-display").attr("class", "app-bar-hide")
     $(".container-info-display").attr("class", "container-info-all")
   },
+  beforeDestroy: function(){
+    $(".app-bar-hide").attr("class", "app-bar-display")
+    $(".container-info-all").attr("class", "container-info-display")
+  },
 	methods: {
 		dataMakeup: function(data) {
 			//把数据中不全的表中没有的字段全部赋值为空

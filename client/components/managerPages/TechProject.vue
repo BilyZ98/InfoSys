@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#techProject-sid').val()) {
-        techProject['equal']['sid'] = $('#techProject-sid').val()
+				var sid = $('#techProject-sid').val()
+				if(!formatCheck['techProject']['sid']['reg'].test(sid)){
+					alert(formatCheck['techProject']['sid']['msg'])
+					return
+				} else {
+					techProject['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['techProject']){
+      		if(formatCheck['techProject'][item]['reg'] != null){
+      			let record = $('#techProject-' + item).val()
+      			if(record != '' && !formatCheck['techProject'][item]['reg'].test(record)){
+      				message = message + formatCheck['techProject'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#techProject-name').val()) techProject['equal']['name'] = $('#techProject-name').val()
 				if ($('#techProject-proName').val()) techProject['equal']['proName'] = $('#techProject-proName').val()
 	      if ($('#techProject-employer').val()) techProject['equal']['employer'] = $('#techProject-employer').val()

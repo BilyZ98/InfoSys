@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#loan-sid').val()) {
-        loan['equal']['sid'] = $('#loan-sid').val()
+				var sid = $('#loan-sid').val()
+				if(!formatCheck['loan']['sid']['reg'].test(sid)){
+					alert(formatCheck['loan']['sid']['msg'])
+					return
+				} else {
+					loan['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['loan']){
+      		if(formatCheck['loan'][item]['reg'] != null){
+      			let record = $('#loan-' + item).val()
+      			if(record != '' && !formatCheck['loan'][item]['reg'].test(record)){
+      				message = message + formatCheck['loan'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#loan-name').val()) loan['equal']['name'] = $('#loan-name').val()
 	      if ($('#loan-submitYear').val()) loan['equal']['submitYear'] = $('#loan-submitYear').val()
 	      if ($('#loan-loanYears').val()) loan['equal']['loanYears'] = $('#loan-loanYears').val()

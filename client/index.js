@@ -9,6 +9,7 @@ import App from './App.vue'
 import Invalid from './components/Invalid.vue'
 import Main from './components/Main.vue'
 import Login from './components/Login.vue'
+import Register from './components/Register.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Insert from './components/Insert.vue'
@@ -29,13 +30,13 @@ import Paper from './components/managerPages/Paper.vue'
 import Patent from './components/managerPages/Patent.vue'
 import TechProject from './components/managerPages/TechProject.vue'
 
-import BasicInfoInsert from './components/inserts/BasicInfo.vue'
-import FamilyInsert from './components/inserts/Family.vue'
-import PaperInsert from './components/inserts/Paper.vue'
-import PatentInsert from './components/inserts/Patent.vue'
-import TechProjectInsert from './components/inserts/TechProject.vue'
-import CadreInsert from './components/inserts/Cadre.vue'
-import ScholarshipInsert from './components/inserts/Scholarship.vue'
+import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
+import FamilyInsert from './components/inserts/FamilyInsert.vue'
+import PaperInsert from './components/inserts/PaperInsert.vue'
+import PatentInsert from './components/inserts/PatentInsert.vue'
+import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
+import CadreInsert from './components/inserts/CadreInsert.vue'
+import AwardInsert from './components/inserts/AwardInsert.vue'
 
 
 Vue.config.debug = true
@@ -47,6 +48,7 @@ const router = new VueRouter({
     { path: '/', redirect: 'main' },
     { name: 'invalid', path: '/invalid', component: Invalid },
     { name: 'login', path: '/login', component: Login },
+    { name: 'register', path: '/register', component: Register },
     { name: 'main', path: '/main', component: Main },
     { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
     { name: 'family', path: '/family', component: Family },
@@ -76,7 +78,7 @@ const router = new VueRouter({
         { name: 'patentInsert', path: 'patent', component: PatentInsert },
         { name: 'techProjectInsert', path: 'techProject', component: TechProjectInsert },
         { name: 'cadreInsert', path: 'cadre', component: CadreInsert },
-        { name: 'scholarshipInsert', path: 'scholarship', component: ScholarshipInsert }
+        { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
     }
   ]
@@ -93,12 +95,9 @@ const app = new Vue({
       app.$store.commit('updateUserStatus', res.body.content.userType)
       app.$store.commit('updateUserInfo', res.body.content)
     }).then(() => {
-      //app.$router.replace({name:'main'})
-      if (to.matched.length === 0) {
-        app.$router.replace({ name: 'invalid' })
-      } else if ((to.path == '/') || (to.path == '/login')) {
-        app.$router.replace({ name: 'main' })
-      }
+      //显示用户信息
+      $('#info-account').text(this.$store.getters.getUserAccount)
+      //console.log(this.$route)
     }).catch((res) => {
       if (res.status === 441)
         app.$router.replace({ name: 'login' })
@@ -126,7 +125,9 @@ router.beforeEach((to, from, next) => {
     if (to.matched.length === 0) {
       app.$router.replace({ name: 'invalid' })
     } else if ((to.path == '/') || (to.path == '/login')) {
-      app.$router.replace({ name: 'main' })
+      app.$router.replace({
+        name: 'main'
+      })
     }
   }).catch((res) => {
     if (res.status === 441)

@@ -79,6 +79,7 @@
 
 <script>
 import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
@@ -113,8 +114,29 @@ export default {
         }
       }
 			if ($('#partyInfo-sid').val()) {
-        partyInfo['equal']['sid'] = $('#partyInfo-sid').val()
+				var sid = $('#partyInfo-sid').val()
+				if(!formatCheck['partyInfo']['sid']['reg'].test(sid)){
+					alert(formatCheck['partyInfo']['sid']['msg'])
+					return
+				} else {
+					partyInfo['equal']['sid'] = sid
+				}
       } else {
+      	//验证格式
+      	var message = ''
+      	for(let item in formatCheck['partyInfo']){
+      		if(formatCheck['partyInfo'][item]['reg'] != null){
+      			let record = $('#partyInfo-' + item).val()
+      			if(record != '' && !formatCheck['partyInfo'][item]['reg'].test(record)){
+      				message = message + formatCheck['partyInfo'][item]['msg']
+      			}
+      		}
+      	}
+      	if(message != ''){
+      		alert(message)
+      		return
+      	}
+      	//格式正确，发送数据到后台
 	      if ($('#partyInfo-name').val()) partyInfo['equal']['name'] = $('#partyInfo-name').val()
 	      if ($('#partyInfo-isLeaguer').val()) partyInfo['equal']['isLeaguer'] = $('#partyInfo-isLeaguer').val()
 	      if ($('#partyInfo-joinGroupTime').val()) partyInfo['equal']['joinGroupTime'] = $('#partyInfo-joinGroupTime').val()

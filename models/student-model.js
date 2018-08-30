@@ -169,16 +169,17 @@ exports.addCadre = (data) => {
   "(sid, name, year, cadreClass, cadreName, cadreJiBie) \n" +
   " values (?, ?, ?, ?, ?, ?)";
   let values = [data.sid, data.name, data.year, data.cadreClass, data.cadreName, data.cadreJiBie]
+  console.log(query)
   return queryDB(query,values);
 }
 exports.addAward = (data) => {
   let query =
   "insert into award \n" +
   "(sid, name, stuClass, awardName, awardClass, employer, \n "+
-  "awardJiBie, awardYearMonth， teacher)\n" +
+  "awardJiBie, awardYearMonth, teacher)\n" +
   "values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  let values = [sid, name, stuClass, awardName, awardClass,
-     employer,awardJiBie, awardYearMonth, teacher];
+  let values = [data.sid, data.name, data.stuClass, data.awardName, data.awardClass,
+     data.employer,data.awardJiBie, data.awardYearMonth, data.teacher];
   return queryDB(query,values);
 }
 
@@ -531,7 +532,10 @@ exports.checkStudent = async (data, table) =>{
   query+=  " from " + table +" where "//"sid = ? \n;"; //注意有空格
   let tmp = true;
   for(let i in primary){
-    if(tmp) query+=primary[i]+'=? '
+    if(tmp) {
+      query+=primary[i]+'=? '
+      tmp = false
+    }
     else {
       query+=' and '+primary[i]+'=?'
     }

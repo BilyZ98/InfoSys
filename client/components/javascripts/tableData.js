@@ -1,5 +1,5 @@
 //name: 字段中文名, id: 字段英文名, value: 字段初始值, isPrimary: 在数据库中是否为主键, display: 在manager页面是否显示, value: '', valueType: 值的类型
-var tableData = {
+export default {
   basicInfo: {
     name: '基本信息',
     id: 'basicInfo',
@@ -8,7 +8,7 @@ var tableData = {
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', valueType: 'input' },
       gender: { name: '性别', id: 'gender', isPrimary: false, display: true, value: '', valueType: 'select', options: ['男', '女'] },
       birthPlace: { name: '籍贯', id: 'birthPlace', isPrimary: false, display: true, value: '', valueType: 'select', options: ['安徽', '澳门', '北京', '重庆', '福建', '甘肃', '广东', '广西', '贵州', '海南', '河北', '河南', '黑龙江', '湖北', '湖南', '吉林', '江苏', '江西', '辽宁', '内蒙古', '宁夏', '青海', '山东', '山西', '陕西', '上海', '四川', '台湾', '天津', '西藏', '香港', '新疆', '云南', '浙江'] },
-      ethnic: { name: '民族', id: 'ethnic', isPrimary: false, display: true, value: '', valueType: 'select', options: ['阿昌族', '白族', '保安族', '布朗族', '布依族', '藏族', '朝鲜族', '达斡尔族', '傣族', '德昂族', '东乡族', '侗族', '独龙族', '俄罗斯族', '鄂伦春族', '鄂温克族', '高山族', '哈尼族', '哈萨克族', '汉族', '赫哲族', '回族', '基诺族', '京族', '景颇族', '柯尔克孜族', '拉祜族', '黎族', '傈僳族', '满族', '毛南族', '门巴族', '蒙古族', '苗族', '纳西族', '怒族', '普米族', '羌族', '撒拉族', '水族', '塔吉克族', '塔塔尔族', ' 土家族', ' 土族', ' 维吾尔族', ' 乌兹别克族', ' 锡伯族', '瑶族', '彝族', '裕固族', '壮族', '仡佬族', '仫佬族', '佤族', '珞巴族', '畲族'] },
+      ethnic: { name: '民族', id: 'ethnic', isPrimary: false, display: true, value: '', valueType: 'select', options: ['汉族', '阿昌族', '白族', '保安族', '布朗族', '布依族', '藏族', '朝鲜族', '达斡尔族', '傣族', '德昂族', '东乡族', '侗族', '独龙族', '俄罗斯族', '鄂伦春族', '鄂温克族', '高山族', '哈尼族', '哈萨克族', '赫哲族', '回族', '基诺族', '京族', '景颇族', '柯尔克孜族', '拉祜族', '黎族', '傈僳族', '满族', '毛南族', '门巴族', '蒙古族', '苗族', '纳西族', '怒族', '普米族', '羌族', '撒拉族', '水族', '塔吉克族', '塔塔尔族', ' 土家族', ' 土族', ' 维吾尔族', ' 乌兹别克族', ' 锡伯族', '瑶族', '彝族', '裕固族', '壮族', '仡佬族', '仫佬族', '佤族', '珞巴族', '畲族'] },
       poliFace: { name: '政治面貌', id: 'poliFace', isPrimary: false, display: true, value: '', valueType: 'select', options: ['群众', '团员', '党员'] },
       idNum: { name: '身份证号码', id: 'idNum', isPrimary: false, display: true, value: '', valueType: 'input' },
       birthDate: { name: '出生年月日', id: 'birthDate', isPrimary: false, display: true, value: '', valueType: 'input' },
@@ -173,7 +173,7 @@ var tableData = {
     name: '获得奖励情况',
     id: 'award',
     records: {
-      award: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', valueType: 'input' },
+      sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', valueType: 'input' },
       stuClass: { name: '学生类别', id: 'stuClass', isPrimary: false, display: true, value: '', valueType: 'select', options: ['本科生', '硕士生', '博士生'] },
       awardName: { name: '奖励名称', id: 'awardName', isPrimary: true, display: true, value: '', valueType: 'input' },
@@ -233,5 +233,3 @@ var tableData = {
     }
   }
 }
-
-export default tableData
