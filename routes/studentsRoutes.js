@@ -30,4 +30,6 @@ router.post('/statistic',studentsController.statistic);
 
 router.post('/update',studentsController.updateInfo);
 
+router.post("/sendMail",studentsController.sendMail);
+
 module.exports = router;

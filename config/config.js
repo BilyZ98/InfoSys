@@ -39,5 +39,15 @@ module.exports = {
         data:'session'
       }
     }
+  },
+  mailer_config:{
+    host:'smtp.qq.com',
+    secureConnection: true,
+    port:465,
+    secure:true,
+    auth:{
+      user:'873421427@qq.com',
+      pass: 'wibbozdzsxdwbfdd'
+    }
   }
 }

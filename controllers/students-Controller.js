@@ -1,6 +1,7 @@
 const resBody = require('../utils/resBody.js');
 var StudentsModel = require('../models/student-model.js');
 var asynchronous = require('async');
+const mailer = require('../utils/mailer.js')
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -204,6 +205,18 @@ exports.updateInfo = async (req,res,next)=>{
     console.log('error occurred')
     resBody.error(res,err)
   })
+}
+
+//发送邮件
+exports.sendMail =async (req,res,next) =>{
+  try{
+    await mailer.sendMail(req.body)
+    resBody.success(res)
+  }
+  catch(err){
+    resBody.error(res,err)
+  }
+
 }
 
 //检测数据库中是否已有记录
