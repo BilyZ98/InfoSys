@@ -95,12 +95,9 @@ const app = new Vue({
       app.$store.commit('updateUserStatus', res.body.content.userType)
       app.$store.commit('updateUserInfo', res.body.content)
     }).then(() => {
-      //app.$router.replace({name:'main'})
-      if (to.matched.length === 0) {
-        app.$router.replace({ name: 'invalid' })
-      } else if ((to.path == '/') || (to.path == '/login')) {
-        app.$router.replace({ name: 'main' })
-      }
+      //显示用户信息
+      $('#info-account').text(this.$store.getters.getUserAccount)
+      //console.log(this.$route)
     }).catch((res) => {
       if (res.status === 441)
         app.$router.replace({ name: 'login' })
@@ -128,7 +125,9 @@ router.beforeEach((to, from, next) => {
     if (to.matched.length === 0) {
       app.$router.replace({ name: 'invalid' })
     } else if ((to.path == '/') || (to.path == '/login')) {
-      app.$router.replace({ name: 'main' })
+      app.$router.replace({
+        name: 'main'
+      })
     }
   }).catch((res) => {
     if (res.status === 441)

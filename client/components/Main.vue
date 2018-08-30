@@ -22,17 +22,18 @@ export default {
     return {}
   },
   mounted: function(){
-      var hour = new Date().getHours()
-      var hourStr = ''
-      if(hour >= 4 && hour < 12) {
-        hourStr = '早上好!'
-      } else if(hour >= 12 && hour <= 6) {
-        hourStr = '下午好!'
-      } else {
-        hourStr = '晚上好!'
-      }
-      //$('#text-greeting').text(hourStr)
-    },
+    //问候
+    var hour = new Date().getHours()
+    var hourStr = ''
+    if(hour >= 4 && hour < 12) {
+      hourStr = '早上好!'
+    } else if(hour >= 12 && hour <= 6) {
+      hourStr = '下午好!'
+    } else {
+      hourStr = '晚上好!'
+    }
+    //$('#text-greeting').text(hourStr)
+  },
   methods: {}
 }
 </script>

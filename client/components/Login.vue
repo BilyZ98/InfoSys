@@ -82,12 +82,9 @@ export default {
           success: function(result, xhr) {
             for(let key in result){
               if(key == 'content'){
-                //alert("登陆成功")
+                $('#info-account').text(id)
                 _self.$router.push({
-                  name: 'main',
-                  params: {
-                    sid: id
-                  }
+                  name: 'main'
                 })
               } else if (key == 'err'){
                 alert("服务器错误")

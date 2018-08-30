@@ -7,7 +7,7 @@
   </header>
   <aside class="app-bar-display">
     <div class="info-side">
-      <label id="info-account">王麻子</label>
+      <label id="info-account"></label>
       <p>数据科学与计算机学院</p>
     </div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
@@ -40,17 +40,8 @@ export default {
   data: function() {
     return {
       //v-bind:class="router=='insert'?'button-clicked':'button-side'"
-      router : 'main',
-      sid: null
+      router : 'main'
     }
-  },
-  mounted: function() {
-    //alert(this.$route.params.sid)
-    if(this.$route.params.sid != undefined){
-      sid = this.$route.params.sid
-      $('#info-account').text(this.$route.params.sid)
-    }
-    //$('#info-account').text(this.$store.getters.getUserAccount)
   },
   /*
   beforeMount: function(){
@@ -95,7 +86,7 @@ export default {
       this.$router.push({ name: 'main' })
     },
     userInfoClick: function(){
-      $('#info-account').text(this.$store.getters.getUserAccount)
+      //
     },
     logoutClick: function() {
       if (confirm("您确定要退出登录吗？")) {
