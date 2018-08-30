@@ -64,7 +64,7 @@
 	</div>
 
 	<!-- 弹窗 -->
-	<div id="popup" class="popup-background">
+	<div id="popup-diy" class="popup-background">
 	  <!-- 弹窗内容 -->
 	  <div class="popup-content">
 	    <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -192,10 +192,10 @@ export default {
 			importModule.importClick($('#button-import').prop('files')[0], 'aid')
 		},
 		diycolClick: function(){
-			$('#popup').show()
+			$('#popup-diy').show()
 		},
 		modalCloseClick: function() {
-			$('#popup').hide()
+			$('#popup-diy').hide()
 		},
 		studentClick: function(event){
 			//alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))

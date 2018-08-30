@@ -14,6 +14,7 @@
 			<span>编辑</span>
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
+			<span @click="sendEmailClick">邮件通知</span>
 		</div>
 	</div>
 	<!--查询输入-->
@@ -64,7 +65,7 @@
 	</div>
 
 	<!-- 弹窗 -->
-	<div id="popup" class="popup-background">
+	<div id="popup-diy" class="popup-background">
 	  <!-- 弹窗内容 -->
 	  <div class="popup-content">
 	    <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -74,6 +75,30 @@
 	    </div>
 	  </div>
 	</div>
+	<!--发邮件-->
+	<div id="popup-email" class="popup-background">
+		<div class="container-email">
+			<div class="heading">
+				<span class="i-text">标题：</span>
+				<input type="text" id="email-title">
+			</div>
+      <div class="info-file">
+        <span class="i-text">附件：</span>
+        <input type="file" id="file-input" name="file-input" @change="emailFileUpolad" multiple="multiple" style="display: none;">
+        <button @click="uploadFileClick">添加文件</button>
+        <span class="file-area"></span>
+      </div>
+      <div class="info-text">
+        <span class="i-text">正文：</span>
+        <script type="text/plain" id="myEditor">
+          <p>请在此输入邮件内容</p>
+        </script>
+      </div>
+      <button class="button-email-send" @click="sendEmail">发送</button>
+    	<button class="button-email-close" @click="closeSendEmail">关闭</button>
+		</div>
+	</div>
+	<!--发短信-->
 </div>
 </template>
 
@@ -90,12 +115,30 @@ export default {
 	data: function(){
 		return {
 			table: tableData['basicInfo'],
-			students: []
+			students: [],
+			ue: null
 		}
 	},
 	created: function(){
-		//alert(window.innerWidth)
-		//1536*728
+		this.ue = UE.getEditor("myEditor",
+		{
+		  emotionLocalization:false,
+		  autoHeightEnabled: true,
+		  autoFloatEnabled: true,
+		  enableAutoSave: true,
+		  saveInterval: 1000,
+		  maximumWords: 12000,
+		  autoSyncData: false,
+		  initialFrameWidth: null,
+		  initialFrameHeight: 300,
+		  serverUrl: URL + "jsp/controller.jsp",//服务器接口路径
+		  toolbars: [['undo', 'redo',  'fontfamily', 'fontsize', 'bold', 'italic',
+	      'underline', 'strikethrough', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify','forecolor', 'backcolor', 'subscript',
+	      'fontborder', 'superscript',  'formatmatch', 'blockquote', 'horizontal', 'insertorderedlist',
+	      'insertunorderedlist', 'fullscreen', 'edittip',
+	      'inserttable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow', 'deletecol','splittorows',
+	      'splittocols', 'splittocells', 'deletecaption', 'inserttitle', 'mergecells', 'deletetable']
+		]})
 	},
 	methods: {
 		insertClick: function(){
@@ -201,12 +244,69 @@ export default {
 		importUpload: function(){
 			importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
 		},
+		//自定义弹窗函数
 		diycolClick: function(){
-			$('#popup').show()
+			$('#popup-diy').show()
 		},
-		modalCloseClick: function() {
-			$('#popup').hide()
+		modalCloseClick: function(){
+			$('#popup-diy').hide()
 		},
+		//发送邮件函数
+		sendEmailClick: function(){
+			$('#popup-email').show()
+		},
+		sendEmail: function(){
+			if($("#email-title").val() == '') {
+          alert("请填写邮件标题！")
+      } else {
+	      var data = {
+          title: $("#email-title").val(),
+          file: document.getElementById("file-input").files,
+          content: this.ue.getContent()
+	      }
+	      console.log(data)
+	      /*
+	      $.ajax({
+          type:"POST",
+          url:"/info/sendEmail",
+          contentType:"application/json; charset=utf-8",
+          data: JSON.stringify(data),
+          dataType: "json",
+          success: function(result, xhr) {
+              for(let key in result) {
+                  if(key == "content") {
+                      alert("发送成功!");
+                      $(".container").remove();
+                  } else if(key == "err") {
+                      alert("服务器错误！");
+                  }
+              }
+          },
+          error: function(result, xhr) {
+              alert("提交出错！");
+          }
+      })
+      */
+      }
+		},
+		closeSendEmail: function(){
+			$('#popup-email').hide()
+		},
+		uploadFileClick: function() {
+      $("#file-input").click()
+    },
+    emailFileUpolad: function() {
+      var obj = document.getElementById('file-input')
+      var length = obj.files.length
+      $('.file-area').html('')
+      var str = ''
+      for(var i = 0; i < length; i++) {
+        var temp = obj.files[i].name
+        str += '<span>' + temp + '<span>'
+      }
+      $('.file-area').append(str)
+    },
+    //查询学生点击事件
 		studentClick: function(event){
 			//alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
 			//跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
@@ -426,20 +526,8 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-}
-/* 弹窗 (background) */
-
-#manager-basicInfo .popup-background {
-  display: none; /* 默认隐藏 */
-  position: absolute; /* 定位 */
-  z-index: 10; /* 设置在顶层 */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
+  padding-left: 225px;
+  padding-top: 60px;
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
@@ -449,7 +537,7 @@ export default {
 #manager-basicInfo .popup-content {
   background-color: white;
   margin-top: calc(50% - 650px);
-  margin-left: calc(50% - 200px);
+  margin-left: calc(50% - 300px);
   padding: 30px;
   width: 600px;
 	height: 400px;
@@ -482,6 +570,80 @@ export default {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+/*发邮件*/
+#manager-basicInfo .container-email {
+  background-color: var(--grey-background);
+  width: 800px;
+  height: 630px;
+  margin: auto;
+  margin-top: 50px;
+  padding: 20px;
+  text-align: left;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px var(--grey-shadow);
+}
+
+#manager-basicInfo .container-email #email-title{
+	width: 200px;
+}
+
+#manager-basicInfo .container-email .i-text {
+  font-size: 16px;
+}
+
+#manager-basicInfo .container-email .info-file {
+  margin-top: 20px;
+}
+
+#manager-basicInfo .container-email .file-area span{
+  font-size: 12px;
+  margin-left: 7px;
+}
+
+#manager-basicInfo .container-email .info-text {
+  margin-top: 20px;
+}
+
+#manager-basicInfo .container-email #myEditor{
+	margin-top: 10px;
+}
+
+#manager-basicInfo .container-email .button-email-send, #manager-basicInfo .container-email .button-email-close {
+	display: inline-block;
+	width: 100px;
+	height: 30px;
+	font-size: 16px;
+	margin-top: 20px;
+	text-align: center;
+	color: white;
+	background-color: var(--blue);
+	border: none;
+	transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
+
+#manager-basicInfo .container-email .button-email-send {
+	margin-left: 275px;
+}
+
+#manager-basicInfo .container-email .button-email-send:hover {
+	background-color: var(--blue-hover);
+	cursor: pointer;
+}
+
+#manager-basicInfo .container-email .button-email-close {
+	margin-left: 10px;
+}
+
+#manager-basicInfo .container-email .button-email-close:hover {
+	background-color: var(--blue-hover);
+	cursor: pointer;
 }
 
 /*统计*/
