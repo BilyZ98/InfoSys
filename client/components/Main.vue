@@ -171,7 +171,6 @@ export default {
   float: right;
 }
 
-
 #container-home #button-new-notice {
   margin-top: 40px;
   width: 110px;

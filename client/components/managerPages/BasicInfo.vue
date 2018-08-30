@@ -119,26 +119,26 @@ export default {
 			ue: null
 		}
 	},
-	created: function(){
+	mounted: function(){
 		this.ue = UE.getEditor("myEditor",
-		{
-		  emotionLocalization:false,
-		  autoHeightEnabled: true,
-		  autoFloatEnabled: true,
-		  enableAutoSave: true,
-		  saveInterval: 1000,
-		  maximumWords: 12000,
-		  autoSyncData: false,
-		  initialFrameWidth: null,
-		  initialFrameHeight: 300,
-		  serverUrl: URL + "jsp/controller.jsp",//服务器接口路径
-		  toolbars: [['undo', 'redo',  'fontfamily', 'fontsize', 'bold', 'italic',
-	      'underline', 'strikethrough', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify','forecolor', 'backcolor', 'subscript',
-	      'fontborder', 'superscript',  'formatmatch', 'blockquote', 'horizontal', 'insertorderedlist',
-	      'insertunorderedlist', 'fullscreen', 'edittip',
-	      'inserttable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow', 'deletecol','splittorows',
-	      'splittocols', 'splittocells', 'deletecaption', 'inserttitle', 'mergecells', 'deletetable']
-		]})
+      {
+        emotionLocalization:false,
+        autoHeightEnabled: true,
+        autoFloatEnabled: true,
+        enableAutoSave: true,
+        saveInterval: 1000,
+        maximumWords: 12000,
+        autoSyncData: false,
+        initialFrameWidth: null,
+        initialFrameHeight: 300,
+        serverUrl: URL + "jsp/controller.jsp",//服务器接口路径
+        toolbars: [['undo', 'redo',  'fontfamily', 'fontsize', 'bold', 'italic',
+          'underline', 'strikethrough', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify','forecolor', 'backcolor', 'subscript',
+          'fontborder', 'superscript',  'formatmatch', 'blockquote', 'horizontal', 'insertorderedlist',
+          'insertunorderedlist', 'fullscreen', 'edittip',
+          'inserttable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow', 'deletecol','splittorows',
+          'splittocols', 'splittocells', 'deletecaption', 'inserttitle', 'mergecells', 'deletetable']]
+    })
 	},
 	methods: {
 		insertClick: function(){
@@ -253,40 +253,43 @@ export default {
 		},
 		//发送邮件函数
 		sendEmailClick: function(){
+			console.log(this.ue)
 			$('#popup-email').show()
 		},
 		sendEmail: function(){
 			if($("#email-title").val() == '') {
-          alert("请填写邮件标题！")
+        alert("请填写邮件标题！")
       } else {
-	      var data = {
-          title: $("#email-title").val(),
-          file: document.getElementById("file-input").files,
-          content: this.ue.getContent()
-	      }
-	      console.log(data)
+      	var formData = new FormData()
+      	formData.append('title', $("#email-title").val())
+      	formData.append('files', $('#file-input').prop('files'))
+      	formData.append('content', this.ue.getContent())
+	      console.log(formData)
 	      /*
-	      $.ajax({
-          type:"POST",
-          url:"/info/sendEmail",
-          contentType:"application/json; charset=utf-8",
-          data: JSON.stringify(data),
-          dataType: "json",
-          success: function(result, xhr) {
-              for(let key in result) {
-                  if(key == "content") {
-                      alert("发送成功!");
-                      $(".container").remove();
-                  } else if(key == "err") {
-                      alert("服务器错误！");
-                  }
-              }
+				$.ajax({
+		      type: 'POST',
+		     	url: '/info/sendEmail',
+		      data: formData,
+		      dataType: Json,
+		      async: false,
+		      cache: false,
+		      contentType: false,
+		      processData: false,
+		      success: function(result, xhr) {
+            for(let key in result) {
+                if(key == "content") {
+                  alert("发送成功!")
+                  $("#popup-email").hide()
+                } else if(key == "err") {
+                  alert("服务器错误！")
+                }
+            }
           },
           error: function(result, xhr) {
-              alert("提交出错！");
+            alert("提交出错！")
           }
-      })
-      */
+			  })
+			  */
       }
 		},
 		closeSendEmail: function(){
