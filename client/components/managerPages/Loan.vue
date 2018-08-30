@@ -415,11 +415,26 @@ export default {
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
 }
+/* 弹窗 (background) */
+
+#manager-loan .popup-background {
+  display: none; /* 默认隐藏 */
+  position: absolute; /* 定位 */
+  z-index: 10; /* 设置在顶层 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
 
 /* 弹窗内容 */
 #manager-loan .popup-content {
   background-color: white;
-  margin: 8% auto;
+  margin-top: calc(50% - 650px);
+  margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
 	height: 400px;
@@ -453,6 +468,8 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
+
+/*统计*/
 
 #manager-loan .stat-record {
 	float: left;

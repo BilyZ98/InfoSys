@@ -408,6 +408,7 @@ export default {
 }
 
 /* 弹窗 (background) */
+
 #manager-aid .popup-background {
   display: none; /* 默认隐藏 */
   position: absolute; /* 定位 */
@@ -424,7 +425,8 @@ export default {
 /* 弹窗内容 */
 #manager-aid .popup-content {
   background-color: white;
-  margin: 8% auto;
+  margin-top: calc(50% - 650px);
+  margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
 	height: 400px;
@@ -458,6 +460,8 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
+
+/*统计*/
 
 #manager-aid .stat-record {
 	float: left;

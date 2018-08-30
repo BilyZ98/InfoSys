@@ -450,8 +450,8 @@ export default {
 #manager-partyInfo #button-import {
 	display: none;
 }
-
 /* 弹窗 (background) */
+
 #manager-partyInfo .popup-background {
   display: none; /* 默认隐藏 */
   position: absolute; /* 定位 */
@@ -468,10 +468,11 @@ export default {
 /* 弹窗内容 */
 #manager-partyInfo .popup-content {
   background-color: white;
-  margin: 8% auto;
+  margin-top: calc(50% - 680px);
+  margin-left: calc(50% - 230px);
   padding: 30px;
-  width: 600px;
-	height: 400px;
+  width: 700px;
+	height: 430px;
 	/*radius*/
   border-radius: 3px;
   /*shadow*/
@@ -480,7 +481,7 @@ export default {
 
 #manager-partyInfo .popup-cell {
 	float: left;
-	width: 160px;
+	width: 170px;
 	height: 40px;
 	text-align: left;
 }
@@ -502,6 +503,8 @@ export default {
   text-decoration: none;
   cursor: pointer;
 }
+
+/*统计*/
 
 #manager-partyInfo .stat-record {
 	float: left;
