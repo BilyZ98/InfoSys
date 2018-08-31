@@ -9,7 +9,7 @@
   </div>
   <div class="container-card">
     <span class="notice-header">公告栏：</span>
-    <span class="notice-header" id="notice-number">37</span>
+    <span class="notice-header" id="notice-number">{{notices.length}}</span>
     <div class="notice-list">
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice.id)">
         <span>{{notice.title}}</span>
@@ -21,12 +21,22 @@
   </div>
 
   <!-- 弹窗 -->
-  <div id="popup" class="popup-background">
+  <div id="popup-new-notice" class="popup-background">
     <!-- 弹窗内容 -->
-    <div class="popup-content">
-      <span id="popup-close" @click="modalCloseClick">&times;</span>
-      <div>
+    <div class="content-new-notice">
+      <div class="new-notice-header">新建公告</div>
+      <div class="container-new-notice-text">
+        <span>标题：</span>
+        <input type="text" id="new-notice-title">
       </div>
+      <div class="container-new-notice-text">
+        <span>内容：</span>
+        <textarea id="new-notice-content"></textarea>
+      </div>
+      <div class="container-new-notice-text">老师：<span id="new-notice-teacher">王老师</span></div>
+      <div class="container-new-notice-text">时间：<span id="new-notice-time">2018-09-01</span></div>
+      <button class="button-new-notice" @click="newNotice">新建</button>
+      <button class="button-close-new-notice" @click="newNoticeCloseClick">关闭</button>
     </div>
   </div>
 </div>
@@ -86,11 +96,43 @@ export default {
     noticeClick: function(id) {
       alert(id)
     },
-    modalCloseClick: function() {
-      $('#popup').hide()
-    },
     newNoticeClick: function(){
-      $('#popup').show()
+      $('#popup-new-notice').show()
+      //获取当前时间
+      var date = new Date()
+      var year = date.getFullYear()
+      var month = date.getMonth() + 1
+      var day = date.getDate()
+      if (month < 10) {
+          month = "0" + month
+      }
+      if (day < 10) {
+          day = "0" + day
+      }
+      var nowDate = year + "-" + month + "-" + day
+      $('#new-notice-time').text(nowDate)
+    },
+    newNoticeCloseClick: function() {
+      $('#popup-new-notice').hide()
+    },
+    newNotice: function() {
+      if($('#new-notice-title').val() == '') {
+        alert('公告标题不能为空!')
+        return
+      } else if($('#new-notice-content').val() == ''){
+        alert('公告内容不能为空!')
+        return
+      } else {
+        var data = {
+          id: '???',
+          title: $('#new-notice-title').val(),
+          content: $('#new-notice-content').val(),
+          teacher: $('#new-notice-teacher').text(),
+          time: $('#new-notice-time').text()
+        }
+        var postData = JSON.stringify(data)
+        console.log(postData)
+      }
     }
   }
 }
@@ -200,49 +242,83 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
+  padding-left: 225px;
+  padding-top: 60px;
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
 }
 
-/* 弹窗内容 */
-#container-home .popup-content {
+/* 新建公告 */
+#container-home .content-new-notice {
   background-color: white;
-  margin-top: calc(50% - 650px);
-  margin-left: calc(50% - 200px);
+  margin-top: 100px;
+  margin-left: calc(50% - 350px);
   padding: 30px;
-  width: 600px;
-  height: 400px;
+  width: 700px;
+  height: 600px;
+  text-align: left;
   /*radius*/
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#container-home .popup-cell {
-  float: left;
-  width: 160px;
-  height: 40px;
-  text-align: left;
+#container-home .new-notice-header {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
 }
 
-/* 关闭按钮 */
-#container-home #popup-close {
-  position: relative;
-  float: right;
-  width: 50px;
-  height: 50px;
-  color: #aaa;
-  font-size: 28px;
-  font-weight: bold;
-  text-align: right;
+#container-home .container-new-notice-text {
+  margin-top: 20px;
+  font-size: 16px;
 }
 
-#container-home #popup-close:hover, #popup-close:focus {
-  color: black;
-  text-decoration: none;
+#container-home .container-new-notice-text span{
+  vertical-align: top;
+}
+
+#container-home #new-notice-title {
+  width: 500px;
+}
+
+#container-home #new-notice-content {
+  width: 500px;
+  height: 300px;
+}
+
+#container-home .button-new-notice, #container-home .button-close-new-notice {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+  background-color: var(--blue);
+  border: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
+
+#container-home .button-new-notice {
+  margin-left: 215px;
+}
+
+#container-home .button-new-notice:hover {
+  background-color: var(--blue-hover);
   cursor: pointer;
 }
 
-/*统计*/
+#container-home .button-close-new-notice {
+  margin-left: 10px;
+}
+
+#container-home .button-close-new-notice:hover {
+  background-color: var(--blue-hover);
+  cursor: pointer;
+}
 </style>

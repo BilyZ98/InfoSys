@@ -253,43 +253,58 @@ export default {
 		},
 		//发送邮件函数
 		sendEmailClick: function(){
-			console.log(this.ue)
+			//console.log(this.ue)
 			$('#popup-email').show()
 		},
 		sendEmail: function(){
-			if($("#email-title").val() == '') {
+			var sid = []
+			for(let i = 0; i < this.students.length; i++){
+				sid.push(this.students[i]['basicInfo']['sid'])
+			}
+			if(sid.length == 0){
+				alert('没有要发送邮件的学生~')
+				return
+			} else if ($("#email-title").val() == '') {
         alert("请填写邮件标题！")
+        return
       } else {
       	var formData = new FormData()
+      	//字段
       	formData.append('title', $("#email-title").val())
-      	formData.append('files', $('#file-input').prop('files'))
       	formData.append('content', this.ue.getContent())
-	      console.log(formData)
-	      /*
+      	formData.append('sid', sid)
+      	//附件
+      	var files = $('#file-input').prop('files')
+      	if(files.length > 5) {
+      		alert('上传附件的数量不能超过五个！')
+      		return
+      	}
+      	formData.append('fileNum', files.length)
+      	for(let i = 0; i < files.length; i++ ){
+      		formData.append('file' + i, $('#file-input').prop('files')[i])
+      	}
+      	//post
 				$.ajax({
 		      type: 'POST',
-		     	url: '/info/sendEmail',
+		     	url: '/students/sendMail',
 		      data: formData,
-		      dataType: Json,
-		      async: false,
 		      cache: false,
 		      contentType: false,
 		      processData: false,
 		      success: function(result, xhr) {
             for(let key in result) {
-                if(key == "content") {
-                  alert("发送成功!")
-                  $("#popup-email").hide()
-                } else if(key == "err") {
-                  alert("服务器错误！")
-                }
+              if(key == "content") {
+                alert("发送成功!")
+                $("#popup-email").hide()
+              } else if(key == "err") {
+                alert("发送错误:" + result[key])
+              }
             }
           },
           error: function(result, xhr) {
-            alert("提交出错！")
+            alert("服务器连接出错！")
           }
 			  })
-			  */
       }
 		},
 		closeSendEmail: function(){
@@ -389,7 +404,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
   /*设置文字不可被选中*/
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
+  -webkit-user-select: none; 
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -539,7 +554,7 @@ export default {
 /* 弹窗内容 */
 #manager-basicInfo .popup-content {
   background-color: white;
-  margin-top: calc(50% - 650px);
+  margin-top: 100px;
   margin-left: calc(50% - 300px);
   padding: 30px;
   width: 600px;
@@ -577,7 +592,7 @@ export default {
 
 /*发邮件*/
 #manager-basicInfo .container-email {
-  background-color: var(--grey-background);
+  background-color: white;
   width: 800px;
   height: 630px;
   margin: auto;

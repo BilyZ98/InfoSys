@@ -2,6 +2,7 @@ const resBody = require('../utils/resBody.js');
 var StudentsModel = require('../models/student-model.js');
 var asynchronous = require('async');
 const mailer = require('../utils/mailer.js')
+var formidable = require('formidable')
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -208,9 +209,14 @@ exports.updateInfo = async (req,res,next)=>{
 }
 
 //发送邮件
-exports.sendMail =async (req,res,next) =>{
+exports.sendMail = (req,res,next) =>{
   try{
-    await mailer.sendMail(req.body)
+    var form = new formidable.IncomingForm()
+    form.parse(req, function(err, fields, files) {
+      console.log(files)
+      console.log(fields)
+    })
+    //await mailer.sendMail(req.body)
     resBody.success(res)
   }
   catch(err){
