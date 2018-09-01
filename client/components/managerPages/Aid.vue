@@ -9,7 +9,7 @@
 			<span>修改密码</span>
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
-			<span>下载模板</span>
+			<span @click="mubanDownload">下载模板</span>
 			<span>删除</span>
 			<span>编辑</span>
 			<span>转毕业生</span>
@@ -145,7 +145,6 @@ export default {
 	      //range value
 	      var rangeVal = {min: $('#aid-aidAmount .min').val(), max: $('#aid-aidAmount .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	      	alert('123')
 	        aid['range']['aidAmount'] = rangeVal
 	      }
 	    }
@@ -186,6 +185,9 @@ export default {
 		},
 		importClick: function(){
 			$('#button-import').click()
+		},
+		mubanDownload: function(){
+			downloadModule.mubanDownload("aid")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){

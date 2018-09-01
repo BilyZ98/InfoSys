@@ -4,6 +4,7 @@ export default { //导出函数
   downloadClick: function(students) {
     //alert(this.getExplorer());
     if (this.getExplorer() == 'ie' || this.getExplorer() == undefined) {
+      alert(JSON.stringify(students));
       //ie不能用方法检测，返回的是undefined...
       //console.log($('.container-card-list')[0])
       //var curTbl = $('.container-card-list')[0]
@@ -52,6 +53,36 @@ export default { //导出函数
       link.click();
       document.body.removeChild(link);
     }
+  },
+  mubanDownload: function(tableName) {//下载表格模板
+    if (this.getExplorer() == 'ie' || this.getExplorer() == undefined) {
+        alert("ie");
+     }
+    else
+    {
+      //叫jsoncontent，实际上传入的是一个对象而不是json
+      var str = this.getTableHead(tableName);
+      //alert(str);
+      let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
+      //通过创建a标签实现
+      var link = document.createElement("a");
+      link.href = uri;
+      //对下载的文件命名，可以改成其他名字
+      link.download = tableData[tableName]['name'] + "表格模板.csv";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  },
+  getTableHead: function(tableName) {//获得模板的表头
+    var str = "";
+    //alert(tableName);
+    for(let item in tableData[tableName]['records'])
+    {
+      if(str=="") str+=tableData[tableName]['records'][item]['name'];
+      else str += (","+tableData[tableName]['records'][item]['name']);
+    }
+    return str;
   },
   //给出保存json的全局变量然后导出，格式：[{},{},{}]
   getJsonContent: function(jsonData) {
