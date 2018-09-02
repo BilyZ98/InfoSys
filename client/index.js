@@ -44,9 +44,10 @@ Vue.use(VueRouter)
 Vue.use(VueResource)
 
 const router = new VueRouter({
+  //使用路由的history模式，url栏没有#
+  mode: 'history',
   routes: [
     { path: '/', redirect: 'main' },
-    { name: 'invalid', path: '/invalid', component: Invalid },
     { name: 'login', path: '/login', component: Login },
     { name: 'register', path: '/register', component: Register },
     { name: 'main', path: '/main', component: Main },
@@ -80,7 +81,9 @@ const router = new VueRouter({
         { name: 'cadreInsert', path: 'cadre', component: CadreInsert },
         { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
-    }
+    },
+    //所有未匹配的路径都会加载404页面组件
+    { name: 'invalid', path: '*', component: Invalid }
   ]
 })
 
@@ -122,9 +125,7 @@ router.beforeEach((to, from, next) => {
     app.$store.commit('updateUserInfo', res.body.content)
   }).then(() => {
     //app.$router.replace({name:'main'})
-    if (to.matched.length === 0) {
-      app.$router.replace({ name: 'invalid' })
-    } else if ((to.path == '/') || (to.path == '/login')) {
+    if ((to.path == '/') || (to.path == '/login')) {
       app.$router.replace({
         name: 'main'
       })

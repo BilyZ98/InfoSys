@@ -34,53 +34,12 @@
 </template>
 
 <script>
-//import store from './store/store'
-
 export default {
   data: function() {
     return {
-      //v-bind:class="router=='insert'?'button-clicked':'button-side'"
       router : 'main'
     }
   },
-  /*
-  beforeMount: function(){
-    Vue.http.interceptors.push((request, next)=> {
-      if (request.method === 'POST' && request.body.silent) {
-        delete request.body.silent
-        return next()
-      } else if (request.silent) {
-        delete request.silent
-        return next()
-      }
-      next((res)=>{
-        //console.log(res.status)
-        //console.log(res.body)
-        if(res.status === 440){
-          this.$router.replace({name:'login'})
-        }
-        return res
-      })
-    })
-    this.$store.dispatch('GET',{
-      url: 'users/session'
-    }).then((res) => {
-      app.$store.commit('updateUserStatus', res.body.content.userType)
-      app.$store.commit('updateUserInfo', res.body.content)
-    }).then(() => {
-      //app.$router.replace({name:'main'})
-      if (to.matched.length === 0) {
-        app.$router.replace({ name: 'main' })
-      }
-      else if ((to.path == '/')||(to.path == '/login'))  {
-        app.$router.replace({ name: 'main' })
-      }
-    }).catch((res) => {
-      if (res.status === 441)
-        app.$router.replace({ name: 'login' })
-    })
-  },
-  */
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
