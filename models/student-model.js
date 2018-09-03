@@ -518,6 +518,19 @@ exports.updateInfo = (data)=>{
   console.log(values)
   return queryDB(query,values);
 }
+/**
+* @param  data array[string] 学号数组
+
+*/
+exports.getMails = (data)=>{
+  let query = ""
+  let values= []
+  for(let i in data){
+      query += "select mail from basicInfo where sid = ?;\n";
+      values.push(data[i])
+  }
+  return queryDB(query,values)
+}
 
 /**
 * @checkStudent 检查某个学生在某个表中是否存在，需要主键

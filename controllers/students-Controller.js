@@ -208,22 +208,37 @@ exports.updateInfo = async (req,res,next)=>{
   })
 }
 
+/**
+data format
+{
+  'fields':{
+    'title': 'test title',
+    'content':'<p>123456</p >',
+    'sid':['12345678','12345679'],
+    'fileNum':5
+  }
+  'files': ...
+}
+*/
 //发送邮件
-exports.sendMail = (req,res,next) =>{
+exports.sendMail =async  (req,res,next) =>{
   try{
-    var form = new formidable.IncomingForm()
-    form.parse(req, function(err, fields, files) {
-      console.log(files)
-      console.log(fields)
+    var form  = new formidable.IncomingForm();
+    form.parse(req,async function(err,fields,files){
+      let mails = StudentsModel.getMails(fields['sid'])
+      await mailer.sendMail(mails,fields, files)
+      resBody.success(res)
     })
-    //await mailer.sendMail(req.body)
-    resBody.success(res)
+    //let mails = StudentsModel.getMails()
+    //await mailer.sendMail(req)
   }
   catch(err){
     resBody.error(res,err)
   }
 
 }
+
+
 
 //检测数据库中是否已有记录
 /**
