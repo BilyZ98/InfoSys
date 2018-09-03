@@ -43,7 +43,8 @@ exports.sendMail = async (mails, fields, files) =>{
       attachments: []
     }
     for(let i =0; i<fields['fileNum'];i++){
-      attachments.push({filename:files['file' + i.toString()]['1']})
+      attachments.push({filename:files['file' + i.toString()]['name']
+                                  })
     }
   },function(err){
 
