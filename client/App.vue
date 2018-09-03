@@ -28,7 +28,9 @@
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
   </aside>
   <div class="container-info-display">
+    <transition name="test" mode="out-in">
     <router-view></router-view>
+    </transition>
   </div>
 </div>
 </template>
@@ -120,6 +122,21 @@ export default {
 </script>
 
 <style>
+.test-enter-active, .test-leave-active {
+  transition: 0.25s ease-in-out;
+}
+
+.test-enter {
+  transform: translate(-100px, 0);
+  opacity: 0;
+}
+
+.test-leave-to
+/* .component-fade-leave-active for below version 2.1.8 */ {
+  transform: translate(300px, 0);
+  opacity: 0;
+}
+
 :root {
   --blue: rgb(0, 132, 255);
   --blue-hover: rgb(15, 79, 207);
