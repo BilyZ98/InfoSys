@@ -1,8 +1,8 @@
 <template>
 <div id="container-home">
-  <!--顶部栏-->
+  <!--顶部栏
   <div class="container-header">
-  </div>
+  </div>-->
   <!--主要区域-->
   <div class="container-card">
     <p class="text-greeting"></p>
@@ -256,7 +256,7 @@ export default {
 /* 新建公告 */
 #container-home .content-new-notice {
   background-color: white;
-  margin-top: 100px;
+  margin-top: 30px;
   margin-left: calc(50% - 350px);
   padding: 30px;
   width: 700px;

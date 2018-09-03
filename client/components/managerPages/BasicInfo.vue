@@ -599,7 +599,7 @@ export default {
   width: 800px;
   height: 630px;
   margin: auto;
-  margin-top: 50px;
+  margin-top: 30px;
   padding: 20px;
   text-align: left;
   /*radius*/
