@@ -94,7 +94,7 @@ export default {
   },
   methods: {
     noticeClick: function(id) {
-      alert(id)
+      //alert(id)
     },
     newNoticeClick: function(){
       $('#popup-new-notice').show()
@@ -235,7 +235,7 @@ export default {
 /* 弹窗 (background) */
 
 #container-home .popup-background {
-  display: none; /* 默认隐藏 */
+  display: none;
   position: absolute; /* 定位 */
   z-index: 10; /* 设置在顶层 */
   left: 0;
@@ -247,6 +247,10 @@ export default {
   overflow: auto;
   background-color: rgb(0,0,0);
   background-color: rgba(0,0,0,0.4);
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 
 /* 新建公告 */

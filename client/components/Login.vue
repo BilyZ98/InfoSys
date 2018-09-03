@@ -90,15 +90,6 @@ export default {
                 alert("服务器错误")
               }
             }
-            /*
-            if (message['state'] == false) {
-              //alert('账号或密码错误！');
-              $("#warning").text("账号或密码错误！")
-            } else {
-              //load mainPage
-              alert("登录成功");
-            }
-            */
           },
           error: function(result, xhr) {
             console.log(result)

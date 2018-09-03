@@ -102,8 +102,9 @@ const app = new Vue({
       $('#info-account').text(this.$store.getters.getUserAccount)
       //console.log(this.$route)
     }).catch((res) => {
-      if (res.status === 441)
+      if (res.status === 441){
         app.$router.replace({ name: 'login' })
+      }
     })
   },
   //render: h => h(App)
@@ -131,8 +132,9 @@ router.beforeEach((to, from, next) => {
       })
     }
   }).catch((res) => {
-    if (res.status === 441)
+    if (res.status === 441){
       app.$router.replace({ name: 'login' })
+    }
   })
 
   next()
