@@ -2,7 +2,10 @@ import tableData from './tableData.js'
 
 export default {
   createCharts: function(tableId, statData, barDom, pieDom) {
-    // 图表配置
+    /**
+     * 图表配置
+     */
+    //bar
     var optionsBar = {
       chart: {
         type: 'bar'
@@ -24,6 +27,7 @@ export default {
         enabled: false
       }
     }
+    //pie
     var optionsPie = {
       chart: {
         plotBackgroundColor: null,
@@ -72,7 +76,7 @@ export default {
       let str = ''
       for (let item in statArr) {
         if (item != 'statistic')
-          str = str + tableData[tableId]['records'][item]['name'] + ':' + statArr[item] + ' '
+          str = str + statArr[item] + ' '
       }
       optionsBar['xAxis']['categories'].push(str)
       //series

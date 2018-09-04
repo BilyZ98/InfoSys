@@ -118,7 +118,7 @@ const app = new Vue({
 还是会跳到登陆页面，所以我用了 APP.vue 的beforemount 方法，每次这么做，
 先检查
 */
-router.beforeEach((to, from, next) => {
+router.beforeEach(function(to, from, next){
   app.$store.dispatch('GET', {
     url: 'users/session'
   }).then((res) => {
