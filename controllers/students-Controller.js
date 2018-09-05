@@ -3,6 +3,10 @@ var StudentsModel = require('../models/student-model.js');
 var asynchronous = require('async');
 const mailer = require('../utils/mailer.js')
 var formidable = require('formidable')
+const path = require('path')
+var uploadDir = path.resolve(__dirname,'..')
+uploadDir = path.join(uploadDir,'/uploads')
+
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -224,7 +228,12 @@ data format
 exports.sendMail =async  (req,res,next) =>{
   try{
     var form  = new formidable.IncomingForm();
+    form.multiples = true
+    form.uploadDir = uploadDir
+    form.keepExtensions = true
+    form.encoding = 'utf-8'
     form.parse(req,async function(err,fields,files){
+      console.log(fields)
       let mails = StudentsModel.getMails(fields['sid'])
       await mailer.sendMail(mails,fields, files)
       resBody.success(res)

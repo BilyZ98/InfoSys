@@ -2,6 +2,8 @@ const nodemailer = require('nodemailer')
 const config = require("../config/config")
 const mailModel = require('./mailModel')
 const asynchronous = require('async')
+const fs = require('fs')
+const dirPath = '../uploads/'
 
 let transporter = nodemailer.createTransport(config.mailer_config)
 /*
@@ -33,7 +35,47 @@ data format
 
 
 exports.sendMail = async (mails, fields, files) =>{
+  console.log('mails ---')
+  console.log(mails)
+    console.log('mails ---')
   let wrongMails = [] //save mails not exist
+  let mailOptions = {
+    from: '873421427 <873421427@qq.com>',
+    to: '',
+    html: fields['content'],
+    attachments: []
+  }
+  var tmp = true
+  for(let mail in mails){
+    if(tmp){
+      mailOptions.to+= mail
+      tmp =false
+    }
+    else {
+      mailOptions.to+=',' + mail
+    }
+  }
+  console.log('mails to ---------')
+console.log(mailOptions.to)
+console.log('mails to --------')
+  for(let i =0; i<fields.fileNum; i++){
+    mailOptions.attachments.push({filename:files['file' + i.toString()]['name'],
+                                  path:files['file' + i.toString()].path})
+
+
+  }
+
+  await transporter.sendMail(mailOptions,(err,info)=>{
+    if(err){
+      return console.log(err)
+    }
+    console.log("message sent:"  + info.response)
+  });
+
+}
+
+/*
+
   asynchronous.each(mails,function(value,callback){
     let mailOptions = {
       from: '873421427<873421427@qq.com>',
@@ -64,4 +106,4 @@ exports.sendMail = async (mails, fields, files) =>{
       console.log("message sent:"  + info.response)
     });
   }
-}
+*/
