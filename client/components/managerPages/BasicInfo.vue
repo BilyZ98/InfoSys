@@ -89,7 +89,7 @@
 					{{sid}}
 					<span class="email-sid-delete" @click="removeFromEmailSid(sid)">&times;</span>
 					</span>
-					<span class="email-sid-add" @click="addEmailSid()">+</span>
+					<span class="email-sid-add" @click="addEmailSid()">添加学号</span>
 				</span>
 			</div>
       <div class="info-cell">
@@ -293,7 +293,7 @@ export default {
       	//this.quill.getContents() 获取quill的delta对象
       	//this.quill.getText() 获取文本
       	formData.append('content', this.quill.root.innerHTML)
-      	formData.append('sid', this.emailSid)
+      	formData.append('sid', JSON.stringify(this.emailSid))
       	//附件
       	var files = $('#file-input').prop('files')
       	if(files.length > 5) {
@@ -657,13 +657,13 @@ export default {
 }
 
 #manager-basicInfo .container-email .email-sid-add {
-  color: rgb(100, 255, 100);
-  font-size: 20px;
+  color: var(--blue);
   font-weight: bold;
+  font-size: 13px;
 }
 
 #manager-basicInfo .container-email .email-sid-add:hover, #manager-basicInfo .container-email .email-sid-add:focus {
-	color: green;
+	color: var(--blue-hover);
   text-decoration: none;
   cursor: pointer;
 }
