@@ -38,7 +38,6 @@ import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
 import CadreInsert from './components/inserts/CadreInsert.vue'
 import AwardInsert from './components/inserts/AwardInsert.vue'
 
-
 Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)

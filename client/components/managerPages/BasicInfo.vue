@@ -78,21 +78,33 @@
 	<!--发邮件-->
 	<div id="popup-email" class="popup-background">
 		<div class="container-email">
-			<div class="heading">
+			<div>
 				<span class="i-text">标题：</span>
 				<input type="text" id="email-title">
 			</div>
-      <div class="info-file">
+			<div class="info-cell">
+				<span class="i-text">收件人学号：</span>
+				<span id="email-sid">
+					<span v-for="sid in emailSid">
+					{{sid}}
+					<span class="email-sid-delete" @click="removeFromEmailSid(sid)">&times;</span>
+					</span>
+					<span class="email-sid-add" @click="addEmailSid()">+</span>
+				</span>
+			</div>
+      <div class="info-cell">
+      	<span class="i-text">正文：</span>
+      	<div class="container-myEditor">
+					<div id="myEditor">
+					  <p>请输入邮件内容</p>
+					</div>
+				</div>
+      </div>
+      <div class="info-cell">
         <span class="i-text">附件：</span>
         <input type="file" id="file-input" name="file-input" @change="emailFileUpolad" multiple="multiple" style="display: none;">
         <button @click="uploadFileClick">添加文件</button>
         <span class="file-area"></span>
-      </div>
-      <div class="info-text">
-        <span class="i-text">正文：</span>
-        <script type="text/plain" id="myEditor">
-          <p>请在此输入邮件内容</p>
-        </script>
       </div>
       <button class="button-email-send" @click="sendEmail">发送</button>
     	<button class="button-email-close" @click="closeSendEmail">关闭</button>
@@ -108,6 +120,7 @@ import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
+
 var empty = JSON.stringify({equal: {}, range: {}, fuzzy: {}})
 var emptyCell = JSON.stringify({})
 
@@ -116,29 +129,20 @@ export default {
 		return {
 			table: tableData['basicInfo'],
 			students: [],
-			ue: null
+			quill: null,
+			emailSid: []
 		}
 	},
 	mounted: function(){
-		this.ue = UE.getEditor("myEditor",
-      {
-        emotionLocalization:false,
-        autoHeightEnabled: true,
-        autoFloatEnabled: true,
-        enableAutoSave: true,
-        saveInterval: 1000,
-        maximumWords: 12000,
-        autoSyncData: false,
-        initialFrameWidth: null,
-        initialFrameHeight: 300,
-        serverUrl: URL + "jsp/controller.jsp",//服务器接口路径
-        toolbars: [['undo', 'redo',  'fontfamily', 'fontsize', 'bold', 'italic',
-          'underline', 'strikethrough', 'justifyleft', 'justifyright', 'justifycenter', 'justifyjustify','forecolor', 'backcolor', 'subscript',
-          'fontborder', 'superscript',  'formatmatch', 'blockquote', 'horizontal', 'insertorderedlist',
-          'insertunorderedlist', 'fullscreen', 'edittip',
-          'inserttable', 'insertrow', 'insertcol', 'mergeright', 'mergedown', 'deleterow', 'deletecol','splittorows',
-          'splittocols', 'splittocells', 'deletecaption', 'inserttitle', 'mergecells', 'deletetable']]
-    })
+    this.quill = new Quill('#myEditor', {
+    	modules: {
+		    'history': {          // Enable with custom configurations
+		      'delay': 2500,
+		      'userOnly': true
+		    }
+		  },
+	    theme: 'snow'
+	  })
 	},
 	methods: {
 		insertClick: function(){
@@ -256,15 +260,26 @@ export default {
 		},
 		//发送邮件函数
 		sendEmailClick: function(){
-			//console.log(this.ue)
 			$('#popup-email').show()
+			//加载收件人学号
+			this.emailSid = []
+			for(let i = 0; i < this.students.length; i++){
+				this.emailSid.push(this.students[i]['basicInfo']['sid'])
+			}
+		},
+		removeFromEmailSid: function(sid) {
+			for(let i = 0; i < this.emailSid.length; i++){
+				if(sid == this.emailSid[i]){
+					this.emailSid.splice(i, 1)
+					return
+				}
+			}
+		},
+		addEmailSid: function(){
+
 		},
 		sendEmail: function(){
-			var sid = []
-			for(let i = 0; i < this.students.length; i++){
-				sid.push(this.students[i]['basicInfo']['sid'])
-			}
-			if(sid.length == 0){
+			if(this.emailSid.length == 0){
 				alert('没有要发送邮件的学生~')
 				return
 			} else if ($("#email-title").val() == '') {
@@ -274,8 +289,11 @@ export default {
       	var formData = new FormData()
       	//字段
       	formData.append('title', $("#email-title").val())
-      	formData.append('content', this.ue.getContent())
-      	formData.append('sid', sid)
+      	//this.quill.root.innerHTML 获取html
+      	//this.quill.getContents() 获取quill的delta对象
+      	//this.quill.getText() 获取文本
+      	formData.append('content', this.quill.root.innerHTML)
+      	formData.append('sid', this.emailSid)
       	//附件
       	var files = $('#file-input').prop('files')
       	if(files.length > 5) {
@@ -407,7 +425,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
   /*设置文字不可被选中*/
   -webkit-touch-callout: none;
-  -webkit-user-select: none; 
+  -webkit-user-select: none;
   -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -541,7 +559,7 @@ export default {
 /* 弹窗 (background) */
 #manager-basicInfo .popup-background {
   display: none; /* 默认隐藏 */
-  position: absolute; /* 定位 */
+  position: fixed; /* 定位 */
   z-index: 10; /* 设置在顶层 */
   left: 0;
   top: 0;
@@ -597,10 +615,9 @@ export default {
 #manager-basicInfo .container-email {
   background-color: white;
   width: 800px;
-  height: 630px;
   margin: auto;
   margin-top: 30px;
-  padding: 20px;
+  padding: 30px 5px 20px 5px;
   text-align: left;
   /*radius*/
   border-radius: 3px;
@@ -608,29 +625,62 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-basicInfo .container-email #email-title{
-	width: 200px;
-}
-
 #manager-basicInfo .container-email .i-text {
-  font-size: 16px;
+  display: inline-block;
+  font-size: 14px;
+  width: 100px;
+  vertical-align: top;
+  text-align: right;
 }
 
-#manager-basicInfo .container-email .info-file {
+#manager-basicInfo .container-email #email-title {
+	width: 600px;
+	display: inline-block;
+}
+
+#manager-basicInfo .container-email #email-sid {
+	width: 600px;
+	display: inline-block;
+	min-height: 24px;
+}
+
+#manager-basicInfo .container-email .email-sid-delete {
+  color: rgb(255, 100, 100);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#manager-basicInfo .container-email .email-sid-delete:hover, #manager-basicInfo .container-email .email-sid-delete:focus {
+	color: red;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#manager-basicInfo .container-email .email-sid-add {
+  color: rgb(100, 255, 100);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#manager-basicInfo .container-email .email-sid-add:hover, #manager-basicInfo .container-email .email-sid-add:focus {
+	color: green;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#manager-basicInfo .container-email .info-cell {
   margin-top: 20px;
+}
+
+#manager-basicInfo .container-email .container-myEditor {
+	display: inline-block;
+	height: 250px;
+	width: 600px;
 }
 
 #manager-basicInfo .container-email .file-area span{
   font-size: 12px;
   margin-left: 7px;
-}
-
-#manager-basicInfo .container-email .info-text {
-  margin-top: 20px;
-}
-
-#manager-basicInfo .container-email #myEditor{
-	margin-top: 10px;
 }
 
 #manager-basicInfo .container-email .button-email-send, #manager-basicInfo .container-email .button-email-close {

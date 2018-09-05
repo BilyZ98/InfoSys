@@ -407,7 +407,7 @@ export default {
 
 #manager-cadre .popup-background {
   display: none; /* 默认隐藏 */
-  position: absolute; /* 定位 */
+  position: fixed; /* 定位 */
   z-index: 10; /* 设置在顶层 */
   left: 0;
   top: 0;

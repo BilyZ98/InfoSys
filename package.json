@@ -47,6 +47,7 @@
     "vue-hot-reload-api": "^2.0.8",
     "vue-html-loader": "^1.2.3",
     "vue-loader": "^14.1.0",
+    "vue-quill-editor": "^3.0.6",
     "vue-resource": "^1.5.1",
     "vue-router": "^2.2.0",
     "vue-style-loader": "^1.0.0",

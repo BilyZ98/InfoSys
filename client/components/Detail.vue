@@ -128,7 +128,7 @@ export default {
 		updateClick: function(){
 			if($('#info-update').attr('button-type') == 'begin'){
 				//开始修改
-				$('#info-update').text('上传')
+				$('#info-update').text('确定')
 				$('#info-update').attr('button-type', 'end')
 				$('.record-changable').each(function(){
 					$(this).attr('disabled', false)
