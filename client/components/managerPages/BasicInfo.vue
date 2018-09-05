@@ -89,7 +89,8 @@
 					{{sid}}
 					<span class="email-sid-delete" @click="removeFromEmailSid(sid)">&times;</span>
 					</span>
-					<span class="email-sid-add" @click="addEmailSid()">添加学号</span>
+					<span id="email-sid-add-button" @click="addEmailSid()">添加学号</span>
+					<input id="email-sid-add-input" @blur="addEmailSidFinish" @keyup.enter="addEmailSidFinish">
 				</span>
 			</div>
       <div class="info-cell">
@@ -276,7 +277,23 @@ export default {
 			}
 		},
 		addEmailSid: function(){
-
+			$('#email-sid-add-button').hide()
+			$('#email-sid-add-input').show()
+		},
+		addEmailSidFinish: function(){
+			var sid = $('#email-sid-add-input').val()
+			if(sid != ''){
+				console.log(sid)
+				var reg = /^[1-9][\d]{7}$/
+				if(!reg.test(sid)){
+					alert('学号格式不正确！')
+				} else {
+					this.emailSid.push(sid)
+				}
+			}
+			$('#email-sid-add-input').val('')
+			$('#email-sid-add-input').hide()
+			$('#email-sid-add-button').show()
 		},
 		sendEmail: function(){
 			if(this.emailSid.length == 0){
@@ -656,16 +673,22 @@ export default {
   cursor: pointer;
 }
 
-#manager-basicInfo .container-email .email-sid-add {
+#manager-basicInfo .container-email #email-sid-add-button {
+	display: inline-block;
   color: var(--blue);
   font-weight: bold;
   font-size: 13px;
 }
 
-#manager-basicInfo .container-email .email-sid-add:hover, #manager-basicInfo .container-email .email-sid-add:focus {
+#manager-basicInfo .container-email #email-sid-add-button:hover, #manager-basicInfo .container-email #email-sid-add-button:focus {
 	color: var(--blue-hover);
   text-decoration: none;
   cursor: pointer;
+}
+
+#manager-basicInfo .container-email #email-sid-add-input {
+	display: none;
+	width: 80px;
 }
 
 #manager-basicInfo .container-email .info-cell {
