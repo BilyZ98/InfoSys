@@ -41,13 +41,13 @@ module.exports = {
     }
   },
   mailer_config:{
-    host:'smtp.qq.com',
-    secureConnection: true,
+    service: "smtp.163.com",
+    host:'smtp.163.com',
     port:465,
-    secure:true,
     auth:{
-      user:'873421427@qq.com',
-      pass: 'wibbozdzsxdwbfdd'
+      user:"15626278343@163.com",
+      pass: "qq3739225"
+      //wibbozdzsxdwbfdd
     }
   }
 }

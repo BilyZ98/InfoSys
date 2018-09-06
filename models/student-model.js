@@ -523,13 +523,15 @@ exports.updateInfo = (data)=>{
 
 */
 exports.getMails = (data)=>{
+  console.log("model mails ====")
+  console.log(data)
+  console.log("model mails ====")
+
   let query = ""
-  let values= []
-  for(let i in data){
-      query += "select mail from basicInfo where sid = ?;\n";
-      values.push(data[i])
-  }
-  return queryDB(query,values)
+
+  query += "select mail from basicInfo where sid in (" + data.join()+ ");\n";
+
+  return queryDB(query)
 }
 
 /**
