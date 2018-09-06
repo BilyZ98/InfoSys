@@ -1,11 +1,11 @@
 2018.8.31
 现在考虑建立公告系统的数据库
 sid: string 登陆账号
-content:  string 公告内容
+content:  string 公告内容  longtext
 time: 时间 （考虑用date 格式存）
 expireTime: 这条公告过期时间 （date）
 
-Q:有一个问题，数据库怎么存form 文件，要查一下？
+Q:有一个问题，数据库怎么存form 文件，要查一下？数据库没法存文件，都是存文件路径
 
 然后现在发邮件，在student-controller 里面综合 到数据库获得邮箱账号，再把邮箱账号发给mailer ，我觉得这样
 起到了控制层的作用

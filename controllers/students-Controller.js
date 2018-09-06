@@ -232,17 +232,20 @@ exports.sendMail =async  (req,res,next) =>{
     form.uploadDir = uploadDir
     form.keepExtensions = true
     form.encoding = 'utf-8'
+    console.log()
     form.parse(req,async function(err,fields,files){
-      console.log(fields)
-      let mails = StudentsModel.getMails(fields['sid'])
-      await mailer.sendMail(mails,fields, files)
-      resBody.success(res)
+      StudentsModel.getMails(JSON.parse(fields['sid'])).then(async (mails)=>{
+          await mailer.sendMail(mails,fields, files)
+          resBody.success(res)
+      })
+      .catch((err)=>{
+        console.log(err)
+      })
     })
-    //let mails = StudentsModel.getMails()
-    //await mailer.sendMail(req)
   }
   catch(err){
     resBody.error(res,err)
+    console.log(err)
   }
 
 }
