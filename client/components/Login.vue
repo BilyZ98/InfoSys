@@ -1,44 +1,43 @@
 <template>
-<div id="container-login">
-<!--<div>
+  <div id="container-login">
+    <!--<div>
     <a href="http://sdcs.sysu.edu.cn/" target="_blank">
     <img :src="sdcsLogo" class="img-responsive" alt="Responsive image">
   </a>
   </div>-->
-  <div class="container-card">
-    <form>
-      <div class="text-header">学生信息系统</div>
-      <hr>
-      <div class="container-input">
-        <span>账号：</span>
-        <input type="text" id="input-id" placeholder="学号或学工号">
-      </div>
-      <div class="container-input">
-        <span>密码：</span>
-        <input type="password" id="input-password" placeholder="密码">
-      </div>
-      <div id="warning"></div>
-      <div class="button-login" @click="loginClick">登录</div>
-      <div class="button-login" @click="">注册</div>
-    </form>
+    <div class="container-card">
+      <form>
+        <div class="text-header">学生信息系统</div>
+        <hr>
+        <div class="container-input">
+          <span>账号：</span>
+          <input type="text" id="input-id" placeholder="学号或学工号">
+        </div>
+        <div class="container-input">
+          <span>密码：</span>
+          <input type="password" id="input-password" placeholder="密码">
+        </div>
+        <div id="warning"></div>
+        <div class="button-login" @click="loginClick">登录</div>
+        <div class="button-login" @click="">注册</div>
+      </form>
+    </div>
   </div>
-</div>
 </template>
-
 <script>
 import banner from '../assets/sdcs_banner.png'
 
 export default {
-  data: function(){
-    return{
+  data: function() {
+    return {
       banner: banner
     }
   },
-  mounted: function(){
+  mounted: function() {
     $(".app-bar-display").attr("class", "app-bar-hide")
     $(".container-info-display").attr("class", "container-info-all")
   },
-  beforeDestroy: function(){
+  beforeDestroy: function() {
     $(".app-bar-hide").attr("class", "app-bar-display")
     $(".container-info-all").attr("class", "container-info-display")
   },
@@ -80,13 +79,13 @@ export default {
           dataType: 'json',
           timeout: 5000,
           success: function(result, xhr) {
-            for(let key in result){
-              if(key == 'content'){
+            for (let key in result) {
+              if (key == 'content') {
                 $('#info-account').text(id)
                 _self.$router.push({
                   name: 'main'
                 })
-              } else if (key == 'err'){
+              } else if (key == 'err') {
                 alert("服务器错误")
               }
             }
@@ -94,7 +93,7 @@ export default {
           error: function(result, xhr) {
             console.log(result)
             //表示密码错误
-            if(result.status == 441){
+            if (result.status == 441) {
               alert("账号或密码错误")
             }
           }
@@ -111,25 +110,25 @@ export default {
       if (data.match(/^([0-9]*)$/) && data.length == 8)
         return true;
       return true;
-    }/*,
-    //记住用户名密码
-    Save: function() {
-      if ($("#ck_rmbUser").attr("checked")) {
-        var str_username = $("#input-id").val();
-        var str_password = $("#input-password").val();
-        $.cookie("rmbUser", "true", { expires: 7 });
-        $.cookie("username", str_username, { expires: 7 });
-        $.cookie("password", str_password, { expires: 7 });
-      } else {
-        //$.cookie("rmbUser", "false", { expire: -1 });
-        $.cookie("username", "", { expires: -1 });
-        $.cookie("password", "", { expires: -1 });
-      }
-    }*/
+    }
+    /*,
+        //记住用户名密码
+        Save: function() {
+          if ($("#ck_rmbUser").attr("checked")) {
+            var str_username = $("#input-id").val();
+            var str_password = $("#input-password").val();
+            $.cookie("rmbUser", "true", { expires: 7 });
+            $.cookie("username", str_username, { expires: 7 });
+            $.cookie("password", str_password, { expires: 7 });
+          } else {
+            //$.cookie("rmbUser", "false", { expire: -1 });
+            $.cookie("username", "", { expires: -1 });
+            $.cookie("password", "", { expires: -1 });
+          }
+        }*/
   }
 }
 </script>
-
 <style>
 #container-login {
   position: absolute;
@@ -138,6 +137,7 @@ export default {
   background-color: var(--grey-background);
 }
 
+
 /*
 #container-login .container-banner img {
   margin: auto;
@@ -145,6 +145,7 @@ export default {
   bottom: 0;
 }
 */
+
 #container-login .container-card {
   margin-left: calc(50vw - 300px);
   margin-top: calc(50vh - 230px);
@@ -217,9 +218,12 @@ export default {
   /*radius*/
   border-radius: 3px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-login .button-login:hover {

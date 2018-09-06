@@ -82,4 +82,12 @@ app.use((req, res, next) => {
 app.use('/students', studentsRouter);
 app.use('/users', userRouter_a);
 
+/*
+// error handler
+app.use(function(err, req, res, next) {
+  res.sendFile('./public/invalid.html')
+  next()
+});
+*/
+
 module.exports = app;

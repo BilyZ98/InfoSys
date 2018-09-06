@@ -1,52 +1,51 @@
 <template>
-<div>
-  <header class="app-bar-display">
-    <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
-    <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-    <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
-  </header>
-  <aside class="app-bar-display">
-    <div class="info-side">
-      <label id="info-account"></label>
-      <p>数据科学与计算机学院</p>
-    </div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='schoolRoll'}" @click="schoolRollClick">学籍管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='course'}" @click="courseClick" >课程成绩</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='partyInfo'}" @click="partyInfoClick">党员信息</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='scholarship'}" @click="scholarshipClick">奖学金管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='aid'}" @click="aidClick">资助信息管理</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='loan'}" @click="loanClick">助学贷款</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='cadre'}" @click="cadreClick">学生干部任职情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='award'}" @click="awardClick">获得奖励情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
-    <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
-<!--<div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
+  <div>
+    <header class="app-bar-display">
+      <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
+      <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
+      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
+    </header>
+    <aside class="app-bar-display">
+      <div class="info-side">
+        <label id="info-account"></label>
+        <p>数据科学与计算机学院</p>
+      </div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='schoolRoll'}" @click="schoolRollClick">学籍管理</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='course'}" @click="courseClick">课程成绩</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='partyInfo'}" @click="partyInfoClick">党员信息</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='scholarship'}" @click="scholarshipClick">奖学金管理</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='aid'}" @click="aidClick">资助信息管理</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='loan'}" @click="loanClick">助学贷款</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='cadre'}" @click="cadreClick">学生干部任职情况</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='award'}" @click="awardClick">获得奖励情况</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
+      <!--<div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
-  </aside>
-  <div class="container-info-display">
-    <transition name="test" mode="out-in">
-    <router-view></router-view>
-    </transition>
+    </aside>
+    <div class="container-info-display">
+      <transition name="test" mode="out-in">
+        <router-view></router-view>
+      </transition>
+    </div>
   </div>
-</div>
 </template>
-
 <script>
 export default {
   data: function() {
     return {
-      router : 'main'
+      router: 'main'
     }
   },
   methods: {
     homeClick: function() {
       this.$router.push({ name: 'main' })
     },
-    userInfoClick: function(){
+    userInfoClick: function() {
       //
     },
     logoutClick: function() {
@@ -108,21 +107,21 @@ export default {
     techProjectClick: function() {
       this.$router.push({ name: 'techProject' })
     },
-    queryClick: function(){
-      this.$router.push({ name: 'query'})
+    queryClick: function() {
+      this.$router.push({ name: 'query' })
     },
-    insertClick: function(){
-      this.$router.push({ name: 'insert'})
+    insertClick: function() {
+      this.$router.push({ name: 'insert' })
     },
-    importClick: function(){
-      this.$router.push({ name: 'import'})
+    importClick: function() {
+      this.$router.push({ name: 'import' })
     }
   }
 }
 </script>
-
 <style>
-.test-enter-active, .test-leave-active {
+.test-enter-active,
+.test-leave-active {
   transition: 0.25s ease-in-out;
 }
 
@@ -132,7 +131,9 @@ export default {
 }
 
 .test-leave-to
-/* .component-fade-leave-active for below version 2.1.8 */ {
+/* .component-fade-leave-active for below version 2.1.8 */
+
+{
   transform: translate(300px, 0);
   opacity: 0;
 }
@@ -189,9 +190,12 @@ header {
   font-weight: lighter;
   color: white;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 .button-home:hover {
@@ -210,9 +214,12 @@ header {
   font-size: 20px;
   font-weight: bold;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 .button-icon:hover {
@@ -255,9 +262,12 @@ aside {
   /*怎么让文字左右居中？*/
   padding-left: 67px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 .button-side:hover {
@@ -269,7 +279,7 @@ aside {
   background-color: var(--grey-hover);
 }
 
-.container-info-display{
+.container-info-display {
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger
   使用calc可以实现响应式布局*/
   min-width: calc(100vw - 225px);
@@ -291,5 +301,4 @@ aside {
   background-color: var(--grey-background);
   overflow: hidden;
 }
-
 </style>

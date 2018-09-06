@@ -1,49 +1,49 @@
 <template>
-<div id="container-list">
-  <div class="container-card">
-
-    <div class="table-row">
-      <!--学号姓名标题-->
+  <div id="container-list">
+    <div class="container-card">
+      <div class="table-row">
+        <!--学号姓名标题-->
+        <div class="table-col">
+          <div class="table-head">学号姓名</div>
+          <div class="table-reord-head">
+            <p>学号</p>
+          </div>
+          <div class="table-reord-head">
+            <p>姓名</p>
+          </div>
+        </div>
+        <!--表格内容标题-->
+        <div v-for="table in recordFilter.show" class="table-col">
+          <div class="table-head">{{table.name}}</div>
+          <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="table-reord-head">
+            <p>{{record.name}}</p>
+          </div>
+        </div>
+      </div>
+      <!--学号姓名数据-->
       <div class="table-col">
-        <div class="table-head">学号姓名</div>
-        <div class="table-reord-head"><p>学号</p></div>
-        <div class="table-reord-head"><p>姓名</p></div>
+        <div v-for="student in students" class="table-row">
+          <div class="table-cell">
+            <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
+          </div>
+          <div class="table-cell">
+            <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
+          </div>
+        </div>
       </div>
-
-      <!--表格内容标题-->
+      <!--表格内容数据-->
       <div v-for="table in recordFilter.show" class="table-col">
-        <div class="table-head">{{table.name}}</div>
-        <div v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'" class="table-reord-head"><p>{{record.name}}</p></div>
-      </div>
-    </div>
-
-    <!--学号姓名数据-->
-    <div class="table-col">
-      <div v-for="student in students" class="table-row">
-        <div class="table-cell">
-          <p>{{student[recordFilter['show'][0]['id']]['sid']}}</p>
-        </div>
-        <div class="table-cell">
-          <p>{{student[recordFilter['show'][0]['id']]['name']}}</p>
+        <div v-for="student in students" class="table-row">
+          <div class="table-cell" v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
+            <p>{{student[table.id][record.id]}}</p>
+          </div>
         </div>
       </div>
+      <hr>
+      <button id="button-download" @click="downloadClick">导出Excel</button>
     </div>
-
-    <!--表格内容数据-->
-    <div v-for="table in recordFilter.show" class="table-col">
-      <div v-for="student in students" class="table-row">
-        <div class="table-cell"  v-for="record in table.records" v-if="record.id!='sid'&&record.id!='name'">
-          <p>{{student[table.id][record.id]}}</p>
-        </div>
-      </div>
-    </div>
-
-    <hr>
-    <button id="button-download" @click="downloadClick">导出Excel</button>
   </div>
-</div>
 </template>
-
 <script>
 import tableData from './javascripts/tableData.js'
 
@@ -113,12 +113,12 @@ export default {
         dataType: 'json',
         timeout: 5000,
         success: function(result, xhr) {
-          for(let key in result){
-            if(key == 'content'){
+          for (let key in result) {
+            if (key == 'content') {
               //操作成功
               _self.students = result['content']
-               _self.recordFilter = recordFilter
-            } else if (key == 'err'){
+              _self.recordFilter = recordFilter
+            } else if (key == 'err') {
               //操作错误
               alert('查询信息错误: ' + result[key]['sqlMessage'])
             }
@@ -134,8 +134,7 @@ export default {
     //导出函数
     downloadClick: function() {
       //alert(this.getExplorer());
-      if(this.getExplorer() == 'ie' || this.getExplorer() == undefined)
-      {
+      if (this.getExplorer() == 'ie' || this.getExplorer() == undefined) {
         //ie不能用方法检测，返回的是undefined...
         //console.log($('.container-card-list')[0])
         //var curTbl = $('.container-card-list')[0]
@@ -171,16 +170,14 @@ export default {
           oXL = null;
           idTmr = window.setInterval("Cleanup();", 1);
         }
-      }
-      else
-      {
+      } else {
         //叫jsoncontent，实际上传入的是一个对象而不是json
         var str = this.getJsonContent(this.students);
         let uri = 'data:text/csv;charset=utf-8,\ufeff' + encodeURIComponent(str);
-          //通过创建a标签实现
+        //通过创建a标签实现
         var link = document.createElement("a");
         link.href = uri;
-          //对下载的文件命名，可以改成其他名字
+        //对下载的文件命名，可以改成其他名字
         link.download = "数据表.csv";
         document.body.appendChild(link);
         link.click();
@@ -188,23 +185,23 @@ export default {
       }
     },
     //给出保存json的全局变量然后导出，格式：[{},{},{}]
-    getJsonContent: function(jsonData){
+    getJsonContent: function(jsonData) {
       //console.log(tableData.length)
       var str = ''
       //表名部分
-      for(let item in jsonData[0]){
+      for (let item in jsonData[0]) {
         //id转换name，先找到表
         let table = {}
-        for(let ite in tableData){
-          if(item == ite){
+        for (let ite in tableData) {
+          if (item == ite) {
             table = tableData[ite]
             break;
           }
         }
         str += table['name']
-        for(let record in jsonData[0][item]){
-          for(let ite in table['records']){
-            if(ite == record){
+        for (let record in jsonData[0][item]) {
+          for (let ite in table['records']) {
+            if (ite == record) {
               str += ','
             }
           }
@@ -212,18 +209,18 @@ export default {
       }
       str += '\n'
       //字段名部分
-      for(let item in jsonData[0]){
+      for (let item in jsonData[0]) {
         //id转换name，先找到表
         let table = {}
-        for(let ite in tableData){
-          if(item == ite){
+        for (let ite in tableData) {
+          if (item == ite) {
             table = tableData[ite]
             break
           }
         }
-        for(let record in jsonData[0][item]){
-          for(let ite in table['records']){
-            if(ite == record){
+        for (let record in jsonData[0][item]) {
+          for (let ite in table['records']) {
+            if (ite == record) {
               str += table['records'][ite].name
               str += ','
             }
@@ -232,11 +229,11 @@ export default {
       }
       str += '\n'
       //数据部分
-      for(let i = 0; i < jsonData.length; i++ ){
-        for(let item in jsonData[i]){
-          for(let record in jsonData[i][item]){
+      for (let i = 0; i < jsonData.length; i++) {
+        for (let item in jsonData[i]) {
+          for (let record in jsonData[i][item]) {
             //在头或尾加入制表符'\t'能让长数字的字符串不显示为科学记数法
-            str =str + '\t' +  jsonData[i][item][record]
+            str = str + '\t' + jsonData[i][item][record]
             str += ','
           }
         }
@@ -244,15 +241,15 @@ export default {
       }
       return str
     },
-    getJsonContentForIE: function(xlsheet, jsonData){
+    getJsonContentForIE: function(xlsheet, jsonData) {
       //console.log(Test.length)
       //表名部分
       let y = 0
-      for(let item in jsonData[0]){
+      for (let item in jsonData[0]) {
         //id转换name，先找到表
         let table = {}
-        for(let ite in tableData){
-          if(item == ite){
+        for (let ite in tableData) {
+          if (item == ite) {
             table = tableData[ite]
             break;
           }
@@ -261,9 +258,9 @@ export default {
         xlsheet.Cells(1, y + 1).value = table['name']
         y++
         console.log(y)
-        for(let record in jsonData[0][item]){
-          for(let ite in table['records']){
-            if(ite == record){
+        for (let record in jsonData[0][item]) {
+          for (let ite in table['records']) {
+            if (ite == record) {
               y++
             }
           }
@@ -271,18 +268,18 @@ export default {
       }
       //字段名部分
       y = 0
-      for(let item in jsonData[0]){
+      for (let item in jsonData[0]) {
         //id转换name，先找到表
         var table = {}
-        for(let ite in tableData){
-          if(item == ite){
+        for (let ite in tableData) {
+          if (item == ite) {
             table = tableData[ite]
             break;
           }
         }
-        for(let record in jsonData[0][item]){
-          for(let ite in table['records']){
-            if(ite == record){
+        for (let record in jsonData[0][item]) {
+          for (let ite in table['records']) {
+            if (ite == record) {
               xlsheet.Cells(2, y + 1).value = table['records'][ite].name
               y++
             }
@@ -290,11 +287,11 @@ export default {
         }
       }
       //数据部分
-      for(let i = 0; i < jsonData.length; i++ ){
+      for (let i = 0; i < jsonData.length; i++) {
         y = 0
-        for(let item in jsonData[i]){
-          for(let record in jsonData[i][item]){
-            xlsheet.Cells(i+3, y+1).value = '\t' + jsonData[i][item][record]
+        for (let item in jsonData[i]) {
+          for (let record in jsonData[i][item]) {
+            xlsheet.Cells(i + 3, y + 1).value = '\t' + jsonData[i][item][record]
             y++
           }
         }
@@ -312,22 +309,21 @@ export default {
         return 'Firefox'
       }
       //Chrome
-      else if(explorer.indexOf("Chrome") >= 0){
+      else if (explorer.indexOf("Chrome") >= 0) {
         return 'Chrome'
       }
       //Opera
-      else if(explorer.indexOf("Opera") >= 0){
+      else if (explorer.indexOf("Opera") >= 0) {
         return 'Opera'
       }
       //Safari
-      else if(explorer.indexOf("Safari") >= 0){
+      else if (explorer.indexOf("Safari") >= 0) {
         return 'Safari'
       }
     }
   }
 }
 </script>
-
 <style>
 #container-list .container-card {
   display: table;
@@ -355,9 +351,12 @@ export default {
   text-align: center;
   padding-top: 5px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-list .table-cell:hover {
@@ -381,7 +380,8 @@ export default {
   float: left;
 }
 
-#container-list hr, #button-download {
+#container-list hr,
+#button-download {
   clear: both;
 }
 </style>

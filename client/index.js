@@ -92,16 +92,19 @@ const app = new Vue({
   store: store,
   beforeMount: function() {
     this.$store.dispatch('GET', {
-      url: 'users/session'
+      url: '/users/session'
     }).then((res) => {
       app.$store.commit('updateUserStatus', res.body.content.userType)
       app.$store.commit('updateUserInfo', res.body.content)
     }).then(() => {
+      //防止回到登陆页面
+      if (app.$route.path == '/login') {
+        app.$router.replace({ name: 'main'})
+      }
       //显示用户信息
       $('#info-account').text(this.$store.getters.getUserAccount)
-      //console.log(this.$route)
     }).catch((res) => {
-      if (res.status === 441){
+      if (res.status === 441 || res.status === 440){
         app.$router.replace({ name: 'login' })
       }
     })
@@ -113,10 +116,12 @@ const app = new Vue({
 }).$mount('#app')
 
 /*
-不加这个的话，如果已经登陆，再把当前的路径改为'http://localhost:3000/#/'
+不加这个的话，如果已经登陆，再把当前的路径改为'http://localhost:3000/'
 还是会跳到登陆页面，所以我用了 APP.vue 的beforemount 方法，每次这么做，
 先检查
-*/
+
+//更新，现在不需要这个守卫，只需要在beforemount加入判断是否跳入login页面即可，因为跳转到login只能通过地址栏输入，相当于重新加载
+
 router.beforeEach(function(to, from, next){
   app.$store.dispatch('GET', {
     url: 'users/session'
@@ -131,10 +136,11 @@ router.beforeEach(function(to, from, next){
       })
     }
   }).catch((res) => {
-    if (res.status === 441){
+    if (res.status === 441 || res.status === 440){
       app.$router.replace({ name: 'login' })
     }
   })
 
   next()
 })
+*/
