@@ -27,6 +27,7 @@ var sessConfig = require('./config/config.js');
 var studentsRouter = require('./routes/studentsRoutes.js');
 var userRouter_b = require('./routes/users.js').beforeLogin;
 var userRouter_a = require('./routes/users.js').afterLogin;
+var noticeRouter = require('./routes/notice.js')
 
 /**
  * webpack配置
@@ -81,7 +82,10 @@ app.use((req, res, next) => {
 
 app.use('/students', studentsRouter);
 app.use('/users', userRouter_a);
+app.use('/notice',noticeRouter);
 
+
+module.exports = app;
 /*
 // error handler
 app.use(function(err, req, res, next) {
@@ -89,5 +93,3 @@ app.use(function(err, req, res, next) {
   next()
 });
 */
-
-module.exports = app;
