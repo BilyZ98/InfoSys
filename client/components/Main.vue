@@ -33,8 +33,6 @@
         <span>内容：</span>
         <textarea id="new-notice-content"></textarea>
       </div>
-      <div class="container-new-notice-text">老师：<span id="new-notice-teacher">王老师</span></div>
-      <div class="container-new-notice-text">时间：<span id="new-notice-time">2018-09-01</span></div>
       <button class="button-new-notice" @click="newNotice">新建</button>
       <button class="button-close-new-notice" @click="newNoticeCloseClick">关闭</button>
     </div>
@@ -46,37 +44,7 @@
 export default {
   data: function(){
     return {
-      notices: [{
-        id: 1,
-        title: 'titleeeeeeeeeeeeeeeeeeeeeeeeeee1',
-        teacher: '王老师',
-        time: '2018-08-30'
-      }, {
-        id: 2,
-        title: 'title2',
-        teacher: '王老师',
-        time: '2018-08-31'
-      }, {
-        id: 3,
-        title: 'title3',
-        teacher: '王老师',
-        time: '2018-09-30'
-      },{
-        id: 1,
-        title: 'title1',
-        teacher: '王老师',
-        time: '2018-08-30'
-      }, {
-        id: 2,
-        title: 'title2',
-        teacher: '王老师',
-        time: '2018-08-31'
-      }, {
-        id: 3,
-        title: 'title3',
-        teacher: '王老师',
-        time: '2018-09-30'
-      }]
+      notices: []
     }
   },
   mounted: function(){
@@ -91,6 +59,27 @@ export default {
       hourStr = '晚上好!'
     }
     //$('#text-greeting').text(hourStr)
+    //获取公告
+    var _self = this
+    $.ajax({
+      type: 'GET',
+      url: '/notice/getNotice',
+      timeout: 5000,
+      success: function(result, xhr) {
+        for (let key in result) {
+          if (key == 'content') {
+            console.log(result[key])
+            _self.notices = result[key]
+          } else if (key == 'err') {
+            alert('请求公告信息错误: ' + result[key]['sqlMessage'])
+          }
+        }
+      },
+      error: function(result, xhr) {
+        //连接错误
+        alert('服务器连接错误: ' + xhr)
+      }
+    })
   },
   methods: {
     noticeClick: function(id) {
@@ -98,19 +87,6 @@ export default {
     },
     newNoticeClick: function(){
       $('#popup-new-notice').show()
-      //获取当前时间
-      var date = new Date()
-      var year = date.getFullYear()
-      var month = date.getMonth() + 1
-      var day = date.getDate()
-      if (month < 10) {
-          month = "0" + month
-      }
-      if (day < 10) {
-          day = "0" + day
-      }
-      var nowDate = year + "-" + month + "-" + day
-      $('#new-notice-time').text(nowDate)
     },
     newNoticeCloseClick: function() {
       $('#popup-new-notice').hide()
@@ -124,14 +100,36 @@ export default {
         return
       } else {
         var data = {
-          id: '???',
           title: $('#new-notice-title').val(),
           content: $('#new-notice-content').val(),
-          teacher: $('#new-notice-teacher').text(),
-          time: $('#new-notice-time').text()
         }
         var postData = JSON.stringify(data)
         console.log(postData)
+        var _self = this
+        $.ajax({
+          type: 'POST',
+          url: '/notice/addNotice',
+          data: postData,
+          contentType: 'application/json;charset=utf-8',
+          dataType: 'json',
+          timeout: 5000,
+          success: function(result, xhr) {
+            for (let key in result) {
+              if (key == 'content') {
+                _self.notices.push(data)
+              } else if (key == 'err') {
+                console.log(result[key])
+                alert('添加公告错误: ' + result[key])
+              }
+            }
+          },
+          error: function(result, xhr) {
+            console.log(result)
+            if (result.status == 441) {
+              alert("服务器连接错误")
+            }
+          }
+        })
       }
     }
   }
@@ -258,9 +256,8 @@ export default {
   background-color: white;
   margin-top: 30px;
   margin-left: calc(50% - 350px);
-  padding: 30px;
+  padding: 40px;
   width: 700px;
-  height: 600px;
   text-align: left;
   /*radius*/
   border-radius: 3px;

@@ -34,7 +34,7 @@
             </tr>
           </table>
           <!--空-->
-          <div v-else>---</div>
+          <div v-else class="table-empty">---</div>
         </div>
       </div>
     </div>
@@ -47,6 +47,7 @@
 
 <script>
 import tableData from './javascripts/tableData.js'
+import formatCheck from './javascripts/formatCheck.js'
 /*
 import html2canvas from './javascripts/js/html2canvas.js'
 import jsPDF from './javascripts/js/jspdf.debug.js'
@@ -99,6 +100,7 @@ export default {
       }
     })
   },
+  //隐藏侧边栏和顶部栏
   mounted: function() {
     $(".app-bar-display").attr("class", "app-bar-hide")
     $(".container-info-display").attr("class", "container-info-all")
@@ -130,44 +132,63 @@ export default {
         $('#info-update').attr('button-type', 'end')
         $('.record-changable').each(function() {
           $(this).attr('disabled', false)
-          //$(this).css('border', '1px solid')
+          $(this).css('border-bottom', '1px solid rgb(180, 180, 180)')
         })
       } else if ($('#info-update').attr('button-type') == 'end') {
         //修改完成进行上传
         $('.record-changable').each(function() {
           $(this).attr('disabled', true)
-          //$(this).css('border', 'none')
+          $(this).css('border', 'none')
         })
         $('#info-update').text('修改')
         $('#info-update').attr('button-type', 'begin')
-        //处理数据变化
+        //处理数据变化并验证格式
         var data = {}
+        var message = ''
         for (let table in this.student) {
           for (let i = 0; i < this.student[table].length; i++) {
             let tableArr = this.student[table][i]
             for (let record in tableArr) {
               if (tableArr[record] != this.studentBackup[table][i][record]) {
-                //console.log(record + ': ' + tableArr[record])
-                if (data[table] == undefined) {
-                  data[table] = { primary: {}, new: {} }
-                  //把这个表的主键写入
-                  for (let recordInOld in tableData[table]['records']) {
-                    if (tableData[table]['records'][recordInOld]['isPrimary']) {
-                      data[table]['primary'][recordInOld] = this.studentBackup[table][i][recordInOld]
+                //检查格式，只检查更改了的字段
+                if(!formatCheck[table][record]['canNull'] && tableArr[record] == ''){
+                  //检查不能为空的字段是否为空
+                  message = message + tableData[table]['name'] + tableData[table]['records'][record]['name'] + '不能为空\n'
+                } else if(tableArr[record] != '' && tableArr[record].length > 30){
+                  //检查字段是否过长
+                  message = message + tableData[table]['name'] + tableData[table]['records'][record]['name'] + '长度不能超过30个字符\n'
+                } else if(tableArr[record] != '' && formatCheck[table][record]['reg']!= null && !formatCheck[table][record]['reg'].test(tableArr[record] )) {
+                  //检查格式合法性
+                  message = message + tableData[table]['name'] + formatCheck[table][record]['msg'] + '\n'
+                } else {
+                  //格式验证通过，添加更改字段
+                  if (data[table] == undefined) {
+                    data[table] = { primary: {}, new: {} }
+                    //把这个表的主键写入
+                    for (let recordInOld in tableData[table]['records']) {
+                      if (tableData[table]['records'][recordInOld]['isPrimary']) {
+                        data[table]['primary'][recordInOld] = this.studentBackup[table][i][recordInOld]
+                      }
                     }
                   }
+                  data[table]['new'][record] = tableArr[record]
                 }
-                data[table]['new'][record] = tableArr[record]
               }
             }
           }
+        }
+        if (message != '') {
+          alert('更新数据失败！\n' + message)
+          //还原数据
+          this.student = JSON.parse(JSON.stringify(this.studentBackup))
+          return
         }
         var postData = JSON.stringify(data)
         if (postData == JSON.stringify({})) {
           alert('没有修改任何数据哦')
           return
         }
-        //console.log(postData)
+        console.log(postData)
         var _self = this
         $.ajax({
           type: 'POST',
@@ -282,6 +303,8 @@ export default {
 #container-detail .record-changable {
   border: none;
   background-color: white;
+  margin-left: 5px;
+  padding-left: 3px;
 }
 
 #container-detail table {
@@ -309,6 +332,10 @@ export default {
   /* Firefox */
   -webkit-appearance: none;
   /* Safari 和 Chrome */
+}
+
+#container-detail .table-empty {
+  margin-left: 20px;
 }
 
 /**
