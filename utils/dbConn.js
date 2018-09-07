@@ -23,7 +23,8 @@ var pool = mysql.createPool({
   password:'sysu_sdcs_123',
   database:'InfoSys',
   port:'3307',
-  multipleStatements: true
+  multipleStatements: true,
+  dateStrings: true //use this for return bejing time
 })
 
 const getConnection = ()=> {
