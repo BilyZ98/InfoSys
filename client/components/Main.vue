@@ -11,15 +11,33 @@
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
     <div class="notice-list">
-      <div class="notice" v-for="notice in notices" @click="noticeClick(notice.id)">
+      <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
-        <span class="notice-time">{{notice.time}}</span>
-        <span class="notice-teacher">{{notice.teacher}}</span>
+        <span class="notice-time">{{notice.expireTime}}</span>
+        <span class="notice-teacher">{{notice.account}}</span>
       </div>
     </div>
     <button id="button-new-notice" @click="newNoticeClick">新建公告</button>
   </div>
-
+  <!--公告详情-->
+  <div id="popup-detail-notice" class="popup-background">
+    <!-- 弹窗内容 -->
+    <div class="content-detail-notice">
+      <div class="detail-notice-header">公告详情</div>
+      <div class="container-detail-notice-text">
+        <span class="notice-detail-name">标题：</span>
+        <span id="detail-notice-title"></span>
+      </div>
+      <div class="container-detail-notice-text">
+        <span class="notice-detail-name">内容：</span>
+        <span id="detail-notice-content"></span>
+      </div>
+      <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
+      <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
+      <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
+      <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
+    </div>
+  </div>
   <!-- 弹窗 -->
   <div id="popup-new-notice" class="popup-background">
     <!-- 弹窗内容 -->
@@ -59,31 +77,42 @@ export default {
       hourStr = '晚上好!'
     }
     //$('#text-greeting').text(hourStr)
-    //获取公告
-    var _self = this
-    $.ajax({
-      type: 'GET',
-      url: '/notice/getNotice',
-      timeout: 5000,
-      success: function(result, xhr) {
-        for (let key in result) {
-          if (key == 'content') {
-            console.log(result[key])
-            _self.notices = result[key]
-          } else if (key == 'err') {
-            alert('请求公告信息错误: ' + result[key]['sqlMessage'])
-          }
-        }
-      },
-      error: function(result, xhr) {
-        //连接错误
-        alert('服务器连接错误: ' + xhr)
-      }
-    })
+    this.getNotices()
   },
   methods: {
-    noticeClick: function(id) {
-      //alert(id)
+    getNotices: function() {
+      //获取公告
+      var _self = this
+      $.ajax({
+        type: 'GET',
+        url: '/notice/getNotice',
+        timeout: 5000,
+        success: function(result, xhr) {
+          for (let key in result) {
+            if (key == 'content') {
+              console.log(result[key])
+              _self.notices = result[key]
+            } else if (key == 'err') {
+              alert('请求公告信息错误: ' + result[key]['sqlMessage'])
+            }
+          }
+        },
+        error: function(result, xhr) {
+          //连接错误
+          alert('服务器连接错误: ' + xhr)
+        }
+      })
+    },
+    noticeClick: function(notice) {
+      $('#popup-detail-notice').show()
+      $('#detail-notice-title').text(notice.title)
+      $('#detail-notice-content').text(notice.content)
+      $('#detail-notice-teacher').text(notice.account)
+      $('#detail-notice-createTime').text(notice.createTime)
+      $('#detail-notice-expireTime').text(notice.expireTime)
+    },
+    detailNoticeCloseClick: function(){
+      $('#popup-detail-notice').hide()
     },
     newNoticeClick: function(){
       $('#popup-new-notice').show()
@@ -116,7 +145,7 @@ export default {
           success: function(result, xhr) {
             for (let key in result) {
               if (key == 'content') {
-                _self.notices.push(data)
+                _self.getNotices()
               } else if (key == 'err') {
                 console.log(result[key])
                 alert('添加公告错误: ' + result[key])
@@ -130,6 +159,7 @@ export default {
             }
           }
         })
+        _self.newNoticeCloseClick()
       }
     }
   }
@@ -200,6 +230,7 @@ export default {
 
 #container-home .notice:hover {
   background-color: var(--grey-hover);
+  cursor: pointer;
 }
 
 #container-home .notice-teacher {
@@ -251,7 +282,77 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-/* 新建公告 */
+/*公告详情弹窗*/
+
+#container-home .content-detail-notice {
+  background-color: white;
+  margin-top: 30px;
+  margin-left: calc(50% - 350px);
+  padding: 40px;
+  width: 700px;
+  text-align: left;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px var(--grey-shadow);
+}
+
+#container-home .detail-notice-header {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+}
+
+#container-home .container-detail-notice-text {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+#container-home .notice-detail-name{
+  display: inline-block;
+  vertical-align: top;
+  width: 80px;
+  text-align: right;
+  font-weight: bold;
+}
+
+#container-home #detail-notice-title {
+  width: 500px;
+}
+
+#container-home #detail-notice-content {
+  display: inline-block;
+  width: 500px;
+  height: 200px;
+}
+
+#container-home .button-close-detail-notice {
+  display: inline-block;
+  width: 100px;
+  height: 30px;
+  font-size: 16px;
+  margin-top: 20px;
+  text-align: center;
+  color: white;
+  background-color: var(--blue);
+  border: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
+
+#container-home .button-close-detail-notice {
+  margin-left: 260px;
+}
+
+#container-home .button-close-detail-notice:hover {
+  background-color: var(--blue-hover);
+  cursor: pointer;
+}
+
+/*新建公告弹窗*/
+
 #container-home .content-new-notice {
   background-color: white;
   margin-top: 30px;
@@ -286,7 +387,7 @@ export default {
 
 #container-home #new-notice-content {
   width: 500px;
-  height: 300px;
+  height: 200px;
 }
 
 #container-home .button-new-notice, #container-home .button-close-new-notice {
