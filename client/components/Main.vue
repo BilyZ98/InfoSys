@@ -14,7 +14,7 @@
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
         <span class="notice-time">{{notice.expireTime}}</span>
-        <span class="notice-teacher">{{notice.account}}</span>
+        <span class="notice-teacher">{{notice.teacher}}</span>
       </div>
     </div>
     <button id="button-new-notice" @click="newNoticeClick">新建公告</button>
@@ -35,6 +35,7 @@
       <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
+      <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button>
       <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
     </div>
   </div>
@@ -76,7 +77,6 @@ export default {
     } else {
       hourStr = '晚上好!'
     }
-    //$('#text-greeting').text(hourStr)
     this.getNotices()
   },
   methods: {
@@ -98,8 +98,10 @@ export default {
           }
         },
         error: function(result, xhr) {
-          //连接错误
-          alert('服务器连接错误: ' + xhr)
+          //连接错误,440是未登录造成的，页面在这个函数执行之后会自动处理
+          if(result.status != 440){
+            alert('服务器连接错误: ' + xhr)
+          }
         }
       })
     },
@@ -110,6 +112,9 @@ export default {
       $('#detail-notice-teacher').text(notice.account)
       $('#detail-notice-createTime').text(notice.createTime)
       $('#detail-notice-expireTime').text(notice.expireTime)
+    },
+    detailNoticeDeleteClick: function(){
+      console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
     },
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()
@@ -326,7 +331,8 @@ export default {
   height: 200px;
 }
 
-#container-home .button-close-detail-notice {
+
+#container-home .button-delete-detail-notice, #container-home .button-close-detail-notice {
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -342,8 +348,17 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
+#container-home .button-delete-detail-notice {
+  margin-left: 215px;
+}
+
+#container-home .button-delete-detail-notice:hover {
+  background-color: var(--blue-hover);
+  cursor: pointer;
+}
+
 #container-home .button-close-detail-notice {
-  margin-left: 260px;
+  margin-left: 10px;
 }
 
 #container-home .button-close-detail-notice:hover {

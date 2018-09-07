@@ -81,10 +81,10 @@ export default {
           success: function(result, xhr) {
             for (let key in result) {
               if (key == 'content') {
+                _self.$store.commit('updateUserStatus', '')
+                _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
-                _self.$router.push({
-                  name: 'main'
-                })
+                  _self.$router.push({ name: 'main' })
               } else if (key == 'err') {
                 alert("服务器错误")
               }

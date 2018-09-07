@@ -130,7 +130,7 @@ export default {
 
 #container-insert-award .container-record select, #container-insert-award .container-record input {
   margin-left: 10px;
-  width: 400px;
+  width: 250px;
   height: 30px;
   padding: 5px;
 }

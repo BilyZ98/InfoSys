@@ -130,7 +130,7 @@ export default {
 
 #container-insert-paper .container-record select, #container-insert-paper .container-record input {
   margin-left: 10px;
-  width: 400px;
+  width: 250px;
   height: 30px;
   padding: 5px;
 }
