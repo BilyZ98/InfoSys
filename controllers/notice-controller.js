@@ -13,9 +13,8 @@ data format
 }
 */
 exports.addNotice = (req,res,next) =>{
-
   let user = req.body
-  user.id = req.session.account
+  user.account = req.session.user.account
   user.createTime = moment().format('YYYY-MM-DD')
   user.expireTime = moment().add(2,'year').format('YYYY-MM-DD')  //公告有效时间2年
   noticeModel.addNotice(user)
@@ -23,6 +22,7 @@ exports.addNotice = (req,res,next) =>{
       resBody.success(res,'发布公告成功')
     })
     .catch((err)=>{
+      console.log(err)
       resBody.error(res,"发布失败")
     })
 }
