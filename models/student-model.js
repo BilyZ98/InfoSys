@@ -1,7 +1,7 @@
 
-const Promise = require('bluebird');
+
 const {queryDB} = require('../utils/dbConn');
-const resBody = require('../utils/resBody.js');
+
 
 
 //这个是最开始的测试用
@@ -257,17 +257,17 @@ exports.query = (data) => {
   }
   */
   //迭代---> 支持等值，模糊，范围查询，所以要从三个子json里面拿表
-  for(devide in whereObj){
-    for(table in whereObj[devide]){
+  for(let devide in whereObj){
+    for(let table in whereObj[devide]){
       fromSet.add(table)
     }
   }
-  for(table in selectObj){
+  for(let table in selectObj){
     fromSet.add(selectObj[table]);
   }
 
 
-  for(table in selectObj){
+  for(let table in selectObj){
 
     query+=selectObj[table] + '.*,';
   }
