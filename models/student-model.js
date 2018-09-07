@@ -74,7 +74,7 @@ exports.insertOne = (table,field, oneRecord) =>{
       query+=',?'
     }
   }
-  query+=')? ;'
+  query+=') ;'
   console.log(query)
   let values = oneRecord
 

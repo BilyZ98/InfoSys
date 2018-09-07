@@ -12,11 +12,11 @@
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
 							<span class="record-name">{{record.name}}:</span>
-							<select v-bind:style="{width: 40 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+							<select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 								<option></option>
         				<option v-for="option in record.options">{{option}}</option>
         			</select>
-							<input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+							<input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 							<input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
 						</span>
             </div>
@@ -28,7 +28,7 @@
             </tr>
             <tr v-for="tableArr in student[table.id]">
               <td v-for="record in table.records">
-                <input v-bind:style="{width: 20 + tableArr[record.id].length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
+                <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
                 <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
               </td>
             </tr>
@@ -303,12 +303,12 @@ export default {
 #container-detail .record-changable {
   border: none;
   background-color: white;
-  margin-left: 5px;
-  padding-left: 3px;
+  margin-left: 2px;
+  padding-left: 2px;
 }
 
 #container-detail table {
-  margin: 15px 25px 15px 25px;
+  margin: 10px 25px 10px 25px;
   border-color: var(--grey-shadow);
   min-width: 96%;
   font-size: 15px;
@@ -323,7 +323,7 @@ export default {
 }
 
 #container-detail th, #container-detail td {
-  padding: 4px 8px 4px 10px;
+  padding: 3px 6px 3px 8px;
 }
 
 #container-detail select {

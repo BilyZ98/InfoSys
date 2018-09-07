@@ -159,9 +159,9 @@ export default {
 	        course['range']['courseGrade'] = rangeVal
 	      }
 	      //range value
-	      rangeVal = {min: $('#course-gpa .min').val(), max: $('#course-gpa .max').val()}
+	      rangeVal = {min: $('#course-GPA .min').val(), max: $('#course-GPA .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        course['range']['gpa'] = rangeVal
+	        course['range']['GPA'] = rangeVal
 	      }
 	      if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
 	      if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()

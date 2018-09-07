@@ -67,7 +67,7 @@ export default {
     courseHour: { canNull: false, reg: null, msg: '' },
     credit: { canNull: false, reg: null, msg: '' },
     courseGrade: { canNull: false, reg: null, msg: '' },
-    gpa: { canNull: false, reg: null, msg: '' },
+    GPA: { canNull: false, reg: null, msg: '' },
     isPass: { canNull: false, reg: null, msg: '' },
     rebuild: { canNull: false, reg: null, msg: '' },
     backup: { canNull: false, reg: null, msg: '' }
