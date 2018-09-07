@@ -1,4 +1,5 @@
 import tableData from './tableData.js'
+import formatCheck from './formatCheck.js'
 
 export default {
   //这里直接调用上面写好的函数，发送的json的table的值是给input的id
@@ -68,7 +69,8 @@ export default {
       temp2.push(temp[i].substr(1) + "}");
       temp2[i] = JSON.parse(temp2[i]);
     }
-    //parse recordName to recordId
+    //parse recordName to recordId, format check
+    var message = ''
     var records = []
     for (let ite in tableData) {
       if (id == ite) {
@@ -89,10 +91,17 @@ export default {
       for (let item in temp2[i]) {
         for (let ite in records) {
           if (item == records[ite].name) {
+            if(formatCheck[id][ite]['reg']!=null && !formatCheck[id][ite]['reg'].test(temp2[i][item])){
+              message = message + formatCheck[id][ite]['msg'] + '\n'
+            }
             batchInfo[i].push(temp2[i][item])
           }
         }
       }
+    }
+    if(message != ''){
+      alert('导入失败!\n' + message)
+      return
     }
     var alldata = JSON.stringify({
       'table': id,
@@ -100,8 +109,8 @@ export default {
       'batchInfo': batchInfo
     });
     //下面那条语句把从文件中读取的json显示到前端的demo中
-    console.log(alldata)
-    //上面是验证并生成json数据，下面是发送数据。暂时注释
+    //console.log(alldata)
+    //上面是验证并生成json数据，下面是发送数据
     $.ajax({
       type: 'POST',
       url: '/students/import',

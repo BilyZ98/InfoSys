@@ -50,10 +50,10 @@ export default {
     isFee: { canNull: false, reg: null, msg: '' },
     isArrive: { canNull: false, reg: null, msg: '' },
     isRollChanged: { canNull: false, reg: null, msg: '' },
-    changeTime: { canNull: false, reg: null, msg: '' },
-    changeClass: { canNull: false, reg: null, msg: '' },
-    changeReason: { canNull: false, reg: null, msg: '' },
-    changeSchoolPage: { canNull: false, reg: null, msg: '' }
+    changeTime: { canNull: true, reg: null, msg: '' },
+    changeClass: { canNull: true, reg: null, msg: '' },
+    changeReason: { canNull: true, reg: null, msg: '' },
+    changeSchoolPage: { canNull: true, reg: null, msg: '' }
   },
   course: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
