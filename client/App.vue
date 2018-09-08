@@ -8,7 +8,7 @@
     <aside class="app-bar-display">
       <div class="info-side">
         <label id="info-account"></label>
-        <p>数据科学与计算机学</p>
+        <p>数据科学与计算机学院</p>
       </div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
@@ -201,6 +201,7 @@ header {
 .button-home:hover {
   background-color: var(--blue-hover);
   cursor: pointer;
+  border-radius: 5px;
 }
 
 .button-icon {
@@ -273,10 +274,14 @@ aside {
 .button-side:hover {
   background-color: var(--grey-hover);
   cursor: pointer;
+  transform: translate(0, -3px);
+  box-shadow: 0 2px 3px var(--grey-shadow);
 }
 
 .button-clicked {
   background-color: var(--grey-hover);
+  transform: translate(0, -3px);
+  box-shadow: 0 2px 3px var(--grey-shadow);
 }
 
 .container-info-display {

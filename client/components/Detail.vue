@@ -48,12 +48,12 @@
 <script>
 import tableData from './javascripts/tableData.js'
 import formatCheck from './javascripts/formatCheck.js'
-/*
+
 import html2canvas from './javascripts/js/html2canvas.js'
 import jsPDF from './javascripts/js/jspdf.debug.js'
 import renderPDF from './javascripts/js/renderPDF.js'
 import downLoad from './javascripts/js/paper_download.js'
-*/
+
 
 export default {
   data: function() {

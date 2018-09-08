@@ -14,7 +14,7 @@
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
         <span class="notice-time">{{notice.expireTime}}</span>
-        <span class="notice-teacher">{{notice.teacher}}</span>
+        <span class="notice-teacher">{{notice.account}}</span>
       </div>
     </div>
     <button id="button-new-notice" @click="newNoticeClick">新建公告</button>
@@ -236,6 +236,7 @@ export default {
 #container-home .notice:hover {
   background-color: var(--grey-hover);
   cursor: pointer;
+  border-radius: 3px;
 }
 
 #container-home .notice-teacher {
@@ -264,6 +265,8 @@ export default {
 
 #container-home #button-new-notice:hover {
   background-color: var(--blue-hover);
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
 }
 
 /* 弹窗 (background) */
