@@ -8,7 +8,7 @@
     <aside class="app-bar-display">
       <div class="info-side">
         <label id="info-account"></label>
-        <p>数据科学与计算机学院</p>
+        <p>数据科学与计算机学</p>
       </div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>

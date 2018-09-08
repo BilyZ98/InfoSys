@@ -30,7 +30,8 @@ var userRouter_a = require('./routes/users.js').afterLogin;
 var noticeRouter = require('./routes/notice.js')
 
 /**
- * webpack配置
+ * webpack热加载模块，开发时使用，在发布的项目中不需要此中间件
+ * 热打包只在内存中存储，build打包才会在在dist文件夹下生成
  */
 
 const compiler = webpack(config);

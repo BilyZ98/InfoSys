@@ -1,11 +1,12 @@
 var path = require('path')
 var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   //entry: path.join(__dirname, './client/index.js'),
   entry: ['babel-polyfill','./client/index.js'],
   output: {
-    path: path.join(__dirname, './dist'),
+    path: path.join(__dirname, './public/dist'),
     publicPath: '/dist/',
     filename: 'build.js'
   },
@@ -49,6 +50,8 @@ module.exports = {
         jQuery: "jquery",
         jquery: 'jquery'
     })
+    //自动在打包后的/dist目录下生成index.html入口文件，但是cdn引入的js都没有，不好
+    //new HtmlWebpackPlugin()
   ],
   resolve: {
   alias: {
