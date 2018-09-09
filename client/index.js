@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import $ from 'jquery'
 import store from './store/store'
+import htmlToPDF from './components/javascripts/htmlToPDF'
 
 //.vue components
 import App from './App.vue'
@@ -38,9 +39,11 @@ import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
 import CadreInsert from './components/inserts/CadreInsert.vue'
 import AwardInsert from './components/inserts/AwardInsert.vue'
 
+
 Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)
+Vue.use(htmlToPDF)
 
 const router = new VueRouter({
   //使用路由的history模式，url栏没有#

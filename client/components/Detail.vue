@@ -1,6 +1,6 @@
 <template>
   <div id="container-detail">
-    <div class="container">
+    <div class="container" id="pdfDom">
       <h3 class="text-center heading">学生信息</h3>
       <div class="info col-md-12">
         <!--以表循环-->
@@ -11,14 +11,14 @@
           <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
-							<span class="record-name">{{record.name}}:</span>
-							<select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-								<option></option>
-        				<option v-for="option in record.options">{{option}}</option>
-        			</select>
-							<input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-							<input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-						</span>
+              <span class="record-name">{{record.name}}:</span>
+              <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <option></option>
+                <option v-for="option in record.options">{{option}}</option>
+              </select>
+              <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+              <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+              </span>
             </div>
           </div>
           <!--一个人有多条数据的表-->
@@ -40,20 +40,13 @@
     </div>
     <div class="btn-show">
       <button class="btn btn-info btn-sm" id="info-update" button-type="begin" @click="updateClick">修改</button>
-      <button class="btn btn-info btn-sm" id="info-print" @click="printClick">导出PDF</button>
+      <button class="btn btn-info btn-sm" id="info-print" @click="getPDF()">导出PDF</button>
     </div>
   </div>
 </template>
-
 <script>
 import tableData from './javascripts/tableData.js'
 import formatCheck from './javascripts/formatCheck.js'
-
-import html2canvas from './javascripts/js/html2canvas.js'
-import jsPDF from './javascripts/js/jspdf.debug.js'
-import renderPDF from './javascripts/js/renderPDF.js'
-import downLoad from './javascripts/js/paper_download.js'
-
 
 export default {
   data: function() {
@@ -151,13 +144,13 @@ export default {
             for (let record in tableArr) {
               if (tableArr[record] != this.studentBackup[table][i][record]) {
                 //检查格式，只检查更改了的字段
-                if(!formatCheck[table][record]['canNull'] && tableArr[record] == ''){
+                if (!formatCheck[table][record]['canNull'] && tableArr[record] == '') {
                   //检查不能为空的字段是否为空
                   message = message + tableData[table]['name'] + tableData[table]['records'][record]['name'] + '不能为空\n'
-                } else if(tableArr[record] != '' && tableArr[record].length > 30){
+                } else if (tableArr[record] != '' && tableArr[record].length > 30) {
                   //检查字段是否过长
                   message = message + tableData[table]['name'] + tableData[table]['records'][record]['name'] + '长度不能超过30个字符\n'
-                } else if(tableArr[record] != '' && formatCheck[table][record]['reg']!= null && !formatCheck[table][record]['reg'].test(tableArr[record] )) {
+                } else if (tableArr[record] != '' && formatCheck[table][record]['reg'] != null && !formatCheck[table][record]['reg'].test(tableArr[record])) {
                   //检查格式合法性
                   message = message + tableData[table]['name'] + formatCheck[table][record]['msg'] + '\n'
                 } else {
@@ -216,9 +209,6 @@ export default {
           }
         })
       }
-    },
-    printClick: function() {
-      //
     }
   }
 }
@@ -233,7 +223,6 @@ export default {
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
-
 }
 
 #container-detail .container {
@@ -241,10 +230,10 @@ export default {
 }
 
 #container-detail .container .heading {
-	font-size: 30px;
-	letter-spacing: 3px;
-	font-weight: bolder;
-	/*
+  font-size: 30px;
+  letter-spacing: 3px;
+  font-weight: bolder;
+  /*
   border-color: #eee;
   border-width: 1px;
   border-style: solid;
@@ -283,7 +272,7 @@ export default {
 }
 
 #container-detail .record-name {
-	font-weight: 550;
+  font-weight: 550;
 }
 
 #container-detail .clearfix {
@@ -322,7 +311,8 @@ export default {
   font-weight: 550;
 }
 
-#container-detail th, #container-detail td {
+#container-detail th,
+#container-detail td {
   padding: 3px 6px 3px 8px;
 }
 
@@ -337,6 +327,8 @@ export default {
 #container-detail .table-empty {
   margin-left: 20px;
 }
+
+
 
 /**
  * 修改和导出按钮
