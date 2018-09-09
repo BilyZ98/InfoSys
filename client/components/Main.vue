@@ -90,7 +90,7 @@ export default {
         success: function(result, xhr) {
           for (let key in result) {
             if (key == 'content') {
-              console.log(result[key])
+              //console.log(result[key])
               _self.notices = result[key]
             } else if (key == 'err') {
               alert('请求公告信息错误: ' + result[key]['sqlMessage'])

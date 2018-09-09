@@ -48,7 +48,7 @@
 		</table>
 	</div>
 	<!--统计-->
-	<div class="container-card">
+	<div class="container-card-list">
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
@@ -316,19 +316,6 @@ export default {
 #manager-paper .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
-}
-
-#manager-paper .container-card {
-  margin: 25px;
-  padding: 20px;
-  text-align: left;
-  background-color: white;
-  /*radius*/
-  border-radius: 3px;
-  /*shadow*/
-  box-shadow: -1px 1px 5px var(--grey-shadow);
-  /*让float的内部元素可以撑开容器*/
-  overflow: hidden;
 }
 
 #manager-paper .container-record {

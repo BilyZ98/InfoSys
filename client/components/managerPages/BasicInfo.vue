@@ -51,10 +51,9 @@
       </table>
     </div>
     <!--统计-->
-    <div class="container-card">
+    <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
-        <span>{{record.name}}:</span>
-        <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
+        <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
@@ -86,9 +85,9 @@
         <div class="info-cell">
           <span class="i-text">收件人学号：</span>
           <span id="email-sid">
-					<span v-for="sid in emailSid">
-					{{sid}}
-					<span class="email-sid-delete" @click="removeFromEmailSid(sid)">&times;</span>
+          <span v-for="sid in emailSid">
+          {{sid}}
+          <span class="email-sid-delete" @click="removeFromEmailSid(sid)">&times;</span>
           </span>
           <span id="email-sid-add-button" @click="addEmailSid()">添加学号</span>
           <input id="email-sid-add-input" @blur="addEmailSidFinish" @keyup.enter="addEmailSidFinish">
@@ -374,19 +373,34 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
+    //统计
+    statButtonToggle: function(event) {
+      if (event.currentTarget.className == 'stat-checkbox') {
+        event.currentTarget.className = 'stat-checkbox-selected'
+      } else if (event.currentTarget.className == 'stat-checkbox-selected') {
+        event.currentTarget.className = 'stat-checkbox'
+      }
+    },
     statClick: function() {
       var data = {
         table: 'basicInfo',
         fields: [],
         condition: {}
       }
-      $('.stat-checkbox').each(function() {
+      $('.stat-checkbox-selected').each(function() {
+        /*
         if ($(this).prop("checked")) {
           var recordId = $(this).attr('record-id')
           data['fields'].push(recordId)
           if ($('#basicInfo-stat-' + recordId).val() != '') {
             data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
           }
+        }
+        */
+        var recordId = $(this).attr('record-id')
+        data['fields'].push(recordId)
+        if ($('#basicInfo-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
@@ -407,11 +421,11 @@ export default {
             if (key == 'content') {
               //操作成功，配置图表
               /*let statData = [
-						    {gender: '女', major: null, statistic: 2},
-						    {gender: '女', major: 123, statistic: 1},
-						    {gender: '男', major: 123, statistic: 3},
-						    {gender: '男', major: '数学', statistic: 1}
-					    ]*/
+                {gender: '女', major: null, statistic: 2},
+                {gender: '女', major: 123, statistic: 1},
+                {gender: '男', major: 123, statistic: 3},
+                {gender: '男', major: '数学', statistic: 1}
+              ]*/
               console.log(result[key])
               statModule.createCharts('basicInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
@@ -473,19 +487,6 @@ export default {
 #manager-basicInfo .header-button span:hover {
   color: var(--blue);
   cursor: pointer;
-}
-
-#manager-basicInfo .container-card {
-  margin: 25px;
-  padding: 20px;
-  text-align: left;
-  background-color: white;
-  /*radius*/
-  border-radius: 3px;
-  /*shadow*/
-  box-shadow: -1px 1px 5px var(--grey-shadow);
-  /*让float的内部元素可以撑开容器*/
-  overflow: hidden;
 }
 
 #manager-basicInfo .container-record {
@@ -584,6 +585,7 @@ td {
 }
 
 
+
 /* 弹窗 (background) */
 
 #manager-basicInfo .popup-background {
@@ -603,6 +605,7 @@ td {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 
 
 /* 弹窗内容 */
@@ -628,6 +631,7 @@ td {
 }
 
 
+
 /* 关闭按钮 */
 
 #manager-basicInfo #popup-close {
@@ -647,6 +651,7 @@ td {
   text-decoration: none;
   cursor: pointer;
 }
+
 
 
 /*发邮件*/
@@ -769,6 +774,7 @@ td {
 }
 
 
+
 /*统计*/
 
 #manager-basicInfo .stat-record {
@@ -780,13 +786,50 @@ td {
 }
 
 #manager-basicInfo .stat-record .hide-container {
-  height: 22px;
+  height: 23px;
   width: 140px;
 }
 
+
+/*
 #manager-basicInfo .stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
+}
+*/
+
+#manager-basicInfo .stat-checkbox {
+  width: 130px;
+  height: 25px;
+  border: none;
+  background-color: var(--grey-hover);
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
+}
+
+#manager-basicInfo .stat-checkbox:hover {
+  color: white;
+  background-color: var(--blue);
+}
+
+#manager-basicInfo .stat-checkbox-selected {
+  width: 130px;
+  height: 25px;
+  border: none;
+  color: white;
+  background-color: var(--blue);
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #manager-basicInfo .stat-input {

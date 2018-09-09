@@ -160,6 +160,7 @@ body {
   background-color: lighten(#eceef1, 30%);
   color: #34495e;
   */
+  background-color: var(--grey-background);
 }
 
 header {
@@ -286,8 +287,8 @@ aside {
 
 .container-info-display {
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger
-  使用calc可以实现响应式布局*/
-  min-width: calc(100vw - 225px);
+  使用calc可以实现响应式布局, vw计算的是包括滚动条的宽度/高度*/
+  max-width: calc(100vw - 225px);
   min-height: calc(100vh - 60px);
   margin-left: 225px;
   margin-top: 60px;
