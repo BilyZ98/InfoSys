@@ -1,4 +1,6 @@
-//name: 字段中文名, id: 字段英文名, value: 字段初始值, isPrimary: 在数据库中是否为主键, display: 在manager页面是否显示, value: '', valueType: 值的类型
+/**name: 字段中文名, id: 字段英文名,  value: 字段初始值, isPrimary: 在数据库中是否为主键
+ * display: 在manager页面是否显示, detailstat: 是否是可以高级统计的输入值, value: '', valueType: 值的类型
+ */
 export default {
   basicInfo: {
     name: '基本信息',
@@ -81,7 +83,7 @@ export default {
       courseHour: { name: '学时', id: 'courseHour', isPrimary: false, display: true, value: '', valueType: 'input' },
       credit: { name: '学分', id: 'credit', isPrimary: false, display: true, value: '', valueType: 'input' },
       courseGrade: { name: '成绩', id: 'courseGrade', isPrimary: false, display: true, value: '', valueType: 'range' },
-      GPA: { name: '绩点', id: 'GPA', isPrimary: false, display: true, value: '', valueType: 'range' },
+      GPA: { name: '绩点', id: 'GPA', isPrimary: false, display: true, detailstat: true, value: '', valueType: 'range' },
       isPass: { name: '是否已通过', id: 'isPass', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
       rebuild: { name: '重修补考标识', id: 'rebuild', isPrimary: false, display: true, value: '', valueType: 'select', options: ['重修', '补考'] },
       backup: { name: '备注', id: 'backup', isPrimary: false, display: true, value: '', valueType: 'input' }

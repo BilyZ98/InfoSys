@@ -59,7 +59,6 @@
           <option v-for="option in record.options">{{option}}</option>
         </select>
         <input class="hide-container" type="text" v-else v-bind:id="'basicInfo-stat-'+record.id">
-        <span class="stat-nonselect-range" v-bind:id="'basicInfo-stat-range-'+record.id" v-if="record.valueType!='select'" >123456</span>
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
@@ -121,6 +120,8 @@ import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
+import Quill from 'quill'
+import 'quill/dist/quill.snow.css'
 
 var empty = JSON.stringify({ equal: {}, range: {}, fuzzy: {} })
 var emptyCell = JSON.stringify({})
@@ -775,8 +776,6 @@ td {
   background-color: var(--blue-hover);
   cursor: pointer;
 }
-
-
 
 /*统计*/
 
