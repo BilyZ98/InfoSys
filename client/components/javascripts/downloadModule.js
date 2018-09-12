@@ -69,7 +69,7 @@ export default { //导出函数
         var link = document.createElement("a");
         link.href = uri;
         //对下载的文件命名，可以改成其他名字
-        link.download = tableData[tableName]['name'] + "表格模板.csv";
+        link.download = tableData[tableName]['name'] + "表格模板.xls";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

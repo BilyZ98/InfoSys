@@ -426,9 +426,9 @@ exports.statistic = (data) => {
     }
   }
   //handle intervalFields, i represents field in intervalFields
-  for(let i in data['inetrvalFields']){
+  for(let i in data['intervalFields']){
     var tmpQuery = 'elt(interval' + i
-    for(let j in data['inetrvalFields'][i]){
+    for(let j in data['intervalFields'][i]){
       if(j == 0 || j == data['intervalFields'][i].length - 1) continue
       var inter = data['intervalFields'][i][j]
       tmpQuery+= ',' + inter
@@ -446,7 +446,6 @@ exports.statistic = (data) => {
   }
 
   query+=',count(*) as statistic from '+ data['table'] ;
-
   //if hasCondition is null then query doesn't have where
   var hasCondition = true;
   if(JSON.stringify(data['condition']) === '{}') hasCondition=false;

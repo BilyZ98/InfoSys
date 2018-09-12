@@ -60,7 +60,7 @@ export default {
   },
   //send函数的实现
   send: function(id, str) {
-    //console.log(str)
+    console.log(str)
     var field = [];
     var batchInfo = [];
     var temp = str.split('}');
@@ -109,7 +109,7 @@ export default {
       'batchInfo': batchInfo
     });
     //下面那条语句把从文件中读取的json显示到前端的demo中
-    //console.log(alldata)
+    console.log('import datajson: ' + alldata)
     //上面是验证并生成json数据，下面是发送数据
     $.ajax({
       type: 'POST',
