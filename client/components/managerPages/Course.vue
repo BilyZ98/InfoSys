@@ -59,21 +59,20 @@
         </select>
         <input class="hide-container" type="text" v-else v-bind:id="'course-stat-'+record.id">
         <span class="stat-nonselect-range" v-bind:id="'course-stat-range-'+record.id" v-if="record.id=='GPA'">
-        	<div>
-        		统计起点: <input id="stat-nonselect-input-GPA-start">
-        	</div>
-        	<div>
-        		统计终点: <input id="stat-nonselect-input-GPA-end">
-        	</div>
-        	<div>
-	        	统计区间宽度:
-	        	<select id="stat-nonselect-input-GPA-range">
-		          <option>0.01</option>
-		          <option>0.05</option>
-		          <option>0.1</option>
-		          <option>0.5</option>
-		        </select>
-		      </div>
+          <div>
+            统计起点: <input id="stat-nonselect-input-GPA-start">
+          </div>
+          <div>
+            统计终点: <input id="stat-nonselect-input-GPA-end">
+          </div>
+          <div>
+            统计区间宽度:
+            <select id="stat-nonselect-input-GPA-range">
+              <option>0.1</option>
+              <option>0.5</option>
+              <option>1.0</option>
+            </select>
+          </div>
         </span>
       </div>
       <button class="manager-button" @click="statClick">统计</button>
@@ -263,19 +262,37 @@ export default {
         condition: {}
       }
       $('.stat-checkbox-selected').each(function() {
-        /*
-        if ($(this).prop("checked")) {
-          var recordId = $(this).attr('record-id')
-          data['fields'].push(recordId)
+        var recordId = $(this).attr('record-id')
+        data['fields'].push(recordId)
+        //绩点高级查询
+        if (recordId == 'GPA') {
+          var start = $('#stat-nonselect-input-GPA-start').val()
+          var end = $('#stat-nonselect-input-GPA-end').val()
+          var range = parseFloat($('#stat-nonselect-input-GPA-range').val()) * 100
+          if (start != '' && end != '') {
+            if (start < 0 || start > 5 || end < 0 || end > 5 || start >= end) {
+              alert('请正确填写统计绩点的范围！')
+              return
+            }
+            data['inetrvalFields'] = {}
+            data['inetrvalFields']['GPA'] = [parseFloat(start)]
+            for (let i = 0; i < 500; i += range) {
+              if (i > start * 100 && i < end * 100) {
+                data['inetrvalFields']['GPA'].push(i / 100)
+              }
+            }
+            data['inetrvalFields']['GPA'].push(parseFloat(end))
+          } else {
+            //绩点作为筛选条件
+            if ($('#course-stat-' + recordId).val() != '') {
+              data['condition'][recordId] = $('#course-stat-' + recordId).val()
+            }
+          }
+        } else {
+          //除绩点外字段
           if ($('#course-stat-' + recordId).val() != '') {
             data['condition'][recordId] = $('#course-stat-' + recordId).val()
           }
-        }
-        */
-        var recordId = $(this).attr('record-id')
-        data['fields'].push(recordId)
-        if ($('#course-stat-' + recordId).val() != '') {
-          data['condition'][recordId] = $('#course-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
@@ -296,11 +313,11 @@ export default {
             if (key == 'content') {
               //操作成功，配置图表
               /*let statData = [
-						    {gender: '女', major: null, statistic: 2},
-						    {gender: '女', major: 123, statistic: 1},
-						    {gender: '男', major: 123, statistic: 3},
-						    {gender: '男', major: '数学', statistic: 1}
-					    ]*/
+                {gender: '女', major: null, statistic: 2},
+                {gender: '女', major: 123, statistic: 1},
+                {gender: '男', major: 123, statistic: 3},
+                {gender: '男', major: '数学', statistic: 1}
+              ]*/
               console.log(result[key])
               statModule.createCharts('course', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
@@ -461,6 +478,9 @@ td {
 
 
 
+
+
+
 /* 弹窗 (background) */
 
 #manager-course .popup-background {
@@ -478,6 +498,9 @@ td {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
+
+
 
 
 
@@ -505,6 +528,9 @@ td {
 
 
 
+
+
+
 /* 关闭按钮 */
 
 #manager-course #popup-close {
@@ -526,6 +552,9 @@ td {
 }
 
 
+
+
+
 /*统计*/
 
 #manager-course .stat-record {
@@ -540,6 +569,9 @@ td {
   height: 23px;
   width: 140px;
 }
+
+
+
 
 /*
 #manager-course .stat-record input[type="checkbox"] {
