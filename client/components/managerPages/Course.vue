@@ -263,7 +263,6 @@ export default {
       }
       $('.stat-checkbox-selected').each(function() {
         var recordId = $(this).attr('record-id')
-        data['fields'].push(recordId)
         //绩点高级查询
         if (recordId == 'GPA') {
           var start = $('#stat-nonselect-input-GPA-start').val()
@@ -283,6 +282,8 @@ export default {
             }
             data['inetrvalFields']['GPA'].push(parseFloat(end))
           } else {
+            data['fields'].push(recordId)
+
             //绩点作为筛选条件
             if ($('#course-stat-' + recordId).val() != '') {
               data['condition'][recordId] = $('#course-stat-' + recordId).val()
@@ -290,6 +291,7 @@ export default {
           }
         } else {
           //除绩点外字段
+          data['fields'].push(recordId)
           if ($('#course-stat-' + recordId).val() != '') {
             data['condition'][recordId] = $('#course-stat-' + recordId).val()
           }
@@ -481,6 +483,7 @@ td {
 
 
 
+
 /* 弹窗 (background) */
 
 #manager-course .popup-background {
@@ -498,6 +501,7 @@ td {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 
 
 
@@ -531,6 +535,7 @@ td {
 
 
 
+
 /* 关闭按钮 */
 
 #manager-course #popup-close {
@@ -555,6 +560,7 @@ td {
 
 
 
+
 /*统计*/
 
 #manager-course .stat-record {
@@ -569,6 +575,7 @@ td {
   height: 23px;
   width: 140px;
 }
+
 
 
 
