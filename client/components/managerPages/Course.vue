@@ -297,7 +297,7 @@ export default {
           }
         }
       })
-      if (data['fields'].length == 0) {
+      if (data['fields'].length == 0 && data['inetrvalFields'] == undefined) {
         alert('请选择想要统计的字段打勾！')
         return
       }
