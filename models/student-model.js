@@ -4,14 +4,7 @@ const {queryDB} = require('../utils/dbConn');
 
 
 
-//这个是最开始的测试用
-exports.getStudentInfo = async (data)=> {
-  let query =
-  "select * from students where students.sid = ?\n;"
-  let values = [data.sid];
-  //console.log(data.sid);
-  return queryDB(query,values);
-}
+
 
 //批量插入
 /*
@@ -406,11 +399,14 @@ exports.queryAll = (data) => {
 {
 'table':'basicInfo',
 'fields':['grade','major'],
+'inetrvalFields':{
+    'GPA':[0,0.5,1,1.5,2]
+}
 'condition':{
   'grade':'2016'
 }
 }
-现在先做没有condition 的
+
 然后还有奖学金要球平均金额
 */
 exports.statistic = (data) => {
@@ -418,6 +414,7 @@ exports.statistic = (data) => {
   let query = "select ";
   let values = [];
   var tmp = true
+  var secTmp = true  //handle intervalFields
   for(let i in data['fields']){
     console.log(data['fields'][i])
     if(tmp){
@@ -428,8 +425,29 @@ exports.statistic = (data) => {
       query+=',' + data['fields'][i]
     }
   }
+  //handle intervalFields, i represents field in intervalFields
+  for(let i in data['inetrvalFields']){
+    var tmpQuery = 'elt(interval' + i
+    for(let j in data['inetrvalFields'][i]){
+      if(j == 0 || j == data['intervalFields'][i].length - 1) continue
+      var inter = data['intervalFields'][i][j]
+      tmpQuery+= ',' + inter
+    }
+    tmpQuery+=') as ' + i
+    for(let j in data['intervalFields'][i]){
+      if(j == data['intervalFields'][i].length - 1) continue
+      tmpQuery+=',' + data['intervalFields'][i][j].toString()+'-'+ data['intervalFields'][i][j+1].toString()
+    }
+    if(tmp) {
+      query+=tmpQuery
+      tmp = true;
+    }
+    else query+=',' + tmpQuery
+  }
+
   query+=',count(*) as statistic from '+ data['table'] ;
 
+  //if hasCondition is null then query doesn't have where
   var hasCondition = true;
   if(JSON.stringify(data['condition']) === '{}') hasCondition=false;
   if(hasCondition){
@@ -457,6 +475,14 @@ exports.statistic = (data) => {
     else {
       query+=',' + data['fields'][i]
     }
+  }
+  for(let i in data['intervalFields']){
+    var tmpQuery = i
+    if(tmp){
+      query+=tmpQuery
+      tmp= false
+    }
+    else query+=',' + tmpQuery
   }
   query+=';'
   console.log(query)
