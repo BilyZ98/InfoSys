@@ -39,7 +39,7 @@
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
 		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['cadre']['sid']">
-		  	<td>{{index}}</td>
+		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
 		  		<span v-if="student['cadre'][record.id]!=undefined">{{student['cadre'][record.id]}}</span>
 		  		<span v-else>---</span>

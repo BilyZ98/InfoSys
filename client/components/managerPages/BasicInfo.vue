@@ -42,7 +42,7 @@
           <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
         <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
-          <td>{{index}}</td>
+          <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
             <span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
             <span v-else>---</span>
@@ -120,6 +120,8 @@ import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
+import Quill from 'quill'
+import 'quill/dist/quill.snow.css'
 
 var empty = JSON.stringify({ equal: {}, range: {}, fuzzy: {} })
 var emptyCell = JSON.stringify({})
@@ -377,8 +379,10 @@ export default {
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
+        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
       } else if (event.currentTarget.className == 'stat-checkbox-selected') {
         event.currentTarget.className = 'stat-checkbox'
+        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
     },
     statClick: function() {
@@ -773,14 +777,12 @@ td {
   cursor: pointer;
 }
 
-
-
 /*统计*/
 
 #manager-basicInfo .stat-record {
   float: left;
   width: 300px;
-  height: 35px;
+  min-height: 35px;
   text-align: right;
   font-size: 13px;
 }
@@ -803,6 +805,7 @@ td {
   height: 25px;
   border: none;
   background-color: var(--grey-hover);
+  outline: none;
   transition: 0.3s;
   -moz-transition: 0.3s;
   /* Firefox 4 */
@@ -813,8 +816,8 @@ td {
 }
 
 #manager-basicInfo .stat-checkbox:hover {
-  color: white;
-  background-color: var(--blue);
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
 }
 
 #manager-basicInfo .stat-checkbox-selected {
@@ -823,6 +826,8 @@ td {
   border: none;
   color: white;
   background-color: var(--blue);
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
   transition: 0.3s;
   -moz-transition: 0.3s;
   /* Firefox 4 */
@@ -835,6 +840,10 @@ td {
 #manager-basicInfo .stat-input {
   width: 10px;
   height: 10px;
+}
+
+#manager-basicInfo .stat-nonselect-range {
+  display: none;
 }
 
 #manager-basicInfo #stat-chart-bar {
