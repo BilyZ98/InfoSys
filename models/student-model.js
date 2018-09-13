@@ -399,7 +399,7 @@ exports.queryAll = (data) => {
 {
 'table':'basicInfo',
 'fields':['grade','major'],
-'inetrvalFields':{
+'intervalFields':{
     'GPA':[0,0.5,1,1.5,2]
 }
 'condition':{
@@ -427,6 +427,7 @@ exports.statistic = (data) => {
   }
   //handle intervalFields, i represents field in intervalFields
   for(let i in data['intervalFields']){
+    console.log(i)
     var tmpQuery = 'elt(interval' + i
     for(let j in data['intervalFields'][i]){
       if(j == 0 || j == data['intervalFields'][i].length - 1) continue
