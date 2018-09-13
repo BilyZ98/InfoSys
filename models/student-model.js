@@ -437,7 +437,11 @@ exports.statistic = (data) => {
     tmpQuery+=') as ' + i
     for(let j in data['intervalFields'][i]){
       if(j == data['intervalFields'][i].length - 1) continue
-      tmpQuery+=',' + data['intervalFields'][i][j].toString()+'-'+ data['intervalFields'][i][j+1].toString()
+      /*
+      select elt(intervalGPA,0.5,1,1.5,2,2.5,3,3.5,4,4.5) as GPA,0-0.5,0.5-1,1-1.5,1.5-2,2-2.5,2.5-3,3-3.5,3.5-4,4-4.5,4.5-5,count(*) as statistic from course group by GPA;
+      */
+      console.log(parseInt(j)+1)
+      tmpQuery+=',' + data['intervalFields'][i][j]+'-'+ data['intervalFields'][i][parseInt(j)+1]
     }
     if(tmp) {
       query+=tmpQuery

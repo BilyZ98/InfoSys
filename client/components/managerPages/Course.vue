@@ -273,14 +273,14 @@ export default {
               alert('请正确填写统计绩点的范围！')
               return
             }
-            data['inetrvalFields'] = {}
-            data['inetrvalFields']['GPA'] = [parseFloat(start)]
+            data['intervalFields'] = {}
+            data['intervalFields']['GPA'] = [parseFloat(start)]
             for (let i = 0; i < 500; i += range) {
               if (i > start * 100 && i < end * 100) {
-                data['inetrvalFields']['GPA'].push(i / 100)
+                data['intervalFields']['GPA'].push(i / 100)
               }
             }
-            data['inetrvalFields']['GPA'].push(parseFloat(end))
+            data['intervalFields']['GPA'].push(parseFloat(end))
           } else {
             data['fields'].push(recordId)
 
@@ -297,7 +297,7 @@ export default {
           }
         }
       })
-      if (data['fields'].length == 0 && data['inetrvalFields'] == undefined) {
+      if (data['fields'].length == 0 && data['intervalFields'] == undefined) {
         alert('请选择想要统计的字段打勾！')
         return
       }
@@ -484,6 +484,7 @@ td {
 
 
 
+
 /* 弹窗 (background) */
 
 #manager-course .popup-background {
@@ -501,6 +502,7 @@ td {
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
+
 
 
 
@@ -536,6 +538,7 @@ td {
 
 
 
+
 /* 关闭按钮 */
 
 #manager-course #popup-close {
@@ -561,6 +564,7 @@ td {
 
 
 
+
 /*统计*/
 
 #manager-course .stat-record {
@@ -575,6 +579,7 @@ td {
   height: 23px;
   width: 140px;
 }
+
 
 
 
