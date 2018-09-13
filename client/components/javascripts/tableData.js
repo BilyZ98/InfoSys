@@ -107,7 +107,7 @@ export default {
       introducerTime: { name: '确定入党介绍人时间', id: 'introducerTime', isPrimary: false, display: true, value: '', valueType: 'input' },
       introducer: { name: '入党介绍人', id: 'introducer', isPrimary: false, display: true, value: '', valueType: 'input' },
       hasAutobigraphy: { name: '是否有自传', id: 'hasAutobigraphy', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
-      hasApplicatiionForm: { name: '是否有入党志愿书', id: 'hasApplicatiionForm', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
+      hasApplicationForm: { name: '是否有入党志愿书', id: 'hasApplicationForm', isPrimary: false, display: true, value: '', valueType: 'select', options: ['是', '否'] },
       partyBranchTime: { name: '入党支部大会时间', id: 'partyBranchTime', isPrimary: false, display: true, value: '', valueType: 'range' },
       partyTalkTime: { name: '入党谈话时间', id: 'partyTalkTime', isPrimary: false, display: true, value: '', valueType: 'input' },
       partyTalker: { name: '入党谈话人', id: 'partyTalker', isPrimary: false, display: true, value: '', valueType: 'input' },

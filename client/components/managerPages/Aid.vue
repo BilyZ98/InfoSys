@@ -5,15 +5,16 @@
 		<p class="header-text">资助信息管理</p>
 		<div class="header-button">
 			<!--<span @click="insertClick">插入数据</span>-->
-			<span>上传学生照片</span>
-			<span>修改密码</span>
+			<!--<span>上传学生照片</span>-->
+			<!--<span>修改密码</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
-			<span>删除</span>
-			<span>编辑</span>
+			<!--<span>删除</span>
+			<span>编辑</span>-->
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
+			<span @click="sendEmailClick">邮件通知</span>
 		</div>
 	</div>
 	<!--查询输入-->
@@ -74,6 +75,10 @@
 	    </div>
 	  </div>
 	</div>
+	<!-- 发邮件 -->
+	<div id="popup-email" class="popup-background">
+		<email :emailSid="emailSid"></email>
+	</div>
 </div>
 </template>
 
@@ -90,7 +95,8 @@ export default {
 	data: function(){
 		return {
 			table: tableData['aid'],
-			students: []
+			students: [],
+			emailSid: null
 		}
 	},
 	created: function(){
@@ -199,6 +205,16 @@ export default {
 		modalCloseClick: function() {
 			$('#popup-diy').hide()
 		},
+		//发送邮件函数
+    sendEmailClick: function() {
+      $('#popup-email').show()
+      //加载收件人学号
+      this.emailSid = []
+      for (let i = 0; i < this.students.length; i++) {
+        if(this.emailSid.indexOf(this.students[i]['aid']['sid']) == -1)
+          this.emailSid.push(this.students[i]['aid']['sid'])
+      }
+    },
 		studentClick: function(event){
 			//alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
 			//跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
@@ -399,16 +415,21 @@ export default {
 /* 弹窗 (background) */
 
 #manager-aid .popup-background {
-  display: none; /* 默认隐藏 */
-  position: fixed; /* 定位 */
-  z-index: 10; /* 设置在顶层 */
+  display: none;
+  /* 默认隐藏 */
+  position: fixed;
+  /* 定位 */
+  z-index: 10;
+  /* 设置在顶层 */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
+  padding-left: 225px;
+  padding-top: 60px;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 /* 弹窗内容 */

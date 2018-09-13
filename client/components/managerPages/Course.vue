@@ -5,15 +5,12 @@
       <p class="header-text">课程成绩管理</p>
       <div class="header-button">
         <!--<span @click="insertClick">插入数据</span>-->
-        <span>上传学生照片</span>
-        <span>修改密码</span>
         <span @click="downloadClick">导出</span>
         <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
         <span @click="mubanDownload">下载模板</span>
-        <span>删除</span>
-        <span>编辑</span>
         <span>转毕业生</span>
         <span @click="diycolClick">自定义列</span>
+        <span @click="sendEmailClick">邮件通知</span>
       </div>
     </div>
     <!--查询输入-->
@@ -90,6 +87,10 @@
         </div>
       </div>
     </div>
+    <!-- 发邮件 -->
+    <div id="popup-email" class="popup-background">
+      <email :emailSid="emailSid"></email>
+    </div>
   </div>
 </template>
 <script>
@@ -105,7 +106,8 @@ export default {
   data: function() {
     return {
       table: tableData['course'],
-      students: []
+      students: [],
+      emailSid: []
     }
   },
   created: function() {
@@ -233,6 +235,16 @@ export default {
     },
     modalCloseClick: function() {
       $('#popup').hide()
+    },
+    //发送邮件函数
+    sendEmailClick: function() {
+      $('#popup-email').show()
+      //加载收件人学号
+      this.emailSid = []
+      for (let i = 0; i < this.students.length; i++) {
+        if(this.emailSid.indexOf(this.students[i]['course']['sid']) == -1)
+          this.emailSid.push(this.students[i]['course']['sid'])
+      }
     },
     studentClick: function(event) {
       //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
@@ -479,12 +491,6 @@ td {
 }
 
 
-
-
-
-
-
-
 /* 弹窗 (background) */
 
 #manager-course .popup-background {
@@ -498,23 +504,19 @@ td {
   top: 0;
   width: 100%;
   height: 100%;
+  padding-left: 225px;
+  padding-top: 60px;
   overflow: auto;
   background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
 }
 
 
-
-
-
-
-
-
 /* 弹窗内容 */
 
 #manager-course .popup-content {
   background-color: white;
-  margin-top: calc(50% - 650px);
+  margin-top: 100px;
   margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;

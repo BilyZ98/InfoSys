@@ -13,9 +13,9 @@ import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
-import Insert from './components/Insert.vue'
 import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
+import Insert from './components/Insert.vue'
 
 import BasicInfo from './components/managerPages/BasicInfo.vue'
 import Family from './components/managerPages/Family.vue'
@@ -31,6 +31,8 @@ import Paper from './components/managerPages/Paper.vue'
 import Patent from './components/managerPages/Patent.vue'
 import TechProject from './components/managerPages/TechProject.vue'
 
+import Email from './components/managerPages/modules/Email.vue'
+
 import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
 import FamilyInsert from './components/inserts/FamilyInsert.vue'
 import PaperInsert from './components/inserts/PaperInsert.vue'
@@ -44,6 +46,8 @@ Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(htmlToPDF)
+//全局注册email组件, 在页面中可以通过<email></email>直接引用
+Vue.component('email', Email)
 
 const router = new VueRouter({
   //使用路由的history模式，url栏没有#
