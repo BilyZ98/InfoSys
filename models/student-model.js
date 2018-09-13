@@ -428,21 +428,22 @@ exports.statistic = (data) => {
   //handle intervalFields, i represents field in intervalFields
   for(let i in data['intervalFields']){
     console.log(i)
-    var tmpQuery = 'elt(interval' + i
+    var tmpQuery = 'elt(interval(' + i
     for(let j in data['intervalFields'][i]){
-      if(j == 0 || j == data['intervalFields'][i].length - 1) continue
+      if(j == data['intervalFields'][i].length - 1) continue
       var inter = data['intervalFields'][i][j]
       tmpQuery+= ',' + inter
     }
-    tmpQuery+=') as ' + i
+    tmpQuery+=') '
     for(let j in data['intervalFields'][i]){
       if(j == data['intervalFields'][i].length - 1) continue
       /*
       select elt(intervalGPA,0.5,1,1.5,2,2.5,3,3.5,4,4.5) as GPA,0-0.5,0.5-1,1-1.5,1.5-2,2-2.5,2.5-3,3-3.5,3.5-4,4-4.5,4.5-5,count(*) as statistic from course group by GPA;
       */
       console.log(parseInt(j)+1)
-      tmpQuery+=',' + data['intervalFields'][i][j]+'-'+ data['intervalFields'][i][parseInt(j)+1]
+      tmpQuery+=',\'' + data['intervalFields'][i][j]+'-'+ data['intervalFields'][i][parseInt(j)+1] +'\''
     }
+    tmpQuery+=') as ' + i + '_range' // modify the range query name, because this is the best solution i have ever thought about
     if(tmp) {
       query+=tmpQuery
       tmp = true;
@@ -481,7 +482,7 @@ exports.statistic = (data) => {
     }
   }
   for(let i in data['intervalFields']){
-    var tmpQuery = i
+    var tmpQuery = i + '_range'
     if(tmp){
       query+=tmpQuery
       tmp= false
