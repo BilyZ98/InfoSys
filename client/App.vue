@@ -23,6 +23,7 @@
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
+
       <!--<div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
     <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>-->
@@ -231,7 +232,7 @@ header {
 
 aside {
   position: fixed;
-  height: 100%;
+  height: calc(100vh - 60px);
   width: 225px;
   top: 60px;
   left: 0;
@@ -240,6 +241,7 @@ aside {
   /*shadow*/
   box-shadow: 1px 1px 5px var(--grey-shadow);
   z-index: 99;
+  overflow: auto;
 }
 
 .info-side {
