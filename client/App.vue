@@ -185,7 +185,7 @@ header {
   height: 100%;
   width: 225px;
   text-align: center;
-  padding-top: 15px;
+  padding-top: 12px;
   background-color: var(--blue);
   font-size: 1.5em;
   font-weight: lighter;
@@ -246,7 +246,7 @@ aside {
   height: 100px;
   text-align: center;
   border-bottom: 1px solid black;
-  padding-top: 30px;
+  padding-top: 25px;
   /*
   **make text in div vertical-align to center
   line-height: 100px;

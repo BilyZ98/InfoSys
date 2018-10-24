@@ -1,4 +1,5 @@
 import tableData from './tableData.js'
+import Highcharts from 'highcharts'
 
 export default {
   createCharts: function(tableId, statData, barDom, pieDom) {

@@ -2,11 +2,12 @@ C:\Users\hp\Desktop\InfoSys
 ├─.gitignore
 ├─.routerRule
 ├─app.js
+├─fileStructure.md
 ├─package-lock.json
 ├─package.json
 ├─README.md
-├─result.md
 ├─webpack.config.js
+├─数据库需求.docx
 ├─utils
 |   ├─dbConn.js
 |   ├─mailer.js
@@ -36,14 +37,15 @@ C:\Users\hp\Desktop\InfoSys
 |   ├─comp_logo.png
 |   ├─index.html
 |   ├─sdcs_logo.png
-|   └vue_logo.png
+|   ├─vue_logo.png
+|   ├─dist
+|   |  ├─1a522aa16f623381a61dd5d0bf2edd3a.png
+|   |  └build.js
 ├─models
 |   ├─nothing.txt
 |   ├─notice-model.js
 |   ├─student-model.js
 |   └user-model.js
-├─dist
-|  └build.js
 ├─controllers
 |      ├─nothing.txt
 |      ├─notice-controller.js
@@ -79,18 +81,16 @@ C:\Users\hp\Desktop\InfoSys
 |   |     |      ├─Patent.vue
 |   |     |      ├─Scholarship.vue
 |   |     |      ├─SchoolRoll.vue
-|   |     |      └TechProject.vue
+|   |     |      ├─TechProject.vue
+|   |     |      ├─modules
+|   |     |      |    └Email.vue
 |   |     ├─javascripts
 |   |     |      ├─downloadModule.js
 |   |     |      ├─formatCheck.js
+|   |     |      ├─htmlToPDF.js
 |   |     |      ├─importModule.js
 |   |     |      ├─statisticModule.js
-|   |     |      ├─tableData.js
-|   |     |      ├─js
-|   |     |      | ├─html2canvas.js
-|   |     |      | ├─jspdf.debug.js
-|   |     |      | ├─paper_download.js
-|   |     |      | └renderPDF.js
+|   |     |      └tableData.js
 |   |     ├─inserts
 |   |     |    ├─AwardInsert.vue
 |   |     |    ├─BasicInfoInsert.vue

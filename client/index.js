@@ -3,9 +3,16 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import $ from 'jquery'
 import store from './store/store'
+/* html to pdf */
 import htmlToPDF from './components/javascripts/htmlToPDF'
+/* bootstrap */
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+/* xlsx */
+import XLSX from 'xlsx'
 
-//.vue components
+/* .vue components */
 import App from './App.vue'
 import Invalid from './components/Invalid.vue'
 import Main from './components/Main.vue'
@@ -46,6 +53,7 @@ Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(htmlToPDF)
+Vue.use(BootstrapVue)
 //全局注册email组件, 在页面中可以通过<email></email>直接引用
 Vue.component('email', Email)
 
