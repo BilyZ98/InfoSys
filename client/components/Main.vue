@@ -4,10 +4,18 @@
   <div class="container-header">
   </div>-->
   <!--主要区域-->
-  <div class="container-card">
-    <p class="text-greeting"></p>
+  <div class="container-card-left">
+    <!--<p class="text-greeting"></p>-->
+    <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
+    <div class="card-studentsSpecial">港澳台生/国际生信息</div>
+    <div class="card-academicWarning">学业预警</div>
+    <div class="card-gameManage">竞赛信息管理</div>
+    <div class="card-workManage">实习/就业管理</div>
+    <div class="card-educationProof">学历证明</div>
+    <div class="card-teacherApply">导师申请</div>
+    <div class="card-checkin">签到统计</div>
   </div>
-  <div class="container-card">
+  <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
     <div class="notice-list">
@@ -80,6 +88,9 @@ export default {
     this.getNotices()
   },
   methods: {
+    studentsBasicClick: function() {
+      this.$router.push({ name: 'basicInfo' })
+    },
     getNotices: function() {
       //获取公告
       var _self = this
@@ -189,12 +200,11 @@ export default {
   user-select: none;
 }
 
-#container-home .container-card {
+#container-home .container-card-left {
   float: left;
   margin: 25px;
   margin-right: 0;
-  padding: 30px;
-  height: 600px;
+  height: calc(100vh - 110px);
   width: calc(50% - 37.5px);
   text-align: left;
   background-color: white;
@@ -204,13 +214,170 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
+#container-home .container-card-right {
+  float: left;
+  margin: 25px;
+  margin-right: 0;
+  padding: 30px;
+  height: calc(100vh - 110px);
+  width: calc(50% - 37.5px);
+  text-align: left;
+  background-color: white;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px var(--grey-shadow);
+}
+
+/* 左边栏 */
+
+#container-home .card-studentsBasic {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(252, 122, 82);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-studentsBasic:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-studentsSpecial {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(252, 122, 82);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-studentsSpecial:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-academicWarning {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(239, 57, 7);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-academicWarning:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-gameManage {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(61, 198, 43);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-gameManage:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-workManage {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(255, 153, 45);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-workManage:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-educationProof {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(247, 205, 11);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-educationProof:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
+#container-home .card-teacherApply {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(255, 153, 45);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-checkin {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(255, 153, 45);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
 #container-home .text-greeting {
   text-align: center;
   font-size: 40px;
   font-weight: bolder;
 }
 
-/*公告栏*/
+/* 公告栏 */
 
 #container-home .notice-header {
   font-size: 20px;

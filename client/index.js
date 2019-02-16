@@ -6,9 +6,8 @@ import store from './store/store'
 /* html to pdf */
 import htmlToPDF from './components/javascripts/htmlToPDF'
 /* bootstrap */
-import BootstrapVue from 'bootstrap-vue'
-import 'bootstrap/dist/css/bootstrap.css'
-import 'bootstrap-vue/dist/bootstrap-vue.css'
+//import 'bootstrap'
+//import 'bootstrap/dist/css/bootstrap.css'
 /* xlsx */
 import XLSX from 'xlsx'
 
@@ -24,21 +23,22 @@ import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
 import Insert from './components/Insert.vue'
 
-import BasicInfo from './components/managerPages/BasicInfo.vue'
-import Family from './components/managerPages/Family.vue'
-import SchoolRoll from './components/managerPages/SchoolRoll.vue'
-import Course from './components/managerPages/Course.vue'
-import PartyInfo from './components/managerPages/PartyInfo.vue'
-import Scholarship from './components/managerPages/Scholarship.vue'
-import Aid from './components/managerPages/Aid.vue'
-import Loan from './components/managerPages/Loan.vue'
-import Cadre from './components/managerPages/Cadre.vue'
-import Award from './components/managerPages/Award.vue'
-import Paper from './components/managerPages/Paper.vue'
-import Patent from './components/managerPages/Patent.vue'
-import TechProject from './components/managerPages/TechProject.vue'
+import StudentsBasicManage from './components/StudentsBasicManage.vue'
+import BasicInfo from './components/StudentsBasicManagePages/BasicInfo.vue'
+import Family from './components/StudentsBasicManagePages/Family.vue'
+import SchoolRoll from './components/StudentsBasicManagePages/SchoolRoll.vue'
+import Course from './components/StudentsBasicManagePages/Course.vue'
+import PartyInfo from './components/StudentsBasicManagePages/PartyInfo.vue'
+import Scholarship from './components/StudentsBasicManagePages/Scholarship.vue'
+import Aid from './components/StudentsBasicManagePages/Aid.vue'
+import Loan from './components/StudentsBasicManagePages/Loan.vue'
+import Cadre from './components/StudentsBasicManagePages/Cadre.vue'
+import Award from './components/StudentsBasicManagePages/Award.vue'
+import Paper from './components/StudentsBasicManagePages/Paper.vue'
+import Patent from './components/StudentsBasicManagePages/Patent.vue'
+import TechProject from './components/StudentsBasicManagePages/TechProject.vue'
 
-import Email from './components/managerPages/modules/Email.vue'
+import Email from './components/StudentsBasicManagePages/modules/Email.vue'
 
 import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
 import FamilyInsert from './components/inserts/FamilyInsert.vue'
@@ -53,7 +53,6 @@ Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(htmlToPDF)
-Vue.use(BootstrapVue)
 //全局注册email组件, 在页面中可以通过<email></email>直接引用
 Vue.component('email', Email)
 
@@ -65,19 +64,26 @@ const router = new VueRouter({
     { name: 'login', path: '/login', component: Login },
     { name: 'register', path: '/register', component: Register },
     { name: 'main', path: '/main', component: Main },
-    { name: 'basicInfo', path: '/basicInfo', component: BasicInfo },
-    { name: 'family', path: '/family', component: Family },
-    { name: 'schoolRoll', path: '/schoolRoll', component: SchoolRoll },
-    { name: 'course', path: '/course', component: Course },
-    { name: 'partyInfo', path: '/partyInfo', component: PartyInfo },
-    { name: 'scholarship', path: '/scholarship', component: Scholarship },
-    { name: 'aid', path: '/aid', component: Aid },
-    { name: 'loan', path: '/loan', component: Loan },
-    { name: 'cadre', path: '/cadre', component: Cadre },
-    { name: 'award', path: '/award', component: Award },
-    { name: 'paper', path: '/paper', component: Paper },
-    { name: 'patent', path: '/patent', component: Patent },
-    { name: 'techProject', path: '/techProject', component: TechProject },
+    {
+      name: 'studentsBasicManage',
+      path: '/studentsBasicManage',
+      component: StudentsBasicManage,
+      children: [
+        { name: 'basicInfo', path: 'basicInfo', component: BasicInfo },
+        { name: 'family', path: 'family', component: Family },
+        { name: 'schoolRoll', path: 'schoolRoll', component: SchoolRoll },
+        { name: 'course', path: 'course', component: Course },
+        { name: 'partyInfo', path: 'partyInfo', component: PartyInfo },
+        { name: 'scholarship', path: 'scholarship', component: Scholarship },
+        { name: 'aid', path: 'aid', component: Aid },
+        { name: 'loan', path: 'loan', component: Loan },
+        { name: 'cadre', path: 'cadre', component: Cadre },
+        { name: 'award', path: 'award', component: Award },
+        { name: 'paper', path: 'paper', component: Paper },
+        { name: 'patent', path: 'patent', component: Patent },
+        { name: 'techProject', path: 'techProject', component: TechProject },
+      ]
+    },
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import },

@@ -1,13 +1,17 @@
 <template>
-<div id="manager-family">
+<div id="manager-award">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">家庭信息管理</p>
+		<p class="header-text">奖励情况管理</p>
 		<div class="header-button">
 			<span @click="insertClick">插入数据</span>
+			<!--<span>上传学生照片</span>-->
+			<!--<span>修改密码</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
+			<!--<span>删除</span>
+			<span>编辑</span>-->
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
 			<span @click="sendEmailClick">邮件通知</span>
@@ -17,12 +21,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'family-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'family-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'award-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'family-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'award-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +39,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['family']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['award']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['family'][record.id]!=undefined">{{student['family'][record.id]}}</span>
+		  		<span v-if="student['award'][record.id]!=undefined">{{student['award'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +53,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'family-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'family-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'award-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -72,9 +76,9 @@
 	  </div>
 	</div>
 	<!-- 发邮件 -->
-    <div id="popup-email" class="popup-background">
-      <email :emailSid="emailSid"></email>
-    </div>
+	<div id="popup-email" class="popup-background">
+		<email :emailSid="emailSid"></email>
+	</div>
 </div>
 </template>
 
@@ -90,9 +94,9 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['family'],
+			table: tableData['award'],
 			students: [],
-      emailSid: []
+			emailSid: null
 		}
 	},
 	created: function(){
@@ -102,35 +106,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'familyInsert'
+        name: 'awardInsert'
       })
 		},
 		queryClick: function(){
-			var family = {equal: {}, range: {}, fuzzy: {}}
+			var award = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['family'],
+        select: ['award'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#family-sid').val()) {
-				var sid = $('#family-sid').val()
-				if(!formatCheck['family']['sid']['reg'].test(sid)){
-					alert(formatCheck['family']['sid']['msg'])
+			if ($('#award-sid').val()) {
+				var sid = $('#award-sid').val()
+				if(!formatCheck['award']['sid']['reg'].test(sid)){
+					alert(formatCheck['award']['sid']['msg'])
 					return
 				} else {
-					family['equal']['sid'] = sid
+					award['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['family']){
-      		if(formatCheck['family'][item]['reg'] != null){
-      			let record = $('#family-' + item).val()
-      			if(record != '' && !formatCheck['family'][item]['reg'].test(record)){
-      				message = message + formatCheck['family'][item]['msg']
+      	for(let item in formatCheck['award']){
+      		if(formatCheck['award'][item]['reg'] != null){
+      			let record = $('#award-' + item).val()
+      			if(record != '' && !formatCheck['award'][item]['reg'].test(record)){
+      				message = message + formatCheck['award'][item]['msg']
       			}
       		}
       	}
@@ -138,22 +142,22 @@ export default {
       		alert(message)
       		return
       	}
-	      if ($('#family-name').val()) family['equal']['name'] = $('#family-name').val()
-	      if ($('#family-homeAddress').val()) family['equal']['homeAddress'] = $('#family-homeAddress').val()
-	      if ($('#family-fatherName').val()) family['equal']['fatherName'] = $('#family-fatherName').val()
-	      if ($('#family-fatherTel').val()) family['equal']['fatherTel'] = $('#family-fatherTel').val()
-	      if ($('#family-fatherJob').val()) family['equal']['fatherJob'] = $('#family-fatherJob').val()
-	      if ($('#family-motherName').val()) family['equal']['motherName'] = $('#family-motherName').val()
-	      if ($('#family-motherTel').val()) family['equal']['motherTel'] = $('#family-motherTel').val()
-	      if ($('#family-motherJob').val()) family['equal']['motherJob'] = $('#family-motherJob').val()
-	      if ($('#family-familyAveIncome').val()) family['equal']['familyAveIncome'] = $('#family-familyAveIncome').val()
-	      if ($('#family-isHard').val()) family['equal']['isHard'] = $('#family-isHard').val()
-	      if ($('#family-hardDegree').val()) family['equal']['hardDegree'] = $('#family-hardDegree').val()
-	      if ($('#family-hardFamDes').val()) family['equal']['hardFamDes'] = $('#family-hardFamDes').val()
+	      if ($('#award-name').val()) award['equal']['name'] = $('#award-name').val()
+	      if ($('#award-stuClass').val()) award['equal']['stuClass'] = $('#award-stuClass').val()
+	      if ($('#award-awardName').val()) award['fuzzy']['awardName'] = $('#award-awardName').val()
+	      if ($('#award-awardClass').val()) award['fuzzy']['awardClass'] = $('#award-awardClass').val()
+	      if ($('#award-employer').val()) award['equal']['employer'] = $('#award-employer').val()
+	      if ($('#award-awardJiBie').val()) award['equal']['awardJiBie'] = $('#award-awardJiBie').val()
+	      //range value
+	      var rangeVal = {min: $('#award-awardYearMonth .min').val(), max: $('#award-awardYearMonth .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        award['range']['awardYearMonth'] = rangeVal
+	      }
+	      if ($('#award-teacher').val()) award['equal']['teacher'] = $('#award-teacher').val()
 	    }
-      if(JSON.stringify(family['equal']) != emptyCell) data['where']['equal']['family'] = family['equal']
-      if(JSON.stringify(family['range']) != emptyCell) data['where']['range']['family'] = family['range']
-      if(JSON.stringify(family['fuzzy']) != emptyCell) data['where']['fuzzy']['family'] = family['fuzzy']
+      if(JSON.stringify(award['equal']) != emptyCell) data['where']['equal']['award'] = award['equal']
+      if(JSON.stringify(award['range']) != emptyCell) data['where']['range']['award'] = award['range']
+      if(JSON.stringify(award['fuzzy']) != emptyCell) data['where']['fuzzy']['award'] = award['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -191,11 +195,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("family")
+			downloadModule.mubanDownload("award")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'family')
+			importModule.importClick($('#button-import').prop('files')[0], 'award')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -209,9 +213,8 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['family']['sid']) == -1)
-          this.emailSid.push(this.students[i]['family']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['award']['sid']) == -1)
+          this.emailSid.push(this.students[i]['award']['sid'])
       }
     },
 		studentClick: function(event){
@@ -227,7 +230,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'family',
+				table: 'award',
 				fields: [],
 				condition: {}
 			}
@@ -235,13 +238,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#family-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#family-stat-' + recordId).val()
+					if( $('#award-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#award-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -264,7 +267,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('family', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('award', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -283,7 +286,7 @@ export default {
 </script>
 
 <style>
-#manager-family .container-header {
+#manager-award .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -300,17 +303,17 @@ export default {
   user-select: none;
 }
 
-#manager-family .header-text {
+#manager-award .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-family .header-button {
+#manager-award .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-family .header-button span{
+#manager-award .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -319,32 +322,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-family .header-button span:hover {
+#manager-award .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-family .container-record {
+#manager-award .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-family .container-record .text-range {
+#manager-award .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-family .container-record .min, #manager-family .container-record .max {
+#manager-award .container-record .min, #manager-award .container-record .max {
 	width: 50px;
 }
 
-#manager-family .container-record .hide-container {
+#manager-award .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-family .manager-button {
+#manager-award .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -360,15 +363,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-family .manager-button:hover {
+#manager-award .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-family .container-card-list {
+#manager-award .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-family .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-award .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -380,7 +383,7 @@ export default {
   overflow: auto;
 }
 
-#manager-family .container-card-list table {
+#manager-award .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -389,30 +392,31 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-family .container-card-list th, td {
+#manager-award .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-family .container-card-list tr{
+#manager-award .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-family .container-card-list tr:not(.table-head):hover{
+#manager-award .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-family #button-import {
+#manager-award #button-import {
 	display: none;
 }
+
 /* 弹窗 (background) */
 
-#manager-family .popup-background {
+#manager-award .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -431,9 +435,9 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-family .popup-content {
+#manager-award .popup-content {
   background-color: white;
-  margin-top: 100px;
+  margin-top: calc(50% - 650px);
   margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
@@ -444,7 +448,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-family .popup-cell {
+#manager-award .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -452,7 +456,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-family #popup-close {
+#manager-award #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -463,15 +467,13 @@ export default {
   text-align: right;
 }
 
-#manager-family #popup-close:hover, #popup-close:focus {
+#manager-award #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-/*统计*/
-
-#manager-family .stat-record {
+#manager-award .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -479,28 +481,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-family .stat-record .hide-container {
+#manager-award .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-family .stat-record input[type="checkbox"] {
+#manager-award .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-family .stat-input {
+#manager-award .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-family #stat-chart-bar {
+#manager-award #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-family #stat-chart-pie {
+#manager-award #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

@@ -1,8 +1,8 @@
 <template>
-<div id="manager-paper">
+<div id="manager-family">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">发表论文情况管理</p>
+		<p class="header-text">家庭信息管理</p>
 		<div class="header-button">
 			<span @click="insertClick">插入数据</span>
 			<span @click="downloadClick">导出</span>
@@ -17,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'paper-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'paper-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'family-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'family-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'paper-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'family-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['paper']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['family']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['paper'][record.id]!=undefined">{{student['paper'][record.id]}}</span>
+		  		<span v-if="student['family'][record.id]!=undefined">{{student['family'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'paper-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'family-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'paper-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'family-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -90,7 +90,7 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['paper'],
+			table: tableData['family'],
 			students: [],
       emailSid: []
 		}
@@ -102,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'paperInsert'
+        name: 'familyInsert'
       })
 		},
 		queryClick: function(){
-			var paper = {equal: {}, range: {}, fuzzy: {}}
+			var family = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['paper'],
+        select: ['family'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#paper-sid').val()) {
-				var sid = $('#paper-sid').val()
-				if(!formatCheck['paper']['sid']['reg'].test(sid)){
-					alert(formatCheck['paper']['sid']['msg'])
+			if ($('#family-sid').val()) {
+				var sid = $('#family-sid').val()
+				if(!formatCheck['family']['sid']['reg'].test(sid)){
+					alert(formatCheck['family']['sid']['msg'])
 					return
 				} else {
-					paper['equal']['sid'] = sid
+					family['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['paper']){
-      		if(formatCheck['paper'][item]['reg'] != null){
-      			let record = $('#paper-' + item).val()
-      			if(record != '' && !formatCheck['paper'][item]['reg'].test(record)){
-      				message = message + formatCheck['paper'][item]['msg']
+      	for(let item in formatCheck['family']){
+      		if(formatCheck['family'][item]['reg'] != null){
+      			let record = $('#family-' + item).val()
+      			if(record != '' && !formatCheck['family'][item]['reg'].test(record)){
+      				message = message + formatCheck['family'][item]['msg']
       			}
       		}
       	}
@@ -138,29 +138,22 @@ export default {
       		alert(message)
       		return
       	}
-      	//格式正确，发送数据到后台
-	      if ($('#paper-name').val()) paper['equal']['name'] = $('#paper-name').val()
-	      if ($('#paper-title').val()) paper['equal']['title'] = $('#paper-title').val()
-	      if ($('#paper-authors').val()) paper['equal']['authors'] = $('#paper-authors').val()
-	      if ($('#paper-journal').val()) paper['equal']['journal'] = $('#paper-journal').val()
-	      if ($('#paper-serialNumber').val()) paper['equal']['serialNumber'] = $('#paper-serialNumber').val()
-	      //range value
-	      var rangeVal = {min: $('#paper-pagesRange .min').val(), max: $('#paper-pagesRange .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        paper['range']['pagesRange'] = rangeVal
-	      }
-	      if ($('#paper-paperGrade').val()) paper['equal']['paperGrade'] = $('#paper-paperGrade').val()
-	      if ($('#paper-paperClass').val()) paper['equal']['paperClass'] = $('#paper-paperClass').val()
-	      //range value
-	      var rangeVal = {min: $('#paper-time .min').val(), max: $('#paper-time .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        paper['range']['time'] = rangeVal
-	      }
-	      if ($('#paper-insTeacher').val()) paper['equal']['insTeacher'] = $('#paper-insTeacher').val()
+	      if ($('#family-name').val()) family['equal']['name'] = $('#family-name').val()
+	      if ($('#family-homeAddress').val()) family['equal']['homeAddress'] = $('#family-homeAddress').val()
+	      if ($('#family-fatherName').val()) family['equal']['fatherName'] = $('#family-fatherName').val()
+	      if ($('#family-fatherTel').val()) family['equal']['fatherTel'] = $('#family-fatherTel').val()
+	      if ($('#family-fatherJob').val()) family['equal']['fatherJob'] = $('#family-fatherJob').val()
+	      if ($('#family-motherName').val()) family['equal']['motherName'] = $('#family-motherName').val()
+	      if ($('#family-motherTel').val()) family['equal']['motherTel'] = $('#family-motherTel').val()
+	      if ($('#family-motherJob').val()) family['equal']['motherJob'] = $('#family-motherJob').val()
+	      if ($('#family-familyAveIncome').val()) family['equal']['familyAveIncome'] = $('#family-familyAveIncome').val()
+	      if ($('#family-isHard').val()) family['equal']['isHard'] = $('#family-isHard').val()
+	      if ($('#family-hardDegree').val()) family['equal']['hardDegree'] = $('#family-hardDegree').val()
+	      if ($('#family-hardFamDes').val()) family['equal']['hardFamDes'] = $('#family-hardFamDes').val()
 	    }
-      if(JSON.stringify(paper['equal']) != emptyCell) data['where']['equal']['paper'] = paper['equal']
-      if(JSON.stringify(paper['range']) != emptyCell) data['where']['range']['paper'] = paper['range']
-      if(JSON.stringify(paper['fuzzy']) != emptyCell) data['where']['fuzzy']['paper'] = paper['fuzzy']
+      if(JSON.stringify(family['equal']) != emptyCell) data['where']['equal']['family'] = family['equal']
+      if(JSON.stringify(family['range']) != emptyCell) data['where']['range']['family'] = family['range']
+      if(JSON.stringify(family['fuzzy']) != emptyCell) data['where']['fuzzy']['family'] = family['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -198,11 +191,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("paper")
+			downloadModule.mubanDownload("family")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'paper')
+			importModule.importClick($('#button-import').prop('files')[0], 'family')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -217,8 +210,8 @@ export default {
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
         //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['paper']['sid']) == -1)
-          this.emailSid.push(this.students[i]['paper']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['family']['sid']) == -1)
+          this.emailSid.push(this.students[i]['family']['sid'])
       }
     },
 		studentClick: function(event){
@@ -234,7 +227,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'paper',
+				table: 'family',
 				fields: [],
 				condition: {}
 			}
@@ -242,13 +235,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#paper-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#paper-stat-' + recordId).val()
+					if( $('#family-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#family-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -271,7 +264,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('paper', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('family', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -290,7 +283,7 @@ export default {
 </script>
 
 <style>
-#manager-paper .container-header {
+#manager-family .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -307,17 +300,17 @@ export default {
   user-select: none;
 }
 
-#manager-paper .header-text {
+#manager-family .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-paper .header-button {
+#manager-family .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-paper .header-button span{
+#manager-family .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -326,32 +319,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-paper .header-button span:hover {
+#manager-family .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-paper .container-record {
+#manager-family .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-paper .container-record .text-range {
+#manager-family .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-paper .container-record .min, #manager-paper .container-record .max {
+#manager-family .container-record .min, #manager-family .container-record .max {
 	width: 50px;
 }
 
-#manager-paper .container-record .hide-container {
+#manager-family .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-paper .manager-button {
+#manager-family .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -367,15 +360,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-paper .manager-button:hover {
+#manager-family .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-paper .container-card-list {
+#manager-family .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-paper .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-family .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -387,7 +380,7 @@ export default {
   overflow: auto;
 }
 
-#manager-paper .container-card-list table {
+#manager-family .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -396,30 +389,30 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-paper .container-card-list th, td {
+#manager-family .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-paper .container-card-list tr{
+#manager-family .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-paper .container-card-list tr:not(.table-head):hover{
+#manager-family .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-paper #button-import {
+#manager-family #button-import {
 	display: none;
 }
 /* 弹窗 (background) */
 
-#manager-paper .popup-background {
+#manager-family .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -438,7 +431,7 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-paper .popup-content {
+#manager-family .popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 200px);
@@ -451,7 +444,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-paper .popup-cell {
+#manager-family .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -459,7 +452,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-paper #popup-close {
+#manager-family #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -470,7 +463,7 @@ export default {
   text-align: right;
 }
 
-#manager-paper #popup-close:hover, #popup-close:focus {
+#manager-family #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -478,7 +471,7 @@ export default {
 
 /*统计*/
 
-#manager-paper .stat-record {
+#manager-family .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -486,28 +479,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-paper .stat-record .hide-container {
+#manager-family .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-paper .stat-record input[type="checkbox"] {
+#manager-family .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-paper .stat-input {
+#manager-family .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-paper #stat-chart-bar {
+#manager-family #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-paper #stat-chart-pie {
+#manager-family #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

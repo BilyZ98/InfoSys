@@ -1,8 +1,8 @@
 <template>
-<div id="manager-loan">
+<div id="manager-schoolRoll">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">助学贷款管理</p>
+		<p class="header-text">学籍管理</p>
 		<div class="header-button">
 			<!--<span @click="insertClick">插入数据</span>-->
 			<span @click="downloadClick">导出</span>
@@ -17,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'loan-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'loan-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'schoolRoll-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'schoolRoll-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'schoolRoll-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['loan']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['schoolRoll']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['loan'][record.id]!=undefined">{{student['loan'][record.id]}}</span>
+		  		<span v-if="student['schoolRoll'][record.id]!=undefined">{{student['schoolRoll'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'loan-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'schoolRoll-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'loan-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'schoolRoll-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -90,7 +90,7 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['loan'],
+			table: tableData['schoolRoll'],
 			students: [],
       emailSid: []
 		}
@@ -102,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'loanInsert'
+        name: 'schoolRollInsert'
       })
 		},
 		queryClick: function(){
-			var loan = {equal: {}, range: {}, fuzzy: {}}
+			var schoolRoll = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['loan'],
+        select: ['schoolRoll'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#loan-sid').val()) {
-				var sid = $('#loan-sid').val()
-				if(!formatCheck['loan']['sid']['reg'].test(sid)){
-					alert(formatCheck['loan']['sid']['msg'])
+			if ($('#schoolRoll-sid').val()) {
+				var sid = $('#schoolRoll-sid').val()
+				if(!formatCheck['schoolRoll']['sid']['reg'].test(sid)){
+					alert(formatCheck['schoolRoll']['sid']['msg'])
 					return
 				} else {
-					loan['equal']['sid'] = sid
+					schoolRoll['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['loan']){
-      		if(formatCheck['loan'][item]['reg'] != null){
-      			let record = $('#loan-' + item).val()
-      			if(record != '' && !formatCheck['loan'][item]['reg'].test(record)){
-      				message = message + formatCheck['loan'][item]['msg']
+      	for(let item in formatCheck['schoolRoll']){
+      		if(formatCheck['schoolRoll'][item]['reg'] != null){
+      			let record = $('#schoolRoll-' + item).val()
+      			if(record != '' && !formatCheck['schoolRoll'][item]['reg'].test(record)){
+      				message = message + formatCheck['schoolRoll'][item]['msg']
       			}
       		}
       	}
@@ -139,15 +139,24 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#loan-name').val()) loan['equal']['name'] = $('#loan-name').val()
-	      if ($('#loan-submitYear').val()) loan['equal']['submitYear'] = $('#loan-submitYear').val()
-	      if ($('#loan-loanYears').val()) loan['equal']['loanYears'] = $('#loan-loanYears').val()
-	      if ($('#loan-moneyPerYear').val()) loan['equal']['moneyPerYear'] = $('#loan-moneyPerYear').val()
-	      if ($('#loan-loanTotal').val()) loan['equal']['loanTotal'] = $('#loan-loanTotal').val()
+	      if ($('#schoolRoll-name').val()) schoolRoll['equal']['name'] = $('#schoolRoll-name').val()
+	      if ($('#schoolRoll-isAtRoll').val()) schoolRoll['equal']['isAtRoll'] = $('#schoolRoll-isAtRoll').val()
+	      if ($('#schoolRoll-class').val()) schoolRoll['equal']['class'] = $('#schoolRoll-class').val()
+	      if ($('#schoolRoll-studyYears').val()) schoolRoll['equal']['studyYears'] = $('#schoolRoll-studyYears').val()
+	      //range value
+	      var rangeVal = {min: $('#schoolRoll-timeInSchool .min').val(), max: $('#schoolRoll-timeInSchool .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        schoolRoll['range']['timeInSchool'] = rangeVal
+	      }
+	      if ($('#schoolRoll-isFee').val()) schoolRoll['equal']['isFee'] = $('#schoolRoll-isFee').val()
+	      if ($('#schoolRoll-isArrive').val()) schoolRoll['equal']['isArrive'] = $('#schoolRoll-isArrive').val()
+	      if ($('#schoolRoll-isRollChanged').val()) schoolRoll['equal']['isRollChanged'] = $('#schoolRoll-isRollChanged').val()
+	      if ($('#schoolRoll-changeTime').val()) schoolRoll['equal']['changeTime'] = $('#schoolRoll-changeTime').val()
+	      if ($('#schoolRoll-changeClass').val()) schoolRoll['equal']['changeClass'] = $('#schoolRoll-changeClass').val()
 	    }
-      if(JSON.stringify(loan['equal']) != emptyCell) data['where']['equal']['loan'] = loan['equal']
-      if(JSON.stringify(loan['range']) != emptyCell) data['where']['range']['loan'] = loan['range']
-      if(JSON.stringify(loan['fuzzy']) != emptyCell) data['where']['fuzzy']['loan'] = loan['fuzzy']
+      if(JSON.stringify(schoolRoll['equal']) != emptyCell) data['where']['equal']['schoolRoll'] = schoolRoll['equal']
+      if(JSON.stringify(schoolRoll['range']) != emptyCell) data['where']['range']['schoolRoll'] = schoolRoll['range']
+      if(JSON.stringify(schoolRoll['fuzzy']) != emptyCell) data['where']['fuzzy']['schoolRoll'] = schoolRoll['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -185,11 +194,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("loan")
+			downloadModule.mubanDownload("schoolRoll")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'loan')
+			importModule.importClick($('#button-import').prop('files')[0], 'schoolRoll')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -204,8 +213,8 @@ export default {
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
         //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['loan']['sid']) == -1)
-          this.emailSid.push(this.students[i]['loan']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['schoolRoll']['sid']) == -1)
+          this.emailSid.push(this.students[i]['schoolRoll']['sid'])
       }
     },
 		studentClick: function(event){
@@ -221,7 +230,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'loan',
+				table: 'schoolRoll',
 				fields: [],
 				condition: {}
 			}
@@ -229,13 +238,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#loan-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#loan-stat-' + recordId).val()
+					if( $('#schoolRoll-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#schoolRoll-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -250,15 +259,8 @@ export default {
 	      success: function(result, xhr) {
 	      	for(let key in result){
 					  if(key == 'content'){
-	      			//操作成功，配置图表
-	      			/*let statData = [
-						    {gender: '女', major: null, statistic: 2},
-						    {gender: '女', major: 123, statistic: 1},
-						    {gender: '男', major: 123, statistic: 3},
-						    {gender: '男', major: '数学', statistic: 1}
-					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('loan', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('schoolRoll', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -277,7 +279,7 @@ export default {
 </script>
 
 <style>
-#manager-loan .container-header {
+#manager-schoolRoll .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -294,17 +296,17 @@ export default {
   user-select: none;
 }
 
-#manager-loan .header-text {
+#manager-schoolRoll .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-loan .header-button {
+#manager-schoolRoll .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-loan .header-button span{
+#manager-schoolRoll .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -313,32 +315,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-loan .header-button span:hover {
+#manager-schoolRoll .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-loan .container-record {
+#manager-schoolRoll .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-loan .container-record .text-range {
+#manager-schoolRoll .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-loan .container-record .min, #manager-loan .container-record .max {
+#manager-schoolRoll .container-record .min, #manager-schoolRoll .container-record .max {
 	width: 50px;
 }
 
-#manager-loan .container-record .hide-container {
+#manager-schoolRoll .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-loan .manager-button {
+#manager-schoolRoll .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -354,15 +356,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-loan .manager-button:hover {
+#manager-schoolRoll .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-loan .container-card-list {
+#manager-schoolRoll .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-loan .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-schoolRoll .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -374,7 +376,7 @@ export default {
   overflow: auto;
 }
 
-#manager-loan .container-card-list table {
+#manager-schoolRoll .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -383,44 +385,30 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-loan .container-card-list th, td {
+#manager-schoolRoll .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-loan .container-card-list tr{
+#manager-schoolRoll .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-loan .container-card-list tr:not(.table-head):hover{
+#manager-schoolRoll .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-loan #button-import {
+#manager-schoolRoll #button-import {
 	display: none;
 }
-
-/* 弹窗 (background) */
-#manager-loan .popup-background {
-  display: none; /* 默认隐藏 */
-  position: fixed; /* 定位 */
-  z-index: 10; /* 设置在顶层 */
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
-}
 /* 弹窗 (background) */
 
-#manager-loan .popup-background {
+#manager-schoolRoll .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -439,7 +427,7 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-loan .popup-content {
+#manager-schoolRoll .popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 200px);
@@ -452,7 +440,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-loan .popup-cell {
+#manager-schoolRoll .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -460,7 +448,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-loan #popup-close {
+#manager-schoolRoll #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -471,7 +459,7 @@ export default {
   text-align: right;
 }
 
-#manager-loan #popup-close:hover, #popup-close:focus {
+#manager-schoolRoll #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -479,7 +467,7 @@ export default {
 
 /*统计*/
 
-#manager-loan .stat-record {
+#manager-schoolRoll .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -487,28 +475,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-loan .stat-record .hide-container {
+#manager-schoolRoll .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-loan .stat-record input[type="checkbox"] {
+#manager-schoolRoll .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-loan .stat-input {
+#manager-schoolRoll .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-loan #stat-chart-bar {
+#manager-schoolRoll #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-loan #stat-chart-pie {
+#manager-schoolRoll #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

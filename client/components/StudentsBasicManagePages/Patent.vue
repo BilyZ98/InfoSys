@@ -239,7 +239,7 @@ export default {
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
