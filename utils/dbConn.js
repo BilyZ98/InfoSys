@@ -18,7 +18,7 @@ var connection = mysql.createConnection({
 */
 var pool = mysql.createPool({
   connectionLimit:10,
-  host:'172.18.197.120',
+  host:'172.18.178.112',
   user:'sdcs',
   password:'sysu_sdcs_123',
   database:'InfoSys',
