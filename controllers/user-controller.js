@@ -42,7 +42,11 @@ exports.login = async(req, res, next) => {
     //登陆的时候就给session对象加上了user，这样，以后访问的时候，req session 就有user了
     //返回的content 里面包含了用户名
     console.log("登陆成功")
+    data[0].usertype = req.body.usertype
+    console.log("data[0]")
+    console.log(data[0])
     req.session.user = data[0]
+    //req.session.user.usertype = req.body.usertype
     resBody.success(res, data[0])
   }
 }
@@ -86,6 +90,11 @@ exports.createStudentsAccount = async (req,res,next) => {
   }
   resBody.success(res)      
 }
+
+exports.modifyPassword = async (req,res,next) => {
+
+}
+
 
 async  function checkStudnetAccountConflict(sid) {
   let check  = await userModel.checkStudentAccount(sid)

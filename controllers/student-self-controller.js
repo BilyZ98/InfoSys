@@ -20,6 +20,8 @@ var asynchronous = require('async');
     得到一个人的所有信息，用了原来student-model 的queryAll
 */
 exports.getSelfRecord = async(req,res,next) => {
+    /*
+        
     let query = "" ;
     let values = []
     for(let table in data['tables']){
@@ -28,6 +30,17 @@ exports.getSelfRecord = async(req,res,next) => {
     }
     console.log(query)
     return queryDB(query,values);
+    */
+   StudentsModel.queryAll(req.body).then((data)=>{
+    let content={}
+    for(i in req.body['tables']){
+      content[req.body['tables'][i]] = data[i]
+    }
+    console.log(content)
+    resBody.success(res,content)
+  }).catch((err)=> {
+    resBody.error(res,err)
+  })
 }
 
 
