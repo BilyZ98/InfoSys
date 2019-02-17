@@ -10,10 +10,17 @@ exports.addUser =  (data)=> {
   return queryDB(query,values);
 }
 
+exports.addStudentAccount = (data) => {
+  let query = "insert into studentAccount \n"+
+              "(account,password) values (?,?);";
+  let values = [data.account, data.password];
+  return queryDB(query,values);
+}
+
 /*
   用于检查注册时账号，手机号，邮箱号手机否重复
 */
-exports.checkUser = (data) =>{
+exports.checkUser = async (data) =>{
   let query = "select * from user\n" +
   "where account = ?;"
   let values = [data.account];
@@ -25,4 +32,9 @@ exports.checkUser = (data) =>{
 exports.getUser = async (data) => {
   let query = "select * from user where account = ?";
   return queryDB(query,[data.account])
+}
+
+exports.checkStudentAccount =async (sid) => {
+  let query = "select * from studentAccount where account = ?";
+  return queryDB(query,[sid]);
 }
