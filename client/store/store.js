@@ -49,6 +49,9 @@ export default new Vuex.Store({
   getters: {
     getUserAccount: function(state) {
       return state.userInfo.account
+    },
+    getUserStatus: function(state) {
+      return state.userStatus
     }
   }
 })
