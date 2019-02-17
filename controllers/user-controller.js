@@ -97,7 +97,7 @@ exports.modifyPassword = async (req,res,next) => {
 
 
 async  function checkStudnetAccountConflict(sid) {
-  let check  = await userModel.checkStudentAccount(sid)
+  let check  = await userModel.getStudentAccount(sid)
   return check.length === 0
 }
 
