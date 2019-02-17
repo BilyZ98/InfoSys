@@ -128,7 +128,10 @@ const app = new Vue({
     }).then(() => {
       //防止回到登陆页面
       if (app.$route.path == '/login') {
-        app.$router.replace({ name: 'studentMain'})
+        if(res.body.content.usertype = 'student')
+          app.$router.replace({ name: 'studentMain'})
+        else if(res.body.content.usertype = 'teacher')
+          app.$router.replace({ name: 'teacherMain'})
       }
       //显示用户信息
       //$('#info-account').text(this.$store.getters.getUserAccount)

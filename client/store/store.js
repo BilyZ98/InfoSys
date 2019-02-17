@@ -16,6 +16,7 @@ export default new Vuex.Store({
     },
     updateUserStatus: function(state, result) {
       state.userStatus = result
+      console.log(state.userStatus)
     },
     updateUserInfo: function(state, _info) {
       state.userInfo = _info
