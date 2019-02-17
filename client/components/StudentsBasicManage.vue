@@ -38,6 +38,10 @@ export default {
       router: 'main'
     }
   },
+  mounted: function() {
+    //console.log(this.$store.getters.getUserAccount)
+    $('#info-account').text(this.$store.getters.getUserAccount)
+  },
   methods: {
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })

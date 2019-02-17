@@ -3,15 +3,18 @@ import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 import $ from 'jquery'
 import store from './store/store'
+
 /* html to pdf */
 import htmlToPDF from './components/javascripts/htmlToPDF'
+
 /* bootstrap */
 //import 'bootstrap'
 //import 'bootstrap/dist/css/bootstrap.css'
+
 /* xlsx */
 import XLSX from 'xlsx'
 
-/* .vue components */
+/* first-level vue components */
 import App from './App.vue'
 import Invalid from './components/Invalid.vue'
 import Main from './components/Main.vue'
@@ -23,6 +26,7 @@ import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
 import Insert from './components/Insert.vue'
 
+/* studentsBasicManage vue components */
 import StudentsBasicManage from './components/StudentsBasicManage.vue'
 import BasicInfo from './components/StudentsBasicManagePages/BasicInfo.vue'
 import Family from './components/StudentsBasicManagePages/Family.vue'
@@ -38,8 +42,7 @@ import Paper from './components/StudentsBasicManagePages/Paper.vue'
 import Patent from './components/StudentsBasicManagePages/Patent.vue'
 import TechProject from './components/StudentsBasicManagePages/TechProject.vue'
 
-import Email from './components/StudentsBasicManagePages/modules/Email.vue'
-
+/* insert in studentsBasicManage vue components */
 import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
 import FamilyInsert from './components/inserts/FamilyInsert.vue'
 import PaperInsert from './components/inserts/PaperInsert.vue'
@@ -47,6 +50,9 @@ import PatentInsert from './components/inserts/PatentInsert.vue'
 import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
 import CadreInsert from './components/inserts/CadreInsert.vue'
 import AwardInsert from './components/inserts/AwardInsert.vue'
+
+/* email component */
+import Email from './components/StudentsBasicManagePages/modules/Email.vue'
 
 
 Vue.config.debug = true
@@ -123,7 +129,7 @@ const app = new Vue({
         app.$router.replace({ name: 'main'})
       }
       //显示用户信息
-      $('#info-account').text(this.$store.getters.getUserAccount)
+      //$('#info-account').text(this.$store.getters.getUserAccount)
     }).catch((res) => {
       if (res.status === 441 || res.status === 440){
         app.$router.replace({ name: 'login' })
@@ -137,11 +143,15 @@ const app = new Vue({
 }).$mount('#app')
 
 /*
-不加这个的话，如果已经登陆，再把当前的路径改为'http://localhost:3000/'
-还是会跳到登陆页面，所以我用了 APP.vue 的beforemount 方法，每次这么做，
-先检查
+为了解决：
+已经登陆后再把地址改为'http://localhost:3000/'仍转到登陆界面而不是主界面；
+未登录时访问所有界面都跳转到登陆界面；
 
-//更新，现在不需要这个守卫，只需要在beforemount加入判断是否跳入login页面即可，因为跳转到login只能通过地址栏输入，相当于重新加载
+使用beforeMount守卫，在应用首次打开时判断登录状态
+
+不需要下面的beforeEach守卫，
+只需要在beforeMount中加入判断是否跳入login页面即可，
+因为跳转到login只能通过地址栏输入，相当于重新加载
 
 router.beforeEach(function(to, from, next){
   app.$store.dispatch('GET', {
