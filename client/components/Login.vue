@@ -18,8 +18,8 @@
           <input type="password" id="input-password" placeholder="密码" @keyup.enter="loginClick">
         </div>
         <div id="warning"></div>
-        <div class="button-login" @click="loginClick">登录</div>
-        <div class="button-login" @click="registerClick">注册</div>
+        <div class="button-login" @click="loginInStudent">学生登录</div>
+        <div class="button-login" @click="loginInTeacher">教师登陆</div>
       </form>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default {
     $(".container-info-all").attr("class", "container-info-display")
   },
   methods: {
-    loginClick: function() {
+    loginInStudent: function() {
       var id = $("#input-id").val()
       var password = $("#input-password").val()
       //alert('id: ' + id)
@@ -54,19 +54,20 @@ export default {
       */
       if (this.isNULL(id)) {
         //alert("请填写学号或学工号！");
-        $("#warning").text("请填写学号或学工号！")
+        $("#warning").text("请填写学号！")
         // return;
       } else if (this.isNULL(password)) {
         //alert("请填写密码！");
         $("#warning").text("请填写密码！")
       } else if (!this.isValidId(id)) {
         //alert("学号或学工号不正确！");
-        $("#warning").text("学号或学工号不正确！")
+        $("#warning").text("学号不正确！")
       } else {
         //this.Save();
         var data = {
           "account": id,
-          "password": password
+          "password": password,
+          "usertype" : 'student'
         }
         var postData = JSON.stringify(data)
         //alert(postData)
@@ -84,7 +85,67 @@ export default {
                 _self.$store.commit('updateUserStatus', '')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
-                _self.$router.push({ name: 'studentMain' })
+                  _self.$router.push({ name: 'studentMain' })
+              } else if (key == 'err') {
+                alert("服务器错误")
+              }
+            }
+          },
+          error: function(result, xhr) {
+            console.log(result)
+            //表示密码错误
+            if (result.status == 441) {
+              alert("账号或密码错误")
+            }
+          }
+        })
+      }
+      //this.$router.push({ name: 'main'})
+    },
+    loginInTeacher: function() {
+      var id = $("#input-id").val()
+      var password = $("#input-password").val()
+      //alert('id: ' + id)
+      /*if ($.cookie("rmbUser") == "true") {
+        $("#ck_rmbUser").attr("checked", true);
+        $("#input-id").val($.cookie("username"));
+        $("#input-password").val($.cookie("password"));
+      }
+      */
+      if (this.isNULL(id)) {
+        //alert("请填写学号或学工号！");
+        $("#warning").text("请填写学工号！")
+        // return;
+      } else if (this.isNULL(password)) {
+        //alert("请填写密码！");
+        $("#warning").text("请填写密码！")
+      } else if (!this.isValidId(id)) {
+        //alert("学号或学工号不正确！");
+        $("#warning").text("学工号不正确！")
+      } else {
+        //this.Save();
+        var data = {
+          "account": id,
+          "password": password,
+          "usertype": 'teacher'
+        }
+        var postData = JSON.stringify(data)
+        //alert(postData)
+        var _self = this
+        $.ajax({
+          type: 'POST',
+          url: '/users/login',
+          data: postData,
+          contentType: 'application/json;charset=utf-8',
+          dataType: 'json',
+          timeout: 5000,
+          success: function(result, xhr) {
+            for (let key in result) {
+              if (key == 'content') {
+                _self.$store.commit('updateUserStatus', '')
+                _self.$store.commit('updateUserInfo', data)
+                $('#info-account').text(id)
+                  _self.$router.push({ name: 'teacherMain' })
               } else if (key == 'err') {
                 alert("服务器错误")
               }
