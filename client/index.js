@@ -123,7 +123,7 @@ const app = new Vue({
     this.$store.dispatch('GET', {
       url: '/users/session'
     }).then((res) => {
-      app.$store.commit('updateUserStatus', res.body.content.userType)
+      app.$store.commit('updateUserStatus', res.body.content.usertype)
       app.$store.commit('updateUserInfo', res.body.content)
     }).then(() => {
       //防止回到登陆页面

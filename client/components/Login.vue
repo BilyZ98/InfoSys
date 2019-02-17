@@ -15,7 +15,7 @@
         </div>
         <div class="container-input">
           <span>密码：</span>
-          <input type="password" id="input-password" placeholder="密码" @keyup.enter="loginClick">
+          <input type="password" id="input-password" placeholder="密码">
         </div>
         <div id="warning"></div>
         <div class="button-login" @click="loginInStudent">学生登录</div>
@@ -85,7 +85,7 @@ export default {
                 _self.$store.commit('updateUserStatus', '')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
-                  _self.$router.push({ name: 'studentMain' })
+                _self.$router.push({ name: 'studentMain' })
               } else if (key == 'err') {
                 alert("服务器错误")
               }
@@ -145,7 +145,7 @@ export default {
                 _self.$store.commit('updateUserStatus', '')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
-                  _self.$router.push({ name: 'teacherMain' })
+                _self.$router.push({ name: 'teacherMain' })
               } else if (key == 'err') {
                 alert("服务器错误")
               }
