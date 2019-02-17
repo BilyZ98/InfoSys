@@ -320,12 +320,6 @@ export default {
   line-height: 100px;
 }
 
-#container-home .card-workManage:hover {
-  transform: translate(0, -1px);
-  box-shadow: -3px 3px 3px var(--grey-shadow);
-  cursor: pointer;
-}
-
 #container-home .card-educationProof {
   display: inline-block;
   margin: 30px 0 0 30px;
@@ -337,12 +331,6 @@ export default {
   font-weight: lighter;
   text-align: center;
   line-height: 100px;
-}
-
-#container-home .card-educationProof:hover {
-  transform: translate(0, -1px);
-  box-shadow: -3px 3px 3px var(--grey-shadow);
-  cursor: pointer;
 }
 
 #container-home .card-teacherApply {

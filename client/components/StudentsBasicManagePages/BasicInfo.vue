@@ -7,6 +7,7 @@
         <span @click="insertClick">插入数据</span>
         <span @click="downloadClick">导出</span>
         <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
+        <span @click="createStudentsAccount">批量创建学生账号</span>
         <span @click="mubanDownload">下载模板</span>
         <span>转毕业生</span>
         <span @click="diycolClick">自定义列</span>
@@ -196,6 +197,32 @@ export default {
     },
     importClick: function() {
       $('#button-import').click()
+    },
+    createStudentsAccount: function() {
+       $.ajax({
+        type: 'POST',
+        url: '/createStudentsAccount',
+        contentType: 'application/json;charset=utf-8',
+        timeout: 5000,
+        success: function(result, xhr) {
+          console.log(result)
+          console.log(xhr)
+          for (let key in result) {
+            if (key == 'content') {
+              //操作成功
+              _self.students = result['content']
+            } else if (key == 'err') {
+              //操作错误
+              alert('查询信息错误: ' + result[key]['sqlMessage'])
+            }
+          }
+        },
+        error: function(result, xhr) {
+          //连接错误
+          //console.log(result)
+          alert('服务器连接错误: ' + xhr)
+        }
+      })
     },
     mubanDownload: function() {
       downloadModule.mubanDownload("basicInfo")

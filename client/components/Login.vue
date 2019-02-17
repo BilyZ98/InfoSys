@@ -15,11 +15,11 @@
         </div>
         <div class="container-input">
           <span>密码：</span>
-          <input type="password" id="input-password" placeholder="密码">
+          <input type="password" id="input-password" placeholder="密码" @keyup.enter="loginClick">
         </div>
         <div id="warning"></div>
         <div class="button-login" @click="loginClick">登录</div>
-        <div class="button-login" @click="">注册</div>
+        <div class="button-login" @click="registerClick">注册</div>
       </form>
     </div>
   </div>
@@ -84,7 +84,7 @@ export default {
                 _self.$store.commit('updateUserStatus', '')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
-                  _self.$router.push({ name: 'main' })
+                _self.$router.push({ name: 'studentMain' })
               } else if (key == 'err') {
                 alert("服务器错误")
               }
@@ -100,6 +100,9 @@ export default {
         })
       }
       //this.$router.push({ name: 'main'})
+    },
+    registerClick: function() {
+      this.$router.push({ name: 'register'})
     },
     isNULL: function(data) {
       if (data.length == 0)
