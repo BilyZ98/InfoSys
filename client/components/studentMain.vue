@@ -8,12 +8,12 @@
     <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
     <div class="card-studentsSpecial">港澳台/国际生</div>
     <div class="card-academicWarning">学业预警</div>
+    <div class="card-guideline">办事指引</div>
     <div class="card-gameManage">竞赛信息管理</div>
     <div class="card-workManage">实习/就业管理</div>
     <div class="card-educationProof">学历证明</div>
     <div class="card-teacherApply">导师申请</div>
     <div class="card-checkin">签到统计</div>
-    <div class="card-guideline">办事指引</div>
   </div>
   <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
@@ -288,6 +288,25 @@ export default {
   cursor: pointer;
 }
 
+#container-home .card-guideline {
+  display: inline-block;
+  margin: 30px 0 0 30px;
+  width: calc(33% - 40px);
+  height: 100px;
+  background-color: rgb(255, 153, 45);
+  color: white;
+  font-size: 20px;
+  font-weight: lighter;
+  text-align: center;
+  line-height: 100px;
+}
+
+#container-home .card-guideline:hover {
+  transform: translate(0, -1px);
+  box-shadow: -3px 3px 3px var(--grey-shadow);
+  cursor: pointer;
+}
+
 #container-home .card-gameManage {
   display: inline-block;
   margin: 30px 0 0 30px;
@@ -359,19 +378,6 @@ export default {
 }
 
 #container-home .card-checkin {
-  display: inline-block;
-  margin: 30px 0 0 30px;
-  width: calc(33% - 40px);
-  height: 100px;
-  background-color: rgb(255, 153, 45);
-  color: white;
-  font-size: 20px;
-  font-weight: lighter;
-  text-align: center;
-  line-height: 100px;
-}
-
-#container-home .card-guideline {
   display: inline-block;
   margin: 30px 0 0 30px;
   width: calc(33% - 40px);

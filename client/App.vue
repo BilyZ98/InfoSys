@@ -40,12 +40,12 @@
 export default {
   data: function() {
     return {
-      router: 'main'
+      router: 'studentMain'
     }
   },
   methods: {
     homeClick: function() {
-      this.$router.push({ name: 'main' })
+      this.$router.push({ name: 'studentMain' })
     },
     userInfoClick: function() {
       //

@@ -67,11 +67,11 @@ const router = new VueRouter({
   //使用路由的history模式，url栏没有#
   mode: 'history',
   routes: [
-    { path: '/', redirect: 'studentMain' },
+    { path: '/', redirect: 'login' },
     { name: 'login', path: '/login', component: Login },
     { name: 'register', path: '/register', component: Register },
     { name: 'studentMain', path: '/studentMain', component: studentMain },
-    { name: 'teacherMain', path: '/teacherMain', component: teacherMain},
+    { name: 'teacherMain', path: '/teacherMain', component: teacherMain },
     {
       name: 'studentsBasicManage',
       path: '/studentsBasicManage',
@@ -128,7 +128,7 @@ const app = new Vue({
     }).then(() => {
       //防止回到登陆页面
       if (app.$route.path == '/login') {
-        app.$router.replace({ name: 'main'})
+        app.$router.replace({ name: 'studentMain'})
       }
       //显示用户信息
       //$('#info-account').text(this.$store.getters.getUserAccount)
