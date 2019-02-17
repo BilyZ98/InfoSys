@@ -1,11 +1,5 @@
 <template>
   <div>
-    <header class="app-bar-display">
-      <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
-      <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
-    </header>
-    <!--
     <aside class="app-bar-display">
       <div class="info-side">
         <label id="info-account"></label>
@@ -24,12 +18,13 @@
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='paper'}" @click="paperClick">发表论文情况</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='patent'}" @click="patentClick">获得专利情况</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='techProject'}" @click="techProjectClick">科研项目</div>
+      <!--
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='query'}" @click="queryClick">高级查询（跨表查询）</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='insert'}" @click="insertClick">插入</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='import'}" @click="importClick">导入</div>
+      -->
     </aside>
-    -->
-    <div class="container-info-display">
+    <div class="container-studentsBasic-display">
       <transition name="test" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -40,37 +35,14 @@
 export default {
   data: function() {
     return {
-      router: 'studentMain'
+      router: 'main'
     }
   },
+  mounted: function() {
+    //console.log(this.$store.getters.getUserAccount)
+    $('#info-account').text(this.$store.getters.getUserAccount)
+  },
   methods: {
-    homeClick: function() {
-      this.$router.push({ name: 'studentMain' })
-    },
-    userInfoClick: function() {
-      //
-    },
-    logoutClick: function() {
-      if (confirm("您确定要退出登录吗？")) {
-        var _self = this
-        $.ajax({
-          type: 'GET',
-          url: '/users/logout',
-          contentType: 'application/json;charset=utf-8',
-          timeout: 5000,
-          success: function(result, xhr) {
-            //console.log(result)
-            _self.$router.push({ name: 'login' })
-          },
-          error: function(result, xhr) {
-            //连接错误
-            //console.log(result)
-            alert('服务器连接错误: ' + xhr)
-          }
-        })
-      }
-    }
-    /*
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })
     },
@@ -109,7 +81,8 @@ export default {
     },
     techProjectClick: function() {
       this.$router.push({ name: 'techProject' })
-    },
+    }
+    /*
     queryClick: function() {
       this.$router.push({ name: 'query' })
     },
@@ -118,119 +91,12 @@ export default {
     },
     importClick: function() {
       this.$router.push({ name: 'import' })
-    }*/
+    }
+    */
   }
 }
 </script>
-<style>
-.test-enter-active,
-.test-leave-active {
-  transition: 0.25s ease-in-out;
-}
-
-.test-enter {
-  transform: translate(-100px, 0);
-  opacity: 0;
-}
-
-.test-leave-to
-/* .component-fade-leave-active for below version 2.1.8 */
-{
-  transform: translate(300px, 0);
-  opacity: 0;
-}
-
-:root {
-  --blue: rgb(0, 132, 255);
-  --blue-hover: rgb(15, 79, 207);
-  --grey-menu: rgb(88, 88, 106);
-  --grey-hover: rgb(210, 210, 210);
-  --grey-shadow: rgb(190, 190, 190);
-  --grey-background: rgb(240, 240, 240);
-}
-
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  width: 100%;
-  height: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  /*
-  background-color: lighten(#eceef1, 30%);
-  color: #34495e;
-  */
-  background-color: var(--grey-background);
-}
-
-header {
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  top: 0;
-  left: 0;
-  background-color: var(--blue);
-  /*shadow*/
-  box-shadow: 1px 1px 5px var(--grey-shadow);
-  z-index: 100;
-}
-
-.app-bar-hide {
-  display: none;
-}
-
-.button-home {
-  position: relative;
-  display: inline-block;
-  height: 100%;
-  width: 225px;
-  text-align: center;
-  padding-top: 12px;
-  background-color: var(--blue);
-  font-size: 1.5em;
-  font-weight: lighter;
-  color: white;
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-.button-home:hover {
-  background-color: var(--blue-hover);
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.button-icon {
-  float: right;
-  margin-right: 40px;
-  padding-top: 20px;
-  height: 100%;
-  width: 10px;
-  text-align: center;
-  color: black;
-  font-size: 20px;
-  font-weight: bold;
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-.button-icon:hover {
-  color: white;
-  cursor: pointer;
-}
-/*
+<style scoped>
 aside {
   position: fixed;
   height: calc(100vh - 60px);
@@ -239,7 +105,7 @@ aside {
   left: 0;
   background-color: white;
   color: var(--grey-menu);
-  // shadow
+  /*shadow*/
   box-shadow: 1px 1px 5px var(--grey-shadow);
   z-index: 99;
   overflow: auto;
@@ -250,6 +116,11 @@ aside {
   text-align: center;
   border-bottom: 1px solid black;
   padding-top: 25px;
+  /*
+  **make text in div vertical-align to center
+  line-height: 100px;
+  margin: auto;
+  */
 }
 
 .button-side {
@@ -259,15 +130,15 @@ aside {
   text-align: left;
   line-height: 40px;
   margin: auto;
-  // 怎么让文字左右居中？
+  /*怎么让文字左右居中？*/
   padding-left: 67px;
   transition: 0.3s;
   -moz-transition: 0.3s;
-  // Firefox 4
+  /* Firefox 4 */
   -webkit-transition: 0.3s;
-  // Safari 和 Chrome
+  /* Safari 和 Chrome */
   -o-transition: 0.3s;
-  // Opera
+  /* Opera */
 }
 
 .button-side:hover {
@@ -282,26 +153,27 @@ aside {
   transform: translate(0, -3px);
   box-shadow: 0 2px 3px var(--grey-shadow);
 }
-*/
-.container-info-display {
+
+.container-studentsBasic-display {
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger
   使用calc可以实现响应式布局, vw计算的是包括滚动条的宽度/高度*/
-  max-width: calc(100vw);
+  max-width: calc(100vw - 225px);
   min-height: calc(100vh - 60px);
-  margin-top: 60px;
+  margin-left: 225px;
   text-align: center;
   /*the section cannot render in front of headbar*/
   z-index: -100;
   background-color: var(--grey-background);
   overflow: hidden;
 }
-
-.container-info-all {
+/*
+.container-studentsBasic-all {
   margin: 0;
   text-align: center;
-  /*the section cannot render in front of headbar*/
+  // the section cannot render in front of headbar
   z-index: -100;
   background-color: var(--grey-background);
   overflow: hidden;
 }
+*/
 </style>

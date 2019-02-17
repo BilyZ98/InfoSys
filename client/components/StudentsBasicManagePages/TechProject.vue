@@ -1,17 +1,13 @@
 <template>
-<div id="manager-award">
+<div id="manager-techProject">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">奖励情况管理</p>
+		<p class="header-text">科研项目管理</p>
 		<div class="header-button">
 			<span @click="insertClick">插入数据</span>
-			<!--<span>上传学生照片</span>-->
-			<!--<span>修改密码</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
-			<!--<span>删除</span>
-			<span>编辑</span>-->
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
 			<span @click="sendEmailClick">邮件通知</span>
@@ -21,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'award-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'techProject-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'techProject-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'award-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'techProject-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -39,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['award']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['techProject']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['award'][record.id]!=undefined">{{student['award'][record.id]}}</span>
+		  		<span v-if="student['techProject'][record.id]!=undefined">{{student['techProject'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -53,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'techProject-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'award-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'techProject-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -76,9 +72,9 @@
 	  </div>
 	</div>
 	<!-- 发邮件 -->
-	<div id="popup-email" class="popup-background">
-		<email :emailSid="emailSid"></email>
-	</div>
+    <div id="popup-email" class="popup-background">
+      <email :emailSid="emailSid"></email>
+    </div>
 </div>
 </template>
 
@@ -94,9 +90,9 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['award'],
+			table: tableData['techProject'],
 			students: [],
-			emailSid: null
+      emailSid: []
 		}
 	},
 	created: function(){
@@ -106,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'awardInsert'
+        name: 'techProjectInsert'
       })
 		},
 		queryClick: function(){
-			var award = {equal: {}, range: {}, fuzzy: {}}
+			var techProject = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['award'],
+        select: ['techProject'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#award-sid').val()) {
-				var sid = $('#award-sid').val()
-				if(!formatCheck['award']['sid']['reg'].test(sid)){
-					alert(formatCheck['award']['sid']['msg'])
+			if ($('#techProject-sid').val()) {
+				var sid = $('#techProject-sid').val()
+				if(!formatCheck['techProject']['sid']['reg'].test(sid)){
+					alert(formatCheck['techProject']['sid']['msg'])
 					return
 				} else {
-					award['equal']['sid'] = sid
+					techProject['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['award']){
-      		if(formatCheck['award'][item]['reg'] != null){
-      			let record = $('#award-' + item).val()
-      			if(record != '' && !formatCheck['award'][item]['reg'].test(record)){
-      				message = message + formatCheck['award'][item]['msg']
+      	for(let item in formatCheck['techProject']){
+      		if(formatCheck['techProject'][item]['reg'] != null){
+      			let record = $('#techProject-' + item).val()
+      			if(record != '' && !formatCheck['techProject'][item]['reg'].test(record)){
+      				message = message + formatCheck['techProject'][item]['msg']
       			}
       		}
       	}
@@ -142,22 +138,24 @@ export default {
       		alert(message)
       		return
       	}
-	      if ($('#award-name').val()) award['equal']['name'] = $('#award-name').val()
-	      if ($('#award-stuClass').val()) award['equal']['stuClass'] = $('#award-stuClass').val()
-	      if ($('#award-awardName').val()) award['fuzzy']['awardName'] = $('#award-awardName').val()
-	      if ($('#award-awardClass').val()) award['fuzzy']['awardClass'] = $('#award-awardClass').val()
-	      if ($('#award-employer').val()) award['equal']['employer'] = $('#award-employer').val()
-	      if ($('#award-awardJiBie').val()) award['equal']['awardJiBie'] = $('#award-awardJiBie').val()
+      	//格式正确，发送数据到后台
+	      if ($('#techProject-name').val()) techProject['equal']['name'] = $('#techProject-name').val()
+				if ($('#techProject-proName').val()) techProject['equal']['proName'] = $('#techProject-proName').val()
+	      if ($('#techProject-employer').val()) techProject['equal']['employer'] = $('#techProject-employer').val()
+	      if ($('#techProject-money').val()) techProject['equal']['money'] = $('#techProject-money').val()
+	      if ($('#techProject-proId').val()) techProject['equal']['proId'] = $('#techProject-proId').val()
+	      if ($('#techProject-class').val()) techProject['equal']['class'] = $('#techProject-class').val()
+	      if ($('#techProject-teacher').val()) techProject['equal']['teacher'] = $('#techProject-teacher').val()
 	      //range value
-	      var rangeVal = {min: $('#award-awardYearMonth .min').val(), max: $('#award-awardYearMonth .max').val()}
+	    	console.log($('#techProject-proTime .min').val())
+	      var rangeVal = {min: $('#techProject-proTime .min').val(), max: $('#techProject-proTime .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        award['range']['awardYearMonth'] = rangeVal
+	        techProject['range']['proTime'] = rangeVal
 	      }
-	      if ($('#award-teacher').val()) award['equal']['teacher'] = $('#award-teacher').val()
 	    }
-      if(JSON.stringify(award['equal']) != emptyCell) data['where']['equal']['award'] = award['equal']
-      if(JSON.stringify(award['range']) != emptyCell) data['where']['range']['award'] = award['range']
-      if(JSON.stringify(award['fuzzy']) != emptyCell) data['where']['fuzzy']['award'] = award['fuzzy']
+      if(JSON.stringify(techProject['equal']) != emptyCell) data['where']['equal']['techProject'] = techProject['equal']
+      if(JSON.stringify(techProject['range']) != emptyCell) data['where']['range']['techProject'] = techProject['range']
+      if(JSON.stringify(techProject['fuzzy']) != emptyCell) data['where']['fuzzy']['techProject'] = techProject['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -195,11 +193,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("award")
+			downloadModule.mubanDownload("techProject")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'award')
+			importModule.importClick($('#button-import').prop('files')[0], 'techProject')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -213,8 +211,9 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        if(this.emailSid.indexOf(this.students[i]['award']['sid']) == -1)
-          this.emailSid.push(this.students[i]['award']['sid'])
+        //解决重复添加问题
+        if(this.emailSid.indexOf(this.students[i]['techProject']['sid']) == -1)
+          this.emailSid.push(this.students[i]['techProject']['sid'])
       }
     },
 		studentClick: function(event){
@@ -230,7 +229,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'award',
+				table: 'techProject',
 				fields: [],
 				condition: {}
 			}
@@ -238,13 +237,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#award-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#award-stat-' + recordId).val()
+					if( $('#techProject-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#techProject-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -267,7 +266,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('award', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('techProject', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -286,7 +285,7 @@ export default {
 </script>
 
 <style>
-#manager-award .container-header {
+#manager-techProject .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -303,17 +302,17 @@ export default {
   user-select: none;
 }
 
-#manager-award .header-text {
+#manager-techProject .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-award .header-button {
+#manager-techProject .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-award .header-button span{
+#manager-techProject .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -322,32 +321,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-award .header-button span:hover {
+#manager-techProject .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-award .container-record {
+#manager-techProject .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-award .container-record .text-range {
+#manager-techProject .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-award .container-record .min, #manager-award .container-record .max {
+#manager-techProject .container-record .min, #manager-techProject .container-record .max {
 	width: 50px;
 }
 
-#manager-award .container-record .hide-container {
+#manager-techProject .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-award .manager-button {
+#manager-techProject .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -363,15 +362,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-award .manager-button:hover {
+#manager-techProject .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-award .container-card-list {
+#manager-techProject .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-award .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-techProject .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -383,7 +382,7 @@ export default {
   overflow: auto;
 }
 
-#manager-award .container-card-list table {
+#manager-techProject .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -392,31 +391,31 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-award .container-card-list th, td {
+#manager-techProject .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-award .container-card-list tr{
+#manager-techProject .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-award .container-card-list tr:not(.table-head):hover{
+#manager-techProject .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-award #button-import {
+#manager-techProject #button-import {
 	display: none;
 }
 
 /* 弹窗 (background) */
 
-#manager-award .popup-background {
+#manager-techProject .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -435,9 +434,9 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-award .popup-content {
+#manager-techProject .popup-content {
   background-color: white;
-  margin-top: calc(50% - 650px);
+  margin-top: 100px;
   margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
@@ -448,7 +447,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-award .popup-cell {
+#manager-techProject .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -456,7 +455,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-award #popup-close {
+#manager-techProject #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -467,13 +466,15 @@ export default {
   text-align: right;
 }
 
-#manager-award #popup-close:hover, #popup-close:focus {
+#manager-techProject #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-#manager-award .stat-record {
+/*统计*/
+
+#manager-techProject .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -481,28 +482,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-award .stat-record .hide-container {
+#manager-techProject .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-award .stat-record input[type="checkbox"] {
+#manager-techProject .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-award .stat-input {
+#manager-techProject .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-award #stat-chart-bar {
+#manager-techProject #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-award #stat-chart-pie {
+#manager-techProject #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

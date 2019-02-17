@@ -1,10 +1,10 @@
 <template>
-<div id="manager-techProject">
+<div id="manager-scholarship">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">科研项目管理</p>
+		<p class="header-text">奖学金管理</p>
 		<div class="header-button">
-			<span @click="insertClick">插入数据</span>
+			<!--<span @click="insertClick">插入数据</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
@@ -17,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'techProject-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'techProject-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'scholarship-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'scholarship-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'techProject-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'scholarship-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['techProject']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['scholarship']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['techProject'][record.id]!=undefined">{{student['techProject'][record.id]}}</span>
+		  		<span v-if="student['scholarship'][record.id]!=undefined">{{student['scholarship'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'techProject-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'scholarship-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'techProject-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'scholarship-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -90,7 +90,7 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['techProject'],
+			table: tableData['scholarship'],
 			students: [],
       emailSid: []
 		}
@@ -102,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'techProjectInsert'
+        name: 'scholarshipInsert'
       })
 		},
 		queryClick: function(){
-			var techProject = {equal: {}, range: {}, fuzzy: {}}
+			var scholarship = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['techProject'],
+        select: ['scholarship'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#techProject-sid').val()) {
-				var sid = $('#techProject-sid').val()
-				if(!formatCheck['techProject']['sid']['reg'].test(sid)){
-					alert(formatCheck['techProject']['sid']['msg'])
+			if ($('#scholarship-sid').val()) {
+				var sid = $('#scholarship-sid').val()
+				if(!formatCheck['scholarship']['sid']['reg'].test(sid)){
+					alert(formatCheck['scholarship']['sid']['msg'])
 					return
 				} else {
-					techProject['equal']['sid'] = sid
+					scholarship['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['techProject']){
-      		if(formatCheck['techProject'][item]['reg'] != null){
-      			let record = $('#techProject-' + item).val()
-      			if(record != '' && !formatCheck['techProject'][item]['reg'].test(record)){
-      				message = message + formatCheck['techProject'][item]['msg']
+      	for(let item in formatCheck['scholarship']){
+      		if(formatCheck['scholarship'][item]['reg'] != null){
+      			let record = $('#scholarship-' + item).val()
+      			if(record != '' && !formatCheck['scholarship'][item]['reg'].test(record)){
+      				message = message + formatCheck['scholarship'][item]['msg']
       			}
       		}
       	}
@@ -139,23 +139,19 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#techProject-name').val()) techProject['equal']['name'] = $('#techProject-name').val()
-				if ($('#techProject-proName').val()) techProject['equal']['proName'] = $('#techProject-proName').val()
-	      if ($('#techProject-employer').val()) techProject['equal']['employer'] = $('#techProject-employer').val()
-	      if ($('#techProject-money').val()) techProject['equal']['money'] = $('#techProject-money').val()
-	      if ($('#techProject-proId').val()) techProject['equal']['proId'] = $('#techProject-proId').val()
-	      if ($('#techProject-class').val()) techProject['equal']['class'] = $('#techProject-class').val()
-	      if ($('#techProject-teacher').val()) techProject['equal']['teacher'] = $('#techProject-teacher').val()
+	      if ($('#scholarship-name').val()) scholarship['equal']['name'] = $('#scholarship-name').val()
+	      if ($('#scholarship-year').val()) scholarship['equal']['year'] = $('#scholarship-year').val()
+	      if ($('#scholarship-shipClass').val()) scholarship['equal']['shipClass'] = $('#scholarship-shipClass').val()
+	      if ($('#scholarship-shipName').val()) scholarship['equal']['shipName'] = $('#scholarship-shipName').val()
 	      //range value
-	    	console.log($('#techProject-proTime .min').val())
-	      var rangeVal = {min: $('#techProject-proTime .min').val(), max: $('#techProject-proTime .max').val()}
+	      var rangeVal = {min: $('#scholarship-shipAmount .min').val(), max: $('#scholarship-shipAmount .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        techProject['range']['proTime'] = rangeVal
+	        scholarship['range']['shipAmount'] = rangeVal
 	      }
 	    }
-      if(JSON.stringify(techProject['equal']) != emptyCell) data['where']['equal']['techProject'] = techProject['equal']
-      if(JSON.stringify(techProject['range']) != emptyCell) data['where']['range']['techProject'] = techProject['range']
-      if(JSON.stringify(techProject['fuzzy']) != emptyCell) data['where']['fuzzy']['techProject'] = techProject['fuzzy']
+      if(JSON.stringify(scholarship['equal']) != emptyCell) data['where']['equal']['scholarship'] = scholarship['equal']
+      if(JSON.stringify(scholarship['range']) != emptyCell) data['where']['range']['scholarship'] = scholarship['range']
+      if(JSON.stringify(scholarship['fuzzy']) != emptyCell) data['where']['fuzzy']['scholarship'] = scholarship['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -193,11 +189,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("techProject")
+			downloadModule.mubanDownload("scholarship")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'techProject')
+			importModule.importClick($('#button-import').prop('files')[0], 'scholarship')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -212,8 +208,8 @@ export default {
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
         //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['techProject']['sid']) == -1)
-          this.emailSid.push(this.students[i]['techProject']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['scholarship']['sid']) == -1)
+          this.emailSid.push(this.students[i]['scholarship']['sid'])
       }
     },
 		studentClick: function(event){
@@ -229,7 +225,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'techProject',
+				table: 'scholarship',
 				fields: [],
 				condition: {}
 			}
@@ -237,13 +233,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#techProject-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#techProject-stat-' + recordId).val()
+					if( $('#scholarship-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#scholarship-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -266,7 +262,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('techProject', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('scholarship', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -285,7 +281,7 @@ export default {
 </script>
 
 <style>
-#manager-techProject .container-header {
+#manager-scholarship .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -302,17 +298,17 @@ export default {
   user-select: none;
 }
 
-#manager-techProject .header-text {
+#manager-scholarship .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-techProject .header-button {
+#manager-scholarship .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-techProject .header-button span{
+#manager-scholarship .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -321,32 +317,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-techProject .header-button span:hover {
+#manager-scholarship .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-techProject .container-record {
+#manager-scholarship .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-techProject .container-record .text-range {
+#manager-scholarship .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-techProject .container-record .min, #manager-techProject .container-record .max {
+#manager-scholarship .container-record .min, #manager-scholarship .container-record .max {
 	width: 50px;
 }
 
-#manager-techProject .container-record .hide-container {
+#manager-scholarship .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-techProject .manager-button {
+#manager-scholarship .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -362,15 +358,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-techProject .manager-button:hover {
+#manager-scholarship .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-techProject .container-card-list {
+#manager-scholarship .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-techProject .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-scholarship .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -382,7 +378,7 @@ export default {
   overflow: auto;
 }
 
-#manager-techProject .container-card-list table {
+#manager-scholarship .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -391,31 +387,31 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-techProject .container-card-list th, td {
+#manager-scholarship .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-techProject .container-card-list tr{
+#manager-scholarship .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-techProject .container-card-list tr:not(.table-head):hover{
+#manager-scholarship .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-techProject #button-import {
+#manager-scholarship #button-import {
 	display: none;
 }
 
 /* 弹窗 (background) */
 
-#manager-techProject .popup-background {
+#manager-scholarship .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -434,7 +430,7 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-techProject .popup-content {
+#manager-scholarship .popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 200px);
@@ -447,7 +443,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-techProject .popup-cell {
+#manager-scholarship .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -455,7 +451,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-techProject #popup-close {
+#manager-scholarship #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -466,7 +462,7 @@ export default {
   text-align: right;
 }
 
-#manager-techProject #popup-close:hover, #popup-close:focus {
+#manager-scholarship #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -474,7 +470,7 @@ export default {
 
 /*统计*/
 
-#manager-techProject .stat-record {
+#manager-scholarship .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -482,28 +478,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-techProject .stat-record .hide-container {
+#manager-scholarship .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-techProject .stat-record input[type="checkbox"] {
+#manager-scholarship .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-techProject .stat-input {
+#manager-scholarship .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-techProject #stat-chart-bar {
+#manager-scholarship #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-techProject #stat-chart-pie {
+#manager-scholarship #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

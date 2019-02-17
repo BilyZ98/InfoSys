@@ -1,8 +1,8 @@
 <template>
-  <div id="manager-basicInfo">
+  <div id="manager-cadre">
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">基本信息管理</p>
+      <p class="header-text">学生干部任职情况管理</p>
       <div class="header-button">
         <span @click="insertClick">插入数据</span>
         <span @click="downloadClick">导出</span>
@@ -17,16 +17,14 @@
     <div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
         <span>{{record.name}}:</span>
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
+        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'cadre-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'cadre-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
-        <span class="text-range">最小值 </span>
-        <input type="text" class="min"><span class="text-range">最大值 </span>
-        <input type="text" class="max">
-        </span>
+        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'cadre-'+record.id">
+        <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
+      </span>
       </div>
       <button class="manager-button" @click="queryClick">查询</button>
     </div>
@@ -37,10 +35,10 @@
           <th>#</th>
           <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['cadre']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
+            <span v-if="student['cadre'][record.id]!=undefined">{{student['cadre'][record.id]}}</span>
             <span v-else>---</span>
           </td>
         </tr>
@@ -49,19 +47,20 @@
     <!--统计-->
     <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
-        <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-stat-'+record.id">
+        <span>{{record.name}}:</span>
+        <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'cadre-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'basicInfo-stat-'+record.id">
+        <input class="hide-container" type="text" v-else v-bind:id="'cadre-stat-'+record.id">
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
       <span id="stat-chart-pie"></span>
     </div>
     <!-- 弹窗 -->
-    <div id="popup-diy" class="popup-background">
+    <div id="popup" class="popup-background">
       <!-- 弹窗内容 -->
       <div class="popup-content">
         <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -75,7 +74,6 @@
     <div id="popup-email" class="popup-background">
       <email :emailSid="emailSid"></email>
     </div>
-    <!--发短信-->
   </div>
 </template>
 <script>
@@ -84,51 +82,53 @@ import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
-
 var empty = JSON.stringify({ equal: {}, range: {}, fuzzy: {} })
 var emptyCell = JSON.stringify({})
 
 export default {
   data: function() {
     return {
-      table: tableData['basicInfo'],
+      table: tableData['cadre'],
       students: [],
-      quill: null,
       emailSid: []
     }
+  },
+  created: function() {
+    //alert(window.innerWidth)
+    //1536*728
   },
   methods: {
     insertClick: function() {
       this.$router.push({
-        name: 'basicInfoInsert'
+        name: 'cadreInsert'
       })
     },
     queryClick: function() {
-      var basicInfo = { equal: {}, range: {}, fuzzy: {} }
+      var cadre = { equal: {}, range: {}, fuzzy: {} }
       var data = {
-        select: ['basicInfo'],
+        select: ['cadre'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-      if ($('#basicInfo-sid').val()) {
-        var sid = $('#basicInfo-sid').val()
-        if (!formatCheck['basicInfo']['sid']['reg'].test(sid)) {
-          alert(formatCheck['basicInfo']['sid']['msg'])
+      if ($('#cadre-sid').val()) {
+        var sid = $('#cadre-sid').val()
+        if (!formatCheck['cadre']['sid']['reg'].test(sid)) {
+          alert(formatCheck['cadre']['sid']['msg'])
           return
         } else {
-          basicInfo['equal']['sid'] = sid
+          cadre['equal']['sid'] = sid
         }
       } else {
         //验证格式
         var message = ''
-        for (let item in formatCheck['basicInfo']) {
-          if (formatCheck['basicInfo'][item]['reg'] != null) {
-            let record = $('#basicInfo-' + item).val()
-            if (record != '' && !formatCheck['basicInfo'][item]['reg'].test(record)) {
-              message = message + formatCheck['basicInfo'][item]['msg']
+        for (let item in formatCheck['cadre']) {
+          if (formatCheck['cadre'][item]['reg'] != null) {
+            let record = $('#cadre-' + item).val()
+            if (record != '' && !formatCheck['cadre'][item]['reg'].test(record)) {
+              message = message + formatCheck['cadre'][item]['msg']
             }
           }
         }
@@ -136,31 +136,15 @@ export default {
           alert(message)
           return
         }
-        if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
-        if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
-        if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
-        if ($('#basicInfo-ethnic').val()) basicInfo['equal']['ethnic'] = $('#basicInfo-ethnic').val()
-        if ($('#basicInfo-poliFace').val()) basicInfo['equal']['poliFace'] = $('#basicInfo-poliFace').val()
-        if ($('#basicInfo-idNum').val()) basicInfo['equal']['idNum'] = $('#basicInfo-idNum').val()
-        if ($('#basicInfo-birthDate').val()) basicInfo['equal']['birthDate'] = $('#basicInfo-birthDate').val()
-        if ($('#basicInfo-tel').val()) basicInfo['equal']['tel'] = $('#basicInfo-tel').val()
-        if ($('#basicInfo-mail').val()) basicInfo['equal']['mail'] = $('#basicInfo-mail').val()
-        if ($('#basicInfo-wechat').val()) basicInfo['equal']['wechat'] = $('#basicInfo-wechat').val()
-        if ($('#basicInfo-qq').val()) basicInfo['equal']['qq'] = $('#basicInfo-qq').val()
-        if ($('#basicInfo-degree').val()) basicInfo['equal']['degree'] = $('#basicInfo-degree').val()
-        if ($('#basicInfo-stuGroup ').val()) basicInfo['equal']['stuGroup '] = $('#basicInfo-stuGroup ').val()
-        if ($('#basicInfo-grade').val()) basicInfo['equal']['grade'] = $('#basicInfo-grade').val()
-        if ($('#basicInfo-major').val()) basicInfo['equal']['major'] = $('#basicInfo-major').val()
-        if ($('#basicInfo-class').val()) basicInfo['equal']['class'] = $('#basicInfo-class').val()
-        if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val()
-        if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
-        if ($('#basicInfo-dormRoom ').val()) basicInfo['equal']['dormRoom '] = $('#basicInfo-dormRoom ').val()
-        if ($('#basicInfo-speciality').val()) basicInfo['equal']['speciality'] = $('#basicInfo-speciality').val()
-        if ($('#basicInfo-highSchool').val()) basicInfo['equal']['highSchool'] = $('#basicInfo-highSchool').val()
+        if ($('#cadre-name').val()) cadre['equal']['name'] = $('#cadre-name').val()
+        if ($('#cadre-year').val()) cadre['equal']['year'] = $('#cadre-year').val()
+        if ($('#cadre-cadreClass').val()) cadre['equal']['cadreClass'] = $('#cadre-cadreClass').val()
+        if ($('#cadre-cadreName').val()) cadre['equal']['cadreName'] = $('#cadre-cadreName').val()
+        if ($('#cadre-cadreJiBie').val()) cadre['equal']['cadreJiBie'] = $('#cadre-cadreJiBie').val()
       }
-      if (JSON.stringify(basicInfo['equal']) != emptyCell) data['where']['equal']['basicInfo'] = basicInfo['equal']
-      if (JSON.stringify(basicInfo['range']) != emptyCell) data['where']['range']['basicInfo'] = basicInfo['range']
-      if (JSON.stringify(basicInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['basicInfo'] = basicInfo['fuzzy']
+      if (JSON.stringify(cadre['equal']) != emptyCell) data['where']['equal']['cadre'] = cadre['equal']
+      if (JSON.stringify(cadre['range']) != emptyCell) data['where']['range']['cadre'] = cadre['range']
+      if (JSON.stringify(cadre['fuzzy']) != emptyCell) data['where']['fuzzy']['cadre'] = cadre['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -198,18 +182,17 @@ export default {
       $('#button-import').click()
     },
     mubanDownload: function() {
-      downloadModule.mubanDownload("basicInfo")
+      downloadModule.mubanDownload("cadre")
     },
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
-      importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
+      importModule.importClick($('#button-import').prop('files')[0], 'cadre')
     },
-    //自定义弹窗函数
     diycolClick: function() {
-      $('#popup-diy').show()
+      $('#popup').show()
     },
     modalCloseClick: function() {
-      $('#popup-diy').hide()
+      $('#popup').hide()
     },
     //发送邮件函数
     sendEmailClick: function() {
@@ -217,12 +200,10 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['basicInfo']['sid']) == -1)
-          this.emailSid.push(this.students[i]['basicInfo']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['cadre']['sid']) == -1)
+          this.emailSid.push(this.students[i]['cadre']['sid'])
       }
     },
-    //查询学生点击事件
     studentClick: function(event) {
       //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
@@ -234,40 +215,23 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    //统计
-    statButtonToggle: function(event) {
-      if (event.currentTarget.className == 'stat-checkbox') {
-        event.currentTarget.className = 'stat-checkbox-selected'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
-      } else if (event.currentTarget.className == 'stat-checkbox-selected') {
-        event.currentTarget.className = 'stat-checkbox'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
-      }
-    },
     statClick: function() {
       var data = {
-        table: 'basicInfo',
+        table: 'cadre',
         fields: [],
         condition: {}
       }
-      $('.stat-checkbox-selected').each(function() {
-        /*
+      $('.stat-checkbox').each(function() {
         if ($(this).prop("checked")) {
           var recordId = $(this).attr('record-id')
           data['fields'].push(recordId)
-          if ($('#basicInfo-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
+          if ($('#cadre-stat-' + recordId).val() != '') {
+            data['condition'][recordId] = $('#cadre-stat-' + recordId).val()
           }
-        }
-        */
-        var recordId = $(this).attr('record-id')
-        data['fields'].push(recordId)
-        if ($('#basicInfo-stat-' + recordId).val() != '') {
-          data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
-        alert('请选择想要统计的字段打勾！')
+        alert('请选择想要统计的字段！')
         return
       }
       var postData = JSON.stringify(data)
@@ -284,13 +248,13 @@ export default {
             if (key == 'content') {
               //操作成功，配置图表
               /*let statData = [
-                {gender: '女', major: null, statistic: 2},
-                {gender: '女', major: 123, statistic: 1},
-                {gender: '男', major: 123, statistic: 3},
-                {gender: '男', major: '数学', statistic: 1}
-              ]*/
+						    {gender: '女', major: null, statistic: 2},
+						    {gender: '女', major: 123, statistic: 1},
+						    {gender: '男', major: 123, statistic: 3},
+						    {gender: '男', major: '数学', statistic: 1}
+					    ]*/
               console.log(result[key])
-              statModule.createCharts('basicInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
+              statModule.createCharts('cadre', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
               //操作错误
               alert('统计错误: ' + result[key]['sqlMessage'])
@@ -308,7 +272,7 @@ export default {
 }
 </script>
 <style>
-#manager-basicInfo .container-header {
+#manager-cadre .container-header {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
@@ -325,17 +289,17 @@ export default {
   user-select: none;
 }
 
-#manager-basicInfo .header-text {
+#manager-cadre .header-text {
   float: left;
   font-size: 20px;
 }
 
-#manager-basicInfo .header-button {
+#manager-cadre .header-button {
   float: right;
   margin-right: 20px;
 }
 
-#manager-basicInfo .header-button span {
+#manager-cadre .header-button span {
   padding-right: 10px;
   font-weight: bold;
   transition: 0.3s;
@@ -347,33 +311,33 @@ export default {
   /* Opera */
 }
 
-#manager-basicInfo .header-button span:hover {
+#manager-cadre .header-button span:hover {
   color: var(--blue);
   cursor: pointer;
 }
 
-#manager-basicInfo .container-record {
+#manager-cadre .container-record {
   float: left;
   width: 360px;
   height: 35px;
   text-align: right;
 }
 
-#manager-basicInfo .container-record .text-range {
+#manager-cadre .container-record .text-range {
   font-size: 12px;
 }
 
-#manager-basicInfo .container-record .min,
-#manager-basicInfo .container-record .max {
+#manager-cadre .container-record .min,
+#manager-cadre .container-record .max {
   width: 50px;
 }
 
-#manager-basicInfo .container-record .hide-container {
+#manager-cadre .container-record .hide-container {
   height: 24px;
   width: 180px;
 }
 
-#manager-basicInfo .manager-button {
+#manager-cadre .manager-button {
   float: left;
   clear: both;
   width: 110px;
@@ -392,15 +356,15 @@ export default {
   /* Opera */
 }
 
-#manager-basicInfo .manager-button:hover {
+#manager-cadre .manager-button:hover {
   background-color: var(--blue-hover);
 }
 
-#manager-basicInfo .container-card-list {
+#manager-cadre .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-basicInfo .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-cadre .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -412,7 +376,7 @@ export default {
   overflow: auto;
 }
 
-#manager-basicInfo .container-card-list table {
+#manager-cadre .container-card-list table {
   /*不会自动换行*/
   word-break: keep-all;
   white-space: nowrap;
@@ -421,7 +385,7 @@ export default {
   border-color: var(--grey-shadow);
 }
 
-#manager-basicInfo .container-card-list th,
+#manager-cadre .container-card-list th,
 td {
   padding-left: 8px;
   padding-right: 8px;
@@ -429,7 +393,7 @@ td {
   padding-bottom: 4px;
 }
 
-#manager-basicInfo .container-card-list tr {
+#manager-cadre .container-card-list tr {
   transition: background 0.3s;
   -moz-transition: background 0.3s;
   /* Firefox 4 */
@@ -439,17 +403,17 @@ td {
   /* Opera */
 }
 
-#manager-basicInfo .container-card-list tr:not(.table-head):hover {
+#manager-cadre .container-card-list tr:not(.table-head):hover {
   background-color: var(--grey-hover);
 }
 
-#manager-basicInfo #button-import {
+#manager-cadre #button-import {
   display: none;
 }
 
 /* 弹窗 (background) */
 
-#manager-basicInfo .popup-background {
+#manager-cadre .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -470,10 +434,10 @@ td {
 
 /* 弹窗内容 */
 
-#manager-basicInfo .popup-content {
+#manager-cadre .popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 300px);
+  margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
   height: 400px;
@@ -483,7 +447,7 @@ td {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-basicInfo .popup-cell {
+#manager-cadre .popup-cell {
   float: left;
   width: 160px;
   height: 40px;
@@ -494,7 +458,7 @@ td {
 
 /* 关闭按钮 */
 
-#manager-basicInfo #popup-close {
+#manager-cadre #popup-close {
   position: relative;
   float: right;
   width: 50px;
@@ -505,89 +469,47 @@ td {
   text-align: right;
 }
 
-#manager-basicInfo #popup-close:hover,
+#manager-cadre #popup-close:hover,
 #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
+
+
 /*统计*/
 
-#manager-basicInfo .stat-record {
+#manager-cadre .stat-record {
   float: left;
   width: 300px;
-  min-height: 35px;
+  height: 35px;
   text-align: right;
   font-size: 13px;
 }
 
-#manager-basicInfo .stat-record .hide-container {
-  height: 23px;
+#manager-cadre .stat-record .hide-container {
+  height: 22px;
   width: 140px;
 }
 
-
-/*
-#manager-basicInfo .stat-record input[type="checkbox"] {
+#manager-cadre .stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
 }
-*/
 
-#manager-basicInfo .stat-checkbox {
-  width: 130px;
-  height: 25px;
-  border: none;
-  background-color: var(--grey-hover);
-  outline: none;
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-#manager-basicInfo .stat-checkbox:hover {
-  transform: translate(0, -2px);
-  box-shadow: 0 2px 2px var(--grey-shadow);
-}
-
-#manager-basicInfo .stat-checkbox-selected {
-  width: 130px;
-  height: 25px;
-  border: none;
-  color: white;
-  background-color: var(--blue);
-  transform: translate(0, -2px);
-  box-shadow: 0 2px 2px var(--grey-shadow);
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-#manager-basicInfo .stat-input {
+#manager-cadre .stat-input {
   width: 10px;
   height: 10px;
 }
 
-#manager-basicInfo .stat-nonselect-range {
-  display: none;
-}
-
-#manager-basicInfo #stat-chart-bar {
+#manager-cadre #stat-chart-bar {
   float: left;
   margin-top: 20px;
   width: 50%;
 }
 
-#manager-basicInfo #stat-chart-pie {
+#manager-cadre #stat-chart-pie {
   float: left;
   margin-top: 20px;
   width: 50%;

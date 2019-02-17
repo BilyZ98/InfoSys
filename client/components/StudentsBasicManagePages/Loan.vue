@@ -1,17 +1,13 @@
 <template>
-<div id="manager-aid">
+<div id="manager-loan">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">资助信息管理</p>
+		<p class="header-text">助学贷款管理</p>
 		<div class="header-button">
 			<!--<span @click="insertClick">插入数据</span>-->
-			<!--<span>上传学生照片</span>-->
-			<!--<span>修改密码</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
-			<!--<span>删除</span>
-			<span>编辑</span>-->
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
 			<span @click="sendEmailClick">邮件通知</span>
@@ -21,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'aid-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'aid-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'loan-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'loan-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'aid-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -39,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['aid']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['loan']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['aid'][record.id]!=undefined">{{student['aid'][record.id]}}</span>
+		  		<span v-if="student['loan'][record.id]!=undefined">{{student['loan'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -53,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'aid-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'loan-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'aid-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'loan-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -65,7 +61,7 @@
 	</div>
 
 	<!-- 弹窗 -->
-	<div id="popup-diy" class="popup-background">
+	<div id="popup" class="popup-background">
 	  <!-- 弹窗内容 -->
 	  <div class="popup-content">
 	    <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -76,9 +72,9 @@
 	  </div>
 	</div>
 	<!-- 发邮件 -->
-	<div id="popup-email" class="popup-background">
-		<email :emailSid="emailSid"></email>
-	</div>
+    <div id="popup-email" class="popup-background">
+      <email :emailSid="emailSid"></email>
+    </div>
 </div>
 </template>
 
@@ -94,9 +90,9 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['aid'],
+			table: tableData['loan'],
 			students: [],
-			emailSid: null
+      emailSid: []
 		}
 	},
 	created: function(){
@@ -106,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'aidInsert'
+        name: 'loanInsert'
       })
 		},
 		queryClick: function(){
-			var aid = {equal: {}, range: {}, fuzzy: {}}
+			var loan = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['aid'],
+        select: ['loan'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#aid-sid').val()) {
-				var sid = $('#aid-sid').val()
-				if(!formatCheck['aid']['sid']['reg'].test(sid)){
-					alert(formatCheck['aid']['sid']['msg'])
+			if ($('#loan-sid').val()) {
+				var sid = $('#loan-sid').val()
+				if(!formatCheck['loan']['sid']['reg'].test(sid)){
+					alert(formatCheck['loan']['sid']['msg'])
 					return
 				} else {
-					aid['equal']['sid'] = sid
+					loan['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['aid']){
-      		if(formatCheck['aid'][item]['reg'] != null){
-      			let record = $('#aid-' + item).val()
-      			if(record != '' && !formatCheck['aid'][item]['reg'].test(record)){
-      				message = message + formatCheck['aid'][item]['msg']
+      	for(let item in formatCheck['loan']){
+      		if(formatCheck['loan'][item]['reg'] != null){
+      			let record = $('#loan-' + item).val()
+      			if(record != '' && !formatCheck['loan'][item]['reg'].test(record)){
+      				message = message + formatCheck['loan'][item]['msg']
       			}
       		}
       	}
@@ -143,24 +139,20 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#aid-name').val()) aid['equal']['name'] = $('#aid-name').val()
-	      if ($('#aid-year').val()) aid['equal']['year'] = $('#aid-year').val()
-	      if ($('#aid-aidClass').val()) aid['equal']['aidClass'] = $('#aid-aidClass').val()
-	      if ($('#aid-aidProperty').val()) aid['equal']['aidProperty'] = $('#aid-aidProperty').val()
-	      if ($('#aid-aidName').val()) aid['equal']['aidName'] = $('#aid-aidName').val()
-	      //range value
-	      var rangeVal = {min: $('#aid-aidAmount .min').val(), max: $('#aid-aidAmount .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        aid['range']['aidAmount'] = rangeVal
-	      }
+	      if ($('#loan-name').val()) loan['equal']['name'] = $('#loan-name').val()
+	      if ($('#loan-submitYear').val()) loan['equal']['submitYear'] = $('#loan-submitYear').val()
+	      if ($('#loan-loanYears').val()) loan['equal']['loanYears'] = $('#loan-loanYears').val()
+	      if ($('#loan-moneyPerYear').val()) loan['equal']['moneyPerYear'] = $('#loan-moneyPerYear').val()
+	      if ($('#loan-loanTotal').val()) loan['equal']['loanTotal'] = $('#loan-loanTotal').val()
 	    }
-      if(JSON.stringify(aid['equal']) != emptyCell) data['where']['equal']['aid'] = aid['equal']
-      if(JSON.stringify(aid['range']) != emptyCell) data['where']['range']['aid'] = aid['range']
-      if(JSON.stringify(aid['fuzzy']) != emptyCell) data['where']['fuzzy']['aid'] = aid['fuzzy']
+      if(JSON.stringify(loan['equal']) != emptyCell) data['where']['equal']['loan'] = loan['equal']
+      if(JSON.stringify(loan['range']) != emptyCell) data['where']['range']['loan'] = loan['range']
+      if(JSON.stringify(loan['fuzzy']) != emptyCell) data['where']['fuzzy']['loan'] = loan['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
       var _self = this
+      // replace getPost with your data fetching util / API wrapper
       $.ajax({
         type: 'POST',
         url: '/students/query',
@@ -193,17 +185,17 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("aid")
+			downloadModule.mubanDownload("loan")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'aid')
+			importModule.importClick($('#button-import').prop('files')[0], 'loan')
 		},
 		diycolClick: function(){
-			$('#popup-diy').show()
+			$('#popup').show()
 		},
 		modalCloseClick: function() {
-			$('#popup-diy').hide()
+			$('#popup').hide()
 		},
 		//发送邮件函数
     sendEmailClick: function() {
@@ -211,8 +203,9 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        if(this.emailSid.indexOf(this.students[i]['aid']['sid']) == -1)
-          this.emailSid.push(this.students[i]['aid']['sid'])
+        //解决重复添加问题
+        if(this.emailSid.indexOf(this.students[i]['loan']['sid']) == -1)
+          this.emailSid.push(this.students[i]['loan']['sid'])
       }
     },
 		studentClick: function(event){
@@ -228,7 +221,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'aid',
+				table: 'loan',
 				fields: [],
 				condition: {}
 			}
@@ -236,13 +229,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#aid-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#aid-stat-' + recordId).val()
+					if( $('#loan-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#loan-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -265,7 +258,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('aid', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('loan', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -284,7 +277,7 @@ export default {
 </script>
 
 <style>
-#manager-aid .container-header {
+#manager-loan .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -301,17 +294,17 @@ export default {
   user-select: none;
 }
 
-#manager-aid .header-text {
+#manager-loan .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-aid .header-button {
+#manager-loan .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-aid .header-button span{
+#manager-loan .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -320,32 +313,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-aid .header-button span:hover {
+#manager-loan .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-aid .container-record {
+#manager-loan .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-aid .container-record .text-range {
+#manager-loan .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-aid .container-record .min, #manager-aid .container-record .max {
+#manager-loan .container-record .min, #manager-loan .container-record .max {
 	width: 50px;
 }
 
-#manager-aid .container-record .hide-container {
+#manager-loan .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-aid .manager-button {
+#manager-loan .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -361,15 +354,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-aid .manager-button:hover {
+#manager-loan .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-aid .container-card-list {
+#manager-loan .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-aid .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-loan .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -381,7 +374,7 @@ export default {
   overflow: auto;
 }
 
-#manager-aid .container-card-list table {
+#manager-loan .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -390,31 +383,44 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-aid .container-card-list th, td {
+#manager-loan .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-aid .container-card-list tr{
+#manager-loan .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-aid .container-card-list tr:not(.table-head):hover{
+#manager-loan .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-aid #button-import {
+#manager-loan #button-import {
 	display: none;
 }
 
 /* 弹窗 (background) */
+#manager-loan .popup-background {
+  display: none; /* 默认隐藏 */
+  position: fixed; /* 定位 */
+  z-index: 10; /* 设置在顶层 */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+/* 弹窗 (background) */
 
-#manager-aid .popup-background {
+#manager-loan .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -433,9 +439,9 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-aid .popup-content {
+#manager-loan .popup-content {
   background-color: white;
-  margin-top: calc(50% - 650px);
+  margin-top: 100px;
   margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
@@ -446,7 +452,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-aid .popup-cell {
+#manager-loan .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -454,7 +460,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-aid #popup-close {
+#manager-loan #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -465,7 +471,7 @@ export default {
   text-align: right;
 }
 
-#manager-aid #popup-close:hover, #popup-close:focus {
+#manager-loan #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -473,7 +479,7 @@ export default {
 
 /*统计*/
 
-#manager-aid .stat-record {
+#manager-loan .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -481,28 +487,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-aid .stat-record .hide-container {
+#manager-loan .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-aid .stat-record input[type="checkbox"] {
+#manager-loan .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-aid .stat-input {
+#manager-loan .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-aid #stat-chart-bar {
+#manager-loan #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-aid #stat-chart-pie {
+#manager-loan #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

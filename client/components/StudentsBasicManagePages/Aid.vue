@@ -1,13 +1,17 @@
 <template>
-<div id="manager-partyInfo">
+<div id="manager-aid">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">党员信息管理</p>
+		<p class="header-text">资助信息管理</p>
 		<div class="header-button">
 			<!--<span @click="insertClick">插入数据</span>-->
+			<!--<span>上传学生照片</span>-->
+			<!--<span>修改密码</span>-->
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
+			<!--<span>删除</span>
+			<span>编辑</span>-->
 			<span>转毕业生</span>
 			<span @click="diycolClick">自定义列</span>
 			<span @click="sendEmailClick">邮件通知</span>
@@ -17,12 +21,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'partyInfo-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'partyInfo-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'aid-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'aid-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'partyInfo-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'aid-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +39,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['partyInfo']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['aid']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['partyInfo'][record.id]!=undefined">{{student['partyInfo'][record.id]}}</span>
+		  		<span v-if="student['aid'][record.id]!=undefined">{{student['aid'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +53,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'partyInfo-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'aid-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'partyInfo-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'aid-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -61,7 +65,7 @@
 	</div>
 
 	<!-- 弹窗 -->
-	<div id="popup" class="popup-background">
+	<div id="popup-diy" class="popup-background">
 	  <!-- 弹窗内容 -->
 	  <div class="popup-content">
 	    <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -72,9 +76,9 @@
 	  </div>
 	</div>
 	<!-- 发邮件 -->
-    <div id="popup-email" class="popup-background">
-      <email :emailSid="emailSid"></email>
-    </div>
+	<div id="popup-email" class="popup-background">
+		<email :emailSid="emailSid"></email>
+	</div>
 </div>
 </template>
 
@@ -90,9 +94,9 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['partyInfo'],
+			table: tableData['aid'],
 			students: [],
-      emailSid: []
+			emailSid: null
 		}
 	},
 	created: function(){
@@ -102,35 +106,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'partyInfoInsert'
+        name: 'aidInsert'
       })
 		},
 		queryClick: function(){
-			var partyInfo = {equal: {}, range: {}, fuzzy: {}}
+			var aid = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['partyInfo'],
+        select: ['aid'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#partyInfo-sid').val()) {
-				var sid = $('#partyInfo-sid').val()
-				if(!formatCheck['partyInfo']['sid']['reg'].test(sid)){
-					alert(formatCheck['partyInfo']['sid']['msg'])
+			if ($('#aid-sid').val()) {
+				var sid = $('#aid-sid').val()
+				if(!formatCheck['aid']['sid']['reg'].test(sid)){
+					alert(formatCheck['aid']['sid']['msg'])
 					return
 				} else {
-					partyInfo['equal']['sid'] = sid
+					aid['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['partyInfo']){
-      		if(formatCheck['partyInfo'][item]['reg'] != null){
-      			let record = $('#partyInfo-' + item).val()
-      			if(record != '' && !formatCheck['partyInfo'][item]['reg'].test(record)){
-      				message = message + formatCheck['partyInfo'][item]['msg']
+      	for(let item in formatCheck['aid']){
+      		if(formatCheck['aid'][item]['reg'] != null){
+      			let record = $('#aid-' + item).val()
+      			if(record != '' && !formatCheck['aid'][item]['reg'].test(record)){
+      				message = message + formatCheck['aid'][item]['msg']
       			}
       		}
       	}
@@ -139,69 +143,24 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#partyInfo-name').val()) partyInfo['equal']['name'] = $('#partyInfo-name').val()
-	      if ($('#partyInfo-isLeaguer').val()) partyInfo['equal']['isLeaguer'] = $('#partyInfo-isLeaguer').val()
-	      if ($('#partyInfo-joinGroupTime').val()) partyInfo['equal']['joinGroupTime'] = $('#partyInfo-joinGroupTime').val()
+	      if ($('#aid-name').val()) aid['equal']['name'] = $('#aid-name').val()
+	      if ($('#aid-year').val()) aid['equal']['year'] = $('#aid-year').val()
+	      if ($('#aid-aidClass').val()) aid['equal']['aidClass'] = $('#aid-aidClass').val()
+	      if ($('#aid-aidProperty').val()) aid['equal']['aidProperty'] = $('#aid-aidProperty').val()
+	      if ($('#aid-aidName').val()) aid['equal']['aidName'] = $('#aid-aidName').val()
 	      //range value
-	      var rangeVal = {min: $('#partyInfo-submitTime .min').val(), max: $('#partyInfo-submitTime .max').val()}
+	      var rangeVal = {min: $('#aid-aidAmount .min').val(), max: $('#aid-aidAmount .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['submitTime'] = rangeVal
+	        aid['range']['aidAmount'] = rangeVal
 	      }
-	      if ($('#partyInfo-activerTime').val()) partyInfo['equal']['activerTime'] = $('#apartyInfo-ctiverTime').val()
-	      if ($('#partyInfo-contacter').val()) partyInfo['equal']['contacter'] = $('#partyInfo-contacter').val()
-	      if ($('#partyInfo-isVerified').val()) partyInfo['equal']['isVerified'] = $('#partyInfo-isVerified').val()
-	      if ($('#partyInfo-democracyTime').val()) partyInfo['equal']['democracyTime'] = $('#partyInfo-democracyTime').val()
-	      if ($('#partyInfo-developerTime').val()) partyInfo['equal']['developerTime'] = $('#partyInfo-developerTime').val()
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-partyTrainedTime .min').val(), max: $('#partyInfo-partyTrainedTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['partyTrainedTime'] = rangeVal
-	      }
-	      if ($('#partyInfo-introducerTime').val()) partyInfo['equal']['introducerTime'] = $('#partyInfo-introducerTime').val()
-	      if ($('#partyInfo-introducer').val()) partyInfo['equal']['introducer'] = $('#partyInfo-introducer').val()
-	      if ($('#partyInfo-hasAutobigraphy').val()) partyInfo['equal']['hasAutobigraphy'] = $('#partyInfo-hasAutobigraphy').val()
-	      if ($('#partyInfo-hasApplicatiionForm').val()) partyInfo['equal']['hasApplicatiionForm'] = $('#partyInfo-hasApplicatiionForm').val()
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-partyBranchTime .min').val(), max: $('#partyInfo-partyBranchTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['partyBranchTime'] = rangeVal
-	      }
-	      if ($('#partyInfo-partyTalkTime').val()) partyInfo['equal']['partyTalkTime'] = $('#partyInfo-partyTalkTime').val()
-	      if ($('#partyInfo-partyTalker').val()) partyInfo['equal']['partyTalker'] = $('#partyInfo-partyTalker').val()
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-probationaryTime .min').val(), max: $('#partyInfo-probationaryTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['probationaryTime'] = rangeVal
-	      }
-	      if ($('#partyInfo-partyOathTime').val()) partyInfo['equal']['partyOathTime'] = $('#partyInfo-partyOathTime').val()
-	      if ($('#partyInfo-fullSubTime').val()) partyInfo['equal']['fullSubTime'] = $('#partyInfo-fullSubTime').val()
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-fullMeetingTime .min').val(), max: $('#partyInfo-fullMeetingTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['fullMeetingTime'] = rangeVal
-	      }
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-fullMemberTime .min').val(), max: $('#partyInfo-fullMemberTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['fullMemberTime'] = rangeVal
-	      }
-	      if ($('#partyInfo-archiveTime').val()) partyInfo['equal']['archiveTime'] = $('#partyInfo-archiveTime').val()
-	      if ($('#partyInfo-temporaryTime').val()) partyInfo['equal']['temporaryTime'] = $('#partyInfo-temporaryTime').val()
-	      //range value
-	      var rangeVal = {min: $('#partyInfo-outTime .min').val(), max: $('#partyInfo-outTime .max').val()}
-	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        partyInfo['range']['outTime'] = rangeVal
-	      }
-	      if ($('#partyInfo-outUnit').val()) partyInfo['equal']['outUnit'] = $('#partyInfo-outUnit').val()
 	    }
-      if(JSON.stringify(partyInfo['equal']) != emptyCell) data['where']['equal']['partyInfo'] = partyInfo['equal']
-      if(JSON.stringify(partyInfo['range']) != emptyCell) data['where']['range']['partyInfo'] = partyInfo['range']
-      if(JSON.stringify(partyInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['partyInfo'] = partyInfo['fuzzy']
+      if(JSON.stringify(aid['equal']) != emptyCell) data['where']['equal']['aid'] = aid['equal']
+      if(JSON.stringify(aid['range']) != emptyCell) data['where']['range']['aid'] = aid['range']
+      if(JSON.stringify(aid['fuzzy']) != emptyCell) data['where']['fuzzy']['aid'] = aid['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
       var _self = this
-      // replace getPost with your data fetching util / API wrapper
       $.ajax({
         type: 'POST',
         url: '/students/query',
@@ -234,17 +193,17 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("partyInfo")
+			downloadModule.mubanDownload("aid")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'partyInfo')
+			importModule.importClick($('#button-import').prop('files')[0], 'aid')
 		},
 		diycolClick: function(){
-			$('#popup').show()
+			$('#popup-diy').show()
 		},
 		modalCloseClick: function() {
-			$('#popup').hide()
+			$('#popup-diy').hide()
 		},
 		//发送邮件函数
     sendEmailClick: function() {
@@ -252,9 +211,8 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['partyInfo']['sid']) == -1)
-          this.emailSid.push(this.students[i]['partyInfo']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['aid']['sid']) == -1)
+          this.emailSid.push(this.students[i]['aid']['sid'])
       }
     },
 		studentClick: function(event){
@@ -270,7 +228,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'partyInfo',
+				table: 'aid',
 				fields: [],
 				condition: {}
 			}
@@ -278,13 +236,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#partyInfo-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#partyInfo-stat-' + recordId).val()
+					if( $('#aid-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#aid-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -307,7 +265,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('partyInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('aid', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -326,7 +284,7 @@ export default {
 </script>
 
 <style>
-#manager-partyInfo .container-header {
+#manager-aid .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -343,17 +301,17 @@ export default {
   user-select: none;
 }
 
-#manager-partyInfo .header-text {
+#manager-aid .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-partyInfo .header-button {
+#manager-aid .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-partyInfo .header-button span{
+#manager-aid .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -362,32 +320,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-partyInfo .header-button span:hover {
+#manager-aid .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-partyInfo .container-record {
+#manager-aid .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-partyInfo .container-record .text-range {
+#manager-aid .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-partyInfo .container-record .min, #manager-partyInfo .container-record .max {
+#manager-aid .container-record .min, #manager-aid .container-record .max {
 	width: 50px;
 }
 
-#manager-partyInfo .container-record .hide-container {
+#manager-aid .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-partyInfo .manager-button {
+#manager-aid .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -403,15 +361,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-partyInfo .manager-button:hover {
+#manager-aid .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-partyInfo .container-card-list {
+#manager-aid .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-partyInfo .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-aid .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -423,7 +381,7 @@ export default {
   overflow: auto;
 }
 
-#manager-partyInfo .container-card-list table {
+#manager-aid .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -432,30 +390,31 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-partyInfo .container-card-list th, td {
+#manager-aid .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-partyInfo .container-card-list tr{
+#manager-aid .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-partyInfo .container-card-list tr:not(.table-head):hover{
+#manager-aid .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-partyInfo #button-import {
+#manager-aid #button-import {
 	display: none;
 }
+
 /* 弹窗 (background) */
 
-#manager-partyInfo .popup-background {
+#manager-aid .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -474,28 +433,28 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-partyInfo .popup-content {
+#manager-aid .popup-content {
   background-color: white;
-  margin-top: 100px;
-  margin-left: calc(50% - 230px);
+  margin-top: calc(50% - 650px);
+  margin-left: calc(50% - 200px);
   padding: 30px;
-  width: 700px;
-	height: 430px;
+  width: 600px;
+	height: 400px;
 	/*radius*/
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-partyInfo .popup-cell {
+#manager-aid .popup-cell {
 	float: left;
-	width: 170px;
+	width: 160px;
 	height: 40px;
 	text-align: left;
 }
 
 /* 关闭按钮 */
-#manager-partyInfo #popup-close {
+#manager-aid #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -506,7 +465,7 @@ export default {
   text-align: right;
 }
 
-#manager-partyInfo #popup-close:hover, #popup-close:focus {
+#manager-aid #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -514,7 +473,7 @@ export default {
 
 /*统计*/
 
-#manager-partyInfo .stat-record {
+#manager-aid .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -522,28 +481,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-partyInfo .stat-record .hide-container {
+#manager-aid .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-partyInfo .stat-record input[type="checkbox"] {
+#manager-aid .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-partyInfo .stat-input {
+#manager-aid .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-partyInfo #stat-chart-bar {
+#manager-aid #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-partyInfo #stat-chart-pie {
+#manager-aid #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

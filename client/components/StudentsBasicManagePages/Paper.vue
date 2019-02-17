@@ -1,10 +1,10 @@
 <template>
-<div id="manager-schoolRoll">
+<div id="manager-paper">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">学籍管理</p>
+		<p class="header-text">发表论文情况管理</p>
 		<div class="header-button">
-			<!--<span @click="insertClick">插入数据</span>-->
+			<span @click="insertClick">插入数据</span>
 			<span @click="downloadClick">导出</span>
 			<span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
 			<span @click="mubanDownload">下载模板</span>
@@ -17,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'schoolRoll-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'schoolRoll-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'paper-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'paper-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'schoolRoll-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'paper-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['schoolRoll']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['paper']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['schoolRoll'][record.id]!=undefined">{{student['schoolRoll'][record.id]}}</span>
+		  		<span v-if="student['paper'][record.id]!=undefined">{{student['paper'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'schoolRoll-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'paper-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'schoolRoll-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'paper-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -90,7 +90,7 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['schoolRoll'],
+			table: tableData['paper'],
 			students: [],
       emailSid: []
 		}
@@ -102,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'schoolRollInsert'
+        name: 'paperInsert'
       })
 		},
 		queryClick: function(){
-			var schoolRoll = {equal: {}, range: {}, fuzzy: {}}
+			var paper = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['schoolRoll'],
+        select: ['paper'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#schoolRoll-sid').val()) {
-				var sid = $('#schoolRoll-sid').val()
-				if(!formatCheck['schoolRoll']['sid']['reg'].test(sid)){
-					alert(formatCheck['schoolRoll']['sid']['msg'])
+			if ($('#paper-sid').val()) {
+				var sid = $('#paper-sid').val()
+				if(!formatCheck['paper']['sid']['reg'].test(sid)){
+					alert(formatCheck['paper']['sid']['msg'])
 					return
 				} else {
-					schoolRoll['equal']['sid'] = sid
+					paper['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['schoolRoll']){
-      		if(formatCheck['schoolRoll'][item]['reg'] != null){
-      			let record = $('#schoolRoll-' + item).val()
-      			if(record != '' && !formatCheck['schoolRoll'][item]['reg'].test(record)){
-      				message = message + formatCheck['schoolRoll'][item]['msg']
+      	for(let item in formatCheck['paper']){
+      		if(formatCheck['paper'][item]['reg'] != null){
+      			let record = $('#paper-' + item).val()
+      			if(record != '' && !formatCheck['paper'][item]['reg'].test(record)){
+      				message = message + formatCheck['paper'][item]['msg']
       			}
       		}
       	}
@@ -139,24 +139,28 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#schoolRoll-name').val()) schoolRoll['equal']['name'] = $('#schoolRoll-name').val()
-	      if ($('#schoolRoll-isAtRoll').val()) schoolRoll['equal']['isAtRoll'] = $('#schoolRoll-isAtRoll').val()
-	      if ($('#schoolRoll-class').val()) schoolRoll['equal']['class'] = $('#schoolRoll-class').val()
-	      if ($('#schoolRoll-studyYears').val()) schoolRoll['equal']['studyYears'] = $('#schoolRoll-studyYears').val()
+	      if ($('#paper-name').val()) paper['equal']['name'] = $('#paper-name').val()
+	      if ($('#paper-title').val()) paper['equal']['title'] = $('#paper-title').val()
+	      if ($('#paper-authors').val()) paper['equal']['authors'] = $('#paper-authors').val()
+	      if ($('#paper-journal').val()) paper['equal']['journal'] = $('#paper-journal').val()
+	      if ($('#paper-serialNumber').val()) paper['equal']['serialNumber'] = $('#paper-serialNumber').val()
 	      //range value
-	      var rangeVal = {min: $('#schoolRoll-timeInSchool .min').val(), max: $('#schoolRoll-timeInSchool .max').val()}
+	      var rangeVal = {min: $('#paper-pagesRange .min').val(), max: $('#paper-pagesRange .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        schoolRoll['range']['timeInSchool'] = rangeVal
+	        paper['range']['pagesRange'] = rangeVal
 	      }
-	      if ($('#schoolRoll-isFee').val()) schoolRoll['equal']['isFee'] = $('#schoolRoll-isFee').val()
-	      if ($('#schoolRoll-isArrive').val()) schoolRoll['equal']['isArrive'] = $('#schoolRoll-isArrive').val()
-	      if ($('#schoolRoll-isRollChanged').val()) schoolRoll['equal']['isRollChanged'] = $('#schoolRoll-isRollChanged').val()
-	      if ($('#schoolRoll-changeTime').val()) schoolRoll['equal']['changeTime'] = $('#schoolRoll-changeTime').val()
-	      if ($('#schoolRoll-changeClass').val()) schoolRoll['equal']['changeClass'] = $('#schoolRoll-changeClass').val()
+	      if ($('#paper-paperGrade').val()) paper['equal']['paperGrade'] = $('#paper-paperGrade').val()
+	      if ($('#paper-paperClass').val()) paper['equal']['paperClass'] = $('#paper-paperClass').val()
+	      //range value
+	      var rangeVal = {min: $('#paper-time .min').val(), max: $('#paper-time .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        paper['range']['time'] = rangeVal
+	      }
+	      if ($('#paper-insTeacher').val()) paper['equal']['insTeacher'] = $('#paper-insTeacher').val()
 	    }
-      if(JSON.stringify(schoolRoll['equal']) != emptyCell) data['where']['equal']['schoolRoll'] = schoolRoll['equal']
-      if(JSON.stringify(schoolRoll['range']) != emptyCell) data['where']['range']['schoolRoll'] = schoolRoll['range']
-      if(JSON.stringify(schoolRoll['fuzzy']) != emptyCell) data['where']['fuzzy']['schoolRoll'] = schoolRoll['fuzzy']
+      if(JSON.stringify(paper['equal']) != emptyCell) data['where']['equal']['paper'] = paper['equal']
+      if(JSON.stringify(paper['range']) != emptyCell) data['where']['range']['paper'] = paper['range']
+      if(JSON.stringify(paper['fuzzy']) != emptyCell) data['where']['fuzzy']['paper'] = paper['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -194,11 +198,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("schoolRoll")
+			downloadModule.mubanDownload("paper")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'schoolRoll')
+			importModule.importClick($('#button-import').prop('files')[0], 'paper')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -213,8 +217,8 @@ export default {
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
         //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['schoolRoll']['sid']) == -1)
-          this.emailSid.push(this.students[i]['schoolRoll']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['paper']['sid']) == -1)
+          this.emailSid.push(this.students[i]['paper']['sid'])
       }
     },
 		studentClick: function(event){
@@ -230,7 +234,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'schoolRoll',
+				table: 'paper',
 				fields: [],
 				condition: {}
 			}
@@ -238,13 +242,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#schoolRoll-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#schoolRoll-stat-' + recordId).val()
+					if( $('#paper-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#paper-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -259,8 +263,15 @@ export default {
 	      success: function(result, xhr) {
 	      	for(let key in result){
 					  if(key == 'content'){
+	      			//操作成功，配置图表
+	      			/*let statData = [
+						    {gender: '女', major: null, statistic: 2},
+						    {gender: '女', major: 123, statistic: 1},
+						    {gender: '男', major: 123, statistic: 3},
+						    {gender: '男', major: '数学', statistic: 1}
+					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('schoolRoll', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('paper', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -279,7 +290,7 @@ export default {
 </script>
 
 <style>
-#manager-schoolRoll .container-header {
+#manager-paper .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -296,17 +307,17 @@ export default {
   user-select: none;
 }
 
-#manager-schoolRoll .header-text {
+#manager-paper .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-schoolRoll .header-button {
+#manager-paper .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-schoolRoll .header-button span{
+#manager-paper .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -315,32 +326,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-schoolRoll .header-button span:hover {
+#manager-paper .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-schoolRoll .container-record {
+#manager-paper .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-schoolRoll .container-record .text-range {
+#manager-paper .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-schoolRoll .container-record .min, #manager-schoolRoll .container-record .max {
+#manager-paper .container-record .min, #manager-paper .container-record .max {
 	width: 50px;
 }
 
-#manager-schoolRoll .container-record .hide-container {
+#manager-paper .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-schoolRoll .manager-button {
+#manager-paper .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -356,15 +367,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-schoolRoll .manager-button:hover {
+#manager-paper .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-schoolRoll .container-card-list {
+#manager-paper .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-schoolRoll .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-paper .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -376,7 +387,7 @@ export default {
   overflow: auto;
 }
 
-#manager-schoolRoll .container-card-list table {
+#manager-paper .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -385,30 +396,30 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-schoolRoll .container-card-list th, td {
+#manager-paper .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-schoolRoll .container-card-list tr{
+#manager-paper .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-schoolRoll .container-card-list tr:not(.table-head):hover{
+#manager-paper .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-schoolRoll #button-import {
+#manager-paper #button-import {
 	display: none;
 }
 /* 弹窗 (background) */
 
-#manager-schoolRoll .popup-background {
+#manager-paper .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -427,7 +438,7 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-schoolRoll .popup-content {
+#manager-paper .popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 200px);
@@ -440,7 +451,7 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-schoolRoll .popup-cell {
+#manager-paper .popup-cell {
 	float: left;
 	width: 160px;
 	height: 40px;
@@ -448,7 +459,7 @@ export default {
 }
 
 /* 关闭按钮 */
-#manager-schoolRoll #popup-close {
+#manager-paper #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -459,7 +470,7 @@ export default {
   text-align: right;
 }
 
-#manager-schoolRoll #popup-close:hover, #popup-close:focus {
+#manager-paper #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -467,7 +478,7 @@ export default {
 
 /*统计*/
 
-#manager-schoolRoll .stat-record {
+#manager-paper .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -475,28 +486,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-schoolRoll .stat-record .hide-container {
+#manager-paper .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-schoolRoll .stat-record input[type="checkbox"] {
+#manager-paper .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-schoolRoll .stat-input {
+#manager-paper .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-schoolRoll #stat-chart-bar {
+#manager-paper #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-schoolRoll #stat-chart-pie {
+#manager-paper #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;

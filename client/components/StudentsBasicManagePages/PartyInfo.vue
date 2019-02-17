@@ -1,8 +1,8 @@
 <template>
-<div id="manager-scholarship">
+<div id="manager-partyInfo">
 	<!--顶部菜单-->
 	<div class="container-header">
-		<p class="header-text">奖学金管理</p>
+		<p class="header-text">党员信息管理</p>
 		<div class="header-button">
 			<!--<span @click="insertClick">插入数据</span>-->
 			<span @click="downloadClick">导出</span>
@@ -17,12 +17,12 @@
 	<div class="container-card-list">
 		<div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'scholarship-'+record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'scholarship-'+record.id">
+      <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'partyInfo-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'partyInfo-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'scholarship-'+record.id">
+      <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'partyInfo-'+record.id">
         <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
       </span>
     </div>
@@ -35,10 +35,10 @@
 				<th>#</th>
 		    <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
 		  </tr>
-		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['scholarship']['sid']">
+		  <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['partyInfo']['sid']">
 		  	<td>{{index+1}}</td>
 		  	<td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-		  		<span v-if="student['scholarship'][record.id]!=undefined">{{student['scholarship'][record.id]}}</span>
+		  		<span v-if="student['partyInfo'][record.id]!=undefined">{{student['partyInfo'][record.id]}}</span>
 		  		<span v-else>---</span>
 		  	</td>
 		  </tr>
@@ -49,11 +49,11 @@
 		<div class="stat-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
       <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
-      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'scholarship-stat-'+record.id">
+      <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'partyInfo-stat-'+record.id">
       	<option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input class="hide-container" type="text" v-else v-bind:id="'scholarship-stat-'+record.id">
+      <input class="hide-container" type="text" v-else v-bind:id="'partyInfo-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
 		<span id="stat-chart-bar"></span>
@@ -90,7 +90,7 @@ var emptyCell = JSON.stringify({})
 export default {
 	data: function(){
 		return {
-			table: tableData['scholarship'],
+			table: tableData['partyInfo'],
 			students: [],
       emailSid: []
 		}
@@ -102,35 +102,35 @@ export default {
 	methods: {
 		insertClick: function(){
 			this.$router.push({
-        name: 'scholarshipInsert'
+        name: 'partyInfoInsert'
       })
 		},
 		queryClick: function(){
-			var scholarship = {equal: {}, range: {}, fuzzy: {}}
+			var partyInfo = {equal: {}, range: {}, fuzzy: {}}
 			var data = {
-        select: ['scholarship'],
+        select: ['partyInfo'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-			if ($('#scholarship-sid').val()) {
-				var sid = $('#scholarship-sid').val()
-				if(!formatCheck['scholarship']['sid']['reg'].test(sid)){
-					alert(formatCheck['scholarship']['sid']['msg'])
+			if ($('#partyInfo-sid').val()) {
+				var sid = $('#partyInfo-sid').val()
+				if(!formatCheck['partyInfo']['sid']['reg'].test(sid)){
+					alert(formatCheck['partyInfo']['sid']['msg'])
 					return
 				} else {
-					scholarship['equal']['sid'] = sid
+					partyInfo['equal']['sid'] = sid
 				}
       } else {
       	//验证格式
       	var message = ''
-      	for(let item in formatCheck['scholarship']){
-      		if(formatCheck['scholarship'][item]['reg'] != null){
-      			let record = $('#scholarship-' + item).val()
-      			if(record != '' && !formatCheck['scholarship'][item]['reg'].test(record)){
-      				message = message + formatCheck['scholarship'][item]['msg']
+      	for(let item in formatCheck['partyInfo']){
+      		if(formatCheck['partyInfo'][item]['reg'] != null){
+      			let record = $('#partyInfo-' + item).val()
+      			if(record != '' && !formatCheck['partyInfo'][item]['reg'].test(record)){
+      				message = message + formatCheck['partyInfo'][item]['msg']
       			}
       		}
       	}
@@ -139,19 +139,64 @@ export default {
       		return
       	}
       	//格式正确，发送数据到后台
-	      if ($('#scholarship-name').val()) scholarship['equal']['name'] = $('#scholarship-name').val()
-	      if ($('#scholarship-year').val()) scholarship['equal']['year'] = $('#scholarship-year').val()
-	      if ($('#scholarship-shipClass').val()) scholarship['equal']['shipClass'] = $('#scholarship-shipClass').val()
-	      if ($('#scholarship-shipName').val()) scholarship['equal']['shipName'] = $('#scholarship-shipName').val()
+	      if ($('#partyInfo-name').val()) partyInfo['equal']['name'] = $('#partyInfo-name').val()
+	      if ($('#partyInfo-isLeaguer').val()) partyInfo['equal']['isLeaguer'] = $('#partyInfo-isLeaguer').val()
+	      if ($('#partyInfo-joinGroupTime').val()) partyInfo['equal']['joinGroupTime'] = $('#partyInfo-joinGroupTime').val()
 	      //range value
-	      var rangeVal = {min: $('#scholarship-shipAmount .min').val(), max: $('#scholarship-shipAmount .max').val()}
+	      var rangeVal = {min: $('#partyInfo-submitTime .min').val(), max: $('#partyInfo-submitTime .max').val()}
 	      if(rangeVal['min']!='' && rangeVal['max']!=''){
-	        scholarship['range']['shipAmount'] = rangeVal
+	        partyInfo['range']['submitTime'] = rangeVal
 	      }
+	      if ($('#partyInfo-activerTime').val()) partyInfo['equal']['activerTime'] = $('#apartyInfo-ctiverTime').val()
+	      if ($('#partyInfo-contacter').val()) partyInfo['equal']['contacter'] = $('#partyInfo-contacter').val()
+	      if ($('#partyInfo-isVerified').val()) partyInfo['equal']['isVerified'] = $('#partyInfo-isVerified').val()
+	      if ($('#partyInfo-democracyTime').val()) partyInfo['equal']['democracyTime'] = $('#partyInfo-democracyTime').val()
+	      if ($('#partyInfo-developerTime').val()) partyInfo['equal']['developerTime'] = $('#partyInfo-developerTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-partyTrainedTime .min').val(), max: $('#partyInfo-partyTrainedTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['partyTrainedTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-introducerTime').val()) partyInfo['equal']['introducerTime'] = $('#partyInfo-introducerTime').val()
+	      if ($('#partyInfo-introducer').val()) partyInfo['equal']['introducer'] = $('#partyInfo-introducer').val()
+	      if ($('#partyInfo-hasAutobigraphy').val()) partyInfo['equal']['hasAutobigraphy'] = $('#partyInfo-hasAutobigraphy').val()
+	      if ($('#partyInfo-hasApplicatiionForm').val()) partyInfo['equal']['hasApplicatiionForm'] = $('#partyInfo-hasApplicatiionForm').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-partyBranchTime .min').val(), max: $('#partyInfo-partyBranchTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['partyBranchTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-partyTalkTime').val()) partyInfo['equal']['partyTalkTime'] = $('#partyInfo-partyTalkTime').val()
+	      if ($('#partyInfo-partyTalker').val()) partyInfo['equal']['partyTalker'] = $('#partyInfo-partyTalker').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-probationaryTime .min').val(), max: $('#partyInfo-probationaryTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['probationaryTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-partyOathTime').val()) partyInfo['equal']['partyOathTime'] = $('#partyInfo-partyOathTime').val()
+	      if ($('#partyInfo-fullSubTime').val()) partyInfo['equal']['fullSubTime'] = $('#partyInfo-fullSubTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-fullMeetingTime .min').val(), max: $('#partyInfo-fullMeetingTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['fullMeetingTime'] = rangeVal
+	      }
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-fullMemberTime .min').val(), max: $('#partyInfo-fullMemberTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['fullMemberTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-archiveTime').val()) partyInfo['equal']['archiveTime'] = $('#partyInfo-archiveTime').val()
+	      if ($('#partyInfo-temporaryTime').val()) partyInfo['equal']['temporaryTime'] = $('#partyInfo-temporaryTime').val()
+	      //range value
+	      var rangeVal = {min: $('#partyInfo-outTime .min').val(), max: $('#partyInfo-outTime .max').val()}
+	      if(rangeVal['min']!='' && rangeVal['max']!=''){
+	        partyInfo['range']['outTime'] = rangeVal
+	      }
+	      if ($('#partyInfo-outUnit').val()) partyInfo['equal']['outUnit'] = $('#partyInfo-outUnit').val()
 	    }
-      if(JSON.stringify(scholarship['equal']) != emptyCell) data['where']['equal']['scholarship'] = scholarship['equal']
-      if(JSON.stringify(scholarship['range']) != emptyCell) data['where']['range']['scholarship'] = scholarship['range']
-      if(JSON.stringify(scholarship['fuzzy']) != emptyCell) data['where']['fuzzy']['scholarship'] = scholarship['fuzzy']
+      if(JSON.stringify(partyInfo['equal']) != emptyCell) data['where']['equal']['partyInfo'] = partyInfo['equal']
+      if(JSON.stringify(partyInfo['range']) != emptyCell) data['where']['range']['partyInfo'] = partyInfo['range']
+      if(JSON.stringify(partyInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['partyInfo'] = partyInfo['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -189,11 +234,11 @@ export default {
 			$('#button-import').click()
 		},
 		mubanDownload: function(){
-			downloadModule.mubanDownload("scholarship")
+			downloadModule.mubanDownload("partyInfo")
 		},
 		//onchange时调用这个函数实现文件选择后上传
 		importUpload: function(){
-			importModule.importClick($('#button-import').prop('files')[0], 'scholarship')
+			importModule.importClick($('#button-import').prop('files')[0], 'partyInfo')
 		},
 		diycolClick: function(){
 			$('#popup').show()
@@ -208,8 +253,8 @@ export default {
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
         //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['scholarship']['sid']) == -1)
-          this.emailSid.push(this.students[i]['scholarship']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['partyInfo']['sid']) == -1)
+          this.emailSid.push(this.students[i]['partyInfo']['sid'])
       }
     },
 		studentClick: function(event){
@@ -225,7 +270,7 @@ export default {
 		},
 		statClick: function(){
 			var data = {
-				table: 'scholarship',
+				table: 'partyInfo',
 				fields: [],
 				condition: {}
 			}
@@ -233,13 +278,13 @@ export default {
 				if($(this).prop("checked")){
 					var recordId = $(this).attr('record-id')
 					data['fields'].push(recordId)
-					if( $('#scholarship-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#scholarship-stat-' + recordId).val()
+					if( $('#partyInfo-stat-' + recordId).val() != ''){
+						data['condition'][recordId] = $('#partyInfo-stat-' + recordId).val()
 					}
 				}
 			})
 			if(data['fields'].length == 0 ){
-				alert('请选择想要统计的字段打勾！')
+				alert('请选择想要统计的字段！')
 				return
 			}
 			var postData = JSON.stringify(data)
@@ -262,7 +307,7 @@ export default {
 						    {gender: '男', major: '数学', statistic: 1}
 					    ]*/
 					    console.log(result[key])
-					    statModule.createCharts('scholarship', result[key], 'stat-chart-bar', 'stat-chart-pie')
+					    statModule.createCharts('partyInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
 	      		} else if (key == 'err'){
 	      			//操作错误
 	      			alert('统计错误: ' + result[key]['sqlMessage'])
@@ -281,7 +326,7 @@ export default {
 </script>
 
 <style>
-#manager-scholarship .container-header {
+#manager-partyInfo .container-header {
 	height: 70px;
 	line-height: 70px;
 	padding-left: 30px;
@@ -298,17 +343,17 @@ export default {
   user-select: none;
 }
 
-#manager-scholarship .header-text {
+#manager-partyInfo .header-text {
 	float: left;
 	font-size: 20px;
 }
 
-#manager-scholarship .header-button {
+#manager-partyInfo .header-button {
 	float: right;
 	margin-right: 20px;
 }
 
-#manager-scholarship .header-button span{
+#manager-partyInfo .header-button span{
 	padding-right: 10px;
 	font-weight: bold;
 	transition: 0.3s;
@@ -317,32 +362,32 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-scholarship .header-button span:hover {
+#manager-partyInfo .header-button span:hover {
 	color: var(--blue);
   cursor: pointer;
 }
 
-#manager-scholarship .container-record {
+#manager-partyInfo .container-record {
 	float: left;
 	width: 360px;
 	height: 35px;
 	text-align: right;
 }
 
-#manager-scholarship .container-record .text-range {
+#manager-partyInfo .container-record .text-range {
 	font-size: 12px;
 }
 
-#manager-scholarship .container-record .min, #manager-scholarship .container-record .max {
+#manager-partyInfo .container-record .min, #manager-partyInfo .container-record .max {
 	width: 50px;
 }
 
-#manager-scholarship .container-record .hide-container {
+#manager-partyInfo .container-record .hide-container {
 	height: 24px;
 	width: 180px;
 }
 
-#manager-scholarship .manager-button {
+#manager-partyInfo .manager-button {
 	float: left;
 	clear: both;
 	width: 110px;
@@ -358,15 +403,15 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#manager-scholarship .manager-button:hover {
+#manager-partyInfo .manager-button:hover {
 	background-color: var(--blue-hover);
 }
 
-#manager-scholarship .container-card-list {
+#manager-partyInfo .container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-scholarship .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('#manager-partyInfo .container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -378,7 +423,7 @@ export default {
   overflow: auto;
 }
 
-#manager-scholarship .container-card-list table {
+#manager-partyInfo .container-card-list table {
 	/*不会自动换行*/
 	word-break: keep-all;
 	white-space: nowrap;
@@ -387,31 +432,30 @@ export default {
 	border-color: var(--grey-shadow);
 }
 
-#manager-scholarship .container-card-list th, td {
+#manager-partyInfo .container-card-list th, td {
 	padding-left: 8px;
 	padding-right: 8px;
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
 
-#manager-scholarship .container-card-list tr{
+#manager-partyInfo .container-card-list tr{
 	transition: background 0.3s;
   -moz-transition: background 0.3s;  /* Firefox 4 */
   -webkit-transition: background 0.3s; /* Safari 和 Chrome */
   -o-transition: background 0.3s;  /* Opera */
 }
 
-#manager-scholarship .container-card-list tr:not(.table-head):hover{
+#manager-partyInfo .container-card-list tr:not(.table-head):hover{
 	background-color: var(--grey-hover);
 }
 
-#manager-scholarship #button-import {
+#manager-partyInfo #button-import {
 	display: none;
 }
-
 /* 弹窗 (background) */
 
-#manager-scholarship .popup-background {
+#manager-partyInfo .popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -430,28 +474,28 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-scholarship .popup-content {
+#manager-partyInfo .popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 200px);
+  margin-left: calc(50% - 230px);
   padding: 30px;
-  width: 600px;
-	height: 400px;
+  width: 700px;
+	height: 430px;
 	/*radius*/
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-scholarship .popup-cell {
+#manager-partyInfo .popup-cell {
 	float: left;
-	width: 160px;
+	width: 170px;
 	height: 40px;
 	text-align: left;
 }
 
 /* 关闭按钮 */
-#manager-scholarship #popup-close {
+#manager-partyInfo #popup-close {
 	position: relative;
 	float: right;
 	width: 50px;
@@ -462,7 +506,7 @@ export default {
   text-align: right;
 }
 
-#manager-scholarship #popup-close:hover, #popup-close:focus {
+#manager-partyInfo #popup-close:hover, #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
@@ -470,7 +514,7 @@ export default {
 
 /*统计*/
 
-#manager-scholarship .stat-record {
+#manager-partyInfo .stat-record {
 	float: left;
 	width: 300px;
 	height: 35px;
@@ -478,28 +522,28 @@ export default {
 	font-size: 13px;
 }
 
-#manager-scholarship .stat-record .hide-container {
+#manager-partyInfo .stat-record .hide-container {
 	height: 22px;
 	width: 140px;
 }
 
-#manager-scholarship .stat-record input[type="checkbox"] {
+#manager-partyInfo .stat-record input[type="checkbox"] {
 	width: 13px;
 	height: 13px;
 }
 
-#manager-scholarship .stat-input {
+#manager-partyInfo .stat-input {
 	width: 10px;
 	height: 10px;
 }
 
-#manager-scholarship #stat-chart-bar {
+#manager-partyInfo #stat-chart-bar {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
 }
 
-#manager-scholarship #stat-chart-pie {
+#manager-partyInfo #stat-chart-pie {
 	float: left;
 	margin-top: 20px;
 	width: 50%;
