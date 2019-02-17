@@ -130,8 +130,12 @@ const app = new Vue({
       if(app.$store.getters.getUserStatus == 'student') {
         if (app.$route.path == '/login')
           app.$router.replace({ name: 'studentMain'})
+        if (app.$route.path == '/teacherMain')
+          app.$router.replace({ name: 'studentMain'})
       } else if (app.$store.getters.getUserStatus == 'teacher') {
         if (app.$route.path == '/login')
+          app.$router.replace({ name: 'teacherMain'})
+        if (app.$route.path == '/studentMain')
           app.$router.replace({ name: 'teacherMain'})
       }
       //显示用户信息
