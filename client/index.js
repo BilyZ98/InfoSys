@@ -17,7 +17,8 @@ import XLSX from 'xlsx'
 /* first-level vue components */
 import App from './App.vue'
 import Invalid from './components/Invalid.vue'
-import Main from './components/Main.vue'
+import teacherMain from './components/teacherMain.vue'
+import studentMain from './components/studentMain.vue'
 import Login from './components/Login.vue'
 import Register from './components/Register.vue'
 import Query from './components/Query.vue'
@@ -66,10 +67,11 @@ const router = new VueRouter({
   //使用路由的history模式，url栏没有#
   mode: 'history',
   routes: [
-    { path: '/', redirect: 'main' },
+    { path: '/', redirect: 'studentMain' },
     { name: 'login', path: '/login', component: Login },
     { name: 'register', path: '/register', component: Register },
-    { name: 'main', path: '/main', component: Main },
+    { name: 'studentMain', path: '/studentMain', component: studentMain },
+    { name: 'teacherMain', path: '/teacherMain', component: teacherMain},
     {
       name: 'studentsBasicManage',
       path: '/studentsBasicManage',
