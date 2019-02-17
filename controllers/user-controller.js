@@ -27,7 +27,14 @@ exports.checkSession = (req, res, next) => {
 exports.login = async(req, res, next) => {
   console.log('login:')
   console.log(req.session)
-  let data = await userModel.getUser(req.body)
+  let data;
+  if(req.body.usertype == 'student'){
+    data = await userModel.getStudentAccount(req.body)
+  }
+  else if(req.body.usertype == 'teacher'){
+    data = await userModel.getUser(req.body)
+  }
+  //let data = await userModel.getUser(req.body)
   if ((data.length !== 0 && data[0].password !== req.body.password) || data.length === 0) {
     resBody.fail(res, 441, 'PASSWORD_INCORRECT')
   } else {
@@ -48,7 +55,7 @@ exports.logout = (req, res, next) => {
 /*
 注册账号，从数据库里得到数据再查找重复，再往表里面插入
 */
-exports.registerAccount = async (req,res,next) => {
+exports.createStudentsAccount = async (req,res,next) => {
   let data = {
               "select":["basicInfo"],
               "where":{
@@ -61,7 +68,7 @@ exports.registerAccount = async (req,res,next) => {
   for(let record in allStudentBasicInfo){
     let sid = allStudentBasicInfo[record]['basicInfo']['sid']
     let isExist = await checkStudnetAccountConflict(sid)
-    if (isExist) {
+    if (!isExist) {
       console.log("this sid has existed")
       continue  
     }
@@ -69,10 +76,15 @@ exports.registerAccount = async (req,res,next) => {
       "account":sid,
       "password":sid
     }
-    let outcome = userModel.addStudentAccount(insertAccount)
-    console.log(outcome)
+    userModel.addStudentAccount(insertAccount).then((outcome) =>{
+      console.log(outcome)
+    }).catch(err => {
+      resBody.error(res, err)
+      return;
+    })
+    //console.log(outcome)
   }
-        
+  resBody.success(res)      
 }
 
 async  function checkStudnetAccountConflict(sid) {

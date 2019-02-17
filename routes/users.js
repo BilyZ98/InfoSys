@@ -16,6 +16,8 @@ router_before_login.post('/login', userController.login);
 
 router_after_login.get('/logout', userController.logout)
 
+router_after_login.post("/createStudentsAccount",userController.createStudentsAccount)
+
 module.exports = {
   beforeLogin: router_before_login,
   afterLogin: router_after_login
