@@ -201,20 +201,15 @@ export default {
     createStudentsAccount: function() {
        $.ajax({
         type: 'POST',
-        url: '/createStudentsAccount',
+        url: '/users/createStudentsAccount',
         contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
         timeout: 5000,
         success: function(result, xhr) {
-          console.log(result)
-          console.log(xhr)
-          for (let key in result) {
-            if (key == 'content') {
-              //操作成功
-              _self.students = result['content']
-            } else if (key == 'err') {
-              //操作错误
-              alert('查询信息错误: ' + result[key]['sqlMessage'])
-            }
+          if (xhr == 'success') {
+            alert('批量创建学生账号成功！')
+          } else {
+            alert('批量创建学生账号失败！')
           }
         },
         error: function(result, xhr) {
