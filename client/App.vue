@@ -69,7 +69,8 @@ export default {
           }
         })
       }
-    },
+    }
+    /*
     basicInfoClick: function() {
       this.$router.push({ name: 'basicInfo' })
     },
@@ -117,7 +118,7 @@ export default {
     },
     importClick: function() {
       this.$router.push({ name: 'import' })
-    }
+    }*/
   }
 }
 </script>
@@ -134,7 +135,6 @@ export default {
 
 .test-leave-to
 /* .component-fade-leave-active for below version 2.1.8 */
-
 {
   transform: translate(300px, 0);
   opacity: 0;
@@ -230,7 +230,7 @@ header {
   color: white;
   cursor: pointer;
 }
-
+/*
 aside {
   position: fixed;
   height: calc(100vh - 60px);
@@ -239,7 +239,7 @@ aside {
   left: 0;
   background-color: white;
   color: var(--grey-menu);
-  /*shadow*/
+  // shadow
   box-shadow: 1px 1px 5px var(--grey-shadow);
   z-index: 99;
   overflow: auto;
@@ -250,11 +250,6 @@ aside {
   text-align: center;
   border-bottom: 1px solid black;
   padding-top: 25px;
-  /*
-  **make text in div vertical-align to center
-  line-height: 100px;
-  margin: auto;
-  */
 }
 
 .button-side {
@@ -264,15 +259,15 @@ aside {
   text-align: left;
   line-height: 40px;
   margin: auto;
-  /*怎么让文字左右居中？*/
+  // 怎么让文字左右居中？
   padding-left: 67px;
   transition: 0.3s;
   -moz-transition: 0.3s;
-  /* Firefox 4 */
+  // Firefox 4
   -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
+  // Safari 和 Chrome
   -o-transition: 0.3s;
-  /* Opera */
+  // Opera
 }
 
 .button-side:hover {
@@ -287,7 +282,7 @@ aside {
   transform: translate(0, -3px);
   box-shadow: 0 2px 3px var(--grey-shadow);
 }
-
+*/
 .container-info-display {
   /*use min-height/min-width so that the div can auto expand when inside div gets bigger
   使用calc可以实现响应式布局, vw计算的是包括滚动条的宽度/高度*/

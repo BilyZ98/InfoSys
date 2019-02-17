@@ -162,4 +162,14 @@ aside {
   background-color: var(--grey-background);
   overflow: hidden;
 }
+/*
+.container-studentsBasic-all {
+  margin: 0;
+  text-align: center;
+  // the section cannot render in front of headbar
+  z-index: -100;
+  background-color: var(--grey-background);
+  overflow: hidden;
+}
+*/
 </style>

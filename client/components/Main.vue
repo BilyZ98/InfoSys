@@ -7,7 +7,7 @@
   <div class="container-card-left">
     <!--<p class="text-greeting"></p>-->
     <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
-    <div class="card-studentsSpecial">港澳台生/国际生信息</div>
+    <div class="card-studentsSpecial">港澳台/国际生</div>
     <div class="card-academicWarning">学业预警</div>
     <div class="card-gameManage">竞赛信息管理</div>
     <div class="card-workManage">实习/就业管理</div>
