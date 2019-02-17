@@ -55,6 +55,23 @@ var t = {
 }
 
 console.log(JSON.stringify(t['a']) )
+
+
+console.log("------------")
+let a = {
+  "a":1,
+  "b":2
+}
+a.c = 3
+console.log(a)
+let b ={
+  a,
+  "c":3
+}
+console.log(b)
+console.log("----------------")
+
+
 //'basicInfo.sid=paper.sid and paper.sid = party.sid'
 //'basicInfo.sid = ? and basicInfo.name = ? '
 /*
