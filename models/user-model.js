@@ -38,15 +38,15 @@ exports.getUser = async (data) => {
 得到学生账户记录
 */
 
-/*
+
 exports.getStudentAccount = async (data)=>{
   let query = "select * from studentAccount where account = ?"
   return queryDB(query,[data.account])
 }
-*/
 
+/*
 exports.checkStudentAccount =async (sid) => {
   let query = "select * from studentAccount where account = ?";
   return queryDB(query,[sid]);
 }
-
+*/
