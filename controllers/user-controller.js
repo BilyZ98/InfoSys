@@ -51,6 +51,32 @@ exports.login = async(req, res, next) => {
   }
 }
 
+exports.changePassword = async(req,res,next) => {
+  console.log('changePassword')
+  let data;
+  if(req.body.usertype == 'student'){
+    data = await userModel.getStudentAccount(req.body)
+  }
+  else if(req.body.usertype == 'teacher'){
+    data = await userModel.getUser(req.body)
+  }
+  //let data = await userModel.getUser(req.body)
+  if ((data.length !== 0 && data[0].password !== req.body.password) || data.length === 0) {
+    resBody.fail(res, 441, 'PASSWORD_INCORRECT')
+  } else {
+    if(req.body.usertype=='teacher')
+      userModel.changeTeacherPassword(req.body);
+    else
+      userModel.changeStudentPassword(req.body);
+    //req.session.user.usertype = req.body.usertype
+    console.log("修改密码成功")
+    this.logout(req,res,next)
+    //resBody.success(res, 'ok')
+  }
+}
+
+
+
 exports.logout = (req, res, next) => {
   req.session.user = null
   resBody.success(res)

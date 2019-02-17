@@ -50,3 +50,20 @@ exports.checkStudentAccount =async (sid) => {
   return queryDB(query,[sid]);
 }
 */
+
+/*
+修改密码
+UPDATE table_name
+SET column1=value1,column2=value2,...
+WHERE some_column=some_value;
+*/
+exports.changeTeacherPassword = async(data) => {
+  let query = "update user set password=? where account = ?";
+  
+  queryDB(query,[data.newpassword,data.account]);
+}
+exports.changeStudentPassword = async(data) => {
+  let query = "update studentAccount set password=? where account = ?";
+  
+  queryDB(query,[data.newpassword,data.account]);
+}
