@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     studentsBasicClick: function() {
-      this.$router.push({ name: 'basicInfo' })
+      //this.$router.push({ name: 'basicInfo' })
     },
     getNotices: function() {
       //获取公告

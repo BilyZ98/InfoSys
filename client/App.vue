@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     homeClick: function() {
-      console.log(this.$store.getters.getUserStatus)
       if(this.$store.getters.getUserStatus == 'student')
         this.$router.push({ name: 'studentMain' })
       else if(this.$store.getters.getUserStatus == 'teacher')

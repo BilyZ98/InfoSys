@@ -82,7 +82,7 @@ export default {
           success: function(result, xhr) {
             for (let key in result) {
               if (key == 'content') {
-                _self.$store.commit('updateUserStatus', '')
+                _self.$store.commit('updateUserStatus', 'student')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
                 _self.$router.push({ name: 'studentMain' })
@@ -142,7 +142,7 @@ export default {
           success: function(result, xhr) {
             for (let key in result) {
               if (key == 'content') {
-                _self.$store.commit('updateUserStatus', '')
+                _self.$store.commit('updateUserStatus', 'teacher')
                 _self.$store.commit('updateUserInfo', data)
                 $('#info-account').text(id)
                 _self.$router.push({ name: 'teacherMain' })

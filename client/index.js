@@ -126,11 +126,12 @@ const app = new Vue({
       app.$store.commit('updateUserStatus', res.body.content.usertype)
       app.$store.commit('updateUserInfo', res.body.content)
     }).then(() => {
-      //防止回到登陆页面
-      if (app.$route.path == '/login') {
-        if(res.body.content.usertype = 'student')
+      // 防止回到登陆页面或访问和权限不符的页面
+      if(app.$store.getters.getUserStatus == 'student') {
+        if (app.$route.path == '/login')
           app.$router.replace({ name: 'studentMain'})
-        else if(res.body.content.usertype = 'teacher')
+      } else if (app.$store.getters.getUserStatus == 'teacher') {
+        if (app.$route.path == '/login')
           app.$router.replace({ name: 'teacherMain'})
       }
       //显示用户信息
