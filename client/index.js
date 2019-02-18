@@ -30,6 +30,7 @@ import Insert from './components/Insert.vue'
 /* studentsBasicManage vue components */
 import StudentsBasicManage from './components/StudentsBasicManage.vue'
 import BasicInfo from './components/StudentsBasicManagePages/BasicInfo.vue'
+import BasicInfoOfStu from './components/basicInfoOfStudent.vue'
 import Family from './components/StudentsBasicManagePages/Family.vue'
 import SchoolRoll from './components/StudentsBasicManagePages/SchoolRoll.vue'
 import Course from './components/StudentsBasicManagePages/Course.vue'
@@ -92,6 +93,7 @@ const router = new VueRouter({
         { name: 'techProject', path: 'techProject', component: TechProject },
       ]
     },
+    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import },
