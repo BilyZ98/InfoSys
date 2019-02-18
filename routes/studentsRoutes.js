@@ -31,4 +31,8 @@ router.post('/update', studentsController.updateInfo);
 
 router.post("/sendMail", studentsController.sendMail);
 
+router.post("/insert/HMT", studentsController.addHMT);
+
+router.post("/insert/interStudent",studentsController.addInterStu);
+
 module.exports = router;

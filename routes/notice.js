@@ -7,5 +7,7 @@ router.post('/addNotice',noticeController.addNotice);
 
 router.get('/getNotice', noticeController.getNotice);
 
+router.post('/delNotice',noticeController.deleteNotice);
 
-module.exports = router
+
+module.exports = router;

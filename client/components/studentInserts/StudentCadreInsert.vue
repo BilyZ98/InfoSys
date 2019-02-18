@@ -77,7 +77,6 @@ export default {
           //timeous 5s
           timeout: 5000,
           success: function(result, xhr) {
-            console.log(result, xhr)
             for(let key in result){
               if(key == 'content'){
                 //操作成功
@@ -89,7 +88,6 @@ export default {
             }
           },
           error: function(result, xhr) {
-            console.log(result, xhr)
             //连接错误
             //console.log(result)
             alert('服务器连接错误: ' + xhr)

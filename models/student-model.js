@@ -208,6 +208,34 @@ exports.addTechProject = (data) => {
   return queryDB(query,values);
 }
 
+exports.addHMT = (data) => {
+  let query = 
+  "insert into HMT \n" +
+  "(sid, ancecsHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
+  "HMTIDNum, homePermitNum) \n" +
+  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  let values = [data.sid, data.ancesHome, data.interest, data.religion, data.mail, data.wechat, 
+  data.homeAddress, data.ecoContact, data.HMTIDNum, data.homePermitNum]
+  return queryDB(query,values)
+}
+
+exports.addInterStu = (data) => {
+  let query = 
+  "insert into internationalStudent \n" +
+  "(sid, passportName, studentClass, chineseName, gender, nationality, " + 
+  "passportNum, school, major, tutor, visaClass, residenceReason, "+
+  "visaExpire, remark, religion, isEthnicChinese, clubJoiningDescription," +
+  "activityTakingDescription, abnormalSituation, tel, homeAddress, homeInSchool,"+
+  "same, dormRegistryCopy, visaCopy, passportCopy, notCompleteReason) values "+
+  "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  let values = [data.sid, data.passportName, data.studedntClass, data.chineseName, gender, nationality,
+   data.passportNum, data.school, data.major, data.tutor, data.visaClass, data.residenceReason,
+  data.visaExpire, data.remark, data.religion, data.isEthnicChinese, data.clubJoiningDescription,
+  data.activityTakingDescription, data.abnormalSituation, data.tel, data.homeAddress, data.homeInSchool,
+  data.same, data.dormRegistryCopy, data.visaCopy, data.passportCopy, data.notCompleteReason]
+    return queryDB(query,values);
+}
+
 //data 就是传过来的json数据
 /*
 var newQuery =  {
@@ -275,7 +303,7 @@ exports.query = (data) => {
       tmp = false;
       query+=item;
     }
-    else{
+    else{      
       query+= ',' + item
     }
 
