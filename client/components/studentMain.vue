@@ -18,6 +18,7 @@
   <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
+    <span class="notice-header">条公告</span>
     <div class="notice-list">
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
@@ -399,7 +400,7 @@ export default {
 
 #container-home .notice-list {
   margin-top: 20px;
-  height: 430px;
+  height: calc(100% - 60px);
   overflow: auto;
 }
 

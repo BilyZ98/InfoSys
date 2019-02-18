@@ -18,6 +18,7 @@
   <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
+    <span class="notice-header">条公告</span>
     <div class="notice-list">
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
@@ -166,6 +167,8 @@ export default {
     },
     newNoticeClick: function(){
       $('#popup-new-notice').show()
+      $('#new-notice-title').val('')
+      $('#new-notice-content').val('')
     },
     newNoticeCloseClick: function() {
       $('#popup-new-notice').hide()
@@ -407,8 +410,8 @@ export default {
 }
 
 #container-home .notice-list {
-  margin-top: 20px;
-  height: 430px;
+  margin-top: 30px;
+  height: calc(100% - 136px);
   overflow: auto;
 }
 
@@ -522,7 +525,6 @@ export default {
   width: 500px;
   height: 200px;
 }
-
 
 #container-home .button-delete-detail-notice, #container-home .button-close-detail-notice {
   display: inline-block;
