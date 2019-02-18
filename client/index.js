@@ -20,7 +20,7 @@ import Invalid from './components/Invalid.vue'
 import teacherMain from './components/teacherMain.vue'
 import studentMain from './components/studentMain.vue'
 import Login from './components/Login.vue'
-import Register from './components/Register.vue'
+import Resetpswd from './components/Resetpswd.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Import from './components/Import.vue'
@@ -30,6 +30,7 @@ import Insert from './components/Insert.vue'
 /* studentsBasicManage vue components */
 import StudentsBasicManage from './components/StudentsBasicManage.vue'
 import BasicInfo from './components/StudentsBasicManagePages/BasicInfo.vue'
+import BasicInfoOfStu from './components/basicInfoOfStudent.vue'
 import Family from './components/StudentsBasicManagePages/Family.vue'
 import SchoolRoll from './components/StudentsBasicManagePages/SchoolRoll.vue'
 import Course from './components/StudentsBasicManagePages/Course.vue'
@@ -69,7 +70,7 @@ const router = new VueRouter({
   routes: [
     { path: '/', redirect: 'login' },
     { name: 'login', path: '/login', component: Login },
-    { name: 'register', path: '/register', component: Register },
+    { name: 'resetpswd', path: '/resetpswd', component: Resetpswd },
     { name: 'studentMain', path: '/studentMain', component: studentMain },
     { name: 'teacherMain', path: '/teacherMain', component: teacherMain },
     {
@@ -92,6 +93,7 @@ const router = new VueRouter({
         { name: 'techProject', path: 'techProject', component: TechProject },
       ]
     },
+    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import },

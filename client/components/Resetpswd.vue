@@ -1,5 +1,5 @@
 <template>
-<div id="container-register">
+<div id="container-reset">
 <!--<div>
     <a href="http://sdcs.sysu.edu.cn/" target="_blank">
     <img :src="sdcsLogo" class="img-responsive" alt="Responsive image">
@@ -7,46 +7,101 @@
   </div>-->
   <div class="container-card">
     <form>
-      <div class="text-header">学生信息系统</div>
+      <div class="text-header">修改密码</div>
       <hr>
       <div class="container-input">
         <span>账号：</span>
-        <input type="text" id="input-id" placeholder="学号或学工号">
+        <span>{{userAccount}}</span>
       </div>
       <div class="container-input">
-        <span>密码：</span>
-        <input type="password" id="input-password-repeat" placeholder="密码">
+        <span>旧密码：</span>
+        <input type="password" placeholder="旧密码" v-model="oldpswd">
+      </div>
+      <div class="container-input">
+        <span>新密码：</span>
+        <input type="password" placeholder="新密码" v-model="newpswd">
       </div>
       <div class="container-input">
         <span>重复密码：</span>
-        <input type="password" id="input-password-repeat" placeholder="密码">
+        <input type="password" placeholder="重复密码" v-model="repeatpswd">
       </div>
-      <div id="warning"></div>
-      <div class="button-register" @click="">注册</div>
+      <div id="warning">{{warningtxt}}</div>
+      <div class="button-reset" @click="resetClick">修改密码</div>
     </form>
   </div>
 </div>
 </template>
 
 <script>
-import banner from '../assets/sdcs_banner.png'
+//import banner from '../assets/sdcs_banner.png'
 
 export default {
   data: function(){
-    return{
-      banner: banner
+    return {
+      //banner: banner
+      userAccount: this.$store.getters.getUserAccount,
+      usertype: this.$store.getters.getUserStatus,
+      oldpswd: '',
+      newpswd: '',
+      repeatpswd: '',
+      warningtxt: null
     }
   },
   mounted: function(){
     $(".app-bar-display").attr("class", "app-bar-hide")
     $(".container-info-display").attr("class", "container-info-all")
   },
+
   beforeDestroy: function(){
     $(".app-bar-hide").attr("class", "app-bar-display")
     $(".container-info-all").attr("class", "container-info-display")
   },
   methods: {
-    registerClick: function() {
+    resetClick: function() {
+      if (this.isNULL(this.oldpswd)) {
+        this.warningtxt = '请输入旧密码!'
+      } else if (this.isNULL(this.newpswd)) {
+        this.warningtxt = '请输入新密码!'
+      } else if (this.isNULL(this.repeatpswd)) {
+        this.warningtxt = '请重复新密码!'
+      } else if (this.newpswd != this.repeatpswd) {
+        this.warningtxt = '两次输入的新密码不一致!'
+      }  else {
+        //this.Save();
+        this.warningtxt = ''
+        var data = {
+          "account": this.userAccount,
+          "usertype": this.usertype,
+          "password": this.oldpswd,
+          "newpassword": this.newpswd
+        }
+        var postData = JSON.stringify(data)
+        //alert(postData)
+        var _self = this
+        $.ajax({
+          type: 'POST',
+          url: '/users/changePassword',
+          data: postData,
+          contentType: 'application/json;charset=utf-8',
+          dataType: 'json',
+          timeout: 5000,
+          success: function(result, xhr) {
+            console.log(result)
+            console.log(xhr)
+            if(xhr == 'success') {
+              alert('修改密码成功！')
+              _self.$router.push({ name: 'login'})
+            }
+          },
+          error: function(result, xhr) {
+            console.log(result)
+            //表示密码错误
+            if (result.status == 441) {
+              alert("密码错误！")
+            }
+          }
+        })
+      }
     },
     isNULL: function(data) {
       if (data.length == 0)
@@ -77,7 +132,7 @@ export default {
 </script>
 
 <style>
-#container-register {
+#container-reset {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -85,13 +140,13 @@ export default {
 }
 
 /*
-#container-register .container-banner img {
+#container-reset .container-banner img {
   margin: auto;
   width: 600px;
   bottom: 0;
 }
 */
-#container-register .container-card {
+#container-reset .container-card {
   margin-left: calc(50vw - 300px);
   margin-top: calc(50vh - 230px);
   width: 600px;
@@ -104,19 +159,19 @@ export default {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#container-register .text-header {
+#container-reset .text-header {
   margin: auto;
   font-size: 35px;
   font-weight: 700;
 }
 
-#container-register .container-input {
+#container-reset .container-input {
   text-align: left;
   margin-top: 20px;
   font-size: 16px;
 }
 
-#container-register .container-input span {
+#container-reset .container-input span {
   display: inline-block;
   font-weight: bold;
   width: 80px;
@@ -124,7 +179,7 @@ export default {
   text-align: right;
 }
 
-#container-register .container-input input {
+#container-reset .container-input input {
   height: 40px;
   width: 230px;
   padding: 0 20px 0 25px;
@@ -135,13 +190,13 @@ export default {
   transition: all 0.3s ease 0s;
 }
 
-#container-register .container-input input:focus {
+#container-reset .container-input input:focus {
   background: #e0e0e0;
   box-shadow: none;
   outline: 0 none;
 }
 
-#container-register #warning {
+#container-reset #warning {
   text-align: left;
   color: #f00;
   margin-top: 20px;
@@ -149,7 +204,7 @@ export default {
   height: 20px;
 }
 
-#container-register .button-register {
+#container-reset .button-reset {
   margin: auto;
   margin-top: 15px;
   padding-top: 4px;
@@ -168,7 +223,7 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#container-register .button-register:hover {
+#container-reset .button-reset:hover {
   background-color: var(--blue-hover);
   cursor: pointer;
 }

@@ -5,7 +5,7 @@
   </div>-->
   <!--主要区域-->
   <div class="container-card-left">
-    <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
+    <div class="card-studentsBasic" @click="studentsBasicClick">基本信息</div>
     <div class="card-studentsSpecial">港澳台/国际生</div>
     <div class="card-academicWarning">学业预警</div>
     <div class="card-guideline">办事指引</div>
@@ -43,7 +43,7 @@
       <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
-      <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button>
+      <!-- <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button> -->
       <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
     </div>
   </div>
@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     studentsBasicClick: function() {
-      //this.$router.push({ name: 'basicInfo' })
+      this.$router.push({ name: 'basicInfoOfStu' })
     },
     getNotices: function() {
       //获取公告

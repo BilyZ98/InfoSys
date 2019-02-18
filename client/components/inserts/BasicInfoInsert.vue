@@ -32,8 +32,11 @@ export default {
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
-      for(let item in tableData[this.tableId]['records']){
+      for(let item in tableData[this.tableId]['records']) {
+        console.log(item)
+        console.log('#' + this.tableId + '-' + item)
         let record = $('#' + this.tableId + '-' + item).val()
+        console.log(record)
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
           message = message + tableData[this.tableId]['records'][item]['name'] + '不能为空\n'
