@@ -1,6 +1,6 @@
 <template>
-<div id="container-insert-basicInfo">
-  <div class="text-header">基本信息插入</div>
+<div id="container-insert-family">
+  <div class="text-header">家庭信息插入</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
@@ -24,15 +24,15 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'basicInfo',
-      table: tableData['basicInfo']
+      tableId: 'family',
+      table: tableData['family']
     }
   },
   methods: {
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
-      for(let item in tableData[this.tableId]['records']) {
+      for(let item in tableData[this.tableId]['records']){
         let record = $('#' + this.tableId + '-' + item).val()
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
@@ -92,7 +92,7 @@ export default {
 </script>
 
 <style>
-#container-insert-basicInfo {
+#container-insert-family {
   margin: 25px;
   text-align: left;
   padding: 30px;
@@ -105,37 +105,37 @@ export default {
   overflow: hidden;
 }
 
-#container-insert-basicInfo .text-header {
+#container-insert-family .text-header {
   text-align: center;
   font-size: 25px;
   font-weight: bolder;
 }
 
-#container-insert-basicInfo .container-input {
+#container-insert-family .container-input {
   margin-left: 50px;
 }
 
-#container-insert-basicInfo .container-record {
+#container-insert-family .container-record {
   float: left;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-#container-insert-basicInfo .container-record span {
+#container-insert-family .container-record span {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
 }
 
-#container-insert-basicInfo .container-record select, #container-insert-basicInfo .container-record input {
+#container-insert-family .container-record select, #container-insert-family .container-record input {
   margin-left: 10px;
   width: 250px;
   height: 30px;
   padding: 5px;
 }
 
-#container-insert-basicInfo #warning {
+#container-insert-family #warning {
   float: left;
   clear: both;
   text-align: left;
@@ -148,7 +148,7 @@ export default {
   color: #f00;
 }
 
-#container-insert-basicInfo .button-insert {
+#container-insert-family .button-insert {
   float: left;
   clear: both;
   width: 110px;
@@ -166,7 +166,7 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#container-insert-basicInfo .button-insert:hover {
+#container-insert-family .button-insert:hover {
   background-color: var(--blue-hover);
 }
 </style>

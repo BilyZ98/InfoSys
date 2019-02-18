@@ -44,7 +44,7 @@ import Paper from './components/StudentsBasicManagePages/Paper.vue'
 import Patent from './components/StudentsBasicManagePages/Patent.vue'
 import TechProject from './components/StudentsBasicManagePages/TechProject.vue'
 
-/* insert in studentsBasicManage vue components */
+/* insert in studentsBasicManage for teachers vue components */
 import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
 import FamilyInsert from './components/inserts/FamilyInsert.vue'
 import PaperInsert from './components/inserts/PaperInsert.vue'
@@ -52,6 +52,10 @@ import PatentInsert from './components/inserts/PatentInsert.vue'
 import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
 import CadreInsert from './components/inserts/CadreInsert.vue'
 import AwardInsert from './components/inserts/AwardInsert.vue'
+
+/* insert in studentsBasicManage for students */
+import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
+import FamilyInsert from './components/inserts/FamilyInsert.vue'
 
 /* email component */
 import Email from './components/StudentsBasicManagePages/modules/Email.vue'

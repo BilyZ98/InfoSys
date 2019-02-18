@@ -126,6 +126,7 @@ export default {
     },
     detailNoticeDeleteClick: function(){
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
+
     },
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()

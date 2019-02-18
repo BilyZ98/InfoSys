@@ -33,8 +33,11 @@
               </td>
             </tr>
           </table>
-          <!--空-->
-          <div v-else class="table-empty">---</div>
+          <button v-else class="table-empty-button">填写数据</button>
+          <!--空但可以插入
+          <button v-else-if="table.tableStudentChangable" class="table-empty-button">填写数据</button>-->
+          <!--空且不能插入
+          <div v-else class="table-empty">---</div>-->
         </div>
       </div>
     </div>
@@ -335,7 +338,25 @@ export default {
   margin-left: 20px;
 }
 
+#container-detail .table-empty-button {
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+  font-size: 16px;
+  text-align: center;
+  color: white;
+  background-color: var(--blue);
+  border: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
 
+#container-detail .table-empty-button:hover {
+  background-color: var(--blue-hover);
+  cursor: pointer;
+}
 
 /**
  * 修改和导出按钮
