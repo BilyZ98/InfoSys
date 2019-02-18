@@ -191,6 +191,14 @@ exports.addTechProject = async (req,res,next) => {
   template(req,res,next, StudentsModel.addTechProject,"techProject");
 }
 
+exports.addHMT = async (req,res,next) => {
+  template(req,res,next, StudentsModel.addHMT,"HMT")
+}
+
+exports.addInterStu = async (req,res,next) => {
+  template(req,res,next, StudentsModel.addInterStu,"internationalStudent")
+}
+
 exports.statistic = async (req,res,next) => {
   StudentsModel.statistic(req.body).then((data)=>{
     console.log('statistic')
