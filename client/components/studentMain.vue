@@ -126,12 +126,7 @@ export default {
     },
     /*detailNoticeDeleteClick: function(){
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
-<<<<<<< HEAD
-
-    },
-=======
     },*/
->>>>>>> ff3bd58b15e459aca907ce1e39e66a25d3742cb8
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()
     },
