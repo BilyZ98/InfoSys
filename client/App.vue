@@ -3,7 +3,14 @@
     <header class="app-bar-display">
       <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
       <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @click="userInfoClick" title="用户信息"></div>
+      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" title="用户信息" @mouseenter="userInfoEnter" @mouseleave="userInfoLeave">
+        <!-- 浮窗 -->
+        <div id="popup-userInfo">
+          <div id="popup-account">12345678</div>
+          <div id="popup-usertype">guest</div>
+          <button class="popup-btn-resetpassword" @click="resetpswdClick">重置密码</button>
+        </div>
+      </div>
     </header>
     <!--
     <aside class="app-bar-display">
@@ -50,8 +57,16 @@ export default {
       else if(this.$store.getters.getUserStatus == 'teacher')
         this.$router.push({ name: 'teacherMain' })
     },
-    userInfoClick: function() {
-      //
+    userInfoEnter: function() {
+      $('#popup-userInfo').show()
+      $('#popup-account').text(this.$store.getters.getUserAccount)
+      $('#popup-usertype').text(this.$store.getters.getUserStatus)
+    },
+    userInfoLeave: function() {
+      $('#popup-userInfo').hide()
+    },
+    resetpswdClick: function(){
+      this.$router.push({ name: 'resetpswd' })
     },
     logoutClick: function() {
       if (confirm("您确定要退出登录吗？")) {
@@ -215,7 +230,7 @@ header {
   margin-right: 40px;
   padding-top: 20px;
   height: 100%;
-  width: 10px;
+  width: 20px;
   text-align: center;
   color: black;
   font-size: 20px;
@@ -232,6 +247,56 @@ header {
 .button-icon:hover {
   color: white;
   cursor: pointer;
+}
+
+#popup-userInfo {
+  display: none;
+  position: fixed;
+  width: 180px;
+  height: 200px;
+  margin-top: 5px;
+  right: 20px;
+  background-color: white;
+  /*radius*/
+  border-radius: 3px;
+  /*shadow*/
+  box-shadow: -1px 1px 5px var(--grey-shadow);
+  /* transition */
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+}
+
+#popup-account {
+  margin-top: 20px;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#popup-usertype {
+  margin-top: 20px;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.popup-btn-resetpassword {
+  width: 100px;
+  height: 36px;
+  margin-top: 80px;
+  font-size: 16px;
+  color: var(--blue);
+  background-color: white;
+  border: 2px solid var(--blue);
+  border-radius: 3px;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
 }
 /*
 aside {
