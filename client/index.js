@@ -54,8 +54,9 @@ import CadreInsert from './components/inserts/CadreInsert.vue'
 import AwardInsert from './components/inserts/AwardInsert.vue'
 
 /* insert in studentsBasicManage for students */
-import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
-import FamilyInsert from './components/inserts/FamilyInsert.vue'
+import StudentBasicInfoInsert from './components/studentInserts/StudentBasicInfoInsert.vue'
+import StudentFamilyInsert from './components/studentInserts/StudentFamilyInsert.vue'
+import StudentCadreInsert from './components/studentInserts/StudentCadreInsert.vue'
 
 /* email component */
 import Email from './components/StudentsBasicManagePages/modules/Email.vue'
@@ -73,9 +74,10 @@ const router = new VueRouter({
   mode: 'history',
   routes: [
     { path: '/', redirect: 'login' },
+    /* 账号管理 */
     { name: 'login', path: '/login', component: Login },
     { name: 'resetpswd', path: '/resetpswd', component: Resetpswd },
-    { name: 'studentMain', path: '/studentMain', component: studentMain },
+    /* 教师路由 */
     { name: 'teacherMain', path: '/teacherMain', component: teacherMain },
     {
       name: 'studentsBasicManage',
@@ -97,7 +99,6 @@ const router = new VueRouter({
         { name: 'techProject', path: 'techProject', component: TechProject },
       ]
     },
-    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
     { name: 'query', path: '/query', component: Query },
     { name: 'list', path: '/list', component: List },
     { name: 'import', path: '/import', component: Import },
@@ -116,7 +117,13 @@ const router = new VueRouter({
         { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
     },
-    //所有未匹配的路径都会加载404页面组件
+    /* 学生路由 */
+    { name: 'studentMain', path: '/studentMain', component: studentMain },
+    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
+    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert},
+    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert},
+    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert},
+    /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
 })

@@ -33,11 +33,10 @@
               </td>
             </tr>
           </table>
-          <button v-else class="table-empty-button">填写数据</button>
-          <!--空但可以插入
-          <button v-else-if="table.tableStudentChangable" class="table-empty-button">填写数据</button>-->
-          <!--空且不能插入
-          <div v-else class="table-empty">---</div>-->
+          <!--表空但可以插入-->
+          <button v-else-if="table.tableStudentChangable" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
+          <!--表空且不能插入-->
+          <div v-else class="table-empty">---</div>
         </div>
       </div>
     </div>
@@ -212,6 +211,14 @@ export default {
           }
         })
       }
+    },
+    studentInsertClick: function(id) {
+      if (id == 'basicInfo')
+        this.$router.push({ name: 'studentBasicInfoInsert' })
+      else if (id == 'family')
+        this.$router.push({ name: 'studentFamilyInsert' })
+      else if (id == 'cadre')
+        this.$router.push({ name: 'studentCadreInsert' })
     }
   }
 }
@@ -271,6 +278,7 @@ export default {
   float: left;
   margin: 5px;
   width: 350px;
+  height: 25px;
   font-size: 15px;
 }
 
@@ -293,14 +301,14 @@ export default {
 }
 
 #container-detail .record-changable {
-  border: 1px solid transparent;
+  border: none;
   background-color: white;
   margin-left: 2px;
   padding-left: 2px;
 }
 
 #container-detail .record-unchangable {
-  border: 1px solid transparent;
+  border: none;
   background-color: white;
   margin-left: 2px;
   padding-left: 2px;

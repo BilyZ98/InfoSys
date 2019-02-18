@@ -1,6 +1,6 @@
 <template>
-<div id="container-insert-family">
-  <div class="text-header">家庭信息填写</div>
+<div id="container-insert-cadre">
+  <div class="text-header">学生干部任职情况插入</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
@@ -26,8 +26,8 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'family',
-      table: tableData['family'],
+      tableId: 'cadre',
+      table: tableData['cadre'],
       sid: this.$store.getters.getUserAccount
     }
   },
@@ -58,10 +58,10 @@ export default {
           table: this.tableId
         }
         data['sid'] = this.sid
-        for(let item in tableData[this.tableId]['records']) {
-          if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
+        for(let item in tableData[this.tableId]['records']){
+          if(!tableData[this.tableId]['records'][item]['studentChangAble']){
             //
-          } else if ($('#' + this.tableId + '-' + item).val() != '') {
+          } else if ($('#' + this.tableId + '-' + item).val() != ''){
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
@@ -77,6 +77,7 @@ export default {
           //timeous 5s
           timeout: 5000,
           success: function(result, xhr) {
+            console.log(result, xhr)
             for(let key in result){
               if(key == 'content'){
                 //操作成功
@@ -88,6 +89,7 @@ export default {
             }
           },
           error: function(result, xhr) {
+            console.log(result, xhr)
             //连接错误
             //console.log(result)
             alert('服务器连接错误: ' + xhr)
@@ -100,7 +102,7 @@ export default {
 </script>
 
 <style>
-#container-insert-family {
+#container-insert-cadre {
   margin: 25px;
   text-align: left;
   padding: 30px;
@@ -113,41 +115,41 @@ export default {
   overflow: hidden;
 }
 
-#container-insert-family .text-header {
+#container-insert-cadre .text-header {
   text-align: center;
   font-size: 25px;
   font-weight: bolder;
 }
 
-#container-insert-family .container-input {
+#container-insert-cadre .container-input {
   margin-left: 50px;
 }
 
-#container-insert-family .container-record {
+#container-insert-cadre .container-record {
   float: left;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-#container-insert-family .container-record span {
+#container-insert-cadre .container-record span {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
 }
 
-#container-insert-family .container-record select, #container-insert-family .container-record input {
+#container-insert-cadre .container-record select, #container-insert-cadre .container-record input {
   margin-left: 10px;
   width: 200px;
   height: 30px;
   padding: 5px;
 }
 
-#container-insert-family .span-uninputable {
+#container-insert-cadre .span-uninputable {
   margin-left: 10px;
 }
 
-#container-insert-family #warning {
+#container-insert-cadre #warning {
   float: left;
   clear: both;
   text-align: left;
@@ -160,7 +162,7 @@ export default {
   color: #f00;
 }
 
-#container-insert-family .button-insert {
+#container-insert-cadre .button-insert {
   float: left;
   clear: both;
   width: 110px;
@@ -178,7 +180,7 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#container-insert-family .button-insert:hover {
+#container-insert-cadre .button-insert:hover {
   background-color: var(--blue-hover);
 }
 </style>
