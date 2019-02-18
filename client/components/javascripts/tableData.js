@@ -5,6 +5,7 @@ export default {
   basicInfo: {
     name: '基本信息',
     id: 'basicInfo',
+    tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
@@ -14,10 +15,10 @@ export default {
       poliFace: { name: '政治面貌', id: 'poliFace', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['群众', '团员', '党员'] },
       idNum: { name: '身份证号码', id: 'idNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
       birthDate: { name: '出生年月日', id: 'birthDate', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      tel: { name: '联系电话', id: 'tel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      mail: { name: '邮箱', id: 'mail', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      wechat: { name: '微信', id: 'wechat', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      qq: { name: 'QQ号', id: 'qq', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      tel: { name: '联系电话', id: 'tel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      mail: { name: '邮箱', id: 'mail', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      wechat: { name: '微信', id: 'wechat', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      qq: { name: 'QQ号', id: 'qq', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       degree: { name: '培养层次', id: 'degree', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['本科', '硕士', '博士'] },
       stuGroup: { name: '学生类别', id: 'stuGroup', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['统招', '港澳台', '国际学生'] },
       grade: { name: '年级', id: 'grade', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
@@ -26,24 +27,25 @@ export default {
       dorm: { name: '宿舍楼栋', id: 'dorm', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['至善园', '明德园', '慎思园', '格致园'] },
       dormNumber: { name: '楼栋号', id: 'dormNumber', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
       dormRoom: { name: '宿舍房号', id: 'dormRoom', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      speciality: { name: '特长', id: 'speciality', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      speciality: { name: '特长', id: 'speciality', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       highSchool: { name: '毕业中学', id: 'highSchool', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
     }
   },
   family: {
     name: '家庭情况',
     id: 'family',
+    tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      homeAddress: { name: '家庭地址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      fatherName: { name: '父亲姓名', id: 'fatherName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      fatherTel: { name: '父亲电话', id: 'fatherTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      fatherJob: { name: '父亲工作单位及职务', id: 'fatherJob', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      motherName: { name: '母亲姓名', id: 'motherName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      motherTel: { name: '母亲电话', id: 'motherTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      motherJob: { name: '母亲工作单位及职务', id: 'motherJob', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      familyAveIncome: { name: '家庭人均月收入', id: 'familyAveIncome', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      homeAddress: { name: '家庭地址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      fatherName: { name: '父亲姓名', id: 'fatherName', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      fatherTel: { name: '父亲电话', id: 'fatherTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      fatherJob: { name: '父亲工作单位及职务', id: 'fatherJob', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      motherName: { name: '母亲姓名', id: 'motherName', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      motherTel: { name: '母亲电话', id: 'motherTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      motherJob: { name: '母亲工作单位及职务', id: 'motherJob', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      familyAveIncome: { name: '家庭人均月收入', id: 'familyAveIncome', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       isHard: { name: '是否家庭经济困难', id: 'isHard', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['是', '否'] },
       hardDegree: { name: '困难等级', id: 'hardDegree', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
       hardFamDes: { name: '家庭经济困难情况', id: 'hardFamDes', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
@@ -52,6 +54,7 @@ export default {
   schoolRoll: {
     name: '学籍情况',
     id: 'schoolRoll',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -71,6 +74,7 @@ export default {
   course: {
     name: '课程成绩记录',
     id: 'course',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -92,6 +96,7 @@ export default {
   partyInfo: {
     name: '党员信息',
     id: 'partyInfo',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -125,6 +130,7 @@ export default {
   scholarship: {
     name: '获奖学金情况',
     id: 'scholarship',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -137,6 +143,7 @@ export default {
   aid: {
     name: '获资助情况',
     id: 'aid',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -150,6 +157,7 @@ export default {
   loan: {
     name: '助学贷款',
     id: 'loan',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -162,18 +170,20 @@ export default {
   cadre: {
     name: '学生干部任职情况',
     id: 'cadre',
+    tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      year: { name: '学年', id: 'year', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
-      cadreClass: { name: '职务类别', id: 'cadreClass', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['学生会', '团委', '研究生会', '学生学术发展中心', '职发办', '社团', '院队', '班干部'] },
-      cadreName: { name: '职务名称', id: 'cadreName', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      cadreJiBie: { name: '职务级别', id: 'cadreJiBie', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['校级', '校区级', '院级'] }
+      year: { name: '学年', id: 'year', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
+      cadreClass: { name: '职务类别', id: 'cadreClass', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['学生会', '团委', '研究生会', '学生学术发展中心', '职发办', '社团', '院队', '班干部'] },
+      cadreName: { name: '职务名称', id: 'cadreName', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      cadreJiBie: { name: '职务级别', id: 'cadreJiBie', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['校级', '校区级', '院级'] }
     }
   },
   award: {
     name: '获得奖励情况',
     id: 'award',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -189,6 +199,7 @@ export default {
   paper: {
     name: '发表论文情况',
     id: 'paper',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -206,6 +217,7 @@ export default {
   patent: {
     name: '获得专利情况',
     id: 'patent',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
@@ -222,6 +234,7 @@ export default {
   techProject: {
     name: '科研项目情况',
     id: 'techProject',
+    tableStudentChangable: false,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
