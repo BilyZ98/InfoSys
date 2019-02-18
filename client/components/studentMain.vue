@@ -89,7 +89,13 @@ export default {
   },
   methods: {
     studentsBasicClick: function() {
-      this.$router.push({ name: 'basicInfoOfStu' })
+      this.$router.push({
+        name: 'basicInfoOfStu',
+        query: {
+          sid: this.$store.getters.getUserAccount
+        }
+      })
+      //this.$router.push({ name: 'basicInfoOfStu' })
     },
     getNotices: function() {
       //获取公告

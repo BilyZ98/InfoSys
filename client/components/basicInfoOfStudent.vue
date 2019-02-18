@@ -61,7 +61,8 @@ export default {
     }
   },
   created: function() {
-    this.sid = this.$store.getters.getUserAccount
+    //this.sid = this.$store.getters.getUserAccount
+    this.sid = this.$route.query.sid
     // alert('sid: ' + this.$store.getters.getUserAccount)
     var data = {
       tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
