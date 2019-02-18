@@ -460,7 +460,6 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  padding-left: 225px;
   padding-top: 60px;
   overflow: auto;
   background-color: rgb(0,0,0);
