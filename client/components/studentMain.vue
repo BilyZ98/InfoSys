@@ -43,7 +43,7 @@
       <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
       <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
-      <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button>
+      <!-- <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button> -->
       <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
     </div>
   </div>
