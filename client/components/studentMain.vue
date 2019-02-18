@@ -124,9 +124,9 @@ export default {
       $('#detail-notice-createTime').text(notice.createTime)
       $('#detail-notice-expireTime').text(notice.expireTime)
     },
-    detailNoticeDeleteClick: function(){
+    /*detailNoticeDeleteClick: function(){
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
-    },
+    },*/
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()
     },
@@ -535,7 +535,7 @@ export default {
 }
 
 #container-home .button-close-detail-notice {
-  margin-left: 10px;
+  margin-left: 260px;
 }
 
 #container-home .button-close-detail-notice:hover {
