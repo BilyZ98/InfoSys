@@ -35,3 +35,15 @@ exports.getNotice = (req, res, next) => {
     resBody.error(res,err)
   })
 }
+
+exports.deleteNotice = (req,res,next) => {
+  //console.log("????")
+  noticeModel.deleteNotice(req.body)
+    .then(()=>{
+      resBody.success(res,'删除公告成功')
+    })
+    .catch((err)=>{
+      console.log(err)
+      resBody.error(res,"删除失败")
+    })
+}
