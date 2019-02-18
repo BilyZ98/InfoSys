@@ -11,7 +11,7 @@
       <hr>
       <div class="container-input">
         <span>账号：</span>
-        <span class="userAccount">{{userAccount}}</span>
+        <span>{{userAccount}}</span>
       </div>
       <div class="container-input">
         <span>旧密码：</span>
@@ -226,12 +226,5 @@ export default {
 #container-reset .button-reset:hover {
   background-color: var(--blue-hover);
   cursor: pointer;
-}
-
-#container-reset .userAccount {
-  display: inline-block;
-  font-weight: bold;
-  margin-left: 60px;
-  text-align: right;
 }
 </style>

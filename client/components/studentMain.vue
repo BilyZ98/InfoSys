@@ -5,7 +5,7 @@
   </div>-->
   <!--主要区域-->
   <div class="container-card-left">
-    <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
+    <div class="card-studentsBasic" @click="studentsBasicClick">基本信息</div>
     <div class="card-studentsSpecial">港澳台/国际生</div>
     <div class="card-academicWarning">学业预警</div>
     <div class="card-guideline">办事指引</div>

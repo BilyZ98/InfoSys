@@ -12,12 +12,12 @@
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
               <span class="record-name">{{record.name}}:</span>
-              <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+              <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
                 <option></option>
                 <option v-for="option in record.options">{{option}}</option>
               </select>
-              <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-              <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+              <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+              <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
               </span>
             </div>
           </div>
@@ -28,8 +28,8 @@
             </tr>
             <tr v-for="tableArr in student[table.id]">
               <td v-for="record in table.records">
-                <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
-                <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="disabled" v-model:text="tableArr[record.id]">
+                <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
               </td>
             </tr>
           </table>
@@ -290,7 +290,14 @@ export default {
 }
 
 #container-detail .record-changable {
-  border: none;
+  border: 1px solid transparent;
+  background-color: white;
+  margin-left: 2px;
+  padding-left: 2px;
+}
+
+#container-detail .record-unchangable {
+  border: 1px solid transparent;
   background-color: white;
   margin-left: 2px;
   padding-left: 2px;
