@@ -27,7 +27,7 @@ export default {
       dormNumber: { name: '楼栋号', id: 'dormNumber', isPrimary: false, display: true, value: '', valueType: 'select', options: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'] },
       dormRoom: { name: '宿舍房号', id: 'dormRoom', isPrimary: false, display: true, value: '', valueType: 'input' },
       speciality: { name: '特长', id: 'speciality', isPrimary: false, display: true, value: '', valueType: 'input' },
-      highSchool: { name: '毕业中学', id: 'highSchool ', isPrimary: false, display: true, value: '', valueType: 'input' }
+      highSchool: { name: '毕业中学', id: 'highSchool', isPrimary: false, display: true, value: '', valueType: 'input' }
     }
   },
   family: {
