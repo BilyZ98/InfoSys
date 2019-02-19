@@ -212,10 +212,10 @@ exports.addHMT = (data) => {
   let query = 
   "insert into HMT \n" +
   "(sid, ancecsHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
-  "HMTIDNum, homePermitNum) \n" +
-  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  "HMTIDNum, homePermitNum, name) \n" +
+  "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   let values = [data.sid, data.ancesHome, data.interest, data.religion, data.mail, data.wechat, 
-  data.homeAddress, data.ecoContact, data.HMTIDNum, data.homePermitNum]
+  data.homeAddress, data.ecoContact, data.HMTIDNum, data.homePermitNum, data.name]
   return queryDB(query,values)
 }
 
