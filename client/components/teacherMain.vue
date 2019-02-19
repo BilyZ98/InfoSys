@@ -8,7 +8,7 @@
       <!--<p class="text-greeting"></p>-->
       <div class="card-teacherBasic" @click="teacherBasicClick">学生基本信息</div>
       <div class="card-teacherSpecial" @click="teacherSpecialClick">港澳台/国际生</div>
-      <div class="card-academicWarning">学业预警</div>
+      <div class="card-academicWarning" @click="academicWarningClick">学业预警</div>
       <div class="card-gameManage">竞赛信息管理</div>
       <div class="card-workManage">实习/就业管理</div>
       <div class="card-educationProof">学历证明</div>
@@ -128,6 +128,9 @@ export default {
       $('#detail-notice-createTime').text(notice.createTime)
       $('#detail-notice-expireTime').text(notice.expireTime)
       this.currentNotice = notice.id
+    },
+    academicWarningClick: function() {
+      this.$router.push({ name: 'academicWarning' })
     },
     detailNoticeDeleteClick: function() {
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
