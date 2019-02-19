@@ -29,8 +29,10 @@ export default {
   methods: {
     leaveClick: function() {
       this.$router.push({ name: 'guideline' })
+    },
+    leaveClick: function() {
+      this.$router.push({name: 'leave'})
     }
-    
   }
 }
 </script>
