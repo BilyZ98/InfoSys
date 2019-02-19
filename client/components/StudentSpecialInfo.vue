@@ -65,7 +65,7 @@ export default {
     this.sid = this.$route.query.sid
     // alert('sid: ' + this.$store.getters.getUserAccount)
     var data = {
-      tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
+      tables: ['HMT', 'internationalStudent'],
       id: this.sid
     }
     var postData = JSON.stringify(data)
