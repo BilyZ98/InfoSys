@@ -7,6 +7,7 @@
         <p>办事指引</p>
       </div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='leave'}" @click="leaveClick">请假指引</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='quitClass'}" @click="quitClick">退课申请</div>
     </aside>
     <div class="container-studentsBasic-display">
       <transition name="test" mode="out-in">
@@ -28,10 +29,10 @@ export default {
   },
   methods: {
     leaveClick: function() {
-      this.$router.push({ name: 'guideline' })
-    },
-    leaveClick: function() {
       this.$router.push({name: 'leave'})
+    },
+    quitClick: function() {
+      this.$router.push({name: 'quitClass'})
     }
   }
 }

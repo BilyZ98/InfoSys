@@ -66,6 +66,7 @@ import InternationalStu from './components/teacherSpecialInfoPages/International
 /* guideline for students */
 import Guideline from './components/Guideline.vue'
 import Leave from './components/guideline/Leave.vue'
+import QuitClass from './components/guideline/QuitClass.vue'
 
 /* email component */
 import Email from './components/teacherBasicInfoPages/modules/Email.vue'
@@ -143,7 +144,8 @@ const router = new VueRouter({
       path: '/guideline',
       component: Guideline,
       children: [
-        { name: 'leave', path: 'leave', component: Leave }
+        { name: 'leave', path: 'leave', component: Leave },
+        { name: 'quitClass', path: 'quitClass', component: QuitClass}
       ]
     },
     { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert },
