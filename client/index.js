@@ -26,6 +26,8 @@ import List from './components/List.vue'
 import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
 import Insert from './components/Insert.vue'
+import guideline from './components/guideline.vue'
+
 
 /* studentsBasicManage vue components */
 import StudentsBasicManage from './components/StudentsBasicManage.vue'
@@ -119,6 +121,7 @@ const router = new VueRouter({
     },
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: studentMain },
+    { name: 'guideline', path: '/guideline', component: guideline},
     { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
     { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert},
     { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert},
