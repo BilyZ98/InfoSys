@@ -91,7 +91,7 @@ export default {
   methods: {
     studentsBasicClick: function() {
       this.$router.push({
-        name: 'basicInfoOfStu',
+        name: 'studentBasicInfo',
         query: {
           sid: this.$store.getters.getUserAccount
         }
