@@ -255,7 +255,6 @@ exports.sendMail =async  (req,res,next) =>{
     resBody.error(res,err)
     console.log(err)
   }
-
 }
 
 
@@ -272,7 +271,7 @@ exports.getFailedCourseReacord = async (req,res,next) => {
     }
   }
   
-  let failedCourses = await StudentsModel.getFailedCourse(req,body)
+  let failedCourses = await StudentsModel.getFailedCourse(req.body)
   resBody.success(res,failedCourses)
 }
 
