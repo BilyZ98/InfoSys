@@ -277,7 +277,7 @@ export default {
       gender: { name: '性别', id: 'gender', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['男', '女'] },
       Nationality: { name: '国籍', id: 'Nationality', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       passportNum: { name: '护照号码', id: 'passportNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      schools: { name: '院系', id: 'schools', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: input},
+      schools: { name: '院系', id: 'schools', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       major: { name: '专业', id: 'major', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       tutor: { name: '导师姓名', id: 'tutor', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       visaType: { name: '签证证件类型', id: 'visaType', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['X1', 'X2', '居留许可证', '其它']},
