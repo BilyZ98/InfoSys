@@ -1,5 +1,5 @@
 <template>
-  <div id="manager-course">
+  <div>
     <!--顶部菜单-->
     <div class="container-header">
       <p class="header-text">课程成绩管理</p>
@@ -350,8 +350,8 @@ export default {
   }
 }
 </script>
-<style>
-#manager-course .container-header {
+<style scoped>
+.container-header {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
@@ -368,17 +368,17 @@ export default {
   user-select: none;
 }
 
-#manager-course .header-text {
+.header-text {
   float: left;
   font-size: 20px;
 }
 
-#manager-course .header-button {
+.header-button {
   float: right;
   margin-right: 20px;
 }
 
-#manager-course .header-button span {
+.header-button span {
   padding-right: 10px;
   font-weight: bold;
   transition: 0.3s;
@@ -390,33 +390,33 @@ export default {
   /* Opera */
 }
 
-#manager-course .header-button span:hover {
+.header-button span:hover {
   color: var(--blue);
   cursor: pointer;
 }
 
-#manager-course .container-record {
+.container-record {
   float: left;
   width: 360px;
   height: 35px;
   text-align: right;
 }
 
-#manager-course .container-record .text-range {
+.container-record .text-range {
   font-size: 12px;
 }
 
-#manager-course .container-record .min,
-#manager-course .container-record .max {
+.container-record .min,
+.container-record .max {
   width: 50px;
 }
 
-#manager-course .container-record .hide-container {
+.container-record .hide-container {
   height: 24px;
   width: 180px;
 }
 
-#manager-course .manager-button {
+.manager-button {
   float: left;
   clear: both;
   width: 110px;
@@ -435,15 +435,15 @@ export default {
   /* Opera */
 }
 
-#manager-course .manager-button:hover {
+.manager-button:hover {
   background-color: var(--blue-hover);
 }
 
-#manager-course .container-card-list {
+.container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-course .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -455,7 +455,7 @@ export default {
   overflow: auto;
 }
 
-#manager-course .container-card-list table {
+.container-card-list table {
   /*不会自动换行*/
   word-break: keep-all;
   white-space: nowrap;
@@ -464,7 +464,7 @@ export default {
   border-color: var(--grey-shadow);
 }
 
-#manager-course .container-card-list th,
+.container-card-list th,
 td {
   padding-left: 8px;
   padding-right: 8px;
@@ -472,7 +472,7 @@ td {
   padding-bottom: 4px;
 }
 
-#manager-course .container-card-list tr {
+.container-card-list tr {
   transition: background 0.3s;
   -moz-transition: background 0.3s;
   /* Firefox 4 */
@@ -482,18 +482,18 @@ td {
   /* Opera */
 }
 
-#manager-course .container-card-list tr:not(.table-head):hover {
+.container-card-list tr:not(.table-head):hover {
   background-color: var(--grey-hover);
 }
 
-#manager-course #button-import {
+#button-import {
   display: none;
 }
 
 
 /* 弹窗 (background) */
 
-#manager-course .popup-background {
+.popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -514,7 +514,7 @@ td {
 
 /* 弹窗内容 */
 
-#manager-course .popup-content {
+.popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 200px);
@@ -527,23 +527,16 @@ td {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-course .popup-cell {
+.popup-cell {
   float: left;
   width: 160px;
   height: 40px;
   text-align: left;
 }
 
-
-
-
-
-
-
-
 /* 关闭按钮 */
 
-#manager-course #popup-close {
+#popup-close {
   position: relative;
   float: right;
   width: 50px;
@@ -554,22 +547,16 @@ td {
   text-align: right;
 }
 
-#manager-course #popup-close:hover,
+#popup-close:hover,
 #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-
-
-
-
-
-
 /*统计*/
 
-#manager-course .stat-record {
+.stat-record {
   float: left;
   width: 300px;
   min-height: 35px;
@@ -577,24 +564,19 @@ td {
   font-size: 13px;
 }
 
-#manager-course .stat-record .hide-container {
+.stat-record .hide-container {
   height: 23px;
   width: 140px;
 }
 
-
-
-
-
-
 /*
-#manager-course .stat-record input[type="checkbox"] {
+.stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
 }
 */
 
-#manager-course .stat-checkbox {
+.stat-checkbox {
   width: 130px;
   height: 25px;
   border: none;
@@ -609,12 +591,12 @@ td {
   /* Opera */
 }
 
-#manager-course .stat-checkbox:hover {
+.stat-checkbox:hover {
   transform: translate(0, -2px);
   box-shadow: 0 2px 2px var(--grey-shadow);
 }
 
-#manager-course .stat-checkbox-selected {
+.stat-checkbox-selected {
   width: 130px;
   height: 25px;
   border: none;
@@ -631,41 +613,41 @@ td {
   /* Opera */
 }
 
-#manager-course .stat-input {
+.stat-input {
   width: 10px;
   height: 10px;
 }
 
-#manager-course .stat-nonselect-range {
+.stat-nonselect-range {
   display: none;
 }
 
-#manager-course .stat-nonselect-range div {
+.stat-nonselect-range div {
   margin-top: 10px;
   margin-bottom: 10px;
   font-size: 14px;
 }
 
-#manager-course #stat-nonselect-input-GPA-start,
-#manager-course #stat-nonselect-input-GPA-end {
+#stat-nonselect-input-GPA-start,
+#stat-nonselect-input-GPA-end {
   margin-left: 10px;
   display: inline-block;
   width: 140px;
 }
 
-#manager-course #stat-nonselect-input-GPA-range {
+#stat-nonselect-input-GPA-range {
   margin-left: 10px;
   width: 140px;
   height: 22px;
 }
 
-#manager-course #stat-chart-bar {
+#stat-chart-bar {
   float: left;
   margin-top: 20px;
   width: 50%;
 }
 
-#manager-course #stat-chart-pie {
+#stat-chart-pie {
   float: left;
   margin-top: 20px;
   width: 50%;

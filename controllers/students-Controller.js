@@ -259,6 +259,23 @@ exports.sendMail =async  (req,res,next) =>{
 }
 
 
+exports.getFailedCourseReacord = async (req,res,next) => {
+  let data = req.body;
+  if(data.minYear > data.maxYear){
+    resBody.fail(res,443,'时间段设置错误')
+    return
+  }
+  if(data.minYear== data.maxYear){
+    if(data.minSemester>data.maxSemester){
+      resBody.fail(res,443,'时间段设置错误')
+      return
+    }
+  }
+  
+  let failedCourses = await StudentsModel.getFailedCourse(req,body)
+  resBody.success(res,failedCourses)
+}
+
 
 //检测数据库中是否已有记录
 /**
