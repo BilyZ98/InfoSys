@@ -1,5 +1,5 @@
 <template>
-  <div id="manager-cadre">
+  <div>
     <!--顶部菜单-->
     <div class="container-header">
       <p class="header-text">学生干部任职情况管理</p>
@@ -23,8 +23,9 @@
           <option v-for="option in record.options">{{option}}</option>
         </select>
         <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'cadre-'+record.id">
-        <h6>最小值：</h6><input type="text" class="min"><h6> 最大值：</h6><input type="text" class="max">
-      </span>
+          <h6>最小值：</h6><input type="text" class="min">
+          <h6> 最大值：</h6><input type="text" class="max">
+        </span>
       </div>
       <button class="manager-button" @click="queryClick">查询</button>
     </div>
@@ -47,8 +48,7 @@
     <!--统计-->
     <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
-        <span>{{record.name}}:</span>
-        <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
+        <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'cadre-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
@@ -200,7 +200,7 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        if(this.emailSid.indexOf(this.students[i]['cadre']['sid']) == -1)
+        if (this.emailSid.indexOf(this.students[i]['cadre']['sid']) == -1)
           this.emailSid.push(this.students[i]['cadre']['sid'])
       }
     },
@@ -215,19 +215,27 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
+    // 统计
+    statButtonToggle: function(event) {
+      if (event.currentTarget.className == 'stat-checkbox') {
+        event.currentTarget.className = 'stat-checkbox-selected'
+        $('#cadre-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
+      } else if (event.currentTarget.className == 'stat-checkbox-selected') {
+        event.currentTarget.className = 'stat-checkbox'
+        $('#cadre-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+      }
+    },
     statClick: function() {
       var data = {
         table: 'cadre',
         fields: [],
         condition: {}
       }
-      $('.stat-checkbox').each(function() {
-        if ($(this).prop("checked")) {
-          var recordId = $(this).attr('record-id')
-          data['fields'].push(recordId)
-          if ($('#cadre-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#cadre-stat-' + recordId).val()
-          }
+      $('.stat-checkbox-selected').each(function() {
+        var recordId = $(this).attr('record-id')
+        data['fields'].push(recordId)
+        if ($('#cadre-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#cadre-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
@@ -248,11 +256,11 @@ export default {
             if (key == 'content') {
               //操作成功，配置图表
               /*let statData = [
-						    {gender: '女', major: null, statistic: 2},
-						    {gender: '女', major: 123, statistic: 1},
-						    {gender: '男', major: 123, statistic: 3},
-						    {gender: '男', major: '数学', statistic: 1}
-					    ]*/
+                {gender: '女', major: null, statistic: 2},
+                {gender: '女', major: 123, statistic: 1},
+                {gender: '男', major: 123, statistic: 3},
+                {gender: '男', major: '数学', statistic: 1}
+              ]*/
               console.log(result[key])
               statModule.createCharts('cadre', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
@@ -271,8 +279,8 @@ export default {
   }
 }
 </script>
-<style>
-#manager-cadre .container-header {
+<style scoped>
+.container-header {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
@@ -289,17 +297,17 @@ export default {
   user-select: none;
 }
 
-#manager-cadre .header-text {
+.header-text {
   float: left;
   font-size: 20px;
 }
 
-#manager-cadre .header-button {
+.header-button {
   float: right;
   margin-right: 20px;
 }
 
-#manager-cadre .header-button span {
+.header-button span {
   padding-right: 10px;
   font-weight: bold;
   transition: 0.3s;
@@ -311,37 +319,38 @@ export default {
   /* Opera */
 }
 
-#manager-cadre .header-button span:hover {
+.header-button span:hover {
   color: var(--blue);
   cursor: pointer;
 }
 
-#manager-cadre .container-record {
+.container-record {
   float: left;
   width: 360px;
   height: 35px;
   text-align: right;
 }
 
-#manager-cadre .container-record .text-range {
+.container-record .text-range {
   font-size: 12px;
 }
 
-#manager-cadre .container-record .min,
-#manager-cadre .container-record .max {
+.container-record .min,
+.container-record .max {
   width: 50px;
 }
 
-#manager-cadre .container-record .hide-container {
+.container-record .hide-container {
   height: 24px;
   width: 180px;
 }
 
-#manager-cadre .manager-button {
+.manager-button {
   float: left;
   clear: both;
   width: 110px;
   height: 36px;
+  margin-top: 20px;
   margin-left: calc(50% - 55px);
   font-size: 17px;
   color: white;
@@ -356,15 +365,15 @@ export default {
   /* Opera */
 }
 
-#manager-cadre .manager-button:hover {
+.manager-button:hover {
   background-color: var(--blue-hover);
 }
 
-#manager-cadre .container-card-list {
+.container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-cadre .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -376,7 +385,7 @@ export default {
   overflow: auto;
 }
 
-#manager-cadre .container-card-list table {
+.container-card-list table {
   /*不会自动换行*/
   word-break: keep-all;
   white-space: nowrap;
@@ -385,7 +394,7 @@ export default {
   border-color: var(--grey-shadow);
 }
 
-#manager-cadre .container-card-list th,
+.container-card-list th,
 td {
   padding-left: 8px;
   padding-right: 8px;
@@ -393,7 +402,7 @@ td {
   padding-bottom: 4px;
 }
 
-#manager-cadre .container-card-list tr {
+.container-card-list tr {
   transition: background 0.3s;
   -moz-transition: background 0.3s;
   /* Firefox 4 */
@@ -403,17 +412,17 @@ td {
   /* Opera */
 }
 
-#manager-cadre .container-card-list tr:not(.table-head):hover {
+.container-card-list tr:not(.table-head):hover {
   background-color: var(--grey-hover);
 }
 
-#manager-cadre #button-import {
+#button-import {
   display: none;
 }
 
 /* 弹窗 (background) */
 
-#manager-cadre .popup-background {
+.popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -431,13 +440,12 @@ td {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-
 /* 弹窗内容 */
 
-#manager-cadre .popup-content {
+.popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 200px);
+  margin-left: calc(50% - 300px);
   padding: 30px;
   width: 600px;
   height: 400px;
@@ -447,18 +455,16 @@ td {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-cadre .popup-cell {
+.popup-cell {
   float: left;
   width: 160px;
   height: 40px;
   text-align: left;
 }
 
-
-
 /* 关闭按钮 */
 
-#manager-cadre #popup-close {
+#popup-close {
   position: relative;
   float: right;
   width: 50px;
@@ -469,47 +475,88 @@ td {
   text-align: right;
 }
 
-#manager-cadre #popup-close:hover,
+#popup-close:hover,
 #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
+/* 统计 */
 
-
-/*统计*/
-
-#manager-cadre .stat-record {
+.stat-record {
   float: left;
   width: 300px;
-  height: 35px;
+  min-height: 35px;
   text-align: right;
   font-size: 13px;
 }
 
-#manager-cadre .stat-record .hide-container {
-  height: 22px;
+.stat-record .hide-container {
+  height: 23px;
   width: 140px;
 }
 
-#manager-cadre .stat-record input[type="checkbox"] {
+/*
+.stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
 }
+*/
 
-#manager-cadre .stat-input {
+.stat-checkbox {
+  width: 130px;
+  height: 25px;
+  border: none;
+  background-color: var(--grey-hover);
+  outline: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
+}
+
+.stat-checkbox:hover {
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
+}
+
+.stat-checkbox-selected {
+  width: 130px;
+  height: 25px;
+  border: none;
+  color: white;
+  background-color: var(--blue);
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
+}
+
+.stat-input {
   width: 10px;
   height: 10px;
 }
 
-#manager-cadre #stat-chart-bar {
+.stat-nonselect-range {
+  display: none;
+}
+
+#stat-chart-bar {
   float: left;
   margin-top: 20px;
   width: 50%;
 }
 
-#manager-cadre #stat-chart-pie {
+#stat-chart-pie {
   float: left;
   margin-top: 20px;
   width: 50%;

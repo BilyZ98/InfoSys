@@ -1,5 +1,5 @@
 <template>
-<div id="manager-schoolRoll">
+<div>
 	<!--顶部菜单-->
 	<div class="container-header">
 		<p class="header-text">学籍管理</p>
@@ -45,21 +45,19 @@
 		</table>
 	</div>
 	<!--统计-->
-	<div class="container-card-list">
-		<div class="stat-record" v-for="record in table.records">
-      <span>{{record.name}}:</span>
-      <input class="stat-checkbox" type="checkbox" v-bind:record-id="record.id">
+  <div class="container-card-list">
+    <div class="stat-record" v-for="record in table.records">
+      <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
       <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'schoolRoll-stat-'+record.id">
-      	<option></option>
+        <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
       <input class="hide-container" type="text" v-else v-bind:id="'schoolRoll-stat-'+record.id">
     </div>
     <button class="manager-button" @click="statClick">统计</button>
-		<span id="stat-chart-bar"></span>
-		<span id="stat-chart-pie"></span>
-	</div>
-
+    <span id="stat-chart-bar"></span>
+    <span id="stat-chart-pie"></span>
+  </div>
 	<!-- 弹窗 -->
 	<div id="popup" class="popup-background">
 	  <!-- 弹窗内容 -->
@@ -228,21 +226,29 @@ export default {
       })
       window.open(routeData.href, '_blank')
 		},
-		statClick: function(){
-			var data = {
-				table: 'schoolRoll',
-				fields: [],
-				condition: {}
-			}
-			$('.stat-checkbox').each(function(){
-				if($(this).prop("checked")){
-					var recordId = $(this).attr('record-id')
-					data['fields'].push(recordId)
-					if( $('#schoolRoll-stat-' + recordId).val() != ''){
-						data['condition'][recordId] = $('#schoolRoll-stat-' + recordId).val()
-					}
-				}
-			})
+		// 统计
+    statButtonToggle: function(event) {
+      if (event.currentTarget.className == 'stat-checkbox') {
+        event.currentTarget.className = 'stat-checkbox-selected'
+        $('#schoolRoll-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
+      } else if (event.currentTarget.className == 'stat-checkbox-selected') {
+        event.currentTarget.className = 'stat-checkbox'
+        $('#schoolRoll-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+      }
+    },
+    statClick: function() {
+      var data = {
+        table: 'schoolRoll',
+        fields: [],
+        condition: {}
+      }
+      $('.stat-checkbox-selected').each(function() {
+        var recordId = $(this).attr('record-id')
+        data['fields'].push(recordId)
+        if ($('#schoolRoll-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#schoolRoll-stat-' + recordId).val()
+        }
+      })
 			if(data['fields'].length == 0 ){
 				alert('请选择想要统计的字段！')
 				return
@@ -278,14 +284,14 @@ export default {
 }
 </script>
 
-<style>
-#manager-schoolRoll .container-header {
-	height: 70px;
-	line-height: 70px;
-	padding-left: 30px;
-	text-align: left;
-	background-color: white;
-	/*shadow*/
+<style scoped>
+.container-header {
+  height: 70px;
+  line-height: 70px;
+  padding-left: 30px;
+  text-align: left;
+  background-color: white;
+  /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
   /*设置文字不可被选中*/
   -webkit-touch-callout: none;
@@ -296,75 +302,83 @@ export default {
   user-select: none;
 }
 
-#manager-schoolRoll .header-text {
-	float: left;
-	font-size: 20px;
+.header-text {
+  float: left;
+  font-size: 20px;
 }
 
-#manager-schoolRoll .header-button {
-	float: right;
-	margin-right: 20px;
+.header-button {
+  float: right;
+  margin-right: 20px;
 }
 
-#manager-schoolRoll .header-button span{
-	padding-right: 10px;
-	font-weight: bold;
-	transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+.header-button span {
+  padding-right: 10px;
+  font-weight: bold;
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
-#manager-schoolRoll .header-button span:hover {
-	color: var(--blue);
+.header-button span:hover {
+  color: var(--blue);
   cursor: pointer;
 }
 
-#manager-schoolRoll .container-record {
-	float: left;
-	width: 360px;
-	height: 35px;
-	text-align: right;
+.container-record {
+  float: left;
+  width: 360px;
+  height: 35px;
+  text-align: right;
 }
 
-#manager-schoolRoll .container-record .text-range {
-	font-size: 12px;
+.container-record .text-range {
+  font-size: 12px;
 }
 
-#manager-schoolRoll .container-record .min, #manager-schoolRoll .container-record .max {
-	width: 50px;
+.container-record .min,
+.container-record .max {
+  width: 50px;
 }
 
-#manager-schoolRoll .container-record .hide-container {
-	height: 24px;
-	width: 180px;
+.container-record .hide-container {
+  height: 24px;
+  width: 180px;
 }
 
-#manager-schoolRoll .manager-button {
-	float: left;
-	clear: both;
-	width: 110px;
-	height: 36px;
-	margin-left: calc(50% - 55px);
-	font-size: 17px;
-	color: white;
-	background-color: var(--blue);
-	border: none;
-	transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+.manager-button {
+  float: left;
+  clear: both;
+  width: 110px;
+  height: 36px;
+  margin-top: 20px;
+  margin-left: calc(50% - 55px);
+  font-size: 17px;
+  color: white;
+  background-color: var(--blue);
+  border: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
-#manager-schoolRoll .manager-button:hover {
-	background-color: var(--blue-hover);
+.manager-button:hover {
+  background-color: var(--blue-hover);
 }
 
-#manager-schoolRoll .container-card-list {
+.container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-schoolRoll .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -376,39 +390,44 @@ export default {
   overflow: auto;
 }
 
-#manager-schoolRoll .container-card-list table {
-	/*不会自动换行*/
-	word-break: keep-all;
-	white-space: nowrap;
-	min-width: 100%;
-	font-size: 14px;
-	border-color: var(--grey-shadow);
+.container-card-list table {
+  /*不会自动换行*/
+  word-break: keep-all;
+  white-space: nowrap;
+  min-width: 100%;
+  font-size: 14px;
+  border-color: var(--grey-shadow);
 }
 
-#manager-schoolRoll .container-card-list th, td {
-	padding-left: 8px;
-	padding-right: 8px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+.container-card-list th,
+td {
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
-#manager-schoolRoll .container-card-list tr{
-	transition: background 0.3s;
-  -moz-transition: background 0.3s;  /* Firefox 4 */
-  -webkit-transition: background 0.3s; /* Safari 和 Chrome */
-  -o-transition: background 0.3s;  /* Opera */
+.container-card-list tr {
+  transition: background 0.3s;
+  -moz-transition: background 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: background 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: background 0.3s;
+  /* Opera */
 }
 
-#manager-schoolRoll .container-card-list tr:not(.table-head):hover{
-	background-color: var(--grey-hover);
+.container-card-list tr:not(.table-head):hover {
+  background-color: var(--grey-hover);
 }
 
-#manager-schoolRoll #button-import {
-	display: none;
+#button-import {
+  display: none;
 }
+
 /* 弹窗 (background) */
 
-#manager-schoolRoll .popup-background {
+.popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -427,78 +446,124 @@ export default {
 }
 
 /* 弹窗内容 */
-#manager-schoolRoll .popup-content {
+
+.popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 200px);
+  margin-left: calc(50% - 300px);
   padding: 30px;
   width: 600px;
-	height: 400px;
-	/*radius*/
+  height: 400px;
+  /*radius*/
   border-radius: 3px;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-schoolRoll .popup-cell {
-	float: left;
-	width: 160px;
-	height: 40px;
-	text-align: left;
+.popup-cell {
+  float: left;
+  width: 160px;
+  height: 40px;
+  text-align: left;
 }
 
 /* 关闭按钮 */
-#manager-schoolRoll #popup-close {
-	position: relative;
-	float: right;
-	width: 50px;
-	height: 50px;
+
+#popup-close {
+  position: relative;
+  float: right;
+  width: 50px;
+  height: 50px;
   color: #aaa;
   font-size: 28px;
   font-weight: bold;
   text-align: right;
 }
 
-#manager-schoolRoll #popup-close:hover, #popup-close:focus {
+#popup-close:hover,
+#popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-/*统计*/
+/* 统计 */
 
-#manager-schoolRoll .stat-record {
-	float: left;
-	width: 300px;
-	height: 35px;
-	text-align: right;
-	font-size: 13px;
+.stat-record {
+  float: left;
+  width: 300px;
+  min-height: 35px;
+  text-align: right;
+  font-size: 13px;
 }
 
-#manager-schoolRoll .stat-record .hide-container {
-	height: 22px;
-	width: 140px;
+.stat-record .hide-container {
+  height: 23px;
+  width: 140px;
 }
 
-#manager-schoolRoll .stat-record input[type="checkbox"] {
-	width: 13px;
-	height: 13px;
+/*
+.stat-record input[type="checkbox"] {
+  width: 13px;
+  height: 13px;
+}
+*/
+
+.stat-checkbox {
+  width: 130px;
+  height: 25px;
+  border: none;
+  background-color: var(--grey-hover);
+  outline: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
-#manager-schoolRoll .stat-input {
-	width: 10px;
-	height: 10px;
+.stat-checkbox:hover {
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
 }
 
-#manager-schoolRoll #stat-chart-bar {
-	float: left;
-	margin-top: 20px;
-	width: 50%;
+.stat-checkbox-selected {
+  width: 130px;
+  height: 25px;
+  border: none;
+  color: white;
+  background-color: var(--blue);
+  transform: translate(0, -2px);
+  box-shadow: 0 2px 2px var(--grey-shadow);
+  transition: 0.3s;
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
-#manager-schoolRoll #stat-chart-pie {
-	float: left;
-	margin-top: 20px;
-	width: 50%;
+.stat-input {
+  width: 10px;
+  height: 10px;
+}
+
+.stat-nonselect-range {
+  display: none;
+}
+
+#stat-chart-bar {
+  float: left;
+  margin-top: 20px;
+  width: 50%;
+}
+
+#stat-chart-pie {
+  float: left;
+  margin-top: 20px;
+  width: 50%;
 }
 </style>

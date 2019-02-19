@@ -1,5 +1,5 @@
 <template>
-  <div id="manager-basicInfo">
+  <div>
     <!--顶部菜单-->
     <div class="container-header">
       <p class="header-text">基本信息管理</p>
@@ -256,7 +256,7 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    //统计
+    // 统计
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
@@ -329,8 +329,8 @@ export default {
   }
 }
 </script>
-<style>
-#manager-basicInfo .container-header {
+<style scoped>
+.container-header {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
@@ -347,17 +347,17 @@ export default {
   user-select: none;
 }
 
-#manager-basicInfo .header-text {
+.header-text {
   float: left;
   font-size: 20px;
 }
 
-#manager-basicInfo .header-button {
+.header-button {
   float: right;
   margin-right: 20px;
 }
 
-#manager-basicInfo .header-button span {
+.header-button span {
   padding-right: 10px;
   font-weight: bold;
   transition: 0.3s;
@@ -369,37 +369,38 @@ export default {
   /* Opera */
 }
 
-#manager-basicInfo .header-button span:hover {
+.header-button span:hover {
   color: var(--blue);
   cursor: pointer;
 }
 
-#manager-basicInfo .container-record {
+.container-record {
   float: left;
   width: 360px;
   height: 35px;
   text-align: right;
 }
 
-#manager-basicInfo .container-record .text-range {
+.container-record .text-range {
   font-size: 12px;
 }
 
-#manager-basicInfo .container-record .min,
-#manager-basicInfo .container-record .max {
+.container-record .min,
+.container-record .max {
   width: 50px;
 }
 
-#manager-basicInfo .container-record .hide-container {
+.container-record .hide-container {
   height: 24px;
   width: 180px;
 }
 
-#manager-basicInfo .manager-button {
+.manager-button {
   float: left;
   clear: both;
   width: 110px;
   height: 36px;
+  margin-top: 20px;
   margin-left: calc(50% - 55px);
   font-size: 17px;
   color: white;
@@ -414,15 +415,15 @@ export default {
   /* Opera */
 }
 
-#manager-basicInfo .manager-button:hover {
+.manager-button:hover {
   background-color: var(--blue-hover);
 }
 
-#manager-basicInfo .container-card-list {
+.container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-basicInfo .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -434,7 +435,7 @@ export default {
   overflow: auto;
 }
 
-#manager-basicInfo .container-card-list table {
+.container-card-list table {
   /*不会自动换行*/
   word-break: keep-all;
   white-space: nowrap;
@@ -443,7 +444,7 @@ export default {
   border-color: var(--grey-shadow);
 }
 
-#manager-basicInfo .container-card-list th,
+.container-card-list th,
 td {
   padding-left: 8px;
   padding-right: 8px;
@@ -451,7 +452,7 @@ td {
   padding-bottom: 4px;
 }
 
-#manager-basicInfo .container-card-list tr {
+.container-card-list tr {
   transition: background 0.3s;
   -moz-transition: background 0.3s;
   /* Firefox 4 */
@@ -461,17 +462,17 @@ td {
   /* Opera */
 }
 
-#manager-basicInfo .container-card-list tr:not(.table-head):hover {
+.container-card-list tr:not(.table-head):hover {
   background-color: var(--grey-hover);
 }
 
-#manager-basicInfo #button-import {
+#button-import {
   display: none;
 }
 
 /* 弹窗 (background) */
 
-#manager-basicInfo .popup-background {
+.popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -489,10 +490,9 @@ td {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-
 /* 弹窗内容 */
 
-#manager-basicInfo .popup-content {
+.popup-content {
   background-color: white;
   margin-top: 100px;
   margin-left: calc(50% - 300px);
@@ -505,18 +505,16 @@ td {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-basicInfo .popup-cell {
+.popup-cell {
   float: left;
   width: 160px;
   height: 40px;
   text-align: left;
 }
 
-
-
 /* 关闭按钮 */
 
-#manager-basicInfo #popup-close {
+#popup-close {
   position: relative;
   float: right;
   width: 50px;
@@ -527,16 +525,16 @@ td {
   text-align: right;
 }
 
-#manager-basicInfo #popup-close:hover,
+#popup-close:hover,
 #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
-/*统计*/
+/* 统计 */
 
-#manager-basicInfo .stat-record {
+.stat-record {
   float: left;
   width: 300px;
   min-height: 35px;
@@ -544,20 +542,19 @@ td {
   font-size: 13px;
 }
 
-#manager-basicInfo .stat-record .hide-container {
+.stat-record .hide-container {
   height: 23px;
   width: 140px;
 }
 
-
 /*
-#manager-basicInfo .stat-record input[type="checkbox"] {
+.stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
 }
 */
 
-#manager-basicInfo .stat-checkbox {
+.stat-checkbox {
   width: 130px;
   height: 25px;
   border: none;
@@ -572,12 +569,12 @@ td {
   /* Opera */
 }
 
-#manager-basicInfo .stat-checkbox:hover {
+.stat-checkbox:hover {
   transform: translate(0, -2px);
   box-shadow: 0 2px 2px var(--grey-shadow);
 }
 
-#manager-basicInfo .stat-checkbox-selected {
+.stat-checkbox-selected {
   width: 130px;
   height: 25px;
   border: none;
@@ -594,22 +591,22 @@ td {
   /* Opera */
 }
 
-#manager-basicInfo .stat-input {
+.stat-input {
   width: 10px;
   height: 10px;
 }
 
-#manager-basicInfo .stat-nonselect-range {
+.stat-nonselect-range {
   display: none;
 }
 
-#manager-basicInfo #stat-chart-bar {
+#stat-chart-bar {
   float: left;
   margin-top: 20px;
   width: 50%;
 }
 
-#manager-basicInfo #stat-chart-pie {
+#stat-chart-pie {
   float: left;
   margin-top: 20px;
   width: 50%;
