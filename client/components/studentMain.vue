@@ -99,7 +99,7 @@ export default {
       //this.$router.push({ name: 'basicInfoOfStu' })
     },
     guidelineClick: function() {
-      this.$router.push({name:'guideline'})
+      this.$router.push({name:'leave'})
     },
     getNotices: function() {
       //获取公告

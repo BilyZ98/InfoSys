@@ -62,8 +62,8 @@ import StudentCadreInsert from './components/studentBasicInfoInserts/StudentCadr
 /* StudentSpecialInfo for students */
 import StudentSpecialInfo from './components/StudentSpecialInfo.vue'
 /* guideline for students */
-import guideline from './components/Guideline.vue'
-import leave from './components/guideline/Leave.vue'
+import Guideline from './components/Guideline.vue'
+import Leave from './components/guideline/Leave.vue'
 
 /* email component */
 import Email from './components/teacherBasicInfoPages/modules/Email.vue'
@@ -136,7 +136,6 @@ const router = new VueRouter({
         { name: 'leave', path: 'leave', component: Leave }
       ]
     },
-    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
     { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert},
     { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert},
     { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert},
