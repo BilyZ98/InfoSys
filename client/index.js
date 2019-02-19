@@ -61,6 +61,8 @@ import StudentFamilyInsert from './components/studentBasicInfoInserts/StudentFam
 import StudentCadreInsert from './components/studentBasicInfoInserts/StudentCadreInsert.vue'
 /* StudentSpecialInfo for students */
 import StudentSpecialInfo from './components/StudentSpecialInfo.vue'
+import HMTStudent from './components/teacherSpecialInfoPages/HMTStudent.vue'
+import InternationalStu from './components/teacherSpecialInfoPages/InternationalStu.vue'
 /* guideline for students */
 import Guideline from './components/Guideline.vue'
 import Leave from './components/guideline/Leave.vue'
@@ -124,10 +126,18 @@ const router = new VueRouter({
         { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
     },
-    { name: 'teacherSpecialInfo', path: '/teacherSpecialInfo', component: TeacherSpecialInfo},
+    {
+      name: 'teacherSpecialInfo',
+      path: '/teacherSpecialInfo',
+      component: TeacherSpecialInfo,
+      children: [
+        { name: 'HMTStudent', path: 'HMTStudent', component: HMTStudent },
+        { name: 'internationalStu', path: 'internationalStu', component: InternationalStu }
+      ]
+    },
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
-    { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo},
+    { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
     {
       name: 'guideline',
       path: '/guideline',
@@ -136,10 +146,10 @@ const router = new VueRouter({
         { name: 'leave', path: 'leave', component: Leave }
       ]
     },
-    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert},
-    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert},
-    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert},
-    { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo},
+    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert },
+    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert },
+    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert },
+    { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
