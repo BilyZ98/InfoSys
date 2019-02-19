@@ -1,14 +1,15 @@
 <template>
   <div id="container-detail">
     <div class="container" id="pdfDom">
-      <h3 class="text-center heading">学生信息</h3>
+      <h3 class="text-center heading">港澳台/国际生学生信息</h3>
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <div class="info-heading">{{table.name}}</div>
+          <!-- <div class="info-heading" v-if="table.id=='HMTStudent'||table.id=='InternationalStu'">{{table.name}}</div> -->
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
-          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
+          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMTStudent'||table.id=='InternationalStu')">
+          	<div class="info-heading">{{table.name}}</div>
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
               <span class="record-name">{{record.name}}:</span>
@@ -22,7 +23,7 @@
             </div>
           </div>
           <!--一个人有多条数据的表-->
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0">
+          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMTStudent'||table.id=='InternationalStu')">
             <tr>
               <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
             </tr>
@@ -34,9 +35,8 @@
             </tr>
           </table>
           <!--表空但可以插入-->
-          <button v-else-if="table.tableStudentChangable" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
-          <!--表空且不能插入-->
-          <div v-else class="table-empty">---</div>
+ <!--          <button v-else-if="table.tableStudentChangable&&(table.id=='HMTStudent'||table.id=='InternationalStu')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button> -->
+
         </div>
       </div>
     </div>

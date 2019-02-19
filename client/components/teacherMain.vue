@@ -1,83 +1,82 @@
 <template>
-<div id="container-home">
-  <!--顶部栏
+  <div id="container-home">
+    <!--顶部栏
   <div class="container-header">
   </div>-->
-  <!--主要区域-->
-  <div class="container-card-left">
-    <!--<p class="text-greeting"></p>-->
-    <div class="card-studentsBasic" @click="studentsBasicClick">学生基本信息</div>
-    <div class="card-studentsSpecial">港澳台/国际生</div>
-    <div class="card-academicWarning">学业预警</div>
-    <div class="card-gameManage">竞赛信息管理</div>
-    <div class="card-workManage">实习/就业管理</div>
-    <div class="card-educationProof">学历证明</div>
-    <div class="card-teacherApply">导师申请</div>
-    <div class="card-checkin">签到统计</div>
-  </div>
-  <div class="container-card-right">
-    <span class="notice-header">公告栏：</span>
-    <span class="notice-header" id="notice-number">{{notices.length}}</span>
-    <span class="notice-header">条公告</span>
-    <div class="notice-list">
-      <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
-        <span>{{notice.title}}</span>
-        <span class="notice-time">{{notice.expireTime}}</span>
-        <span class="notice-teacher">{{notice.account}}</span>
+    <!--主要区域-->
+    <div class="container-card-left">
+      <!--<p class="text-greeting"></p>-->
+      <div class="card-teacherBasic" @click="teacherBasicClick">学生基本信息</div>
+      <div class="card-teacherSpecial" @click="teacherSpecialClick">港澳台/国际生</div>
+      <div class="card-academicWarning">学业预警</div>
+      <div class="card-gameManage">竞赛信息管理</div>
+      <div class="card-workManage">实习/就业管理</div>
+      <div class="card-educationProof">学历证明</div>
+      <div class="card-teacherApply">导师申请</div>
+      <div class="card-checkin">签到统计</div>
+    </div>
+    <div class="container-card-right">
+      <span class="notice-header">公告栏：</span>
+      <span class="notice-header" id="notice-number">{{notices.length}}</span>
+      <span class="notice-header">条公告</span>
+      <div class="notice-list">
+        <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
+          <span>{{notice.title}}</span>
+          <span class="notice-time">{{notice.expireTime}}</span>
+          <span class="notice-teacher">{{notice.account}}</span>
+        </div>
+      </div>
+      <button id="button-new-notice" @click="newNoticeClick">新建公告</button>
+    </div>
+    <!--公告详情-->
+    <div id="popup-detail-notice" class="popup-background">
+      <!-- 弹窗内容 -->
+      <div class="content-detail-notice">
+        <div class="detail-notice-header">公告详情</div>
+        <div class="container-detail-notice-text">
+          <span class="notice-detail-name">标题：</span>
+          <span id="detail-notice-title"></span>
+        </div>
+        <div class="container-detail-notice-text">
+          <span class="notice-detail-name">内容：</span>
+          <span id="detail-notice-content"></span>
+        </div>
+        <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
+        <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
+        <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
+        <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button>
+        <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
       </div>
     </div>
-    <button id="button-new-notice" @click="newNoticeClick">新建公告</button>
-  </div>
-  <!--公告详情-->
-  <div id="popup-detail-notice" class="popup-background">
-    <!-- 弹窗内容 -->
-    <div class="content-detail-notice">
-      <div class="detail-notice-header">公告详情</div>
-      <div class="container-detail-notice-text">
-        <span class="notice-detail-name">标题：</span>
-        <span id="detail-notice-title"></span>
+    <!-- 弹窗 -->
+    <div id="popup-new-notice" class="popup-background">
+      <!-- 弹窗内容 -->
+      <div class="content-new-notice">
+        <div class="new-notice-header">新建公告</div>
+        <div class="container-new-notice-text">
+          <span>标题：</span>
+          <input type="text" id="new-notice-title">
+        </div>
+        <div class="container-new-notice-text">
+          <span>内容：</span>
+          <textarea id="new-notice-content"></textarea>
+        </div>
+        <button class="button-new-notice" @click="newNotice">新建</button>
+        <button class="button-close-new-notice" @click="newNoticeCloseClick">关闭</button>
       </div>
-      <div class="container-detail-notice-text">
-        <span class="notice-detail-name">内容：</span>
-        <span id="detail-notice-content"></span>
-      </div>
-      <div class="container-detail-notice-text"><span class="notice-detail-name">发布老师：</span><span id="detail-notice-teacher"></span></div>
-      <div class="container-detail-notice-text"><span class="notice-detail-name">创建时间：</span><span id="detail-notice-createTime"></span></div>
-      <div class="container-detail-notice-text"><span class="notice-detail-name">过期时间：</span><span id="detail-notice-expireTime"></span></div>
-      <button class="button-delete-detail-notice" @click="detailNoticeDeleteClick">删除</button>
-      <button class="button-close-detail-notice" @click="detailNoticeCloseClick">关闭</button>
     </div>
   </div>
-  <!-- 弹窗 -->
-  <div id="popup-new-notice" class="popup-background">
-    <!-- 弹窗内容 -->
-    <div class="content-new-notice">
-      <div class="new-notice-header">新建公告</div>
-      <div class="container-new-notice-text">
-        <span>标题：</span>
-        <input type="text" id="new-notice-title">
-      </div>
-      <div class="container-new-notice-text">
-        <span>内容：</span>
-        <textarea id="new-notice-content"></textarea>
-      </div>
-      <button class="button-new-notice" @click="newNotice">新建</button>
-      <button class="button-close-new-notice" @click="newNoticeCloseClick">关闭</button>
-    </div>
-  </div>
-</div>
 </template>
-
 <script>
 export default {
-  data: function(){
+  data: function() {
     return {
       notices: [],
       currentNotice: -1
     }
   },
-  mounted: function(){
-    //问候
+  mounted: function() {
+    /*问候
     var hour = new Date().getHours()
     var hourStr = ''
     if(hour >= 4 && hour < 12) {
@@ -86,12 +85,15 @@ export default {
       hourStr = '下午好!'
     } else {
       hourStr = '晚上好!'
-    }
+    }*/
     this.getNotices()
   },
   methods: {
-    studentsBasicClick: function() {
+    teacherBasicClick: function() {
       this.$router.push({ name: 'basicInfo' })
+    },
+    teacherSpecialClick: function() {
+      this.$router.push({ name: 'HMT' })
     },
     getNotices: function() {
       //获取公告
@@ -112,7 +114,7 @@ export default {
         },
         error: function(result, xhr) {
           //连接错误,440是未登录造成的，页面在这个函数执行之后会自动处理
-          if(result.status != 440){
+          if (result.status != 440) {
             alert('服务器连接错误: ' + xhr)
           }
         }
@@ -127,11 +129,11 @@ export default {
       $('#detail-notice-expireTime').text(notice.expireTime)
       this.currentNotice = notice.id
     },
-    detailNoticeDeleteClick: function(){
+    detailNoticeDeleteClick: function() {
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
       //alert(this.currentNotice)
       var data = {
-          id: this.currentNotice
+        id: this.currentNotice
       }
       var postData = JSON.stringify(data)
       console.log(postData)
@@ -145,9 +147,9 @@ export default {
         timeout: 5000,
         success: function(result, xhr) {
           alert("公告删除成功")
-          for(var i=0;i<_self.notices.length;i++){
-            if(_self.notices[i].id==_self.currentNotice){
-              _self.notices.splice(i,1);
+          for (var i = 0; i < _self.notices.length; i++) {
+            if (_self.notices[i].id == _self.currentNotice) {
+              _self.notices.splice(i, 1);
               break;
             }
           }
@@ -161,11 +163,11 @@ export default {
         }
       })
     },
-    detailNoticeCloseClick: function(){
+    detailNoticeCloseClick: function() {
       $('#popup-detail-notice').hide()
       this.currentNotice = -1
     },
-    newNoticeClick: function(){
+    newNoticeClick: function() {
       $('#popup-new-notice').show()
       $('#new-notice-title').val('')
       $('#new-notice-content').val('')
@@ -174,10 +176,10 @@ export default {
       $('#popup-new-notice').hide()
     },
     newNotice: function() {
-      if($('#new-notice-title').val() == '') {
+      if ($('#new-notice-title').val() == '') {
         alert('公告标题不能为空!')
         return
-      } else if($('#new-notice-content').val() == ''){
+      } else if ($('#new-notice-content').val() == '') {
         alert('公告内容不能为空!')
         return
       } else {
@@ -218,7 +220,6 @@ export default {
   }
 }
 </script>
-
 <style>
 #container-home .container-header {
   height: 70px;
@@ -268,7 +269,7 @@ export default {
 
 /* 左边栏 */
 
-#container-home .card-studentsBasic {
+#container-home .card-teacherBasic {
   display: inline-block;
   margin: 30px 0 0 30px;
   width: calc(33% - 40px);
@@ -281,13 +282,13 @@ export default {
   line-height: 100px;
 }
 
-#container-home .card-studentsBasic:hover {
+#container-home .card-teacherBasic:hover {
   transform: translate(0, -1px);
   box-shadow: -3px 3px 3px var(--grey-shadow);
   cursor: pointer;
 }
 
-#container-home .card-studentsSpecial {
+#container-home .card-teacherSpecial {
   display: inline-block;
   margin: 30px 0 0 30px;
   width: calc(33% - 40px);
@@ -300,7 +301,7 @@ export default {
   line-height: 100px;
 }
 
-#container-home .card-studentsSpecial:hover {
+#container-home .card-teacherSpecial:hover {
   transform: translate(0, -1px);
   box-shadow: -3px 3px 3px var(--grey-shadow);
   cursor: pointer;
@@ -420,9 +421,12 @@ export default {
   height: 45px;
   border-top: 1px solid var(--grey-shadow);
   transition: background 0.3s;
-  -moz-transition: background 0.3s;  /* Firefox 4 */
-  -webkit-transition: background 0.3s; /* Safari 和 Chrome */
-  -o-transition: background 0.3s;  /* Opera */
+  -moz-transition: background 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: background 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: background 0.3s;
+  /* Opera */
 }
 
 #container-home .notice:hover {
@@ -450,9 +454,12 @@ export default {
   background-color: var(--blue);
   border: none;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-home #button-new-notice:hover {
@@ -465,20 +472,25 @@ export default {
 
 #container-home .popup-background {
   display: none;
-  position: absolute; /* 定位 */
-  z-index: 10; /* 设置在顶层 */
+  position: absolute;
+  /* 定位 */
+  z-index: 10;
+  /* 设置在顶层 */
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   padding-top: 60px;
   overflow: auto;
-  background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.4);
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 /*公告详情弹窗*/
@@ -507,7 +519,7 @@ export default {
   font-size: 16px;
 }
 
-#container-home .notice-detail-name{
+#container-home .notice-detail-name {
   display: inline-block;
   vertical-align: top;
   width: 80px;
@@ -525,7 +537,8 @@ export default {
   height: 200px;
 }
 
-#container-home .button-delete-detail-notice, #container-home .button-close-detail-notice {
+#container-home .button-delete-detail-notice,
+#container-home .button-close-detail-notice {
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -536,9 +549,12 @@ export default {
   background-color: var(--blue);
   border: none;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-home .button-delete-detail-notice {
@@ -585,7 +601,7 @@ export default {
   font-size: 16px;
 }
 
-#container-home .container-new-notice-text span{
+#container-home .container-new-notice-text span {
   vertical-align: top;
 }
 
@@ -598,7 +614,8 @@ export default {
   height: 200px;
 }
 
-#container-home .button-new-notice, #container-home .button-close-new-notice {
+#container-home .button-new-notice,
+#container-home .button-close-new-notice {
   display: inline-block;
   width: 100px;
   height: 30px;
@@ -609,9 +626,12 @@ export default {
   background-color: var(--blue);
   border: none;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-home .button-new-notice {

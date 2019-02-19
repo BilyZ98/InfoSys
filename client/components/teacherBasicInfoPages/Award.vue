@@ -1,13 +1,17 @@
 <template>
-  <div id="manager-course">
+  <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">课程成绩管理</p>
+      <p class="header-text">奖励情况管理</p>
       <div class="header-button">
-        <!--<span @click="insertClick">插入数据</span>-->
+        <span @click="insertClick">插入数据</span>
+        <!--<span>上传学生照片</span>-->
+        <!--<span>修改密码</span>-->
         <span @click="downloadClick">导出</span>
         <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
         <span @click="mubanDownload">下载模板</span>
+        <!--<span>删除</span>
+			<span>编辑</span>-->
         <span>转毕业生</span>
         <span @click="diycolClick">自定义列</span>
         <span @click="sendEmailClick">邮件通知</span>
@@ -17,15 +21,13 @@
     <div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
         <span>{{record.name}}:</span>
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
+        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'award-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'course-'+record.id">
-        <span class="text-range">最小值 </span>
-        <input type="text" class="min"><span class="text-range">最大值 </span>
-        <input type="text" class="max">
+        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'award-'+record.id">
+          <span class="text-range">最小值 </span><input type="text" class="min"><span class="text-range">最大值 </span><input type="text" class="max">
         </span>
       </div>
       <button class="manager-button" @click="queryClick">查询</button>
@@ -37,10 +39,10 @@
           <th>#</th>
           <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['award']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
+            <span v-if="student['award'][record.id]!=undefined">{{student['award'][record.id]}}</span>
             <span v-else>---</span>
           </td>
         </tr>
@@ -50,27 +52,11 @@
     <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-stat-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'award-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'course-stat-'+record.id">
-        <span class="stat-nonselect-range" v-bind:id="'course-stat-range-'+record.id" v-if="record.id=='GPA'">
-          <div>
-            统计起点: <input id="stat-nonselect-input-GPA-start">
-          </div>
-          <div>
-            统计终点: <input id="stat-nonselect-input-GPA-end">
-          </div>
-          <div>
-            统计区间宽度:
-            <select id="stat-nonselect-input-GPA-range">
-              <option>0.1</option>
-              <option>0.5</option>
-              <option>1.0</option>
-            </select>
-          </div>
-        </span>
+        <input class="hide-container" type="text" v-else v-bind:id="'award-stat-'+record.id">
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
@@ -105,9 +91,9 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
-      table: tableData['course'],
+      table: tableData['award'],
       students: [],
-      emailSid: []
+      emailSid: null
     }
   },
   created: function() {
@@ -117,35 +103,35 @@ export default {
   methods: {
     insertClick: function() {
       this.$router.push({
-        name: 'courseInsert'
+        name: 'awardInsert'
       })
     },
     queryClick: function() {
-      var course = { equal: {}, range: {}, fuzzy: {} }
+      var award = { equal: {}, range: {}, fuzzy: {} }
       var data = {
-        select: ['course'],
+        select: ['award'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-      if ($('#course-sid').val()) {
-        var sid = $('#course-sid').val()
-        if (!formatCheck['course']['sid']['reg'].test(sid)) {
-          alert(formatCheck['course']['sid']['msg'])
+      if ($('#award-sid').val()) {
+        var sid = $('#award-sid').val()
+        if (!formatCheck['award']['sid']['reg'].test(sid)) {
+          alert(formatCheck['award']['sid']['msg'])
           return
         } else {
-          course['equal']['sid'] = sid
+          award['equal']['sid'] = sid
         }
       } else {
         //验证格式
         var message = ''
-        for (let item in formatCheck['course']) {
-          if (formatCheck['course'][item]['reg'] != null) {
-            let record = $('#course-' + item).val()
-            if (record != '' && !formatCheck['course'][item]['reg'].test(record)) {
-              message = message + formatCheck['course'][item]['msg']
+        for (let item in formatCheck['award']) {
+          if (formatCheck['award'][item]['reg'] != null) {
+            let record = $('#award-' + item).val()
+            if (record != '' && !formatCheck['award'][item]['reg'].test(record)) {
+              message = message + formatCheck['award'][item]['msg']
             }
           }
         }
@@ -153,40 +139,22 @@ export default {
           alert(message)
           return
         }
-        if ($('#course-name').val()) course['equal']['name'] = $('#course-name').val()
+        if ($('#award-name').val()) award['equal']['name'] = $('#award-name').val()
+        if ($('#award-stuClass').val()) award['equal']['stuClass'] = $('#award-stuClass').val()
+        if ($('#award-awardName').val()) award['fuzzy']['awardName'] = $('#award-awardName').val()
+        if ($('#award-awardClass').val()) award['fuzzy']['awardClass'] = $('#award-awardClass').val()
+        if ($('#award-employer').val()) award['equal']['employer'] = $('#award-employer').val()
+        if ($('#award-awardJiBie').val()) award['equal']['awardJiBie'] = $('#award-awardJiBie').val()
         //range value
-        var rangeVal = { min: $('#course-year .min').val(), max: $('#course-year .max').val() }
+        var rangeVal = { min: $('#award-awardYearMonth .min').val(), max: $('#award-awardYearMonth .max').val() }
         if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['year'] = rangeVal
+          award['range']['awardYearMonth'] = rangeVal
         }
-        //range value
-        rangeVal = { min: $('#course-semester .min').val(), max: $('#course-semester .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['semester'] = rangeVal
-        }
-        if ($('#course-courseName').val()) course['equal']['courseName'] = $('#cschoolRoll-ourseName').val()
-        if ($('#course-courseId').val()) course['equal']['courseId'] = $('#course-courseId').val()
-        if ($('#course-courseClass').val()) course['equal']['courseClass'] = $('#course-courseClass').val()
-        if ($('#course-courseProperty').val()) course['equal']['courseProperty'] = $('#course-courseProperty').val()
-        if ($('#course-courseHour').val()) course['equal']['courseHour'] = $('#course-courseHour').val()
-        if ($('#course-credit').val()) course['equal']['credit'] = $('#course-credit').val()
-        //range value
-        rangeVal = { min: $('#course-courseGrade .min').val(), max: $('#course-courseGrade .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['courseGrade'] = rangeVal
-        }
-        //range value
-        rangeVal = { min: $('#course-GPA .min').val(), max: $('#course-GPA .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['GPA'] = rangeVal
-        }
-        if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
-        if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()
-        if ($('#course-backup').val()) course['equal']['backup'] = $('#course-backup').val()
+        if ($('#award-teacher').val()) award['equal']['teacher'] = $('#award-teacher').val()
       }
-      if (JSON.stringify(course['equal']) != emptyCell) data['where']['equal']['course'] = course['equal']
-      if (JSON.stringify(course['range']) != emptyCell) data['where']['range']['course'] = course['range']
-      if (JSON.stringify(course['fuzzy']) != emptyCell) data['where']['fuzzy']['course'] = course['fuzzy']
+      if (JSON.stringify(award['equal']) != emptyCell) data['where']['equal']['award'] = award['equal']
+      if (JSON.stringify(award['range']) != emptyCell) data['where']['range']['award'] = award['range']
+      if (JSON.stringify(award['fuzzy']) != emptyCell) data['where']['fuzzy']['award'] = award['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -224,11 +192,11 @@ export default {
       $('#button-import').click()
     },
     mubanDownload: function() {
-      downloadModule.mubanDownload("course")
+      downloadModule.mubanDownload("award")
     },
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
-      importModule.importClick($('#button-import').prop('files')[0], 'course')
+      importModule.importClick($('#button-import').prop('files')[0], 'award')
     },
     diycolClick: function() {
       $('#popup').show()
@@ -242,8 +210,8 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        if(this.emailSid.indexOf(this.students[i]['course']['sid']) == -1)
-          this.emailSid.push(this.students[i]['course']['sid'])
+        if (this.emailSid.indexOf(this.students[i]['award']['sid']) == -1)
+          this.emailSid.push(this.students[i]['award']['sid'])
       }
     },
     studentClick: function(event) {
@@ -257,59 +225,30 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    //统计
+    // 统计
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
-        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).css('display', 'block')
+        $('#award-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
       } else if (event.currentTarget.className == 'stat-checkbox-selected') {
         event.currentTarget.className = 'stat-checkbox'
-        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+        $('#award-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
     },
     statClick: function() {
       var data = {
-        table: 'course',
+        table: 'award',
         fields: [],
         condition: {}
       }
       $('.stat-checkbox-selected').each(function() {
         var recordId = $(this).attr('record-id')
-        //绩点高级查询
-        if (recordId == 'GPA') {
-          var start = $('#stat-nonselect-input-GPA-start').val()
-          var end = $('#stat-nonselect-input-GPA-end').val()
-          var range = parseFloat($('#stat-nonselect-input-GPA-range').val()) * 100
-          if (start != '' && end != '') {
-            if (start < 0 || start > 5 || end < 0 || end > 5 || start >= end) {
-              alert('请正确填写统计绩点的范围！')
-              return
-            }
-            data['intervalFields'] = {}
-            data['intervalFields']['GPA'] = [parseFloat(start)]
-            for (let i = 0; i < 500; i += range) {
-              if (i > start * 100 && i < end * 100) {
-                data['intervalFields']['GPA'].push(i / 100)
-              }
-            }
-            data['intervalFields']['GPA'].push(parseFloat(end))
-          } else {
-            data['fields'].push(recordId)
-
-            //绩点作为筛选条件
-            if ($('#course-stat-' + recordId).val() != '') {
-              data['condition'][recordId] = $('#course-stat-' + recordId).val()
-            }
-          }
-        } else {
-          //除绩点外字段
-          data['fields'].push(recordId)
-          if ($('#course-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#course-stat-' + recordId).val()
-          }
+        data['fields'].push(recordId)
+        if ($('#award-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#award-stat-' + recordId).val()
         }
       })
-      if (data['fields'].length == 0 && data['intervalFields'] == undefined) {
+      if (data['fields'].length == 0) {
         alert('请选择想要统计的字段！')
         return
       }
@@ -327,13 +266,13 @@ export default {
             if (key == 'content') {
               //操作成功，配置图表
               /*let statData = [
-                {gender: '女', major: null, statistic: 2},
-                {gender: '女', major: 123, statistic: 1},
-                {gender: '男', major: 123, statistic: 3},
-                {gender: '男', major: '数学', statistic: 1}
-              ]*/
+						    {gender: '女', major: null, statistic: 2},
+						    {gender: '女', major: 123, statistic: 1},
+						    {gender: '男', major: 123, statistic: 3},
+						    {gender: '男', major: '数学', statistic: 1}
+					    ]*/
               console.log(result[key])
-              statModule.createCharts('course', result[key], 'stat-chart-bar', 'stat-chart-pie')
+              statModule.createCharts('award', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
               //操作错误
               alert('统计错误: ' + result[key]['sqlMessage'])
@@ -350,8 +289,8 @@ export default {
   }
 }
 </script>
-<style>
-#manager-course .container-header {
+<style scoped>
+.container-header {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
@@ -368,17 +307,17 @@ export default {
   user-select: none;
 }
 
-#manager-course .header-text {
+.header-text {
   float: left;
   font-size: 20px;
 }
 
-#manager-course .header-button {
+.header-button {
   float: right;
   margin-right: 20px;
 }
 
-#manager-course .header-button span {
+.header-button span {
   padding-right: 10px;
   font-weight: bold;
   transition: 0.3s;
@@ -390,37 +329,38 @@ export default {
   /* Opera */
 }
 
-#manager-course .header-button span:hover {
+.header-button span:hover {
   color: var(--blue);
   cursor: pointer;
 }
 
-#manager-course .container-record {
+.container-record {
   float: left;
   width: 360px;
   height: 35px;
   text-align: right;
 }
 
-#manager-course .container-record .text-range {
+.container-record .text-range {
   font-size: 12px;
 }
 
-#manager-course .container-record .min,
-#manager-course .container-record .max {
+.container-record .min,
+.container-record .max {
   width: 50px;
 }
 
-#manager-course .container-record .hide-container {
+.container-record .hide-container {
   height: 24px;
   width: 180px;
 }
 
-#manager-course .manager-button {
+.manager-button {
   float: left;
   clear: both;
   width: 110px;
   height: 36px;
+  margin-top: 20px;
   margin-left: calc(50% - 55px);
   font-size: 17px;
   color: white;
@@ -435,15 +375,15 @@ export default {
   /* Opera */
 }
 
-#manager-course .manager-button:hover {
+.manager-button:hover {
   background-color: var(--blue-hover);
 }
 
-#manager-course .container-card-list {
+.container-card-list {
   margin: 25px;
   text-align: left;
   padding: 20px;
-  /*alert($('#manager-course .container-card-list').width())不包含margin，但是会减去padding
+  /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
   /*width: 1251.32px;*/
   width: calc(100vw - 275px);
@@ -455,7 +395,7 @@ export default {
   overflow: auto;
 }
 
-#manager-course .container-card-list table {
+.container-card-list table {
   /*不会自动换行*/
   word-break: keep-all;
   white-space: nowrap;
@@ -464,7 +404,7 @@ export default {
   border-color: var(--grey-shadow);
 }
 
-#manager-course .container-card-list th,
+.container-card-list th,
 td {
   padding-left: 8px;
   padding-right: 8px;
@@ -472,7 +412,7 @@ td {
   padding-bottom: 4px;
 }
 
-#manager-course .container-card-list tr {
+.container-card-list tr {
   transition: background 0.3s;
   -moz-transition: background 0.3s;
   /* Firefox 4 */
@@ -482,18 +422,17 @@ td {
   /* Opera */
 }
 
-#manager-course .container-card-list tr:not(.table-head):hover {
+.container-card-list tr:not(.table-head):hover {
   background-color: var(--grey-hover);
 }
 
-#manager-course #button-import {
+#button-import {
   display: none;
 }
 
-
 /* 弹窗 (background) */
 
-#manager-course .popup-background {
+.popup-background {
   display: none;
   /* 默认隐藏 */
   position: fixed;
@@ -511,13 +450,12 @@ td {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-
 /* 弹窗内容 */
 
-#manager-course .popup-content {
+.popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 200px);
+  margin-left: calc(50% - 300px);
   padding: 30px;
   width: 600px;
   height: 400px;
@@ -527,23 +465,16 @@ td {
   box-shadow: -1px 1px 5px var(--grey-shadow);
 }
 
-#manager-course .popup-cell {
+.popup-cell {
   float: left;
   width: 160px;
   height: 40px;
   text-align: left;
 }
 
-
-
-
-
-
-
-
 /* 关闭按钮 */
 
-#manager-course #popup-close {
+#popup-close {
   position: relative;
   float: right;
   width: 50px;
@@ -554,22 +485,16 @@ td {
   text-align: right;
 }
 
-#manager-course #popup-close:hover,
+#popup-close:hover,
 #popup-close:focus {
   color: black;
   text-decoration: none;
   cursor: pointer;
 }
 
+/* 统计 */
 
-
-
-
-
-
-/*统计*/
-
-#manager-course .stat-record {
+.stat-record {
   float: left;
   width: 300px;
   min-height: 35px;
@@ -577,24 +502,19 @@ td {
   font-size: 13px;
 }
 
-#manager-course .stat-record .hide-container {
+.stat-record .hide-container {
   height: 23px;
   width: 140px;
 }
 
-
-
-
-
-
 /*
-#manager-course .stat-record input[type="checkbox"] {
+.stat-record input[type="checkbox"] {
   width: 13px;
   height: 13px;
 }
 */
 
-#manager-course .stat-checkbox {
+.stat-checkbox {
   width: 130px;
   height: 25px;
   border: none;
@@ -609,12 +529,12 @@ td {
   /* Opera */
 }
 
-#manager-course .stat-checkbox:hover {
+.stat-checkbox:hover {
   transform: translate(0, -2px);
   box-shadow: 0 2px 2px var(--grey-shadow);
 }
 
-#manager-course .stat-checkbox-selected {
+.stat-checkbox-selected {
   width: 130px;
   height: 25px;
   border: none;
@@ -631,41 +551,22 @@ td {
   /* Opera */
 }
 
-#manager-course .stat-input {
+.stat-input {
   width: 10px;
   height: 10px;
 }
 
-#manager-course .stat-nonselect-range {
+.stat-nonselect-range {
   display: none;
 }
 
-#manager-course .stat-nonselect-range div {
-  margin-top: 10px;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-#manager-course #stat-nonselect-input-GPA-start,
-#manager-course #stat-nonselect-input-GPA-end {
-  margin-left: 10px;
-  display: inline-block;
-  width: 140px;
-}
-
-#manager-course #stat-nonselect-input-GPA-range {
-  margin-left: 10px;
-  width: 140px;
-  height: 22px;
-}
-
-#manager-course #stat-chart-bar {
+#stat-chart-bar {
   float: left;
   margin-top: 20px;
   width: 50%;
 }
 
-#manager-course #stat-chart-pie {
+#stat-chart-pie {
   float: left;
   margin-top: 20px;
   width: 50%;

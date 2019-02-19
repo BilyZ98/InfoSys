@@ -17,49 +17,59 @@ import XLSX from 'xlsx'
 /* first-level vue components */
 import App from './App.vue'
 import Invalid from './components/Invalid.vue'
-import teacherMain from './components/teacherMain.vue'
-import studentMain from './components/studentMain.vue'
+import TeacherMain from './components/TeacherMain.vue'
+import StudentMain from './components/StudentMain.vue'
 import Login from './components/Login.vue'
 import Resetpswd from './components/Resetpswd.vue'
 import Query from './components/Query.vue'
 import List from './components/List.vue'
 import Import from './components/Import.vue'
 import Detail from './components/Detail.vue'
-import Insert from './components/Insert.vue'
 
-/* studentsBasicManage vue components */
-import StudentsBasicManage from './components/StudentsBasicManage.vue'
-import BasicInfo from './components/StudentsBasicManagePages/BasicInfo.vue'
-import BasicInfoOfStu from './components/basicInfoOfStudent.vue'
-import Family from './components/StudentsBasicManagePages/Family.vue'
-import SchoolRoll from './components/StudentsBasicManagePages/SchoolRoll.vue'
-import Course from './components/StudentsBasicManagePages/Course.vue'
-import PartyInfo from './components/StudentsBasicManagePages/PartyInfo.vue'
-import Scholarship from './components/StudentsBasicManagePages/Scholarship.vue'
-import Aid from './components/StudentsBasicManagePages/Aid.vue'
-import Loan from './components/StudentsBasicManagePages/Loan.vue'
-import Cadre from './components/StudentsBasicManagePages/Cadre.vue'
-import Award from './components/StudentsBasicManagePages/Award.vue'
-import Paper from './components/StudentsBasicManagePages/Paper.vue'
-import Patent from './components/StudentsBasicManagePages/Patent.vue'
-import TechProject from './components/StudentsBasicManagePages/TechProject.vue'
+/* TeacherBasicInfo for teachers vue components */
+import TeacherBasicInfo from './components/TeacherBasicInfo.vue'
+import BasicInfo from './components/teacherBasicInfoPages/BasicInfo.vue'
+import Family from './components/teacherBasicInfoPages/Family.vue'
+import SchoolRoll from './components/teacherBasicInfoPages/SchoolRoll.vue'
+import Course from './components/teacherBasicInfoPages/Course.vue'
+import PartyInfo from './components/teacherBasicInfoPages/PartyInfo.vue'
+import Scholarship from './components/teacherBasicInfoPages/Scholarship.vue'
+import Aid from './components/teacherBasicInfoPages/Aid.vue'
+import Loan from './components/teacherBasicInfoPages/Loan.vue'
+import Cadre from './components/teacherBasicInfoPages/Cadre.vue'
+import Award from './components/teacherBasicInfoPages/Award.vue'
+import Paper from './components/teacherBasicInfoPages/Paper.vue'
+import Patent from './components/teacherBasicInfoPages/Patent.vue'
+import TechProject from './components/teacherBasicInfoPages/TechProject.vue'
+/* insert of TeacherBasicInfo for teachers */
+import TeacherBasicInfoInsert from './components/TeacherBasicInfoInsert.vue'
+import BasicInfoInsert from './components/teacherBasicInfoInserts/BasicInfoInsert.vue'
+import FamilyInsert from './components/teacherBasicInfoInserts/FamilyInsert.vue'
+import PaperInsert from './components/teacherBasicInfoInserts/PaperInsert.vue'
+import PatentInsert from './components/teacherBasicInfoInserts/PatentInsert.vue'
+import TechProjectInsert from './components/teacherBasicInfoInserts/TechProjectInsert.vue'
+import CadreInsert from './components/teacherBasicInfoInserts/CadreInsert.vue'
+import AwardInsert from './components/teacherBasicInfoInserts/AwardInsert.vue'
+/* TeacherSpecialInfo for teachers */
+import TeacherSpecialInfo from './components/TeacherSpecialInfo.vue'
 
-/* insert in studentsBasicManage for teachers vue components */
-import BasicInfoInsert from './components/inserts/BasicInfoInsert.vue'
-import FamilyInsert from './components/inserts/FamilyInsert.vue'
-import PaperInsert from './components/inserts/PaperInsert.vue'
-import PatentInsert from './components/inserts/PatentInsert.vue'
-import TechProjectInsert from './components/inserts/TechProjectInsert.vue'
-import CadreInsert from './components/inserts/CadreInsert.vue'
-import AwardInsert from './components/inserts/AwardInsert.vue'
-
-/* insert in studentsBasicManage for students */
-import StudentBasicInfoInsert from './components/studentInserts/StudentBasicInfoInsert.vue'
-import StudentFamilyInsert from './components/studentInserts/StudentFamilyInsert.vue'
-import StudentCadreInsert from './components/studentInserts/StudentCadreInsert.vue'
+/* StudentBasicInfo for students */
+import StudentBasicInfo from './components/StudentBasicInfo.vue'
+/* insert in StudentBasicInfo for students */
+import StudentBasicInfoInsert from './components/studentBasicInfoInserts/StudentBasicInfoInsert.vue'
+import StudentFamilyInsert from './components/studentBasicInfoInserts/StudentFamilyInsert.vue'
+import StudentCadreInsert from './components/studentBasicInfoInserts/StudentCadreInsert.vue'
+/* StudentSpecialInfo for students */
+import StudentSpecialInfo from './components/StudentSpecialInfo.vue'
+import HMT from './components/teacherSpecialInfoPages/HMT.vue'
+import InternationalStudent from './components/teacherSpecialInfoPages/InternationalStudent.vue'
+/* guideline for students */
+import Guideline from './components/Guideline.vue'
+import Leave from './components/guideline/Leave.vue'
+import QuitClass from './components/guideline/QuitClass.vue'
 
 /* email component */
-import Email from './components/StudentsBasicManagePages/modules/Email.vue'
+import Email from './components/teacherBasicInfoPages/modules/Email.vue'
 
 
 Vue.config.debug = true
@@ -78,11 +88,11 @@ const router = new VueRouter({
     { name: 'login', path: '/login', component: Login },
     { name: 'resetpswd', path: '/resetpswd', component: Resetpswd },
     /* 教师路由 */
-    { name: 'teacherMain', path: '/teacherMain', component: teacherMain },
+    { name: 'teacherMain', path: '/teacherMain', component: TeacherMain },
     {
-      name: 'studentsBasicManage',
-      path: '/studentsBasicManage',
-      component: StudentsBasicManage,
+      name: 'teacherBasicInfo',
+      path: '/teacherBasicInfo',
+      component: TeacherBasicInfo,
       children: [
         { name: 'basicInfo', path: 'basicInfo', component: BasicInfo },
         { name: 'family', path: 'family', component: Family },
@@ -104,9 +114,9 @@ const router = new VueRouter({
     { name: 'import', path: '/import', component: Import },
     { name: 'detail', path: '/detail', component: Detail },
     {
-      name: 'insert',
-      path: '/insert',
-      component: Insert,
+      name: 'teacherBasicInfoInsert',
+      path: '/teacherBasicInfoInsert',
+      component: TeacherBasicInfoInsert,
       children: [
         { name: 'basicInfoInsert', path: 'basicInfo', component: BasicInfoInsert },
         { name: 'familyInsert', path: 'family', component: FamilyInsert },
@@ -117,12 +127,31 @@ const router = new VueRouter({
         { name: 'awardInsert', path: 'award', component: AwardInsert }
       ]
     },
+    {
+      name: 'teacherSpecialInfo',
+      path: '/teacherSpecialInfo',
+      component: TeacherSpecialInfo,
+      children: [
+        { name: 'HMT', path: 'HMT', component: HMT },
+        { name: 'internationalStudent', path: 'internationalStudent', component: InternationalStudent }
+      ]
+    },
     /* 学生路由 */
-    { name: 'studentMain', path: '/studentMain', component: studentMain },
-    { name: 'basicInfoOfStu', path: '/basicInfoOfStu', component: BasicInfoOfStu},
-    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert},
-    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert},
-    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert},
+    { name: 'studentMain', path: '/studentMain', component: StudentMain },
+    { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
+    {
+      name: 'guideline',
+      path: '/guideline',
+      component: Guideline,
+      children: [
+        { name: 'leave', path: 'leave', component: Leave },
+        { name: 'quitClass', path: 'quitClass', component: QuitClass}
+      ]
+    },
+    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert },
+    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert },
+    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert },
+    { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]

@@ -2,8 +2,9 @@
   <div>
     <aside class="app-bar-display">
       <div class="info-side">
-        <label id="info-account"></label>
-        <p>数据科学与计算机学院</p>
+        <!--<label id="info-account"></label>
+        <p>数据科学与计算机学院</p>-->
+        <p>学生基本信息管理</p>
       </div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='basicInfo'}" @click="basicInfoClick">基本信息</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='family'}" @click="familyClick">家庭信息</div>
@@ -112,12 +113,15 @@ aside {
 }
 
 .info-side {
-  height: 100px;
+  height: 70px;
   text-align: center;
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid var(--grey-shadow);
+  box-shadow: 1px 0px 1px var(--grey-shadow);
   padding-top: 25px;
+  font-weight: bold;
+  font-size: 16px;
   /*
-  **make text in div vertical-align to center
+  make text in div vertical-align to center
   line-height: 100px;
   margin: auto;
   */

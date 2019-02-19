@@ -2,28 +2,22 @@
   <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">基本信息管理</p>
+      <p class="header-text">港澳台生信息管理</p>
       <div class="header-button">
         <span @click="insertClick">插入数据</span>
-        <span @click="downloadClick">导出</span>
-        <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
-        <span @click="createStudentsAccount">批量创建学生账号</span>
-        <span @click="mubanDownload">下载模板</span>
-        <span>转毕业生</span>
         <span @click="diycolClick">自定义列</span>
-        <span @click="sendEmailClick">邮件通知</span>
       </div>
     </div>
     <!--查询输入-->
     <div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
         <span>{{record.name}}:</span>
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
+        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'HMT-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'HMT-'+record.id">
         <span class="text-range">最小值 </span>
         <input type="text" class="min"><span class="text-range">最大值 </span>
         <input type="text" class="max">
@@ -38,10 +32,10 @@
           <th>#</th>
           <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['HMT']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
+            <span v-if="student['HMT'][record.id]!=undefined">{{student['HMT'][record.id]}}</span>
             <span v-else>---</span>
           </td>
         </tr>
@@ -51,11 +45,11 @@
     <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-stat-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'basicInfo-stat-'+record.id">
+        <input class="hide-container" type="text" v-else v-bind:id="'HMT-stat-'+record.id">
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
@@ -72,11 +66,6 @@
         </div>
       </div>
     </div>
-    <!-- 发邮件 -->
-    <div id="popup-email" class="popup-background">
-      <email :emailSid="emailSid"></email>
-    </div>
-    <!--发短信-->
   </div>
 </template>
 <script>
@@ -92,44 +81,42 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
-      table: tableData['basicInfo'],
-      students: [],
-      quill: null,
-      emailSid: []
+      table: tableData['HMT'],
+      students: []
     }
   },
   methods: {
     insertClick: function() {
       this.$router.push({
-        name: 'basicInfoInsert'
+        name: 'HMTInsert'
       })
     },
     queryClick: function() {
-      var basicInfo = { equal: {}, range: {}, fuzzy: {} }
+      var HMT = { equal: {}, range: {}, fuzzy: {} }
       var data = {
-        select: ['basicInfo'],
+        select: ['HMT'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-      if ($('#basicInfo-sid').val()) {
-        var sid = $('#basicInfo-sid').val()
-        if (!formatCheck['basicInfo']['sid']['reg'].test(sid)) {
-          alert(formatCheck['basicInfo']['sid']['msg'])
+      if ($('#HMT-sid').val()) {
+        var sid = $('#HMT-sid').val()
+        if (!formatCheck['HMT']['sid']['reg'].test(sid)) {
+          alert(formatCheck['HMT']['sid']['msg'])
           return
         } else {
-          basicInfo['equal']['sid'] = sid
+          HMT['equal']['sid'] = sid
         }
       } else {
         //验证格式
         var message = ''
-        for (let item in formatCheck['basicInfo']) {
-          if (formatCheck['basicInfo'][item]['reg'] != null) {
-            let record = $('#basicInfo-' + item).val()
-            if (record != '' && !formatCheck['basicInfo'][item]['reg'].test(record)) {
-              message = message + formatCheck['basicInfo'][item]['msg']
+        for (let item in formatCheck['HMT']) {
+          if (formatCheck['HMT'][item]['reg'] != null) {
+            let record = $('#HMT-' + item).val()
+            if (record != '' && !formatCheck['HMT'][item]['reg'].test(record)) {
+              message = message + formatCheck['HMT'][item]['msg']
             }
           }
         }
@@ -137,31 +124,20 @@ export default {
           alert(message)
           return
         }
-        if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
-        if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
-        if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
-        if ($('#basicInfo-ethnic').val()) basicInfo['equal']['ethnic'] = $('#basicInfo-ethnic').val()
-        if ($('#basicInfo-poliFace').val()) basicInfo['equal']['poliFace'] = $('#basicInfo-poliFace').val()
-        if ($('#basicInfo-idNum').val()) basicInfo['equal']['idNum'] = $('#basicInfo-idNum').val()
-        if ($('#basicInfo-birthDate').val()) basicInfo['equal']['birthDate'] = $('#basicInfo-birthDate').val()
-        if ($('#basicInfo-tel').val()) basicInfo['equal']['tel'] = $('#basicInfo-tel').val()
-        if ($('#basicInfo-mail').val()) basicInfo['equal']['mail'] = $('#basicInfo-mail').val()
-        if ($('#basicInfo-wechat').val()) basicInfo['equal']['wechat'] = $('#basicInfo-wechat').val()
-        if ($('#basicInfo-qq').val()) basicInfo['equal']['qq'] = $('#basicInfo-qq').val()
-        if ($('#basicInfo-degree').val()) basicInfo['equal']['degree'] = $('#basicInfo-degree').val()
-        if ($('#basicInfo-stuGroup ').val()) basicInfo['equal']['stuGroup '] = $('#basicInfo-stuGroup ').val()
-        if ($('#basicInfo-grade').val()) basicInfo['equal']['grade'] = $('#basicInfo-grade').val()
-        if ($('#basicInfo-major').val()) basicInfo['equal']['major'] = $('#basicInfo-major').val()
-        if ($('#basicInfo-class').val()) basicInfo['equal']['class'] = $('#basicInfo-class').val()
-        if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val()
-        if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
-        if ($('#basicInfo-dormRoom ').val()) basicInfo['equal']['dormRoom '] = $('#basicInfo-dormRoom ').val()
-        if ($('#basicInfo-speciality').val()) basicInfo['equal']['speciality'] = $('#basicInfo-speciality').val()
-        if ($('#basicInfo-highSchool').val()) basicInfo['equal']['highSchool'] = $('#basicInfo-highSchool').val()
+        if ($('#HMT-name').val()) HMT['equal']['name'] = $('#HMT-name').val()
+        if ($('#HMT-hometown').val()) HMT['equal']['hometown'] = $('#HMT-hometown').val()
+        if ($('#HMT-speciality').val()) HMT['equal']['speciality'] = $('#HMT-speciality').val()
+        if ($('#HMT-mail').val()) HMT['equal']['mail'] = $('#HMT-mail').val()
+        if ($('#HMT-wechat').val()) HMT['equal']['wechat'] = $('#HMT-wechat').val()
+        if ($('#HMT-homeAddress').val()) HMT['equal']['homeAddress'] = $('#HMT-homeAddress').val()
+        if ($('#HMT-economicManName').val()) HMT['equal']['economicManName'] = $('#HMT-economicManName').val()
+        if ($('#HMT-economicManPhone').val()) HMT['equal']['economicManPhone'] = $('#HMT-economicManPhone').val()
+        if ($('#HMT-HMTIdNum').val()) HMT['equal']['HMTIdNum'] = $('#HMT-HMTIdNum').val()
+        if ($('#HMT-reentryPermit').val()) HMT['equal']['reentryPermit'] = $('#HMT-reentryPermit').val()
       }
-      if (JSON.stringify(basicInfo['equal']) != emptyCell) data['where']['equal']['basicInfo'] = basicInfo['equal']
-      if (JSON.stringify(basicInfo['range']) != emptyCell) data['where']['range']['basicInfo'] = basicInfo['range']
-      if (JSON.stringify(basicInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['basicInfo'] = basicInfo['fuzzy']
+      if (JSON.stringify(HMT['equal']) != emptyCell) data['where']['equal']['HMT'] = HMT['equal']
+      if (JSON.stringify(HMT['range']) != emptyCell) data['where']['range']['HMT'] = HMT['range']
+      if (JSON.stringify(HMT['fuzzy']) != emptyCell) data['where']['fuzzy']['HMT'] = HMT['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -192,57 +168,12 @@ export default {
         }
       })
     },
-    downloadClick: function() {
-      downloadModule.downloadClick(this.students)
-    },
-    importClick: function() {
-      $('#button-import').click()
-    },
-    createStudentsAccount: function() {
-       $.ajax({
-        type: 'POST',
-        url: '/users/createStudentsAccount',
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        timeout: 5000,
-        success: function(result, xhr) {
-          if (xhr == 'success') {
-            alert('批量创建学生账号成功！')
-          } else {
-            alert('批量创建学生账号失败！')
-          }
-        },
-        error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
-    },
-    mubanDownload: function() {
-      downloadModule.mubanDownload("basicInfo")
-    },
-    //onchange时调用这个函数实现文件选择后上传
-    importUpload: function() {
-      importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
-    },
     //自定义弹窗函数
     diycolClick: function() {
       $('#popup-diy').show()
     },
     modalCloseClick: function() {
       $('#popup-diy').hide()
-    },
-    //发送邮件函数
-    sendEmailClick: function() {
-      $('#popup-email').show()
-      //加载收件人学号
-      this.emailSid = []
-      for (let i = 0; i < this.students.length; i++) {
-        //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['basicInfo']['sid']) == -1)
-          this.emailSid.push(this.students[i]['basicInfo']['sid'])
-      }
     },
     //查询学生点击事件
     studentClick: function(event) {
@@ -260,15 +191,15 @@ export default {
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
+        $('#HMT-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
       } else if (event.currentTarget.className == 'stat-checkbox-selected') {
         event.currentTarget.className = 'stat-checkbox'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+        $('#HMT-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
     },
     statClick: function() {
       var data = {
-        table: 'basicInfo',
+        table: 'HMT',
         fields: [],
         condition: {}
       }
@@ -277,15 +208,15 @@ export default {
         if ($(this).prop("checked")) {
           var recordId = $(this).attr('record-id')
           data['fields'].push(recordId)
-          if ($('#basicInfo-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
+          if ($('#HMT-stat-' + recordId).val() != '') {
+            data['condition'][recordId] = $('#HMT-stat-' + recordId).val()
           }
         }
         */
         var recordId = $(this).attr('record-id')
         data['fields'].push(recordId)
-        if ($('#basicInfo-stat-' + recordId).val() != '') {
-          data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
+        if ($('#HMT-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#HMT-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
@@ -312,7 +243,7 @@ export default {
                 {gender: '男', major: '数学', statistic: 1}
               ]*/
               console.log(result[key])
-              statModule.createCharts('basicInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
+              statModule.createCharts('HMT', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
               //操作错误
               alert('统计错误: ' + result[key]['sqlMessage'])
