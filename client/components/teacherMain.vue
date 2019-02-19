@@ -93,7 +93,7 @@ export default {
       this.$router.push({ name: 'basicInfo' })
     },
     teacherSpecialClick: function() {
-      this.$router.push({ name: 'HMTStudent' })
+      this.$router.push({ name: 'HMT' })
     },
     getNotices: function() {
       //获取公告

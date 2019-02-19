@@ -6,8 +6,8 @@
         <p>数据科学与计算机学院</p>-->
         <p>特殊学生信息管理</p>
       </div>
-      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='HMTStudent'}" @click="HMTStudentClick">港澳台生</div>
-      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='internationalStu'}" @click="internationalStuClick">国际生</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='HMT'}" @click="HMTClick">港澳台生</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='internationalStudent'}" @click="internationalStudentClick">国际生</div>
     </aside>
     <div class="container-teacherSpecial-display">
       <transition name="test" mode="out-in">
@@ -24,11 +24,11 @@ export default {
     }
   },
   methods: {
-    HMTStudentClick: function() {
-      this.$router.push({ name: 'HMTStudent' })
+    HMTClick: function() {
+      this.$router.push({ name: 'HMT' })
     },
-    internationalStuClick: function() {
-      this.$router.push({ name: 'internationalStu' })
+    internationalStudentClick: function() {
+      this.$router.push({ name: 'internationalStudent' })
     }
   }
 }

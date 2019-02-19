@@ -61,8 +61,8 @@ import StudentFamilyInsert from './components/studentBasicInfoInserts/StudentFam
 import StudentCadreInsert from './components/studentBasicInfoInserts/StudentCadreInsert.vue'
 /* StudentSpecialInfo for students */
 import StudentSpecialInfo from './components/StudentSpecialInfo.vue'
-import HMTStudent from './components/teacherSpecialInfoPages/HMTStudent.vue'
-import InternationalStu from './components/teacherSpecialInfoPages/InternationalStu.vue'
+import HMT from './components/teacherSpecialInfoPages/HMT.vue'
+import InternationalStudent from './components/teacherSpecialInfoPages/InternationalStudent.vue'
 /* guideline for students */
 import Guideline from './components/Guideline.vue'
 import Leave from './components/guideline/Leave.vue'
@@ -132,8 +132,8 @@ const router = new VueRouter({
       path: '/teacherSpecialInfo',
       component: TeacherSpecialInfo,
       children: [
-        { name: 'HMTStudent', path: 'HMTStudent', component: HMTStudent },
-        { name: 'internationalStu', path: 'internationalStu', component: InternationalStu }
+        { name: 'HMT', path: 'HMT', component: HMT },
+        { name: 'internationalStudent', path: 'internationalStudent', component: InternationalStudent }
       ]
     },
     /* 学生路由 */
