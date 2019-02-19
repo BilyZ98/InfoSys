@@ -260,10 +260,10 @@ export default {
       mail: { name: '邮箱', id: 'mail', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       wechat: { name: '微信', id: 'wechat', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       homeAddress: { name: '家庭地址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
-      ecoContact: {name: '经济联系人姓名', id: ' ecoContact', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
-      ecoTel: {name: '经济联系人号码', id: 'ecoTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
-      HMTIDNum: {name: '港澳台居民身份证号码', id: 'HMTIDNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      homePermitNum: {name: '回乡证/台胞证号码', id: 'homePermitNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
+      ecoContact: { name: '经济联系人姓名', id: 'ecoContact', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      ecoTel: { name: '经济联系人号码', id: 'ecoTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      HMTIDNum: { name: '港澳台居民身份证号码', id: 'HMTIDNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      homePermitNum: { name: '回乡证/台胞证号码', id: 'homePermitNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
     }
   },
   internationalStudent: {
