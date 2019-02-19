@@ -18,6 +18,7 @@
   <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
+    <span class="notice-header">条公告</span>
     <div class="notice-list">
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
@@ -71,7 +72,8 @@
 export default {
   data: function(){
     return {
-      notices: []
+      notices: [],
+      currentNotice: -1
     }
   },
   mounted: function(){
@@ -123,15 +125,50 @@ export default {
       $('#detail-notice-teacher').text(notice.account)
       $('#detail-notice-createTime').text(notice.createTime)
       $('#detail-notice-expireTime').text(notice.expireTime)
+      this.currentNotice = notice.id
     },
     detailNoticeDeleteClick: function(){
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
+      //alert(this.currentNotice)
+      var data = {
+          id: this.currentNotice
+      }
+      var postData = JSON.stringify(data)
+      console.log(postData)
+      var _self = this
+      $.ajax({
+        type: 'POST',
+        url: '/notice/delNotice',
+        data: postData,
+        contentType: 'application/json;charset=utf-8',
+        dataType: 'json',
+        timeout: 5000,
+        success: function(result, xhr) {
+          alert("公告删除成功")
+          for(var i=0;i<_self.notices.length;i++){
+            if(_self.notices[i].id==_self.currentNotice){
+              _self.notices.splice(i,1);
+              break;
+            }
+          }
+          _self.detailNoticeCloseClick()
+        },
+        error: function(result, xhr) {
+          console.log(result)
+          if (result.status == 441) {
+            alert("服务器连接错误")
+          }
+        }
+      })
     },
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()
+      this.currentNotice = -1
     },
     newNoticeClick: function(){
       $('#popup-new-notice').show()
+      $('#new-notice-title').val('')
+      $('#new-notice-content').val('')
     },
     newNoticeCloseClick: function() {
       $('#popup-new-notice').hide()
@@ -373,8 +410,8 @@ export default {
 }
 
 #container-home .notice-list {
-  margin-top: 20px;
-  height: 430px;
+  margin-top: 30px;
+  height: calc(100% - 136px);
   overflow: auto;
 }
 
@@ -434,7 +471,6 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  padding-left: 225px;
   padding-top: 60px;
   overflow: auto;
   background-color: rgb(0,0,0);
@@ -488,7 +524,6 @@ export default {
   width: 500px;
   height: 200px;
 }
-
 
 #container-home .button-delete-detail-notice, #container-home .button-close-detail-notice {
   display: inline-block;

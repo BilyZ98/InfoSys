@@ -37,7 +37,7 @@ export default {
     tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       homeAddress: { name: '家庭地址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       fatherName: { name: '父亲姓名', id: 'fatherName', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       fatherTel: { name: '父亲电话', id: 'fatherTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
@@ -173,7 +173,7 @@ export default {
     tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       year: { name: '学年', id: 'year', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['2012', '2013', '2014', '2015', '2016', '2017', '2018'] },
       cadreClass: { name: '职务类别', id: 'cadreClass', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['学生会', '团委', '研究生会', '学生学术发展中心', '职发办', '社团', '院队', '班干部'] },
       cadreName: { name: '职务名称', id: 'cadreName', isPrimary: true, display: true, value: '', studentChangAble: true, valueType: 'input' },

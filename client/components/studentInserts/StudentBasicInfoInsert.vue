@@ -1,11 +1,13 @@
 <template>
 <div id="container-insert-basicInfo">
-  <div class="text-header">基本信息插入</div>
+  <div class="text-header">基本信息填写</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
       <span>{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
+      <span v-if="!record.studentChangAble&&record.id=='sid'" class="span-uninputable">{{sid}}</span>
+      <span v-else-if="!record.studentChangAble" class="span-uninputable">没有填写权限</span>
+      <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
         <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
@@ -25,7 +27,8 @@ export default {
   data: function() {
     return {
       tableId: 'basicInfo',
-      table: tableData['basicInfo']
+      table: tableData['basicInfo'],
+      sid: this.$store.getters.getUserAccount
     }
   },
   methods: {
@@ -33,6 +36,8 @@ export default {
       var formatTable = formatCheck[this.tableId]
       var message = ''
       for(let item in tableData[this.tableId]['records']) {
+        if(!tableData[this.tableId]['records'][item]['studentChangAble'])
+          continue
         let record = $('#' + this.tableId + '-' + item).val()
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
@@ -53,7 +58,9 @@ export default {
           table: this.tableId
         }
         for(let item in tableData[this.tableId]['records']){
-          if($('#' + this.tableId + '-' + item).val() != ''){
+          if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
+            //
+          } else if($('#' + this.tableId + '-' + item).val() != ''){
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
@@ -130,9 +137,13 @@ export default {
 
 #container-insert-basicInfo .container-record select, #container-insert-basicInfo .container-record input {
   margin-left: 10px;
-  width: 250px;
+  width: 200px;
   height: 30px;
   padding: 5px;
+}
+
+#container-insert-basicInfo .span-uninputable {
+  margin-left: 10px;
 }
 
 #container-insert-basicInfo #warning {

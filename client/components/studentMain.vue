@@ -18,6 +18,7 @@
   <div class="container-card-right">
     <span class="notice-header">公告栏：</span>
     <span class="notice-header" id="notice-number">{{notices.length}}</span>
+    <span class="notice-header">条公告</span>
     <div class="notice-list">
       <div class="notice" v-for="notice in notices" @click="noticeClick(notice)">
         <span>{{notice.title}}</span>
@@ -89,7 +90,13 @@ export default {
   },
   methods: {
     studentsBasicClick: function() {
-      this.$router.push({ name: 'basicInfoOfStu' })
+      this.$router.push({
+        name: 'basicInfoOfStu',
+        query: {
+          sid: this.$store.getters.getUserAccount
+        }
+      })
+      //this.$router.push({ name: 'basicInfoOfStu' })
     },
     getNotices: function() {
       //获取公告
@@ -124,9 +131,9 @@ export default {
       $('#detail-notice-createTime').text(notice.createTime)
       $('#detail-notice-expireTime').text(notice.expireTime)
     },
-    detailNoticeDeleteClick: function(){
+    /*detailNoticeDeleteClick: function(){
       console.log(this.$store.getters.getUserAccount == $('#detail-notice-teacher').text())
-    },
+    },*/
     detailNoticeCloseClick: function(){
       $('#popup-detail-notice').hide()
     },
@@ -393,7 +400,7 @@ export default {
 
 #container-home .notice-list {
   margin-top: 20px;
-  height: 430px;
+  height: calc(100% - 60px);
   overflow: auto;
 }
 
@@ -453,7 +460,6 @@ export default {
   top: 0;
   width: 100%;
   height: 100%;
-  padding-left: 225px;
   padding-top: 60px;
   overflow: auto;
   background-color: rgb(0,0,0);
@@ -535,7 +541,7 @@ export default {
 }
 
 #container-home .button-close-detail-notice {
-  margin-left: 10px;
+  margin-left: 260px;
 }
 
 #container-home .button-close-detail-notice:hover {

@@ -33,7 +33,9 @@
               </td>
             </tr>
           </table>
-          <!--空-->
+          <!--表空但可以插入-->
+          <button v-else-if="table.tableStudentChangable" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
+          <!--表空且不能插入-->
           <div v-else class="table-empty">---</div>
         </div>
       </div>
@@ -59,7 +61,8 @@ export default {
     }
   },
   created: function() {
-    this.sid = this.$store.getters.getUserAccount
+    //this.sid = this.$store.getters.getUserAccount
+    this.sid = this.$route.query.sid
     // alert('sid: ' + this.$store.getters.getUserAccount)
     var data = {
       tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
@@ -209,6 +212,14 @@ export default {
           }
         })
       }
+    },
+    studentInsertClick: function(id) {
+      if (id == 'basicInfo')
+        this.$router.push({ name: 'studentBasicInfoInsert' })
+      else if (id == 'family')
+        this.$router.push({ name: 'studentFamilyInsert' })
+      else if (id == 'cadre')
+        this.$router.push({ name: 'studentCadreInsert' })
     }
   }
 }
@@ -268,6 +279,7 @@ export default {
   float: left;
   margin: 5px;
   width: 350px;
+  height: 25px;
   font-size: 15px;
 }
 
@@ -290,14 +302,14 @@ export default {
 }
 
 #container-detail .record-changable {
-  border: 1px solid transparent;
+  border: none;
   background-color: white;
   margin-left: 2px;
   padding-left: 2px;
 }
 
 #container-detail .record-unchangable {
-  border: 1px solid transparent;
+  border: none;
   background-color: white;
   margin-left: 2px;
   padding-left: 2px;
@@ -335,7 +347,25 @@ export default {
   margin-left: 20px;
 }
 
+#container-detail .table-empty-button {
+  margin-left: 20px;
+  width: 80px;
+  height: 30px;
+  font-size: 16px;
+  text-align: center;
+  color: white;
+  background-color: var(--blue);
+  border: none;
+  transition: 0.3s;
+  -moz-transition: 0.3s;  /* Firefox 4 */
+  -webkit-transition: 0.3s; /* Safari 和 Chrome */
+  -o-transition: 0.3s;  /* Opera */
+}
 
+#container-detail .table-empty-button:hover {
+  background-color: var(--blue-hover);
+  cursor: pointer;
+}
 
 /**
  * 修改和导出按钮
