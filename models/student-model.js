@@ -641,3 +641,14 @@ getStudentInfo().then(function(output){
   console.log(JSON.stringify(output));
 })
 */
+
+
+/* 
+对一个学生id得到在特定时间段不及格的课程记录
+*/
+exports.getFailedCourse = async (data) => {
+  let query = 
+  "select * from course where sid=? and (course.year>? or (course.year=? and course.semester>=?) ) and (course.year<? or (course.year=? and course.semester<=?) ) and courseGrade<60";
+  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
+  return queryDB(query,values)
+}
