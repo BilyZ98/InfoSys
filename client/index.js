@@ -52,6 +52,8 @@ import CadreInsert from './components/teacherBasicInfoInserts/CadreInsert.vue'
 import AwardInsert from './components/teacherBasicInfoInserts/AwardInsert.vue'
 /* TeacherSpecialInfo for teachers */
 import TeacherSpecialInfo from './components/TeacherSpecialInfo.vue'
+/* AcademicWaring*/
+import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
 
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
@@ -91,6 +93,7 @@ const router = new VueRouter({
     { name: 'resetpswd', path: '/resetpswd', component: Resetpswd },
     /* 教师路由 */
     { name: 'teacherMain', path: '/teacherMain', component: TeacherMain },
+    { name: 'academicWarning', path: '/academicWarning', component: AcademicWarning},
     {
       name: 'teacherBasicInfo',
       path: '/teacherBasicInfo',
