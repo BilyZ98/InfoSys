@@ -5,7 +5,7 @@
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <div class="info-heading" v-if="table.id!='HMTStudent'&&table.id!='InternationalStu'">{{table.name}}</div>
+          <div class="info-heading" v-if="table.id!='HMT'&&table.id!='internationalStudent'">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
           <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
@@ -34,9 +34,9 @@
             </tr>
           </table>
           <!--表空但可以插入-->
-          <button v-else-if="table.tableStudentChangable&&(table.id!='HMTStudent'&&table.id!='InternationalStu')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
+          <button v-else-if="table.tableStudentChangable&&(table.id!='HMT'&&table.id!='internationalStudent')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
           <!--表空且不能插入-->
-          <div v-else-if="(table.id!='HMTStudent'&&table.id!='InternationalStu')" class="table-empty">---</div>
+          <div v-else-if="(table.id!='HMT'&&table.id!='internationalStudent')" class="table-empty">---</div>
         </div>
       </div>
     </div>

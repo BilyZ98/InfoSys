@@ -5,10 +5,10 @@
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <!-- <div class="info-heading" v-if="table.id=='HMTStudent'||table.id=='InternationalStu'">{{table.name}}</div> -->
+          <!-- <div class="info-heading" v-if="table.id=='HMT'||table.id=='internationalStudent'">{{table.name}}</div> -->
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
-          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMTStudent'||table.id=='InternationalStu')">
+          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
           	<div class="info-heading">{{table.name}}</div>
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
@@ -23,7 +23,7 @@
             </div>
           </div>
           <!--一个人有多条数据的表-->
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMTStudent'||table.id=='InternationalStu')">
+          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
             <tr>
               <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
             </tr>
@@ -35,7 +35,7 @@
             </tr>
           </table>
           <!--表空但可以插入-->
- <!--          <button v-else-if="table.tableStudentChangable&&(table.id=='HMTStudent'||table.id=='InternationalStu')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button> -->
+ <!--          <button v-else-if="table.tableStudentChangable&&(table.id=='HMT'||table.id=='internationalStudent')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button> -->
 
         </div>
       </div>
