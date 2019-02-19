@@ -214,7 +214,7 @@ export default {
     isEthnicChinese: { canNull: false, reg: null, msg: ''},
     clubJoiningDescription: { canNull: true, reg: null, msg: ''},
     activityTakingDescription: { canNull: true, reg: null, msg: ''},
-    abnormalSitutaion: { canNull: true, reg: null, msg: ''},
+    abnormalSituation: { canNull: true, reg: null, msg: '' },
     tel: { canNull: false, reg: /^[1-9][\d]{10}$/, msg: '电话号填写有误' },
     homeAddress: { canNull: true, reg: null, msg: ''},
     homeInSchool: { canNull: false, reg: null, msg: ''},

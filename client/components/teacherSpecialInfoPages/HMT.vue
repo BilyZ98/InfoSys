@@ -113,7 +113,6 @@ export default {
         //验证格式
         var message = ''
         for (let item in formatCheck['HMT']) {
-        	console.log(item)
           if (formatCheck['HMT'][item]['reg'] != null) {
             let record = $('#HMT-' + item).val()
             if (record != '' && !formatCheck['HMT'][item]['reg'].test(record)) {

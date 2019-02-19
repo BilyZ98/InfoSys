@@ -211,11 +211,11 @@ exports.addTechProject = (data) => {
 exports.addHMT = (data) => {
   let query = 
   "insert into HMT \n" +
-  "(sid, ancecsHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
+  "(sid, ancesHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
   "HMTIDNum, homePermitNum, name) \n" +
   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   let values = [data.sid, data.ancesHome, data.interest, data.religion, data.mail, data.wechat, 
-  data.homeAddress, data.ecoContact, data.HMTIDNum, data.homePermitNum, data.name]
+  data.homeAddress, data.ecoContact, data.ecoTel, data.HMTIDNum, data.homePermitNum, data.name]
   return queryDB(query,values)
 }
 
@@ -228,7 +228,7 @@ exports.addInterStu = (data) => {
   "activityTakingDescription, abnormalSituation, tel, homeAddress, homeInSchool,"+
   "same, dormRegistryCopy, visaCopy, passportCopy, notCompleteReason) values "+
   "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  let values = [data.sid, data.passportName, data.studedntClass, data.chineseName, gender, nationality,
+  let values = [data.sid, data.passportName, data.studentClass, data.chineseName, data.gender, data.nationality,
    data.passportNum, data.school, data.major, data.tutor, data.visaClass, data.residenceReason,
   data.visaExpire, data.remark, data.religion, data.isEthnicChinese, data.clubJoiningDescription,
   data.activityTakingDescription, data.abnormalSituation, data.tel, data.homeAddress, data.homeInSchool,
