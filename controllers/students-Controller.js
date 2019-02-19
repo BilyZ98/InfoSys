@@ -275,6 +275,23 @@ exports.getFailedCourseReacord = async (req,res,next) => {
   resBody.success(res,failedCourses)
 }
 
+exports.getFailedStudents = async (req,res,next) => {
+  let data = req.body;
+  if(data.minYear > data.maxYear){
+    resBody.fail(res,443,'时间段设置错误')
+    return
+  }
+  if(data.minYear== data.maxYear){
+    if(data.minSemester>data.maxSemester){
+      resBody.fail(res,443,'时间段设置错误')
+      return
+    }
+  }
+  
+  let failedStudents = await StudentsModel.getFailedStudents(req,data)
+  resBody.success(res,failedStudents)
+}
+
 
 //检测数据库中是否已有记录
 /**
