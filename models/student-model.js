@@ -236,6 +236,33 @@ exports.addInterStu = (data) => {
     return queryDB(query,values);
 }
 
+exports.addDormRegistryCopy = (data) => {
+  let query = 
+  "insert into dormRegistryCopy \n"+
+  "(sid,filePath) values \n"+
+  "(?,?)";
+  let values= [data.sid,data.filePath]
+  return queryDB(query,values)
+}
+
+exports.addVisaCopy = (data)=>{
+  let query = 
+  "insert into visaCopy \n"+
+  "(sid,filePath) values \n"+
+  "(?,?)";
+  let values= [data.sid,data.filePath]
+  return queryDB(query,values)
+}
+
+exports.addPassportCopy = (data) =>{
+  let query = 
+  "insert into passportCopy \n"+
+  "(sid,filePath) values \n"+
+  "(?,?)";
+  let values= [data.sid,data.filePath]
+  return queryDB(query,values)
+}
+
 //data 就是传过来的json数据
 /*
 var newQuery =  {
