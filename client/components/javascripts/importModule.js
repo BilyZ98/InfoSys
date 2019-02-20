@@ -1,5 +1,6 @@
 import tableData from './tableData.js'
 import formatCheck from './formatCheck.js'
+import XLSX from 'xlsx'
 
 export default {
   //这里直接调用上面写好的函数，发送的json的table的值是给input的id

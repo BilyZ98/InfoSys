@@ -226,13 +226,13 @@ exports.addInterStu = (data) => {
   "passportNum, school, major, tutor, visaClass, residenceReason, "+
   "visaExpire, remark, religion, isEthnicChinese, clubJoiningDescription," +
   "activityTakingDescription, abnormalSituation, tel, homeAddress, homeInSchool,"+
-  "same, dormRegistryCopy, visaCopy, passportCopy, notCompleteReason) values "+
-  "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  "same,  notCompleteReason) values "+
+  "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   let values = [data.sid, data.passportName, data.studentClass, data.chineseName, data.gender, data.nationality,
    data.passportNum, data.school, data.major, data.tutor, data.visaClass, data.residenceReason,
   data.visaExpire, data.remark, data.religion, data.isEthnicChinese, data.clubJoiningDescription,
   data.activityTakingDescription, data.abnormalSituation, data.tel, data.homeAddress, data.homeInSchool,
-  data.same, data.dormRegistryCopy, data.visaCopy, data.passportCopy, data.notCompleteReason]
+  data.same, data.notCompleteReason]
     return queryDB(query,values);
 }
 
@@ -676,7 +676,7 @@ getStudentInfo().then(function(output){
 exports.getFailedCourse = async (data) => {
   let query = 
   "select * from course where sid=? and (course.year>? or (course.year=? and course.semester>=?) ) and (course.year<? or (course.year=? and course.semester<=?) ) and courseGrade<60";
-  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
+  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemester]
   return queryDB(query,values)
 }
 
@@ -685,6 +685,15 @@ exports.getFailedCourse = async (data) => {
 */
 exports.getFailedStudents = async (data) => {
   let query = 
-  "select sid, count(*) nums from (select * from course where courseGrade<60) tab1 group by sid order by nums DESC;";
-  return queryDB(query)
+  "select sid, count(*) nums from (select * from course where year=? and courseGrade<60) tab1 group by sid order by nums DESC;";
+  let value = [data.year]
+  return queryDB(query,value)
+}
+
+
+exports.getFilePath = async (data,table) => {
+  let query =
+  "select * from " + table +" where sid=?"
+  let values = [data.sid]
+  return queryDB(query,values)
 }
