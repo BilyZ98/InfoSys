@@ -264,6 +264,7 @@ exports.sendMail =async  (req,res,next) =>{
     console.log()
     form.parse(req,async function(err,fields,files){
       console.log(files);
+      console.log(fields);
       StudentsModel.getMails(JSON.parse(fields['sid'])).then(async (mails)=>{
           await mailer.sendMail(mails,fields, files)
           resBody.success(res)
