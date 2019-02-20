@@ -7,7 +7,7 @@
   <div class="container-card-left">
     <div class="card-studentsBasic" @click="studentsBasicClick">基本信息</div>
     <div class="card-studentsSpecial" @click="specialInfoClick">港澳台/国际生</div>
-    <div class="card-academicWarning">学业预警</div>
+    <div class="card-academicWarning" @click="warningClick">学业预警</div>
     <div class="card-guideline" @click="guidelineClick">办事指引</div>
     <div class="card-gameManage">竞赛信息管理</div>
     <div class="card-workManage">实习/就业管理</div>
@@ -97,6 +97,14 @@ export default {
         }
       })
       //this.$router.push({ name: 'basicInfoOfStu' })
+    },
+    warningClick: function() {
+      this.$router.push({
+        name: 'studentWarning',
+        query: {
+          sid: this.$store.getters.getUserAccount
+        }
+      })
     },
     guidelineClick: function() {
       this.$router.push({name:'leave'})
