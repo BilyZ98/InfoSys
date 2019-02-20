@@ -7,6 +7,9 @@ const path = require('path')
 var uploadDir = path.resolve(__dirname,'..')
 uploadDir = path.join(uploadDir,'/uploads')
 
+var uploadDirForInterStu = path.resolve(__dirname,'..')
+uploadDirForInterStu = path.join(uploadDirForInterStu,'/uploadsForInterStu')
+
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -195,8 +198,26 @@ exports.addHMT = async (req,res,next) => {
   template(req,res,next, StudentsModel.addHMT,"HMT")
 }
 
+//插入国际生要上传照片，一个人的签证照片可能有多张，新建一个表，以国际生的学号为外键。
 exports.addInterStu = async (req,res,next) => {
-  template(req,res,next, StudentsModel.addInterStu,"internationalStudent")
+  //template(req,res,next, StudentsModel.addInterStu,"internationalStudent")
+  try{
+    var form = new formidable.IncomingForm();
+    form.multiples = true
+    form.uploadDir = uploadDirForInterStu
+    form.keepExtensions = true
+    form.encoding = 'utf-8'
+
+    form.parse(req,async function(err, fields, files){
+      let data = fields
+      for(let i =0; i< fields.fileNum;i++){
+        
+      }
+    })
+  }
+  catch(err){
+
+  }
 }
 
 exports.statistic = async (req,res,next) => {
@@ -242,6 +263,7 @@ exports.sendMail =async  (req,res,next) =>{
     form.encoding = 'utf-8'
     console.log()
     form.parse(req,async function(err,fields,files){
+      console.log(files);
       StudentsModel.getMails(JSON.parse(fields['sid'])).then(async (mails)=>{
           await mailer.sendMail(mails,fields, files)
           resBody.success(res)
