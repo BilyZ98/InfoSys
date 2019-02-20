@@ -35,8 +35,10 @@ router.post("/insert/HMT", studentsController.addHMT);
 
 router.post("/insert/internationalStudent",studentsController.addInterStu);
 
-router.get("/FailedCourse",studentsController.getFailedCourseReacord);
+router.post("/FailedCourse",studentsController.getFailedCourseReacord);
 
 router.get("/FailedStudents",studentsController.getFailedStudents);
+
+
 
 module.exports = router;

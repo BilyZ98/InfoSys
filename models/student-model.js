@@ -676,7 +676,7 @@ getStudentInfo().then(function(output){
 exports.getFailedCourse = async (data) => {
   let query = 
   "select * from course where sid=? and (course.year>? or (course.year=? and course.semester>=?) ) and (course.year<? or (course.year=? and course.semester<=?) ) and courseGrade<60";
-  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
+  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemester]
   return queryDB(query,values)
 }
 
