@@ -295,14 +295,14 @@ export default {
       isEthnicChinese: { name: '是否华裔', id: 'isEthnicChinese', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['是', '否']},
       clubJoiningDescription: { name: '参加社团情况', id: 'clubJoiningDescription', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       activityTakingDescription: { name: '参加校内活动情况', id: 'activityTakingDescription', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      abnormalSitutaion: { name: '违法违纪或行为异常情况（如有，请在备注栏具体说明）', id: 'abnormalSitutaion', isPrimary: false, value: '', studentChangAble: false, valueType: 'input'},
+      abnormalSituation: { name: '违法违纪或行为异常情况', id: 'abnormalSituation', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       tel: { name: '联系电话', id: 'tel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       homeAddress: { name: '实际住址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       homeInSchool: { name: '住宿地址', id: 'homeInSchool', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['校内', '校外']},
-      same: { name: '实际住址与“境外人员临时住宿登记表”登记的地址是否一致', id: 'same', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['是', '否']},
-      dormRegistryCopy: { name: '材料1（住宿登记表复印件）', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      visaCopy: { name: '材料2（签证/居留证复印件）', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      passportCopy: { name: '材料3（护照复印件）', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      same: { name: '实际住址与登记是否一致', id: 'same', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['是', '否']},
+      dormRegistryCopy: { name: '住宿登记表复印件', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   }

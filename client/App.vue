@@ -3,9 +3,10 @@
     <header class="app-bar-display">
       <div class="button-home" @click="homeClick">SDCS学生信息系统</div>
       <div class="button-icon glyphicon glyphicon-log-out" aria-hidden="true" @click="logoutClick" title="登出"></div>
-      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" title="用户信息" @mouseenter="userInfoEnter" @mouseleave="userInfoLeave">
+      <div class="button-icon glyphicon glyphicon-user" aria-hidden="true" @mouseenter="userInfoEnter" @mouseleave="userInfoLeave">
         <!-- 浮窗 -->
         <div id="popup-userInfo">
+          <div class="popup-title">用户信息</div>
           <div id="popup-account">12345678</div>
           <div id="popup-usertype">guest</div>
           <button class="popup-btn-resetpassword" @click="resetpswdClick">重置密码</button>
@@ -197,6 +198,13 @@ header {
   -o-transition: 0.3s;
 }
 
+.popup-title {
+  margin-top: 10px;
+  color: black;
+  font-size: 16px;
+  font-weight: lighter;
+}
+
 #popup-account {
   margin-top: 20px;
   color: black;
@@ -214,7 +222,7 @@ header {
 .popup-btn-resetpassword {
   width: 100px;
   height: 36px;
-  margin-top: 80px;
+  margin-top: 50px;
   font-size: 16px;
   color: var(--blue);
   background-color: white;

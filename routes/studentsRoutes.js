@@ -33,10 +33,12 @@ router.post("/sendMail", studentsController.sendMail);
 
 router.post("/insert/HMT", studentsController.addHMT);
 
-router.post("/insert/interStudent",studentsController.addInterStu);
+router.post("/insert/internationalStudent",studentsController.addInterStu);
 
-router.get("/FailedCourse",studentsController.getFailedCourseReacord);
+router.post("/FailedCourse",studentsController.getFailedCourseReacord);
 
-router.get("/FailedStudents",studentsController.getFailedStudents);
+router.post("/FailedStudents",studentsController.getFailedStudents);
+
+
 
 module.exports = router;

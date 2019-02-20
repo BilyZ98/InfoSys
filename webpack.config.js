@@ -2,9 +2,15 @@ var path = require('path')
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+//require('bootstrap-loader')
+
 module.exports = {
   //entry: path.join(__dirname, './client/index.js'),
-  entry: ['babel-polyfill','./client/index.js'],
+  entry: [
+    //'bootstrap-loader',
+    'babel-polyfill',
+    './client/index.js'
+  ],
   output: {
     path: path.join(__dirname, './public/dist'),
     publicPath: '/dist/',
@@ -30,11 +36,23 @@ module.exports = {
         use: ['style-loader', 'css-loader']
       },
       {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+      },
+      {
         test: /\.js$/,
         use: 'babel-loader',
         exclude: /node_modules/
       },
       {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: 'file-loader'
+      },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        use: 'file-loader'
+      }
+      /*{
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
@@ -44,7 +62,24 @@ module.exports = {
             }
           }
         ]
-      }
+      },*/
+      /*
+      {
+        test: /\.scss$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader'],
+      },
+      {
+        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        use: 'url-loader?limit=10000',
+      },
+      {
+        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+        use: 'file-loader',
+      },
+      { test: /\.(woff2?|svg)$/, loader: 'url-loader?limit=10000' },
+      { test: /\.(ttf|eot)$/, loader: 'file-loader' }
+      {test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/ ,loader : 'file?limit=10000&mimetype=application/font-woff&name=/font/[name]-[hash:8].[ext]'},
+      {test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/, loader : 'file?name=/font/[name]-[hash:8].[ext]'}*/
     ]
   },
   plugins: [
@@ -58,8 +93,8 @@ module.exports = {
     //new HtmlWebpackPlugin()
   ],
   resolve: {
-  alias: {
-    vue: 'vue/dist/vue.js'
+    alias: {
+      vue: 'vue/dist/vue.js'
+    }
   }
-}
 }

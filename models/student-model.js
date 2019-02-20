@@ -211,11 +211,11 @@ exports.addTechProject = (data) => {
 exports.addHMT = (data) => {
   let query = 
   "insert into HMT \n" +
-  "(sid, ancecsHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
+  "(sid, ancesHome, interest, religion, mail, wechat, homeAddress, ecoContact, ecoTel,"+
   "HMTIDNum, homePermitNum, name) \n" +
   "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
   let values = [data.sid, data.ancesHome, data.interest, data.religion, data.mail, data.wechat, 
-  data.homeAddress, data.ecoContact, data.HMTIDNum, data.homePermitNum, data.name]
+  data.homeAddress, data.ecoContact, data.ecoTel, data.HMTIDNum, data.homePermitNum, data.name]
   return queryDB(query,values)
 }
 
@@ -228,7 +228,7 @@ exports.addInterStu = (data) => {
   "activityTakingDescription, abnormalSituation, tel, homeAddress, homeInSchool,"+
   "same,  notCompleteReason) values "+
   "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-  let values = [data.sid, data.passportName, data.studedntClass, data.chineseName, gender, nationality,
+  let values = [data.sid, data.passportName, data.studentClass, data.chineseName, data.gender, data.nationality,
    data.passportNum, data.school, data.major, data.tutor, data.visaClass, data.residenceReason,
   data.visaExpire, data.remark, data.religion, data.isEthnicChinese, data.clubJoiningDescription,
   data.activityTakingDescription, data.abnormalSituation, data.tel, data.homeAddress, data.homeInSchool,
@@ -676,7 +676,7 @@ getStudentInfo().then(function(output){
 exports.getFailedCourse = async (data) => {
   let query = 
   "select * from course where sid=? and (course.year>? or (course.year=? and course.semester>=?) ) and (course.year<? or (course.year=? and course.semester<=?) ) and courseGrade<60";
-  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
+  let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemester]
   return queryDB(query,values)
 }
 
@@ -685,9 +685,11 @@ exports.getFailedCourse = async (data) => {
 */
 exports.getFailedStudents = async (data) => {
   let query = 
-  "select sid, count(*) nums from (select * from course where courseGrade<60) tab1 group by sid order by nums DESC;";
-  return queryDB(query)
+  "select sid, count(*) nums from (select * from course where year=? and courseGrade<60) tab1 group by sid order by nums DESC;";
+  let value = [data.year]
+  return queryDB(query,value)
 }
+
 
 exports.getFilePath = async (data,table) => {
   let query =

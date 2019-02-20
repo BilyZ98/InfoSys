@@ -86,11 +86,20 @@ export default {
   created: function() {
     //alert(window.innerWidth)
     //1536*728
+    var date = new Date()
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    if(month<=6) year = year-1;
+    var data = {
+      year: year
+    }
+    var postData = JSON.stringify(data)
     var _self = this
       // replace getPost with your data fetching util / API wrapper
     $.ajax({
-      type: 'GET',
+      type: 'POST',
       url: '/students/FailedStudents',
+      data: postData,
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
       timeout: 5000,

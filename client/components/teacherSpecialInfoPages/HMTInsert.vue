@@ -33,8 +33,6 @@ export default {
       var formatTable = formatCheck[this.tableId]
       var message = ''
       for(let item in tableData[this.tableId]['records']) {
-        console.log(item)
-        console.log($('#' + this.tableId + '-' + item))
         let record = $('#' + this.tableId + '-' + item).val()
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空

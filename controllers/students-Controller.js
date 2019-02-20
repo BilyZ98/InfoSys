@@ -350,6 +350,7 @@ exports.sendMail =async  (req,res,next) =>{
 
 exports.getFailedCourseReacord = async (req,res,next) => {
   let data = req.body;
+  console.log(data);
   if(data.minYear > data.maxYear){
     resBody.fail(res,443,'时间段设置错误')
     return
@@ -362,6 +363,7 @@ exports.getFailedCourseReacord = async (req,res,next) => {
   }
   
   let failedCourses = await StudentsModel.getFailedCourse(req.body)
+  console.log(failedCourses)
   resBody.success(res,failedCourses)
 }
 
@@ -378,7 +380,7 @@ exports.getFailedStudents = async (req,res,next) => {
     }
   }*/
   
-  let failedStudents = await StudentsModel.getFailedStudents()
+  let failedStudents = await StudentsModel.getFailedStudents(req.body)
   console.log(failedStudents)
   resBody.success(res,failedStudents)
 }

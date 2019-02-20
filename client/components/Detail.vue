@@ -8,7 +8,7 @@
           <div class="info-heading">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
-          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
+          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo'||table.id=='HMT'||table.id=='internationalStudent')">
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
               <span class="record-name">{{record.name}}:</span>
@@ -62,7 +62,7 @@ export default {
     this.sid = this.$route.query.sid
     //alert('sid: ' + sid)
     var data = {
-      tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
+      tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject', 'HMT', 'internationalStudent'],
       id: this.sid
     }
     var postData = JSON.stringify(data)
