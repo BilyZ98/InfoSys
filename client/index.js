@@ -8,8 +8,11 @@ import store from './store/store'
 import htmlToPDF from './components/javascripts/htmlToPDF'
 
 /* bootstrap */
+import BootstrapVue from 'bootstrap-vue'
 //import 'bootstrap'
 //import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 /* xlsx */
 import XLSX from 'xlsx'
@@ -81,6 +84,7 @@ Vue.config.debug = true
 Vue.use(VueRouter)
 Vue.use(VueResource)
 Vue.use(htmlToPDF)
+Vue.use(BootstrapVue)
 //全局注册email组件, 在页面中可以通过<email></email>直接引用
 Vue.component('email', Email)
 
