@@ -37,6 +37,6 @@ router.post("/insert/interStudent",studentsController.addInterStu);
 
 router.get("/FailedCourse",studentsController.getFailedCourseReacord);
 
-router.post("/FailedStudents",studentsController.getFailedStudents);
+router.get("/FailedStudents",studentsController.getFailedStudents);
 
 module.exports = router;

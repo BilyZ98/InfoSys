@@ -276,7 +276,7 @@ exports.getFailedCourseReacord = async (req,res,next) => {
 }
 
 exports.getFailedStudents = async (req,res,next) => {
-  let data = req.body;
+  /*let data = req.body;
   if(data.minYear > data.maxYear){
     resBody.fail(res,443,'时间段设置错误')
     return
@@ -286,9 +286,10 @@ exports.getFailedStudents = async (req,res,next) => {
       resBody.fail(res,443,'时间段设置错误')
       return
     }
-  }
+  }*/
   
-  let failedStudents = await StudentsModel.getFailedStudents(req,data)
+  let failedStudents = await StudentsModel.getFailedStudents()
+  console.log(failedStudents)
   resBody.success(res,failedStudents)
 }
 

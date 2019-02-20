@@ -2,80 +2,53 @@
   <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">课程成绩管理</p>
+      <p class="header-text">学业预警</p>
       <div class="header-button">
-        <!--<span @click="insertClick">插入数据</span>-->
-        <span @click="downloadClick">导出</span>
-        <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
-        <span @click="mubanDownload">下载模板</span>
-        <span>转毕业生</span>
-        <span @click="diycolClick">自定义列</span>
-        <span @click="sendEmailClick">邮件通知</span>
+        <span @click="sendEmailClick">发送警告</span>
       </div>
     </div>
     <!--查询输入-->
-    <div class="container-card-list">
+    <!--div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
-        <span>{{record.name}}:</span>
+        
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
         <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'course-'+record.id">
+        <span>{{record.name}}:</span>
         <span class="text-range">最小值 </span>
         <input type="text" class="min"><span class="text-range">最大值 </span>
         <input type="text" class="max">
         </span>
       </div>
       <button class="manager-button" @click="queryClick">查询</button>
-    </div>
+    </div-->
     <!--显示数据-->
     <div class="container-card-list">
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
+          <!--th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th-->
+          <th>学号</th>
+          <th>挂科数量</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
+        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
             <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
-            <span v-else>---</span>
+            <span v-else>-</span>
           </td>
+        </tr-->
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
+          <td>{{index+1}}</td>
+          <td>{{student['sid']}}</td>
+          <td>{{student['nums']}}</td>
         </tr>
       </table>
     </div>
-    <!--统计-->
-    <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records">
-        <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-stat-'+record.id">
-          <option></option>
-          <option v-for="option in record.options">{{option}}</option>
-        </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'course-stat-'+record.id">
-        <span class="stat-nonselect-range" v-bind:id="'course-stat-range-'+record.id" v-if="record.id=='GPA'">
-          <div>
-            统计起点: <input id="stat-nonselect-input-GPA-start">
-          </div>
-          <div>
-            统计终点: <input id="stat-nonselect-input-GPA-end">
-          </div>
-          <div>
-            统计区间宽度:
-            <select id="stat-nonselect-input-GPA-range">
-              <option>0.1</option>
-              <option>0.5</option>
-              <option>1.0</option>
-            </select>
-          </div>
-        </span>
-      </div>
-      <button class="manager-button" @click="statClick">统计</button>
-      <span id="stat-chart-bar"></span>
-      <span id="stat-chart-pie"></span>
-    </div>
+    
     <!-- 弹窗 -->
     <div id="popup" class="popup-background">
       <!-- 弹窗内容 -->
@@ -113,13 +86,28 @@ export default {
   created: function() {
     //alert(window.innerWidth)
     //1536*728
+    var _self = this
+      // replace getPost with your data fetching util / API wrapper
+    $.ajax({
+      type: 'GET',
+      url: '/students/FailedStudents',
+      contentType: 'application/json;charset=utf-8',
+      dataType: 'json',
+      timeout: 5000,
+      success: function(result, xhr) {
+        _self.students = result.content;
+        console.log(result.content)
+        ///alert(_self.students[0]['sid']);
+      },
+      error: function(result, xhr) {
+          //连接错误
+          //console.log(result)
+          alert('服务器连接错误: ' + xhr)
+      }
+    })
   },
   methods: {
-    insertClick: function() {
-      this.$router.push({
-        name: 'courseInsert'
-      })
-    },
+    
     queryClick: function() {
       var course = { equal: {}, range: {}, fuzzy: {} }
       var data = {
@@ -204,6 +192,7 @@ export default {
             if (key == 'content') {
               //操作成功
               _self.students = result['content']
+              alert(result['content'])
             } else if (key == 'err') {
               //操作错误
               alert('查询信息错误: ' + result[key]['sqlMessage'])
@@ -217,22 +206,14 @@ export default {
         }
       })
     },
-    downloadClick: function() {
-      downloadModule.downloadClick(this.students)
-    },
-    importClick: function() {
-      $('#button-import').click()
-    },
-    mubanDownload: function() {
-      downloadModule.mubanDownload("course")
-    },
+    
+    
+    
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
       importModule.importClick($('#button-import').prop('files')[0], 'course')
     },
-    diycolClick: function() {
-      $('#popup').show()
-    },
+    
     modalCloseClick: function() {
       $('#popup').hide()
     },
@@ -247,7 +228,7 @@ export default {
       }
     },
     studentClick: function(event) {
-      //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
+      alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
       var routeData = this.$router.resolve({
         name: 'detail',
@@ -258,7 +239,7 @@ export default {
       window.open(routeData.href, '_blank')
     },
     //统计
-    statButtonToggle: function(event) {
+    /*statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
         $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).css('display', 'block')
@@ -266,7 +247,7 @@ export default {
         event.currentTarget.className = 'stat-checkbox'
         $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
-    },
+    },*/
     statClick: function() {
       var data = {
         table: 'course',
