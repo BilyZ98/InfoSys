@@ -108,104 +108,7 @@ export default {
   },
   methods: {
     
-    queryClick: function() {
-      var course = { equal: {}, range: {}, fuzzy: {} }
-      var data = {
-        select: ['course'],
-        where: {
-          equal: {},
-          range: {},
-          fuzzy: {}
-        }
-      }
-      if ($('#course-sid').val()) {
-        var sid = $('#course-sid').val()
-        if (!formatCheck['course']['sid']['reg'].test(sid)) {
-          alert(formatCheck['course']['sid']['msg'])
-          return
-        } else {
-          course['equal']['sid'] = sid
-        }
-      } else {
-        //验证格式
-        var message = ''
-        for (let item in formatCheck['course']) {
-          if (formatCheck['course'][item]['reg'] != null) {
-            let record = $('#course-' + item).val()
-            if (record != '' && !formatCheck['course'][item]['reg'].test(record)) {
-              message = message + formatCheck['course'][item]['msg']
-            }
-          }
-        }
-        if (message != '') {
-          alert(message)
-          return
-        }
-        if ($('#course-name').val()) course['equal']['name'] = $('#course-name').val()
-        //range value
-        var rangeVal = { min: $('#course-year .min').val(), max: $('#course-year .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['year'] = rangeVal
-        }
-        //range value
-        rangeVal = { min: $('#course-semester .min').val(), max: $('#course-semester .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['semester'] = rangeVal
-        }
-        if ($('#course-courseName').val()) course['equal']['courseName'] = $('#cschoolRoll-ourseName').val()
-        if ($('#course-courseId').val()) course['equal']['courseId'] = $('#course-courseId').val()
-        if ($('#course-courseClass').val()) course['equal']['courseClass'] = $('#course-courseClass').val()
-        if ($('#course-courseProperty').val()) course['equal']['courseProperty'] = $('#course-courseProperty').val()
-        if ($('#course-courseHour').val()) course['equal']['courseHour'] = $('#course-courseHour').val()
-        if ($('#course-credit').val()) course['equal']['credit'] = $('#course-credit').val()
-        //range value
-        rangeVal = { min: $('#course-courseGrade .min').val(), max: $('#course-courseGrade .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['courseGrade'] = rangeVal
-        }
-        //range value
-        rangeVal = { min: $('#course-GPA .min').val(), max: $('#course-GPA .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['GPA'] = rangeVal
-        }
-        if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
-        if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()
-        if ($('#course-backup').val()) course['equal']['backup'] = $('#course-backup').val()
-      }
-      if (JSON.stringify(course['equal']) != emptyCell) data['where']['equal']['course'] = course['equal']
-      if (JSON.stringify(course['range']) != emptyCell) data['where']['range']['course'] = course['range']
-      if (JSON.stringify(course['fuzzy']) != emptyCell) data['where']['fuzzy']['course'] = course['fuzzy']
-      var postData = JSON.stringify(data)
-      console.log(postData)
-      //post
-      var _self = this
-      // replace getPost with your data fetching util / API wrapper
-      $.ajax({
-        type: 'POST',
-        url: '/students/query',
-        data: postData,
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        timeout: 5000,
-        success: function(result, xhr) {
-          for (let key in result) {
-            if (key == 'content') {
-              //操作成功
-              _self.students = result['content']
-              alert(result['content'])
-            } else if (key == 'err') {
-              //操作错误
-              alert('查询信息错误: ' + result[key]['sqlMessage'])
-            }
-          }
-        },
-        error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
-    },
+    
     
     
     
@@ -228,7 +131,7 @@ export default {
       }
     },
     studentClick: function(event) {
-      alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
+      //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
       var routeData = this.$router.resolve({
         name: 'detail',
