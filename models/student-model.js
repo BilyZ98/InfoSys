@@ -685,6 +685,7 @@ exports.getFailedCourse = async (data) => {
 */
 exports.getFailedStudents = async (data) => {
   let query = 
-  "select sid, count(*) nums from (select * from course where courseGrade<60) tab1 group by sid order by nums DESC;";
-  return queryDB(query)
+  "select sid, count(*) nums from (select * from course where year=? and courseGrade<60) tab1 group by sid order by nums DESC;";
+  let value = [data.year]
+  return queryDB(query,value)
 }

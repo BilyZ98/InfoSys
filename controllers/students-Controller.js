@@ -313,7 +313,7 @@ exports.getFailedStudents = async (req,res,next) => {
     }
   }*/
   
-  let failedStudents = await StudentsModel.getFailedStudents()
+  let failedStudents = await StudentsModel.getFailedStudents(req.body)
   console.log(failedStudents)
   resBody.success(res,failedStudents)
 }

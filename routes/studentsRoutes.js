@@ -37,7 +37,7 @@ router.post("/insert/internationalStudent",studentsController.addInterStu);
 
 router.post("/FailedCourse",studentsController.getFailedCourseReacord);
 
-router.get("/FailedStudents",studentsController.getFailedStudents);
+router.post("/FailedStudents",studentsController.getFailedStudents);
 
 
 
