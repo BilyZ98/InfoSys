@@ -324,7 +324,8 @@ export default {
 }
 
 .container-card-list {
-  margin: 25px;
+  margin-top: 25px;
+  margin-left: 137px;
   text-align: left;
   padding: 20px;
   /*alert($('.container-card-list').width())不包含margin，但是会减去padding
