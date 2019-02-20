@@ -4,6 +4,7 @@ var asynchronous = require('async');
 const mailer = require('../utils/mailer.js')
 var formidable = require('formidable')
 const path = require('path')
+const fs = require('fs')
 var uploadDir = path.resolve(__dirname,'..')
 uploadDir = path.join(uploadDir,'/uploads')
 
@@ -208,15 +209,81 @@ exports.addInterStu = async (req,res,next) => {
     form.keepExtensions = true
     form.encoding = 'utf-8'
 
-    form.parse(req,async function(err, fields, files){
-      let data = fields
-      for(let i =0; i< fields.fileNum;i++){
-        
-      }
-    })
-  }
-  catch(err){
+    let fileExt
 
+    form.parse(req,async function(err, fields, files){
+      //let data = fields
+      let data
+      data.sid = fields.sid
+      if(files.dormRegistryCopy){
+        for(let i in files.dormRegistryCopy){
+          if(!checkExtension(files.dormRegistryCopy[i].path)) {
+            continue
+          }
+          data.filePath = files.dormRegistryCopy[i]
+          await StudentsModel.addDormRegistryCopy(data)
+        }
+      }
+      if(files.visaCopy) {
+        for(let i in files.visaCopy){
+          if(!checkExtension(files.visaCopy[i].path)){
+            continue
+          }
+          data.filePath = files.visaCopy[i]
+          await StudentsModel.addVisaCopy(data)
+        }
+      }
+      if(files.passportCopy){
+        for(let i in files.passportCopy){
+          if(!checkExtension(files.passportCopy[i].path)){
+            continue
+          }
+          data.filePath = files.passportCopy[i]
+          await StudentsModel.addPassportCopy(data)
+        }
+      }
+      data = fields
+      await StudentsModel.addInterStu(data)  
+      })
+    }
+  catch(err){
+    console.log(err)
+    resBody.error(res,err)
+  }
+}
+/*
+检测文件类型是否为照片
+*/
+function checkExtension(filePath){
+  var fileExt = filePath.substring(filePath.lastIndexOf('.'))
+  if(('.jpg.jpeg.png.gif.pdf').indexOf(fileExt.toLowerCase()) === -1){
+    console.log('file type illegal')
+    return false
+  }
+  return true
+}
+
+/*
+返回国籍学生的基本信息，包含上传的图片，对于一般查询，不用返回图片
+查找数据库里，这个国际学生的对应的三个copy表的所有记录，存储在json
+然后找interstudent 的字符记录，合在一起返回前端
+*/
+exports.getInterStudent = async (req,res,next) =>{
+  let copyTables = ['dormRegistryCopy','visaCopy','passportCopy']
+  let data = req.body
+  let returnData
+  for(let i in copyTables){
+    let copies = await StudentsModel.getFilePath(data,copyTables[i])
+    for(let j in copies){
+      fs.readFile(copies[j],(err,result) => {
+        if(err){
+          console.log(err)
+        }
+        else{
+          returnData[copyTables[i]][j] = result
+        }
+      })
+    }
   }
 }
 
