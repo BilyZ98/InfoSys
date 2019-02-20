@@ -38,6 +38,7 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
+      sid: null,
       table: tableData['course'],
       students: [],
       emailSid: []
