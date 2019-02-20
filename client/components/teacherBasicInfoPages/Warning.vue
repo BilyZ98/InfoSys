@@ -2,80 +2,53 @@
   <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">课程成绩管理</p>
+      <p class="header-text">学业预警</p>
       <div class="header-button">
-        <!--<span @click="insertClick">插入数据</span>-->
-        <span @click="downloadClick">导出</span>
-        <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
-        <span @click="mubanDownload">下载模板</span>
-        <span>转毕业生</span>
-        <span @click="diycolClick">自定义列</span>
-        <span @click="sendEmailClick">邮件通知</span>
+        <span @click="sendEmailClick">发送警告</span>
       </div>
     </div>
     <!--查询输入-->
-    <div class="container-card-list">
+    <!--div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
-        <span>{{record.name}}:</span>
+        
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
         <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'course-'+record.id">
+        <span>{{record.name}}:</span>
         <span class="text-range">最小值 </span>
         <input type="text" class="min"><span class="text-range">最大值 </span>
         <input type="text" class="max">
         </span>
       </div>
       <button class="manager-button" @click="queryClick">查询</button>
-    </div>
+    </div-->
     <!--显示数据-->
     <div class="container-card-list">
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
+          <!--th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th-->
+          <th>学号</th>
+          <th>挂科数量</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
+        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
             <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
-            <span v-else>---</span>
+            <span v-else>-</span>
           </td>
+        </tr-->
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
+          <td>{{index+1}}</td>
+          <td>{{student['sid']}}</td>
+          <td>{{student['nums']}}</td>
         </tr>
       </table>
     </div>
-    <!--统计-->
-    <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records">
-        <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-stat-'+record.id">
-          <option></option>
-          <option v-for="option in record.options">{{option}}</option>
-        </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'course-stat-'+record.id">
-        <span class="stat-nonselect-range" v-bind:id="'course-stat-range-'+record.id" v-if="record.id=='GPA'">
-          <div>
-            统计起点: <input id="stat-nonselect-input-GPA-start">
-          </div>
-          <div>
-            统计终点: <input id="stat-nonselect-input-GPA-end">
-          </div>
-          <div>
-            统计区间宽度:
-            <select id="stat-nonselect-input-GPA-range">
-              <option>0.1</option>
-              <option>0.5</option>
-              <option>1.0</option>
-            </select>
-          </div>
-        </span>
-      </div>
-      <button class="manager-button" @click="statClick">统计</button>
-      <span id="stat-chart-bar"></span>
-      <span id="stat-chart-pie"></span>
-    </div>
+    
     <!-- 弹窗 -->
     <div id="popup" class="popup-background">
       <!-- 弹窗内容 -->
@@ -113,126 +86,37 @@ export default {
   created: function() {
     //alert(window.innerWidth)
     //1536*728
-  },
-  methods: {
-    insertClick: function() {
-      this.$router.push({
-        name: 'courseInsert'
-      })
-    },
-    queryClick: function() {
-      var course = { equal: {}, range: {}, fuzzy: {} }
-      var data = {
-        select: ['course'],
-        where: {
-          equal: {},
-          range: {},
-          fuzzy: {}
-        }
-      }
-      if ($('#course-sid').val()) {
-        var sid = $('#course-sid').val()
-        if (!formatCheck['course']['sid']['reg'].test(sid)) {
-          alert(formatCheck['course']['sid']['msg'])
-          return
-        } else {
-          course['equal']['sid'] = sid
-        }
-      } else {
-        //验证格式
-        var message = ''
-        for (let item in formatCheck['course']) {
-          if (formatCheck['course'][item]['reg'] != null) {
-            let record = $('#course-' + item).val()
-            if (record != '' && !formatCheck['course'][item]['reg'].test(record)) {
-              message = message + formatCheck['course'][item]['msg']
-            }
-          }
-        }
-        if (message != '') {
-          alert(message)
-          return
-        }
-        if ($('#course-name').val()) course['equal']['name'] = $('#course-name').val()
-        //range value
-        var rangeVal = { min: $('#course-year .min').val(), max: $('#course-year .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['year'] = rangeVal
-        }
-        //range value
-        rangeVal = { min: $('#course-semester .min').val(), max: $('#course-semester .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['semester'] = rangeVal
-        }
-        if ($('#course-courseName').val()) course['equal']['courseName'] = $('#cschoolRoll-ourseName').val()
-        if ($('#course-courseId').val()) course['equal']['courseId'] = $('#course-courseId').val()
-        if ($('#course-courseClass').val()) course['equal']['courseClass'] = $('#course-courseClass').val()
-        if ($('#course-courseProperty').val()) course['equal']['courseProperty'] = $('#course-courseProperty').val()
-        if ($('#course-courseHour').val()) course['equal']['courseHour'] = $('#course-courseHour').val()
-        if ($('#course-credit').val()) course['equal']['credit'] = $('#course-credit').val()
-        //range value
-        rangeVal = { min: $('#course-courseGrade .min').val(), max: $('#course-courseGrade .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['courseGrade'] = rangeVal
-        }
-        //range value
-        rangeVal = { min: $('#course-GPA .min').val(), max: $('#course-GPA .max').val() }
-        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
-          course['range']['GPA'] = rangeVal
-        }
-        if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
-        if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()
-        if ($('#course-backup').val()) course['equal']['backup'] = $('#course-backup').val()
-      }
-      if (JSON.stringify(course['equal']) != emptyCell) data['where']['equal']['course'] = course['equal']
-      if (JSON.stringify(course['range']) != emptyCell) data['where']['range']['course'] = course['range']
-      if (JSON.stringify(course['fuzzy']) != emptyCell) data['where']['fuzzy']['course'] = course['fuzzy']
-      var postData = JSON.stringify(data)
-      console.log(postData)
-      //post
-      var _self = this
+    var _self = this
       // replace getPost with your data fetching util / API wrapper
-      $.ajax({
-        type: 'POST',
-        url: '/students/query',
-        data: postData,
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        timeout: 5000,
-        success: function(result, xhr) {
-          for (let key in result) {
-            if (key == 'content') {
-              //操作成功
-              _self.students = result['content']
-            } else if (key == 'err') {
-              //操作错误
-              alert('查询信息错误: ' + result[key]['sqlMessage'])
-            }
-          }
-        },
-        error: function(result, xhr) {
+    $.ajax({
+      type: 'GET',
+      url: '/students/FailedStudents',
+      contentType: 'application/json;charset=utf-8',
+      dataType: 'json',
+      timeout: 5000,
+      success: function(result, xhr) {
+        _self.students = result.content;
+        console.log(result.content)
+        ///alert(_self.students[0]['sid']);
+      },
+      error: function(result, xhr) {
           //连接错误
           //console.log(result)
           alert('服务器连接错误: ' + xhr)
-        }
-      })
-    },
-    downloadClick: function() {
-      downloadModule.downloadClick(this.students)
-    },
-    importClick: function() {
-      $('#button-import').click()
-    },
-    mubanDownload: function() {
-      downloadModule.mubanDownload("course")
-    },
+      }
+    })
+  },
+  methods: {
+    
+    
+    
+    
+    
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
       importModule.importClick($('#button-import').prop('files')[0], 'course')
     },
-    diycolClick: function() {
-      $('#popup').show()
-    },
+    
     modalCloseClick: function() {
       $('#popup').hide()
     },
@@ -258,7 +142,7 @@ export default {
       window.open(routeData.href, '_blank')
     },
     //统计
-    statButtonToggle: function(event) {
+    /*statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
         $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).css('display', 'block')
@@ -266,7 +150,7 @@ export default {
         event.currentTarget.className = 'stat-checkbox'
         $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
-    },
+    },*/
     statClick: function() {
       var data = {
         table: 'course',
@@ -440,7 +324,8 @@ export default {
 }
 
 .container-card-list {
-  margin: 25px;
+  margin-top: 25px;
+  margin-left: 137px;
   text-align: left;
   padding: 20px;
   /*alert($('.container-card-list').width())不包含margin，但是会减去padding

@@ -57,6 +57,7 @@ import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
 
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
+import StudentWarning from './components/studentWarning.vue'
 /* insert in StudentBasicInfo for students */
 import StudentBasicInfoInsert from './components/studentBasicInfoInserts/StudentBasicInfoInsert.vue'
 import StudentFamilyInsert from './components/studentBasicInfoInserts/StudentFamilyInsert.vue'
@@ -144,6 +145,7 @@ const router = new VueRouter({
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
     { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
+    { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
     {
       name: 'guideline',
       path: '/guideline',

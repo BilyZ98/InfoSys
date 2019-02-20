@@ -93,6 +93,12 @@ export default {
       backup: { name: '备注', id: 'backup', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
     }
   },
+  /*course2: {
+    name: '挂科学生',
+    records: {
+      sid
+    }
+  }*/
   partyInfo: {
     name: '党员信息',
     id: 'partyInfo',
