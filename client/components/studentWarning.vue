@@ -91,7 +91,7 @@ export default {
   height: 70px;
   line-height: 70px;
   padding-left: 30px;
-  text-align: left;
+  text-align: center;
   background-color: white;
   /*shadow*/
   box-shadow: -1px 1px 5px var(--grey-shadow);
@@ -105,8 +105,9 @@ export default {
 }
 
 .header-text {
-  float: left;
-  font-size: 20px;
+  float: center;
+  font-size: 30px;
+  font-weight: bolder;
 }
 
 .header-button {
