@@ -1,15 +1,14 @@
 <template>
   <div id="container-detail">
     <div class="container" id="pdfDom">
-      <h3 class="text-center heading">港澳台/国际生学生信息</h3>
+      <h3 class="text-center heading">学业预警</h3>
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <!-- <div class="info-heading" v-if="table.id=='HMT'||table.id=='internationalStudent'">{{table.name}}</div> -->
+          <div class="info-heading" v-if="table.id=='course'">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
-          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
-          	<div class="info-heading">{{table.name}}</div>
+<!--           <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo')">
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
               <span class="record-name">{{record.name}}:</span>
@@ -21,9 +20,9 @@
               <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
               </span>
             </div>
-          </div>
+          </div> -->
           <!--一个人有多条数据的表-->
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
+          <table border="1" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&table.id=='course'">
             <tr>
               <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
             </tr>
@@ -34,15 +33,13 @@
               </td>
             </tr>
           </table>
-          <!--表空但可以插入-->
- <!--          <button v-else-if="table.tableStudentChangable&&(table.id=='HMT'||table.id=='internationalStudent')" class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button> -->
-
+          <!--表空且不能插入-->
+          <div v-else-if="table.id=='course'" class="table-empty">---</div>
         </div>
       </div>
     </div>
     <div class="btn-show">
-      <button class="btn btn-info btn-sm" id="info-update" button-type="begin" @click="updateClick">修改</button>
-      <button class="btn btn-info btn-sm" id="info-print" @click="getPDF()">导出PDF</button>
+      <!-- <button class="btn btn-info btn-sm" id="info-print" @click="getPDF()">显示预警记录</button> -->
     </div>
   </div>
 </template>
@@ -65,7 +62,7 @@ export default {
     this.sid = this.$route.query.sid
     // alert('sid: ' + this.$store.getters.getUserAccount)
     var data = {
-      tables: ['HMT', 'internationalStudent'],
+      tables: ['basicInfo', 'family', 'schoolRoll', 'course', 'partyInfo', 'scholarship', 'aid', 'loan', 'cadre', 'award', 'paper', 'patent', 'techProject'],
       id: this.sid
     }
     var postData = JSON.stringify(data)

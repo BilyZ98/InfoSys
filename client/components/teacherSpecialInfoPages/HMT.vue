@@ -113,6 +113,7 @@ export default {
         //验证格式
         var message = ''
         for (let item in formatCheck['HMT']) {
+        	console.log(item)
           if (formatCheck['HMT'][item]['reg'] != null) {
             let record = $('#HMT-' + item).val()
             if (record != '' && !formatCheck['HMT'][item]['reg'].test(record)) {
@@ -125,15 +126,16 @@ export default {
           return
         }
         if ($('#HMT-name').val()) HMT['equal']['name'] = $('#HMT-name').val()
-        if ($('#HMT-hometown').val()) HMT['equal']['hometown'] = $('#HMT-hometown').val()
-        if ($('#HMT-speciality').val()) HMT['equal']['speciality'] = $('#HMT-speciality').val()
+        if ($('#HMT-ancesHome').val()) HMT['equal']['ancesHome'] = $('#HMT-ancesHome').val()
+        if ($('#HMT-interest').val()) HMT['equal']['interest'] = $('#HMT-interest').val()
+        if ($('#HMT-religion').val()) HMT['equal']['religion'] = $('#HMT-religion').val()
         if ($('#HMT-mail').val()) HMT['equal']['mail'] = $('#HMT-mail').val()
         if ($('#HMT-wechat').val()) HMT['equal']['wechat'] = $('#HMT-wechat').val()
         if ($('#HMT-homeAddress').val()) HMT['equal']['homeAddress'] = $('#HMT-homeAddress').val()
-        if ($('#HMT-economicManName').val()) HMT['equal']['economicManName'] = $('#HMT-economicManName').val()
-        if ($('#HMT-economicManPhone').val()) HMT['equal']['economicManPhone'] = $('#HMT-economicManPhone').val()
-        if ($('#HMT-HMTIdNum').val()) HMT['equal']['HMTIdNum'] = $('#HMT-HMTIdNum').val()
-        if ($('#HMT-reentryPermit').val()) HMT['equal']['reentryPermit'] = $('#HMT-reentryPermit').val()
+        if ($('#HMT-ecoContact').val()) HMT['equal']['ecoContact'] = $('#HMT-ecoContact').val()
+        if ($('#HMT-ecoTel').val()) HMT['equal']['ecoTel'] = $('#HMT-ecoTel').val()
+        if ($('#HMT-HMTIDNum').val()) HMT['equal']['HMTIDNum'] = $('#HMT-HMTIDNum').val()
+        if ($('#HMT-homePermitNum').val()) HMT['equal']['homePermitNum'] = $('#HMT-homePermitNum').val()
       }
       if (JSON.stringify(HMT['equal']) != emptyCell) data['where']['equal']['HMT'] = HMT['equal']
       if (JSON.stringify(HMT['range']) != emptyCell) data['where']['range']['HMT'] = HMT['range']

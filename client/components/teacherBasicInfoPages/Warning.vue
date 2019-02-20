@@ -2,12 +2,11 @@
   <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">基本信息管理</p>
+      <p class="header-text">课程成绩管理</p>
       <div class="header-button">
-        <span @click="insertClick">插入数据</span>
+        <!--<span @click="insertClick">插入数据</span>-->
         <span @click="downloadClick">导出</span>
         <span @click="importClick">导入<input id="button-import" v-on:change="importUpload" type="file"></span>
-        <span @click="createStudentsAccount">批量创建学生账号</span>
         <span @click="mubanDownload">下载模板</span>
         <span>转毕业生</span>
         <span @click="diycolClick">自定义列</span>
@@ -18,12 +17,12 @@
     <div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
         <span>{{record.name}}:</span>
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'basicInfo-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-'+record.id">
+        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'basicInfo-'+record.id">
+        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'course-'+record.id">
         <span class="text-range">最小值 </span>
         <input type="text" class="min"><span class="text-range">最大值 </span>
         <input type="text" class="max">
@@ -38,10 +37,10 @@
           <th>#</th>
           <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['basicInfo']['sid']">
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['basicInfo'][record.id]!=undefined">{{student['basicInfo'][record.id]}}</span>
+            <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
             <span v-else>---</span>
           </td>
         </tr>
@@ -51,18 +50,34 @@
     <div class="container-card-list">
       <div class="stat-record" v-for="record in table.records">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'basicInfo-stat-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'basicInfo-stat-'+record.id">
+        <input class="hide-container" type="text" v-else v-bind:id="'course-stat-'+record.id">
+        <span class="stat-nonselect-range" v-bind:id="'course-stat-range-'+record.id" v-if="record.id=='GPA'">
+          <div>
+            统计起点: <input id="stat-nonselect-input-GPA-start">
+          </div>
+          <div>
+            统计终点: <input id="stat-nonselect-input-GPA-end">
+          </div>
+          <div>
+            统计区间宽度:
+            <select id="stat-nonselect-input-GPA-range">
+              <option>0.1</option>
+              <option>0.5</option>
+              <option>1.0</option>
+            </select>
+          </div>
+        </span>
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
       <span id="stat-chart-pie"></span>
     </div>
     <!-- 弹窗 -->
-    <div id="popup-diy" class="popup-background">
+    <div id="popup" class="popup-background">
       <!-- 弹窗内容 -->
       <div class="popup-content">
         <span id="popup-close" @click="modalCloseClick">&times;</span>
@@ -76,7 +91,6 @@
     <div id="popup-email" class="popup-background">
       <email :emailSid="emailSid"></email>
     </div>
-    <!--发短信-->
   </div>
 </template>
 <script>
@@ -85,51 +99,53 @@ import formatCheck from '../javascripts/formatCheck.js'
 import downloadModule from '../javascripts/downloadModule.js'
 import importModule from '../javascripts/importModule.js'
 import statModule from '../javascripts/statisticModule.js'
-
 var empty = JSON.stringify({ equal: {}, range: {}, fuzzy: {} })
 var emptyCell = JSON.stringify({})
 
 export default {
   data: function() {
     return {
-      table: tableData['basicInfo'],
+      table: tableData['course'],
       students: [],
-      quill: null,
       emailSid: []
     }
+  },
+  created: function() {
+    //alert(window.innerWidth)
+    //1536*728
   },
   methods: {
     insertClick: function() {
       this.$router.push({
-        name: 'basicInfoInsert'
+        name: 'courseInsert'
       })
     },
     queryClick: function() {
-      var basicInfo = { equal: {}, range: {}, fuzzy: {} }
+      var course = { equal: {}, range: {}, fuzzy: {} }
       var data = {
-        select: ['basicInfo'],
+        select: ['course'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-      if ($('#basicInfo-sid').val()) {
-        var sid = $('#basicInfo-sid').val()
-        if (!formatCheck['basicInfo']['sid']['reg'].test(sid)) {
-          alert(formatCheck['basicInfo']['sid']['msg'])
+      if ($('#course-sid').val()) {
+        var sid = $('#course-sid').val()
+        if (!formatCheck['course']['sid']['reg'].test(sid)) {
+          alert(formatCheck['course']['sid']['msg'])
           return
         } else {
-          basicInfo['equal']['sid'] = sid
+          course['equal']['sid'] = sid
         }
       } else {
         //验证格式
         var message = ''
-        for (let item in formatCheck['basicInfo']) {
-          if (formatCheck['basicInfo'][item]['reg'] != null) {
-            let record = $('#basicInfo-' + item).val()
-            if (record != '' && !formatCheck['basicInfo'][item]['reg'].test(record)) {
-              message = message + formatCheck['basicInfo'][item]['msg']
+        for (let item in formatCheck['course']) {
+          if (formatCheck['course'][item]['reg'] != null) {
+            let record = $('#course-' + item).val()
+            if (record != '' && !formatCheck['course'][item]['reg'].test(record)) {
+              message = message + formatCheck['course'][item]['msg']
             }
           }
         }
@@ -137,31 +153,40 @@ export default {
           alert(message)
           return
         }
-        if ($('#basicInfo-name').val()) basicInfo['equal']['name'] = $('#basicInfo-name').val()
-        if ($('#basicInfo-gender').val()) basicInfo['equal']['gender'] = $('#basicInfo-gender').val()
-        if ($('#basicInfo-birthPlace').val()) basicInfo['equal']['birthPlace'] = $('#basicInfo-birthPlace').val()
-        if ($('#basicInfo-ethnic').val()) basicInfo['equal']['ethnic'] = $('#basicInfo-ethnic').val()
-        if ($('#basicInfo-poliFace').val()) basicInfo['equal']['poliFace'] = $('#basicInfo-poliFace').val()
-        if ($('#basicInfo-idNum').val()) basicInfo['equal']['idNum'] = $('#basicInfo-idNum').val()
-        if ($('#basicInfo-birthDate').val()) basicInfo['equal']['birthDate'] = $('#basicInfo-birthDate').val()
-        if ($('#basicInfo-tel').val()) basicInfo['equal']['tel'] = $('#basicInfo-tel').val()
-        if ($('#basicInfo-mail').val()) basicInfo['equal']['mail'] = $('#basicInfo-mail').val()
-        if ($('#basicInfo-wechat').val()) basicInfo['equal']['wechat'] = $('#basicInfo-wechat').val()
-        if ($('#basicInfo-qq').val()) basicInfo['equal']['qq'] = $('#basicInfo-qq').val()
-        if ($('#basicInfo-degree').val()) basicInfo['equal']['degree'] = $('#basicInfo-degree').val()
-        if ($('#basicInfo-stuGroup ').val()) basicInfo['equal']['stuGroup '] = $('#basicInfo-stuGroup ').val()
-        if ($('#basicInfo-grade').val()) basicInfo['equal']['grade'] = $('#basicInfo-grade').val()
-        if ($('#basicInfo-major').val()) basicInfo['equal']['major'] = $('#basicInfo-major').val()
-        if ($('#basicInfo-class').val()) basicInfo['equal']['class'] = $('#basicInfo-class').val()
-        if ($('#basicInfo-dorm').val()) basicInfo['equal']['dorm'] = $('#basicInfo-dorm').val()
-        if ($('#basicInfo-dormNumber').val()) basicInfo['equal']['dormNumber'] = $('#basicInfo-dormNumber').val()
-        if ($('#basicInfo-dormRoom ').val()) basicInfo['equal']['dormRoom '] = $('#basicInfo-dormRoom ').val()
-        if ($('#basicInfo-speciality').val()) basicInfo['equal']['speciality'] = $('#basicInfo-speciality').val()
-        if ($('#basicInfo-highSchool').val()) basicInfo['equal']['highSchool'] = $('#basicInfo-highSchool').val()
+        if ($('#course-name').val()) course['equal']['name'] = $('#course-name').val()
+        //range value
+        var rangeVal = { min: $('#course-year .min').val(), max: $('#course-year .max').val() }
+        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
+          course['range']['year'] = rangeVal
+        }
+        //range value
+        rangeVal = { min: $('#course-semester .min').val(), max: $('#course-semester .max').val() }
+        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
+          course['range']['semester'] = rangeVal
+        }
+        if ($('#course-courseName').val()) course['equal']['courseName'] = $('#cschoolRoll-ourseName').val()
+        if ($('#course-courseId').val()) course['equal']['courseId'] = $('#course-courseId').val()
+        if ($('#course-courseClass').val()) course['equal']['courseClass'] = $('#course-courseClass').val()
+        if ($('#course-courseProperty').val()) course['equal']['courseProperty'] = $('#course-courseProperty').val()
+        if ($('#course-courseHour').val()) course['equal']['courseHour'] = $('#course-courseHour').val()
+        if ($('#course-credit').val()) course['equal']['credit'] = $('#course-credit').val()
+        //range value
+        rangeVal = { min: $('#course-courseGrade .min').val(), max: $('#course-courseGrade .max').val() }
+        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
+          course['range']['courseGrade'] = rangeVal
+        }
+        //range value
+        rangeVal = { min: $('#course-GPA .min').val(), max: $('#course-GPA .max').val() }
+        if (rangeVal['min'] != '' && rangeVal['max'] != '') {
+          course['range']['GPA'] = rangeVal
+        }
+        if ($('#course-isPass').val()) course['equal']['isPass'] = $('#course-isPass').val()
+        if ($('#course-rebuild').val()) course['equal']['rebuild'] = $('#course-rebuild').val()
+        if ($('#course-backup').val()) course['equal']['backup'] = $('#course-backup').val()
       }
-      if (JSON.stringify(basicInfo['equal']) != emptyCell) data['where']['equal']['basicInfo'] = basicInfo['equal']
-      if (JSON.stringify(basicInfo['range']) != emptyCell) data['where']['range']['basicInfo'] = basicInfo['range']
-      if (JSON.stringify(basicInfo['fuzzy']) != emptyCell) data['where']['fuzzy']['basicInfo'] = basicInfo['fuzzy']
+      if (JSON.stringify(course['equal']) != emptyCell) data['where']['equal']['course'] = course['equal']
+      if (JSON.stringify(course['range']) != emptyCell) data['where']['range']['course'] = course['range']
+      if (JSON.stringify(course['fuzzy']) != emptyCell) data['where']['fuzzy']['course'] = course['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -198,40 +223,18 @@ export default {
     importClick: function() {
       $('#button-import').click()
     },
-    createStudentsAccount: function() {
-       $.ajax({
-        type: 'POST',
-        url: '/users/createStudentsAccount',
-        contentType: 'application/json;charset=utf-8',
-        dataType: 'json',
-        timeout: 5000,
-        success: function(result, xhr) {
-          if (xhr == 'success') {
-            alert('批量创建学生账号成功！')
-          } else {
-            alert('批量创建学生账号失败！')
-          }
-        },
-        error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
-    },
     mubanDownload: function() {
-      downloadModule.mubanDownload("basicInfo")
+      downloadModule.mubanDownload("course")
     },
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
-      importModule.importClick($('#button-import').prop('files')[0], 'basicInfo')
+      importModule.importClick($('#button-import').prop('files')[0], 'course')
     },
-    //自定义弹窗函数
     diycolClick: function() {
-      $('#popup-diy').show()
+      $('#popup').show()
     },
     modalCloseClick: function() {
-      $('#popup-diy').hide()
+      $('#popup').hide()
     },
     //发送邮件函数
     sendEmailClick: function() {
@@ -239,12 +242,10 @@ export default {
       //加载收件人学号
       this.emailSid = []
       for (let i = 0; i < this.students.length; i++) {
-        //解决重复添加问题
-        if(this.emailSid.indexOf(this.students[i]['basicInfo']['sid']) == -1)
-          this.emailSid.push(this.students[i]['basicInfo']['sid'])
+        if(this.emailSid.indexOf(this.students[i]['course']['sid']) == -1)
+          this.emailSid.push(this.students[i]['course']['sid'])
       }
     },
-    //查询学生点击事件
     studentClick: function(event) {
       //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
@@ -256,39 +257,59 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    // 统计
+    //统计
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
+        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).css('display', 'block')
       } else if (event.currentTarget.className == 'stat-checkbox-selected') {
         event.currentTarget.className = 'stat-checkbox'
-        $('#basicInfo-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
     },
     statClick: function() {
       var data = {
-        table: 'basicInfo',
+        table: 'course',
         fields: [],
         condition: {}
       }
       $('.stat-checkbox-selected').each(function() {
-        /*
-        if ($(this).prop("checked")) {
-          var recordId = $(this).attr('record-id')
+        var recordId = $(this).attr('record-id')
+        //绩点高级查询
+        if (recordId == 'GPA') {
+          var start = $('#stat-nonselect-input-GPA-start').val()
+          var end = $('#stat-nonselect-input-GPA-end').val()
+          var range = parseFloat($('#stat-nonselect-input-GPA-range').val()) * 100
+          if (start != '' && end != '') {
+            if (start < 0 || start > 5 || end < 0 || end > 5 || start >= end) {
+              alert('请正确填写统计绩点的范围！')
+              return
+            }
+            data['intervalFields'] = {}
+            data['intervalFields']['GPA'] = [parseFloat(start)]
+            for (let i = 0; i < 500; i += range) {
+              if (i > start * 100 && i < end * 100) {
+                data['intervalFields']['GPA'].push(i / 100)
+              }
+            }
+            data['intervalFields']['GPA'].push(parseFloat(end))
+          } else {
+            data['fields'].push(recordId)
+
+            //绩点作为筛选条件
+            if ($('#course-stat-' + recordId).val() != '') {
+              data['condition'][recordId] = $('#course-stat-' + recordId).val()
+            }
+          }
+        } else {
+          //除绩点外字段
           data['fields'].push(recordId)
-          if ($('#basicInfo-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
+          if ($('#course-stat-' + recordId).val() != '') {
+            data['condition'][recordId] = $('#course-stat-' + recordId).val()
           }
         }
-        */
-        var recordId = $(this).attr('record-id')
-        data['fields'].push(recordId)
-        if ($('#basicInfo-stat-' + recordId).val() != '') {
-          data['condition'][recordId] = $('#basicInfo-stat-' + recordId).val()
-        }
       })
-      if (data['fields'].length == 0) {
+      if (data['fields'].length == 0 && data['intervalFields'] == undefined) {
         alert('请选择想要统计的字段！')
         return
       }
@@ -312,7 +333,7 @@ export default {
                 {gender: '男', major: '数学', statistic: 1}
               ]*/
               console.log(result[key])
-              statModule.createCharts('basicInfo', result[key], 'stat-chart-bar', 'stat-chart-pie')
+              statModule.createCharts('course', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
               //操作错误
               alert('统计错误: ' + result[key]['sqlMessage'])
@@ -400,7 +421,6 @@ export default {
   clear: both;
   width: 110px;
   height: 36px;
-  margin-top: 20px;
   margin-left: calc(50% - 55px);
   font-size: 17px;
   color: white;
@@ -470,6 +490,7 @@ td {
   display: none;
 }
 
+
 /* 弹窗 (background) */
 
 .popup-background {
@@ -490,12 +511,13 @@ td {
   background-color: rgba(0, 0, 0, 0.4);
 }
 
+
 /* 弹窗内容 */
 
 .popup-content {
   background-color: white;
   margin-top: 100px;
-  margin-left: calc(50% - 300px);
+  margin-left: calc(50% - 200px);
   padding: 30px;
   width: 600px;
   height: 400px;
@@ -532,7 +554,7 @@ td {
   cursor: pointer;
 }
 
-/* 统计 */
+/*统计*/
 
 .stat-record {
   float: left;
@@ -598,6 +620,25 @@ td {
 
 .stat-nonselect-range {
   display: none;
+}
+
+.stat-nonselect-range div {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+#stat-nonselect-input-GPA-start,
+#stat-nonselect-input-GPA-end {
+  margin-left: 10px;
+  display: inline-block;
+  width: 140px;
+}
+
+#stat-nonselect-input-GPA-range {
+  margin-left: 10px;
+  width: 140px;
+  height: 22px;
 }
 
 #stat-chart-bar {

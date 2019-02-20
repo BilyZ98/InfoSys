@@ -186,14 +186,14 @@ export default {
     name: { canNull: false, reg: null, msg: '' },
     ancesHome: { canNull: false, reg: null, msg: '' },
     interest: { canNull: true, reg: null, msg: '' },
-    religion: { canNull: true, reg: null, msg: ''},
+    religion: { canNull: true, reg: null, msg: '' },
     mail: { canNull: true, reg: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, msg: '邮箱格式有误' },
     wechat: { canNull: true, reg: null, msg: '' },
     homeAddress: { canNull: true, reg: null, msg: '' },
     ecoContact: { canNull: true, reg: null, msg: '' },
     ecoTel: { canNull: true, reg: null, msg: '' },
-    HMTIdNum: { canNull: false, reg: ((/[A-Z]{1,2}[0-9]{6}([0-9A])/)|(/^[1|5|7][0-9]{6}[0−9Aa][0−9Aa]/)|(/[A-Z][0-9]{9}/)), msg: '身份证号填写有误' },
-    homePermitNum: {canNull: false, reg: null, msg: '' }
+    HMTIDNum: { canNull: false, reg: /^[0-9A-Za-z]{8,10}$/, msg: '港澳台居民身份证号填写有误' },
+    homePermitNum: { canNull: false, reg: null, msg: '' }
   },
   internationalStudent: {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },

@@ -652,3 +652,13 @@ exports.getFailedCourse = async (data) => {
   let values = [data.sid, data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
   return queryDB(query,values)
 }
+
+/*
+查询一段时间内不及格的学生以及每个学生不及格的课程数
+*/
+exports.getFailedStudents = async (data) => {
+  let query = 
+  "select sid,COUNT(*) from course where (course.year>? or (course.year=? and course.semester>=?) ) and (course.year<? or (course.year=? and course.semester<=?) ) and courseGrade<60 group by sid";
+  let values = [data.minYear, data.minYear, data.minSemester, data.maxYear, data.maxYear, data.maxSemster]
+  return queryDB(query,values)
+}

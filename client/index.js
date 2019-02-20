@@ -52,9 +52,12 @@ import CadreInsert from './components/teacherBasicInfoInserts/CadreInsert.vue'
 import AwardInsert from './components/teacherBasicInfoInserts/AwardInsert.vue'
 /* TeacherSpecialInfo for teachers */
 import TeacherSpecialInfo from './components/TeacherSpecialInfo.vue'
+/* AcademicWaring*/
+import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
 
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
+import StudentWarning from './components/studentWarning.vue'
 /* insert in StudentBasicInfo for students */
 import StudentBasicInfoInsert from './components/studentBasicInfoInserts/StudentBasicInfoInsert.vue'
 import StudentFamilyInsert from './components/studentBasicInfoInserts/StudentFamilyInsert.vue'
@@ -63,6 +66,8 @@ import StudentCadreInsert from './components/studentBasicInfoInserts/StudentCadr
 import StudentSpecialInfo from './components/StudentSpecialInfo.vue'
 import HMT from './components/teacherSpecialInfoPages/HMT.vue'
 import InternationalStudent from './components/teacherSpecialInfoPages/InternationalStudent.vue'
+import HMTInsert from './components/teacherSpecialInfoPages/HMTInsert.vue'
+import InternationalStudentInsert from './components/teacherSpecialInfoPages/InternationalStudentInsert.vue'
 /* guideline for students */
 import Guideline from './components/Guideline.vue'
 import Leave from './components/guideline/Leave.vue'
@@ -89,6 +94,7 @@ const router = new VueRouter({
     { name: 'resetpswd', path: '/resetpswd', component: Resetpswd },
     /* 教师路由 */
     { name: 'teacherMain', path: '/teacherMain', component: TeacherMain },
+    { name: 'academicWarning', path: '/academicWarning', component: AcademicWarning},
     {
       name: 'teacherBasicInfo',
       path: '/teacherBasicInfo',
@@ -139,6 +145,7 @@ const router = new VueRouter({
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
     { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
+    { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
     {
       name: 'guideline',
       path: '/guideline',
@@ -152,6 +159,8 @@ const router = new VueRouter({
     { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert },
     { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert },
     { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
+    { name: 'HMTInsert', path: '/HMTInsert', component: HMTInsert },
+    { name: 'internationalStudentInsert', path: '/internationalStudentInsert', component: InternationalStudentInsert },
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
