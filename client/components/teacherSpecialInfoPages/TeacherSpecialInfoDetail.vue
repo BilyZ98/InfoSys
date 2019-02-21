@@ -5,40 +5,38 @@
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <!-- <div class="info-heading" v-if="table.id=='HMT'||table.id=='internationalStudent'">{{table.name}}</div> -->
+          <div class="info-heading" v-if="table.id=='HMT'||table.id=='internationalStudent'">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
-          <!--一个人最多有一条数据的表-->
           <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
-            <div class="info-heading">{{table.name}}</div>
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
+                <!--字段名-->
                 <span class="record-name">{{record.name}}:</span>
-                <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+                <!--select类型字段-->
+                <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
                   <option></option>
                   <option v-for="option in record.options">{{option}}</option>
                 </select>
-                <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
-                <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+                <!--input/range且不为空的输入框字段-->
+                <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined&&record['valueType']!='file'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <!--为空的字段-->
+                <input style="width: 20px" v-else-if="record['valueType']!='file'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <!--文件-->
+                <div v-else-if="record['valueType']=='file'" class="record-file">
+                  <span v-if="modifyMode">
+                    <input type="file" :id="'file-input-'+record.id" name="file-input" accept="image/jpeg,image/jpg,image/png,image/gif,image/pdf" @change="fileUpolad(record.id)" style="display: none;">
+                    <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择</button>
+                    <span class="file-area">{{showFilename(record.id)}}</span>
+                  </span>
+                  <span v-else>
+                    <button class="file-btn" :record-id="record.id" @click="downloadFileClick">下载</button>
+                  </span>
+                </div>
               </span>
             </div>
           </div>
-          <!--一个人有多条数据的表
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
-            <tr>
-              <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
-            </tr>
-            <tr v-for="tableArr in student[table.id]">
-              <td v-for="record in table.records">
-                <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="disabled" v-model:text="tableArr[record.id]">
-                <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
-              </td>
-            </tr>
-          </table>-->
-          <!--表空但可以插入-->
-          <div v-else-if="table.tableStudentChangable&&(table.id=='HMT'||table.id=='internationalStudent')">
-            <div class="info-heading">{{table.name}}</div>
-            <button class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
-          </div>
+          <!--空-->
+          <div v-else-if="table.id=='HMT'||table.id=='internationalStudent'" class="table-empty">---</div>
         </div>
       </div>
     </div>
@@ -49,8 +47,8 @@
   </div>
 </template>
 <script>
-import tableData from './javascripts/tableData.js'
-import formatCheck from './javascripts/formatCheck.js'
+import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 
 export default {
   data: function() {
@@ -58,8 +56,12 @@ export default {
       sid: null,
       tables: tableData,
       student: {},
+      modifyMode : false,
       //backup用于更新数据后判断哪些被更新了
-      studentBackup: {}
+      studentBackup: {},
+      dormRegistryCopy: null,
+      visaCopy: null,
+      passportCopy: null
     }
   },
   created: function() {
@@ -98,16 +100,37 @@ export default {
       }
     })
   },
-  //隐藏侧边栏和顶部栏
-  mounted: function() {
-    // $(".app-bar-display").attr("class", "app-bar-hide")
-    // $(".container-info-display").attr("class", "container-info-all")
-  },
   beforeDestroy: function() {
     $(".app-bar-hide").attr("class", "app-bar-display")
     $(".container-info-all").attr("class", "container-info-display")
   },
   methods: {
+    selectFileClick: function() {
+      $('#file-input-' + event.currentTarget.getAttribute('record-id')).click()
+    },
+    fileUpolad: function(id) {
+      console.log(event.currentTarget.files[0])
+      if(id == 'dormRegistryCopy') {
+        this.dormRegistryCopy = event.currentTarget.files[0]
+      } else if(id == 'visaCopy') {
+        this.visaCopy = event.currentTarget.files[0]
+      } else if(id == 'passportCopy') {
+        this.passportCopy = event.currentTarget.files[0]
+      }
+    },
+    showFilename: function(id) {
+      console.log(id)
+      if (id == 'dormRegistryCopy') {
+        return this.dormRegistryCopy==null?'':this.dormRegistryCopy.name
+      } else if (id == 'visaCopy') {
+        return this.visaCopy==null?'':this.visaCopy.name
+      } else if (id == 'passportCopy') {
+        return this.passportCopy==null?'':this.passportCopy.name
+      }
+    },
+    downloadFileClick: function() {
+
+    },
     dataMakeup: function(data) {
       //把数据中不全的表中没有的字段全部赋值为空
       for (let table in tableData) {
@@ -125,6 +148,7 @@ export default {
     },
     updateClick: function() {
       if ($('#info-update').attr('button-type') == 'begin') {
+        this.modifyMode = true
         //开始修改
         $('#info-update').text('确定')
         $('#info-update').attr('button-type', 'end')
@@ -133,6 +157,7 @@ export default {
           $(this).css('border-bottom', '1px solid rgb(180, 180, 180)')
         })
       } else if ($('#info-update').attr('button-type') == 'end') {
+        this.modifyMode = false
         //修改完成进行上传
         $('.record-changable').each(function() {
           $(this).attr('disabled', true)
@@ -147,6 +172,10 @@ export default {
           for (let i = 0; i < this.student[table].length; i++) {
             let tableArr = this.student[table][i]
             for (let record in tableArr) {
+              // 目前后端没有上传文件模块，暂时跳过
+              if (tableData[table]['records'][record]['valueType'] == 'file')
+                //console.log('123')
+                continue
               if (tableArr[record] != this.studentBackup[table][i][record]) {
                 //检查格式，只检查更改了的字段
                 if (!formatCheck[table][record]['canNull'] && tableArr[record] == '') {
@@ -214,17 +243,11 @@ export default {
           }
         })
       }
-    },
-    studentInsertClick: function(id) {
-      if (id == 'HMT')
-        this.$router.push({ name: 'studentHMTInsert' })
-      else if (id == 'internationalStudent')
-        this.$router.push({ name: 'studentInternationalStudentInsert' })
     }
   }
 }
 </script>
-<style>
+<style scoped>
 #container-detail {
   margin: 25px auto 25px auto;
   text-align: left;
@@ -308,11 +331,19 @@ export default {
   padding-left: 2px;
 }
 
-#container-detail .record-unchangable {
-  border: none;
-  background-color: white;
-  margin-left: 2px;
-  padding-left: 2px;
+#container-detail .record-file {
+  display: inline-block;
+  width: 200px;
+}
+
+#container-detail .file-btn {
+  width: 40px;
+}
+
+#container-detail .file-area {
+  width: 150px;
+  margin-left: 10px;
+  overflow: hidden;
 }
 
 #container-detail table {
@@ -345,29 +376,6 @@ export default {
 
 #container-detail .table-empty {
   margin-left: 20px;
-}
-
-#container-detail .table-empty-button {
-  margin-left: 20px;
-  width: 80px;
-  height: 30px;
-  font-size: 16px;
-  text-align: center;
-  color: white;
-  background-color: var(--blue);
-  border: none;
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-#container-detail .table-empty-button:hover {
-  background-color: var(--blue-hover);
-  cursor: pointer;
 }
 
 /**

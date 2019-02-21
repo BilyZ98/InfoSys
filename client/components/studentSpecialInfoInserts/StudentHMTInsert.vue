@@ -1,21 +1,17 @@
 <template>
-<div id="container-insert-internationalStudent">
-  <div class="text-header">国际生信息插入</div>
+<div id="container-insert-HMT">
+  <div class="text-header">港澳台生信息填写</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
-      <span class="record-name">{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
+      <span>{{record.name}}:</span>
+      <span v-if="!record.studentChangAble&&record.id=='sid'" class="span-uninputable">{{sid}}</span>
+      <span v-else-if="!record.studentChangAble" class="span-uninputable">没有填写权限</span>
+      <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
         <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input type="text" v-else-if="record.valueType!='file'" v-bind:id="tableId+'-'+record.id" class="record-content">
-      <!--文件选择-->
-      <div v-else class="record-content">
-        <input type="file" :id="'file-input-'+record.id" name="file-input" accept="image/jpeg,image/jpg,image/png,image/gif,image/pdf" @change="fileUpolad(record.id)" style="display: none;">
-        <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择文件</button>
-        <span class="file-area">{{showFilename(record.id)}}</span>
-      </div>
+      <input type="text" v-else v-bind:id="tableId+'-'+record.id">
     </div>
   </div>
   <pre id="warning"></pre>
@@ -30,41 +26,18 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'internationalStudent',
-      table: tableData['internationalStudent'],
-      dormRegistryCopy: null,
-      visaCopy: null,
-      passportCopy: null
+      tableId: 'HMT',
+      table: tableData['HMT'],
+      sid: this.$store.getters.getUserAccount
     }
   },
   methods: {
-    selectFileClick: function() {
-      $('#file-input-' + event.currentTarget.getAttribute('record-id')).click()
-    },
-    fileUpolad: function(id) {
-      console.log(event.currentTarget.files[0])
-      if(id == 'dormRegistryCopy') {
-        this.dormRegistryCopy = event.currentTarget.files[0]
-      } else if(id == 'visaCopy') {
-        this.visaCopy = event.currentTarget.files[0]
-      } else if(id == 'passportCopy') {
-        this.passportCopy = event.currentTarget.files[0]
-      }
-    },
-    showFilename: function(id) {
-      console.log(id)
-      if (id == 'dormRegistryCopy') {
-        return this.dormRegistryCopy==null?'':this.dormRegistryCopy.name
-      } else if (id == 'visaCopy') {
-        return this.visaCopy==null?'':this.visaCopy.name
-      } else if (id == 'passportCopy') {
-        return this.passportCopy==null?'':this.passportCopy.name
-      }
-    },
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
       for(let item in tableData[this.tableId]['records']) {
+        if(!tableData[this.tableId]['records'][item]['studentChangAble'])
+          continue
         let record = $('#' + this.tableId + '-' + item).val()
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
@@ -84,8 +57,11 @@ export default {
         var data = {
           table: this.tableId
         }
+        data['sid'] = this.sid
         for(let item in tableData[this.tableId]['records']){
-          if($('#' + this.tableId + '-' + item).val() != ''){
+          if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
+            //
+          } else if($('#' + this.tableId + '-' + item).val() != ''){
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
@@ -123,8 +99,8 @@ export default {
 }
 </script>
 
-<style scoped>
-#container-insert-internationalStudent {
+<style>
+#container-insert-HMT {
   margin: 25px;
   text-align: left;
   padding: 30px;
@@ -137,47 +113,41 @@ export default {
   overflow: hidden;
 }
 
-#container-insert-internationalStudent .text-header {
+#container-insert-HMT .text-header {
   text-align: center;
   font-size: 25px;
   font-weight: bolder;
 }
 
-#container-insert-internationalStudent .container-input {
+#container-insert-HMT .container-input {
   margin-left: 50px;
 }
 
-#container-insert-internationalStudent .container-record {
+#container-insert-HMT .container-record {
   float: left;
   margin-top: 20px;
   margin-left: 20px;
 }
 
-.record-name {
+#container-insert-HMT .container-record span {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
 }
 
-.record-content {
-  display: inline-block;
+#container-insert-HMT .container-record select, #container-insert-HMT .container-record input {
   margin-left: 10px;
-  width: 250px;
+  width: 200px;
   height: 30px;
   padding: 5px;
 }
 
-.file-btn {
-  width: 60px;
-}
-
-.file-area {
-  width: 180px;
+#container-insert-HMT .span-uninputable {
   margin-left: 10px;
 }
 
-#container-insert-internationalStudent #warning {
+#container-insert-HMT #warning {
   float: left;
   clear: both;
   text-align: left;
@@ -190,7 +160,7 @@ export default {
   color: #f00;
 }
 
-#container-insert-internationalStudent .button-insert {
+#container-insert-HMT .button-insert {
   float: left;
   clear: both;
   width: 110px;
@@ -208,7 +178,7 @@ export default {
   -o-transition: 0.3s;  /* Opera */
 }
 
-#container-insert-internationalStudent .button-insert:hover {
+#container-insert-HMT .button-insert:hover {
   background-color: var(--blue-hover);
 }
 </style>

@@ -259,8 +259,8 @@ export default {
     tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      ancesHome: { name: '祖籍', id: 'ancesHome', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
+      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      ancesHome: { name: '祖籍', id: 'ancesHome', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       interest: { name: '兴趣特长', id: 'interest', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       religion: { name: '宗教信仰', id: 'religion', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       mail: { name: '邮箱', id: 'mail', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
@@ -268,8 +268,8 @@ export default {
       homeAddress: { name: '家庭地址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       ecoContact: { name: '经济联系人姓名', id: 'ecoContact', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       ecoTel: { name: '经济联系人号码', id: 'ecoTel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
-      HMTIDNum: { name: '港澳台居民身份证号码', id: 'HMTIDNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' },
-      homePermitNum: { name: '回乡证/台胞证号码', id: 'homePermitNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input' }
+      HMTIDNum: { name: '港澳台居民身份证号码', id: 'HMTIDNum', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
+      homePermitNum: { name: '回乡证/台胞证号码', id: 'homePermitNum', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' }
     }
   },
   internationalStudent: {
@@ -278,32 +278,32 @@ export default {
     tableStudentChangable: true,
     records: {
       sid: { name: '学号', id: 'sid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      passportName: { name: '护照姓名', id: 'passportName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      studentClass: { name: '学生类别', id: 'studentClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['统招', '港澳台', '国际学生'] },
-      chineseName: {name: '中文姓名', id: 'chineseName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      gender: { name: '性别', id: 'gender', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['男', '女'] },
-      nationality: { name: '国籍', id: 'nationality', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      passportNum: { name: '护照号码', id: 'passportNum', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      school: { name: '院系', id: 'school', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      major: { name: '专业', id: 'major', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      passportName: { name: '护照姓名', id: 'passportName', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      studentClass: { name: '学生类别', id: 'studentClass', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['统招', '港澳台', '国际学生'] },
+      chineseName: {name: '中文姓名', id: 'chineseName', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      gender: { name: '性别', id: 'gender', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['男', '女'] },
+      nationality: { name: '国籍', id: 'nationality', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      passportNum: { name: '护照号码', id: 'passportNum', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      school: { name: '院系', id: 'school', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      major: { name: '专业', id: 'major', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       tutor: { name: '导师姓名', id: 'tutor', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       visaClass: { name: '签证证件类型', id: 'visaClass', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['X1', 'X2', '居留许可证', '其它']},
       residenceReason: { name: '居留许可事由', id: 'residenceReason', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['学习', '其它']},
-      visaExpire: { name: '签证或居留许可到期日期', id: 'visaExpire', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      remark: { name: '留办备注', id: 'remark', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      visaExpire: { name: '签证或居留许可到期日期', id: 'visaExpire', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      remark: { name: '留办备注', id: 'remark', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       religion: { name: '宗教信仰', id: 'religion', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
-      isEthnicChinese: { name: '是否华裔', id: 'isEthnicChinese', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['是', '否']},
-      clubJoiningDescription: { name: '参加社团情况', id: 'clubJoiningDescription', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      activityTakingDescription: { name: '参加校内活动情况', id: 'activityTakingDescription', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      abnormalSituation: { name: '违法违纪或行为异常情况', id: 'abnormalSituation', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      isEthnicChinese: { name: '是否华裔', id: 'isEthnicChinese', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['是', '否']},
+      clubJoiningDescription: { name: '参加社团情况', id: 'clubJoiningDescription', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      activityTakingDescription: { name: '参加校内活动情况', id: 'activityTakingDescription', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
+      abnormalSituation: { name: '违法违纪或行为异常情况', id: 'abnormalSituation', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       tel: { name: '联系电话', id: 'tel', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input' },
       homeAddress: { name: '实际住址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       homeInSchool: { name: '住宿地址', id: 'homeInSchool', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['校内', '校外']},
       same: { name: '实际住址与登记是否一致', id: 'same', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['是', '否']},
-      dormRegistryCopy: { name: '住宿登记表复印件', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
-      visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
-      passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
-      notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
+      dormRegistryCopy: { name: '住宿登记表复印件', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'file'},
+      visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'file'},
+      passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'file'},
+      notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'}
     }
   }
 }
