@@ -5,8 +5,9 @@ const mailer = require('../utils/mailer.js')
 var formidable = require('formidable')
 const path = require('path')
 const fs = require('fs')
-import {promisify} from 'util'
-const readFile = promisify(fs.readFile);
+//import {promisify} from 'util'
+const util = require('util')
+const readFile = util.promisify(fs.readFile);
 var uploadDir = path.resolve(__dirname,'..')
 uploadDir = path.join(uploadDir,'/uploads')
 
@@ -424,8 +425,8 @@ function checkIDValid(body) {
 /*
 插入竞赛信息，包括三个表
 */
-exports.addCompetition = (req,res,next) =>{
-  let data= req.body
+exports.addCompetition = async (req,res,next) =>{
+  let data= req.body;
   try{
     await StudentsModel.addCompetition(data)
     for(let i in data.seniorsGroup){
@@ -441,7 +442,7 @@ exports.addCompetition = (req,res,next) =>{
   }
 }
 
-exports.addWinners = (req,res,next) => {
+exports.addWinners = async (req,res,next) => {
   try{
     await StudentsModel.addWinners(req.body)
     resBody.success(res)

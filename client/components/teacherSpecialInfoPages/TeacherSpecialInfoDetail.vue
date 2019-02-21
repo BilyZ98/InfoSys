@@ -24,9 +24,9 @@
                 <!--文件-->
                 <div v-else-if="record['valueType']=='file'" class="record-file">
                   <span v-if="modifyMode">
-                    <input type="file" :id="'file-input-'+record.id" name="file-input" accept="image/jpeg,image/jpg,image/png,image/gif,image/pdf" @change="fileUpolad(record.id)" style="display: none;">
+                    <input type="file" :id="'file-input-'+record.id" name="file-input" multiple="multiple" accept="image/jpeg,image/jpg,image/png,image/gif,application/pdf" @change="fileUpolad(record.id)" style="display: none;">
                     <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择</button>
-                    <span class="file-area">{{showFilename(record.id)}}</span>
+                    <span class="file-area">{{showFileNum(record.id)}}个文件</span>
                   </span>
                   <span v-else>
                     <button class="file-btn" :record-id="record.id" @click="downloadFileClick">下载</button>
@@ -59,9 +59,9 @@ export default {
       modifyMode : false,
       //backup用于更新数据后判断哪些被更新了
       studentBackup: {},
-      dormRegistryCopy: null,
-      visaCopy: null,
-      passportCopy: null
+      dormRegistryCopys: null,
+      visaCopys: null,
+      passportCopys: null
     }
   },
   created: function() {
@@ -109,15 +109,16 @@ export default {
       $('#file-input-' + event.currentTarget.getAttribute('record-id')).click()
     },
     fileUpolad: function(id) {
-      console.log(event.currentTarget.files[0])
+      console.log(event.currentTarget.files)
       if(id == 'dormRegistryCopy') {
-        this.dormRegistryCopy = event.currentTarget.files[0]
+        this.dormRegistryCopys = event.currentTarget.files
       } else if(id == 'visaCopy') {
-        this.visaCopy = event.currentTarget.files[0]
+        this.visaCopys = event.currentTarget.files
       } else if(id == 'passportCopy') {
-        this.passportCopy = event.currentTarget.files[0]
+        this.passportCopys = event.currentTarget.files
       }
     },
+    /*
     showFilename: function(id) {
       console.log(id)
       if (id == 'dormRegistryCopy') {
@@ -126,6 +127,16 @@ export default {
         return this.visaCopy==null?'':this.visaCopy.name
       } else if (id == 'passportCopy') {
         return this.passportCopy==null?'':this.passportCopy.name
+      }
+    },
+    */
+    showFileNum: function(id) {
+      if (id == 'dormRegistryCopy') {
+        return this.dormRegistryCopys==null?0:this.dormRegistryCopys.length
+      } else if (id == 'visaCopy') {
+        return this.visaCopys==null?0:this.visaCopys.length
+      } else if (id == 'passportCopy') {
+        return this.passportCopys==null?0:this.passportCopys.length
       }
     },
     downloadFileClick: function() {
