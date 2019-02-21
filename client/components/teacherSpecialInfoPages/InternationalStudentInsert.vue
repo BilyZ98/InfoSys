@@ -1,15 +1,21 @@
 <template>
 <div id="container-insert-internationalStudent">
-  <div class="text-header">港澳台生信息插入</div>
+  <div class="text-header">国际生信息插入</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
-      <span>{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
+      <span class="record-name">{{record.name}}:</span>
+      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
         <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
-      <input type="text" v-else v-bind:id="tableId+'-'+record.id">
+      <input type="text" v-else-if="record.valueType!='file'" v-bind:id="tableId+'-'+record.id" class="record-content">
+      <!--文件选择-->
+      <div v-else class="record-content">
+        <input type="file" :id="'file-input-'+record.id" name="file-input" accept="image/jpeg,image/jpg,image/png,image/gif,image/pdf" @change="fileUpolad(record.id)" style="display: none;">
+        <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择文件</button>
+        <span class="file-area">{{showFilename(record.id)}}</span>
+      </div>
     </div>
   </div>
   <pre id="warning"></pre>
@@ -25,10 +31,36 @@ export default {
   data: function() {
     return {
       tableId: 'internationalStudent',
-      table: tableData['internationalStudent']
+      table: tableData['internationalStudent'],
+      dormRegistryCopy: null,
+      visaCopy: null,
+      passportCopy: null
     }
   },
   methods: {
+    selectFileClick: function() {
+      $('#file-input-' + event.currentTarget.getAttribute('record-id')).click()
+    },
+    fileUpolad: function(id) {
+      console.log(event.currentTarget.files[0])
+      if(id == 'dormRegistryCopy') {
+        this.dormRegistryCopy = event.currentTarget.files[0]
+      } else if(id == 'visaCopy') {
+        this.visaCopy = event.currentTarget.files[0]
+      } else if(id == 'passportCopy') {
+        this.passportCopy = event.currentTarget.files[0]
+      }
+    },
+    showFilename: function(id) {
+      console.log(id)
+      if (id == 'dormRegistryCopy') {
+        return this.dormRegistryCopy==null?'':this.dormRegistryCopy.name
+      } else if (id == 'visaCopy') {
+        return this.visaCopy==null?'':this.visaCopy.name
+      } else if (id == 'passportCopy') {
+        return this.passportCopy==null?'':this.passportCopy.name
+      }
+    },
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
@@ -121,18 +153,28 @@ export default {
   margin-left: 20px;
 }
 
-#container-insert-internationalStudent .container-record span {
+.record-name {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
 }
 
-#container-insert-internationalStudent .container-record select, #container-insert-internationalStudent .container-record input {
+.record-content {
+  display: inline-block;
   margin-left: 10px;
   width: 250px;
   height: 30px;
   padding: 5px;
+}
+
+.file-btn {
+  width: 60px;
+}
+
+.file-area {
+  width: 180px;
+  margin-left: 10px;
 }
 
 #container-insert-internationalStudent #warning {

@@ -10,7 +10,7 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in table.records">
+      <div class="container-record" v-for="record in table.records" v-if="record.valueType!='file'">
         <span>{{record.name}}:</span>
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'internationalStudent-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'internationalStudent-'+record.id">
@@ -30,11 +30,11 @@
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
+          <th v-for="record in table.records" v-if="record['display']==true&&record.valueType!='file'">{{record.name}}</th>
         </tr>
         <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['internationalStudent']['sid']">
           <td>{{index+1}}</td>
-          <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
+          <td v-for="record in table.records" v-if="record['display']==true&&record.valueType!='file'" contenteditable="false">
             <span v-if="student['internationalStudent'][record.id]!=undefined">{{student['internationalStudent'][record.id]}}</span>
             <span v-else>---</span>
           </td>
@@ -43,7 +43,7 @@
     </div>
     <!--统计-->
     <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records">
+      <div class="stat-record" v-for="record in table.records" v-if="record.valueType!='file'">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'internationalStudent-stat-'+record.id">
           <option></option>

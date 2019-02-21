@@ -300,9 +300,9 @@ export default {
       homeAddress: { name: '实际住址', id: 'homeAddress', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'},
       homeInSchool: { name: '住宿地址', id: 'homeInSchool', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['校内', '校外']},
       same: { name: '实际住址与登记是否一致', id: 'same', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'select', options: ['是', '否']},
-      dormRegistryCopy: { name: '住宿登记表复印件', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      dormRegistryCopy: { name: '住宿登记表复印件', id: 'dormRegistryCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
+      visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
+      passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'file'},
       notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   }
