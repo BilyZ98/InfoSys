@@ -58,6 +58,11 @@ import TeacherSpecialInfo from './components/TeacherSpecialInfo.vue'
 /* AcademicWaring*/
 import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
 
+/*Contest Info*/
+import GameManage from './components/GameManage.vue'
+import TeamInfo from './components/contest/TeamInfo.vue'
+import AwardInfo from './components/contest/AwardInfo.vue'
+
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
 import StudentWarning from './components/studentWarning.vue'
@@ -150,6 +155,15 @@ const router = new VueRouter({
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
     { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
     { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
+    { 
+      name: 'gameManage',
+      path: '/gameManage', 
+      component: GameManage,
+      children: [
+        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
+        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
+      ]
+    },
     {
       name: 'guideline',
       path: '/guideline',
@@ -239,4 +253,8 @@ router.beforeEach(function(to, from, next){
 
   next()
 })
+*/
+
+/*
+
 */
