@@ -45,11 +45,15 @@
             <span v-else>-</span>
           </td>
         </tr-->
-        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
+        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
           <td>{{index+1}}</td>
           <td>{{student['sid']}}</td>
-          <td>{{student['nums']}}</td>
-        </tr-->
+          <td>{{student['name']}}</td>
+          <td>{{student['rewardName']}}</td>
+          <td>{{student['organizer']}}</td>
+          <td>{{student['comClass']}}</td>
+          <td>{{student['rewardClass']}}</td>
+        </tr>
       </table>
       <button class="manager-button" @click="addClick">添加获奖记录</button>
     </div>
@@ -89,21 +93,19 @@ export default {
     }
   },
   created: function() {
+    var sid = this.$store.getters.getUserAccount;
     //alert(window.innerWidth)
     //1536*728
-    /*var date = new Date()
-    var year = date.getFullYear();
-    var month = date.getMonth()+1;
-    if(month<=6) year = year-1;
+    
     var data = {
-      year: year
+      sid: sid
     }
     var postData = JSON.stringify(data)
     var _self = this
       // replace getPost with your data fetching util / API wrapper
     $.ajax({
       type: 'POST',
-      url: '/students/FailedStudents',
+      url: '/students/getWinners',
       data: postData,
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
@@ -118,11 +120,13 @@ export default {
           //console.log(result)
           alert('服务器连接错误: ' + xhr)
       }
-    })*/
+    })
   },
   methods: {
     
-    
+    addClick: function() {
+      this.$router.push({ name: 'insertAwardInfo' })
+    },
     
     
     

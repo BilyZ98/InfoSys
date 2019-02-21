@@ -690,6 +690,13 @@ exports.getFailedStudents = async (data) => {
   return queryDB(query,value)
 }
 
+exports.getWinners = async(data) => {
+  let query = 
+  "select sid, name, rewardName, organizer, comClass,rewardClass from winners where sid = ?;";
+  let value = [data.sid]
+  return queryDB(query,value)
+}
+
 
 exports.getFilePath = async (data,table) => {
   let query =
@@ -731,9 +738,9 @@ exports.addTeamMember = async (data) => {
 exports.addWinners =  async(data) => {
   let query = 
   "insert into winners \n" +
-  "(name, sid, orgnizer, comClass, rewardClass, rewardName, instructor, seniorSid, seniorName, " + 
-  "principal, principalTel)"
-  let values = [data.name, data.sid, data.orgnizer, data.comClass, data.rewardClass,
+  "(name, sid, organizer, comClass, rewardClass, rewardName, instructor, seniorSid, seniorName, principal, principalTel) \n"+
+  "values (?,?,?,?,?,?,?,?,?,?,?)"
+  let values = [data.name, data.sid, data.organizer, data.comClass, data.rewardClass,
   data.rewardName, data.instructor, data.seniorSid, data.seniorName, data.principal, data.principalTel]
   return queryDB(query,values)
 }
