@@ -27,11 +27,22 @@ export default {
       router: 'studentMain'
     }
   },
+  /* 用sessionStorage解决vuex刷新丢失数据的问题 */
+  created: function() {
+    // 在页面加载时读取sessionStorage里的状态信息
+    if (sessionStorage.getItem("store")) {
+      this.$store.replaceState(Object.assign({}, this.$store.state, JSON.parse(sessionStorage.getItem("store"))))
+    }
+    // 在beforeunload页面刷新时将vuex里的信息保存到sessionStorage里
+    window.addEventListener("beforeunload", () => {
+      sessionStorage.setItem("store", JSON.stringify(this.$store.state))
+    })
+  },
   methods: {
     homeClick: function() {
-      if(this.$store.getters.getUserStatus == 'student')
+      if (this.$store.getters.getUserStatus == 'student')
         this.$router.push({ name: 'studentMain' })
-      else if(this.$store.getters.getUserStatus == 'teacher')
+      else if (this.$store.getters.getUserStatus == 'teacher')
         this.$router.push({ name: 'teacherMain' })
     },
     userInfoEnter: function() {
@@ -42,7 +53,7 @@ export default {
     userInfoLeave: function() {
       $('#popup-userInfo').hide()
     },
-    resetpswdClick: function(){
+    resetpswdClick: function() {
       this.$router.push({ name: 'resetpswd' })
     },
     logoutClick: function() {
@@ -80,8 +91,9 @@ export default {
 }
 
 .test-leave-to
+
 /* .component-fade-leave-active for below version 2.1.8 */
-{
+  {
   transform: translate(300px, 0);
   opacity: 0;
 }
@@ -229,9 +241,12 @@ header {
   border: 2px solid var(--blue);
   border-radius: 3px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 .container-info-display {

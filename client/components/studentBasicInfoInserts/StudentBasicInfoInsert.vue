@@ -57,6 +57,7 @@ export default {
         var data = {
           table: this.tableId
         }
+        data['sid'] = this.sid
         for(let item in tableData[this.tableId]['records']){
           if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
             //

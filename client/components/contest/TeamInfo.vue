@@ -28,14 +28,14 @@
     <!--显示数据-->
     <div class="container-card-list">
       <table border="1">
-        <tr class="table-head">
+        <!--tr class="table-head">
           <th>#</th>
-          <!--th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th-->
+          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
           <th>队长学号</th>
           <th>队长姓名</th>
           <th>参赛项目名</th>
           <th>主办方</th>
-        </tr>
+        </tr-->
         <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
@@ -49,8 +49,22 @@
           <td>{{student['nums']}}</td>
         </tr-->
       </table>
+      <div class="team-info-list">
+        <span>学号</span>
+        <span>姓名</span>
+        <span>项目名</span>
+        <span>主办方</span>
+      </div>
+      <div class="team-info-list">
+        <span>学号2</span>
+        <span>姓名2</span>
+        <span>项目名2</span>
+        <span>主办方2</span>
+      </div>
       <button class="manager-button" @click="addClick">添加参赛队伍</button>
     </div>
+
+
     
     <!-- 弹窗 -->
     <div id="popup" class="popup-background">
@@ -168,6 +182,17 @@ export default {
 }
 </script>
 <style scoped>
+.team-info-list {
+  
+  margin-top: 10px;
+  text-align: center;
+  border-radius: 15px;
+  border-bottom: 1px solid var(--grey-shadow);
+  box-shadow: 1px 0px 1px var(--grey-shadow);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 16px;
+}
 .container-header {
   height: 70px;
   line-height: 70px;

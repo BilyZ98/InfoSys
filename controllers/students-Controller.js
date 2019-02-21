@@ -5,6 +5,9 @@ const mailer = require('../utils/mailer.js')
 var formidable = require('formidable')
 const path = require('path')
 const fs = require('fs')
+//import {promisify} from 'util'
+const util = require('util')
+const readFile = util.promisify(fs.readFile);
 var uploadDir = path.resolve(__dirname,'..')
 uploadDir = path.join(uploadDir,'/uploads')
 
@@ -266,25 +269,28 @@ function checkExtension(filePath){
 /*
 返回国籍学生的基本信息，包含上传的图片，对于一般查询，不用返回图片
 查找数据库里，这个国际学生的对应的三个copy表的所有记录，存储在json
-然后找interstudent 的字符记录，合在一起返回前端
+只返回照片，返回文字再次请求
+
 */
-exports.getInterStudent = async (req,res,next) =>{
-  let copyTables = ['dormRegistryCopy','visaCopy','passportCopy']
-  let data = req.body
-  let returnData
-  for(let i in copyTables){
-    let copies = await StudentsModel.getFilePath(data,copyTables[i])
-    for(let j in copies){
-      fs.readFile(copies[j],(err,result) => {
-        if(err){
-          console.log(err)
-        }
-        else{
-          returnData[copyTables[i]][j] = result
-        }
-      })
+exports.getInterStudentPics = async (req,res,next) =>{
+  let copyTables = ['dormRegistryCopy','visaCopy','passportCopy'];
+  let data = req.body;
+  let returnData;
+  let err;
+  try{
+    for(let i in copyTables){
+      let copies = await StudentsModel.getFilePath(data,copyTables[i]);
+      for(let j in copies){
+        [err, returnData[copyTables[i]][j]] = await readFile(copies[j]) //前面已经promisify了
+        console.log(err,returnData[copyTables[i]][j])
+      }
     }
+    resBody.success(res,returnData)
   }
+  catch(err){
+    console.log(err)
+  }
+  
 }
 
 exports.statistic = async (req,res,next) => {
@@ -416,3 +422,32 @@ function checkIDValid(body) {
   return idVali;
 }
 
+/*
+插入竞赛信息，包括三个表
+*/
+exports.addCompetition = async (req,res,next) =>{
+  let data= req.body;
+  try{
+    await StudentsModel.addCompetition(data)
+    for(let i in data.seniorsGroup){
+      await StudentsModel.addSeniorsGroup(data)
+    }
+    for(let i in data.teamMember){
+      await StudentsModel.addTeamMember(data)
+    }
+    resBody.success(res)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+exports.addWinners = async (req,res,next) => {
+  try{
+    await StudentsModel.addWinners(req.body)
+    resBody.success(res)
+  }
+  catch(err){
+    console.log(err)
+  }
+}

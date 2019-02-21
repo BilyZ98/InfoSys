@@ -1,11 +1,13 @@
 <template>
 <div id="container-insert-internationalStudent">
-  <div class="text-header">国际生信息插入</div>
+  <div class="text-header">国际生信息填写</div>
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records">
       <span class="record-name">{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
+      <div v-if="!record.studentChangAble&&record.id=='sid'" class="span-uninputable">{{sid}}</div>
+      <span v-else-if="!record.studentChangAble" class="span-uninputable">没有填写权限</span>
+      <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
         <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
@@ -32,6 +34,7 @@ export default {
     return {
       tableId: 'internationalStudent',
       table: tableData['internationalStudent'],
+      sid: this.$store.getters.getUserAccount,
       dormRegistryCopys: null,
       visaCopys: null,
       passportCopys: null
@@ -76,6 +79,8 @@ export default {
       var formatTable = formatCheck[this.tableId]
       var message = ''
       for(let item in tableData[this.tableId]['records']) {
+        if(!tableData[this.tableId]['records'][item]['studentChangAble'])
+          continue
         let record = $('#' + this.tableId + '-' + item).val()
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
@@ -95,8 +100,11 @@ export default {
         var data = {
           table: this.tableId
         }
+        data['sid'] = this.sid
         for(let item in tableData[this.tableId]['records']){
-          if($('#' + this.tableId + '-' + item).val() != ''){
+          if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
+            //
+          } else if($('#' + this.tableId + '-' + item).val() != ''){
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
@@ -186,6 +194,16 @@ export default {
 .file-area {
   width: 180px;
   margin-left: 10px;
+}
+
+#container-insert-internationalStudent .span-uninputable {
+  display: inline-block;
+  width: 250px;
+  height: 30px;
+  padding: 5px;
+  margin-left: 10px;
+  text-align: right;
+  font-size: 16px;
 }
 
 #container-insert-internationalStudent #warning {

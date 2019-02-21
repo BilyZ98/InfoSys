@@ -7,21 +7,20 @@
         <div v-for="table in tables">
           <div class="info-heading" v-if="table.id=='HMT'||table.id=='internationalStudent'">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
-          <!--一个人最多有一条数据的表-->
           <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
             <div class="table-array" v-for="tableArr in student[table.id]">
               <span class="info-text" v-for="record in table.records">
                 <!--字段名-->
                 <span class="record-name">{{record.name}}:</span>
                 <!--select类型字段-->
-                <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+                <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
                   <option></option>
                   <option v-for="option in record.options">{{option}}</option>
                 </select>
                 <!--input/range且不为空的输入框字段-->
-                <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined&&record['valueType']!='file'" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+                <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined&&record['valueType']!='file'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
                 <!--为空的字段-->
-                <input style="width: 20px" v-else-if="record['valueType']!='file'" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
+                <input style="width: 20px" v-else-if="record['valueType']!='file'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
                 <!--文件-->
                 <div v-else-if="record['valueType']=='file'" class="record-file">
                   <span v-if="modifyMode">
@@ -36,22 +35,8 @@
               </span>
             </div>
           </div>
-          <!--一个人有多条数据的表
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='HMT'||table.id=='internationalStudent')">
-            <tr>
-              <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
-            </tr>
-            <tr v-for="tableArr in student[table.id]">
-              <td v-for="record in table.records">
-                <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="disabled" v-model:text="tableArr[record.id]">
-                <input style="width: 20px" v-else :class="{'record-changable': record.studentChangAble, 'record-unchangable': !record.studentChangAble}" disabled="true" v-model:text="tableArr[record.id]">
-              </td>
-            </tr>
-          </table>-->
-          <!--表空但可以插入-->
-          <div v-else-if="table.tableStudentChangable&&(table.id=='HMT'||table.id=='internationalStudent')">
-            <button class="table-empty-button" @click="studentInsertClick(table.id)">填写数据</button>
-          </div>
+          <!--空-->
+          <div v-else-if="table.id=='HMT'||table.id=='internationalStudent'" class="table-empty">---</div>
         </div>
       </div>
     </div>
@@ -62,8 +47,8 @@
   </div>
 </template>
 <script>
-import tableData from './javascripts/tableData.js'
-import formatCheck from './javascripts/formatCheck.js'
+import tableData from '../javascripts/tableData.js'
+import formatCheck from '../javascripts/formatCheck.js'
 
 export default {
   data: function() {
@@ -114,11 +99,6 @@ export default {
         alert('服务器连接错误: ' + xhr)
       }
     })
-  },
-  //隐藏侧边栏和顶部栏
-  mounted: function() {
-    // $(".app-bar-display").attr("class", "app-bar-hide")
-    // $(".container-info-display").attr("class", "container-info-all")
   },
   beforeDestroy: function() {
     $(".app-bar-hide").attr("class", "app-bar-display")
@@ -203,6 +183,10 @@ export default {
           for (let i = 0; i < this.student[table].length; i++) {
             let tableArr = this.student[table][i]
             for (let record in tableArr) {
+              // 目前后端没有上传文件模块，暂时跳过
+              if (tableData[table]['records'][record]['valueType'] == 'file')
+                //console.log('123')
+                continue
               if (tableArr[record] != this.studentBackup[table][i][record]) {
                 //检查格式，只检查更改了的字段
                 if (!formatCheck[table][record]['canNull'] && tableArr[record] == '') {
@@ -270,12 +254,6 @@ export default {
           }
         })
       }
-    },
-    studentInsertClick: function(id) {
-      if (id == 'HMT')
-        this.$router.push({ name: 'studentHMTInsert' })
-      else if (id == 'internationalStudent')
-        this.$router.push({ name: 'studentInternationalStudentInsert' })
     }
   }
 }
@@ -364,13 +342,6 @@ export default {
   padding-left: 2px;
 }
 
-#container-detail .record-unchangable {
-  border: none;
-  background-color: white;
-  margin-left: 2px;
-  padding-left: 2px;
-}
-
 #container-detail .record-file {
   display: inline-block;
   width: 200px;
@@ -416,29 +387,6 @@ export default {
 
 #container-detail .table-empty {
   margin-left: 20px;
-}
-
-#container-detail .table-empty-button {
-  margin-left: 20px;
-  width: 80px;
-  height: 30px;
-  font-size: 16px;
-  text-align: center;
-  color: white;
-  background-color: var(--blue);
-  border: none;
-  transition: 0.3s;
-  -moz-transition: 0.3s;
-  /* Firefox 4 */
-  -webkit-transition: 0.3s;
-  /* Safari 和 Chrome */
-  -o-transition: 0.3s;
-  /* Opera */
-}
-
-#container-detail .table-empty-button:hover {
-  background-color: var(--blue-hover);
-  cursor: pointer;
 }
 
 /**
