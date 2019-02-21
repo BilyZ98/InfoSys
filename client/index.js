@@ -63,6 +63,16 @@ import InternationalStudentInsert from './components/teacherSpecialInfoPages/Int
 /* AcademicWaring*/
 import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
 
+/* Teacher Game Manage*/
+import TeacherGameManage from './components/TeacherGameManage.vue'
+import TGameInfo from './components/TGameInfo.vue'
+import TGameAward from './components/TGameAward.vue'
+
+/*Contest Info*/
+import GameManage from './components/GameManage.vue'
+import TeamInfo from './components/contest/TeamInfo.vue'
+import AwardInfo from './components/contest/AwardInfo.vue'
+
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
 import StudentWarning from './components/StudentWarning.vue'
@@ -152,10 +162,28 @@ const router = new VueRouter({
     { name: 'teacherSpecialInfoDetail', path: '/teacherSpecialInfoDetail', component: TeacherSpecialInfoDetail },
     { name: 'HMTInsert', path: '/HMTInsert', component: HMTInsert },
     { name: 'internationalStudentInsert', path: '/internationalStudentInsert', component: InternationalStudentInsert },
+    {
+      name: 'teacherGameManage',
+      path: '/teacherGameManage',
+      component: TeacherGameManage,
+      children: [
+        { name: 'tGameInfo', path: 'tGameInfo', component: TGameInfo },
+        { name: 'tGameAward', path: 'tGameAward', component: TGameAward }
+      ]
+    },
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
     { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
     { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
+    {
+      name: 'gameManage',
+      path: '/gameManage',
+      component: GameManage,
+      children: [
+        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
+        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
+      ]
+    },
     {
       name: 'guideline',
       path: '/guideline',
@@ -245,4 +273,8 @@ router.beforeEach(function(to, from, next){
 
   next()
 })
+*/
+
+/*
+
 */

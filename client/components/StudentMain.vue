@@ -9,7 +9,7 @@
     <div class="card-studentsSpecial" @click="specialInfoClick">港澳台/国际生</div>
     <div class="card-academicWarning" @click="warningClick">学业预警</div>
     <div class="card-guideline" @click="guidelineClick">办事指引</div>
-    <div class="card-gameManage">竞赛信息管理</div>
+    <div class="card-gameManage" @click="gameManageClick">竞赛信息管理</div>
     <div class="card-workManage">实习/就业管理</div>
     <div class="card-educationProof">学历证明</div>
     <div class="card-teacherApply">导师申请</div>
@@ -108,6 +108,9 @@ export default {
     },
     guidelineClick: function() {
       this.$router.push({name:'leave'})
+    },
+    gameManageClick: function() {
+      this.$router.push({name: 'teamInfo'})
     },
     specialInfoClick: function() {
       this.$router.push({

@@ -39,6 +39,13 @@ router.post("/FailedCourse",studentsController.getFailedCourseReacord);
 
 router.post("/FailedStudents",studentsController.getFailedStudents);
 
+router.get('/interStuPics',studentsController.getInterStudentPics)
+
+router.post('/insert/competition',studentsController.addCompetition);
+
+router.post('/insert/winners',studentsController.addWinners);
+
+//router.get('/competition',studentsController.get)
 
 
 module.exports = router;

@@ -7,7 +7,6 @@ var Promise = require("bluebird");
 Promise.promisifyAll(require("mysql/lib/Connection").prototype);
 Promise.promisifyAll(require("mysql/lib/Pool").prototype);
 
-
 /*
 var connection = mysql.createConnection({
   host:'localhost',

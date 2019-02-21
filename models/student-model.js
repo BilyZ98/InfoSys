@@ -697,3 +697,43 @@ exports.getFilePath = async (data,table) => {
   let values = [data.sid]
   return queryDB(query,values)
 }
+
+exports.addCompetition = async(data) => {
+  let query = 
+  "insert into competition \n"+
+  "(comName,orgnizer, comClass, instructor, leaderName,leaderSid, leaderTel, comInfo) \n" +
+  "values (?, ?, ?, ?, ?, ?, ?, ?)";
+  let values = [data.comName, data.orgnizer, data.comClass,
+  data.instructor, data.leaderName, data.leaderSid, data.leaderTel, data.comInfo]
+  return queryDB(query,values)
+}
+
+
+exports.addSeniorsGroup = async (data) => {
+  let query = 
+  "insert into seniorsGroup \n" +
+  "(comName, leaderSid, sid, name) values" + 
+  "(?,?,?,?)"
+  let values = [data.comName, data.leaderSid, data.sid, data.name]
+  return queryDB(query,value)
+}
+
+
+exports.addTeamMember = async (data) => {
+  let query = 
+  "insert into teamMember \n" + 
+  "(comName, leaderSid, name, sid, duty) \n"+ 
+  "values (?, ?, ?, ?, ?,)"
+  let values = [data.comName, data.leaderSid, data.name, data.sid, data.duty]
+  return queryDB(query,values)
+}
+
+exports.addWinners =  async(data) => {
+  let query = 
+  "insert into winners \n" +
+  "(name, sid, orgnizer, comClass, rewardClass, rewardName, instructor, seniorSid, seniorName, " + 
+  "principal, principalTel)"
+  let values = [data.name, data.sid, data.orgnizer, data.comClass, data.rewardClass,
+  data.rewardName, data.instructor, data.seniorSid, data.seniorName, data.principal, data.principalTel]
+  return queryDB(query,values)
+}
