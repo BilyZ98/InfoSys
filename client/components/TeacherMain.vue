@@ -9,7 +9,7 @@
       <div class="card-teacherBasic" @click="teacherBasicClick">学生基本信息</div>
       <div class="card-teacherSpecial" @click="teacherSpecialClick">港澳台/国际生</div>
       <div class="card-academicWarning" @click="academicWarningClick">学业预警</div>
-      <div class="card-gameManage">竞赛信息管理</div>
+      <div class="card-gameManage" @click="gameManageClick">竞赛信息管理</div>
       <div class="card-workManage">实习/就业管理</div>
       <div class="card-educationProof">学历证明</div>
       <div class="card-teacherApply">导师申请</div>
@@ -94,6 +94,9 @@ export default {
     },
     teacherSpecialClick: function() {
       this.$router.push({ name: 'HMT' })
+    },
+    gameManageClick: function() {
+      this.$router.push( {name: 'tGameInfo'})
     },
     getNotices: function() {
       //获取公告
