@@ -140,7 +140,35 @@ export default {
       }
     },
     downloadFileClick: function() {
-
+      var _self = this
+      $.ajax({
+        type: 'GET',
+        url: '/students/interStuPics?sid=' + _self.sid,
+        'Content-Type': 'application/octet-stream',
+        'Content-Disposition': 'attachment',
+        timeout: 5000,
+        success: function(result, xhr) {
+          //console.log(result, xhr)
+          /*
+          for (let key in result) {
+            if (key == 'content') {
+              //成功后backup变为现在的数据
+              _self.dormRegistryCopys = result[key]['dormRegistryCopy']
+              _self.visaCopys = result[key]['visaCopy']
+              _self.passportCopys = result[key]['passportCopy']
+              alert('获取文件buffer成功！')
+            } else if (key == 'err') {
+              alert('获取数据失败: ' + result[key]['sqlMessage'])
+            }
+          }
+          */
+        },
+        error: function(result, xhr) {
+          console.log(result, xhr)
+          //console.log(result)
+          alert('服务器连接错误: ' + xhr)
+        }
+      })
     },
     dataMakeup: function(data) {
       //把数据中不全的表中没有的字段全部赋值为空

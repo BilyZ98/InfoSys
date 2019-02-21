@@ -220,9 +220,9 @@ exports.addHMT = (data) => {
 }
 
 exports.addInterStu = (data) => {
-  let query = 
+  let query =
   "insert into internationalStudent \n" +
-  "(sid, passportName, studentClass, chineseName, gender, nationality, " + 
+  "(sid, passportName, studentClass, chineseName, gender, nationality, " +
   "passportNum, school, major, tutor, visaClass, residenceReason, "+
   "visaExpire, remark, religion, isEthnicChinese, clubJoiningDescription," +
   "activityTakingDescription, abnormalSituation, tel, homeAddress, homeInSchool,"+
@@ -233,34 +233,34 @@ exports.addInterStu = (data) => {
   data.visaExpire, data.remark, data.religion, data.isEthnicChinese, data.clubJoiningDescription,
   data.activityTakingDescription, data.abnormalSituation, data.tel, data.homeAddress, data.homeInSchool,
   data.same, data.notCompleteReason]
-    return queryDB(query,values);
+  return queryDB(query,values)
 }
 
 exports.addDormRegistryCopy = (data) => {
-  let query = 
+  let query =
   "insert into dormRegistryCopy \n"+
-  "(sid,filePath) values \n"+
-  "(?,?)";
-  let values= [data.sid,data.filePath]
-  return queryDB(query,values)
+  "(sid, filePath) values \n"+
+  "(?, ?)";
+  let values= [data.sid, data.filePath]
+  return queryDB(query, values)
 }
 
 exports.addVisaCopy = (data)=>{
-  let query = 
+  let query =
   "insert into visaCopy \n"+
-  "(sid,filePath) values \n"+
-  "(?,?)";
-  let values= [data.sid,data.filePath]
-  return queryDB(query,values)
+  "(sid, filePath) values \n"+
+  "(?, ?)";
+  let values= [data.sid, data.filePath]
+  return queryDB(query, values)
 }
 
 exports.addPassportCopy = (data) =>{
-  let query = 
+  let query =
   "insert into passportCopy \n"+
-  "(sid,filePath) values \n"+
-  "(?,?)";
-  let values= [data.sid,data.filePath]
-  return queryDB(query,values)
+  "(sid, filePath) values \n"+
+  "(?, ?)";
+  let values= [data.sid, data.filePath]
+  return queryDB(query, values)
 }
 
 //data 就是传过来的json数据
@@ -694,8 +694,8 @@ exports.getFailedStudents = async (data) => {
 exports.getFilePath = async (data,table) => {
   let query =
   "select * from " + table +" where sid=?"
-  let values = [data.sid]
-  return queryDB(query,values)
+  let values = data
+  return queryDB(query, values)
 }
 
 exports.addCompetition = async(data) => {
