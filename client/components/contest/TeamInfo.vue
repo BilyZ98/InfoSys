@@ -134,7 +134,9 @@ export default {
   },
   methods: {
     
-    
+    addClick: function() {
+
+    },
     
     
     

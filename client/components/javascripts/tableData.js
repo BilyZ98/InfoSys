@@ -304,25 +304,25 @@ export default {
       visaCopy: { name: '签证/居留证复印件', id: 'visaCopy', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'file'},
       passportCopy: { name: '护照复印件', id: 'passportCopy', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'file'},
       notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'}
-    },
-    winners: {
-      name: '学生科技竞赛获奖记录',
-      id: 'winners',
-      tableStudentChangable: true,
-      records: {
-        id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
-        name: { name: '名字', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        organizer: { name: '主办单位', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        comClass: { name: '竞赛类别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
-        rewardClass: { name: '获奖等级', id: 'rewardClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        rewardName: { name: '奖项', id: 'rewardName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        instructor: { name: '指导老师', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        seniorSid: { name: '研究生学长学号', id: 'seniorSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        seniorName: { name: '研究生学长姓名', id: 'seniorName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        principal: { name: '对接企业及负责人', id: 'principal', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-        principalTel: {name: '企业负责人联系方式', id: 'principalTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
-      }
+    }
+  },
+  winners: {
+    name: '学生科技竞赛获奖记录',
+    id: 'winners',
+    tableStudentChangable: true,
+    records: {
+      id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
+      name: { name: '名字', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      organizer: { name: '主办单位', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      comClass: { name: '竞赛类别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
+      rewardClass: { name: '获奖等级', id: 'rewardClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      rewardName: { name: '奖项', id: 'rewardName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      instructor: { name: '指导老师', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      seniorSid: { name: '研究生学长学号', id: 'seniorSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      seniorName: { name: '研究生学长姓名', id: 'seniorName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      principal: { name: '对接企业及负责人', id: 'principal', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      principalTel: {name: '企业负责人联系方式', id: 'principalTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   }
 }

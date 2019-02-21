@@ -122,7 +122,9 @@ export default {
   },
   methods: {
     
-    
+    addClick: function() {
+      this.$router.push({ name: 'insertAwardInfo' })
+    },
     
     
     
