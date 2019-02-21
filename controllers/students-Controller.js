@@ -443,6 +443,7 @@ exports.addCompetition = async (req,res,next) =>{
 }
 
 exports.addWinners = async (req,res,next) => {
+  //console.log(req.body)
   try{
     await StudentsModel.addWinners(req.body)
     resBody.success(res)

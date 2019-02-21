@@ -37,8 +37,6 @@ export default {
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
           message = message + tableData[this.tableId]['records'][item]['name'] + '不能为空\n'
-        } else if(record != '' && record.length > 30){
-          message = message + tableData[this.tableId]['records'][item]['name'] + '长度不能超过30个字符\n'
         } else if(record != '' && formatTable[item]['reg']!= null && !formatTable[item]['reg'].test(record)){
           //检查格式合法
           message = message + formatTable[item]['msg'] + '\n'

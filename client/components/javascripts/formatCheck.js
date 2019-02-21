@@ -232,11 +232,8 @@ export default {
     comClass: { canNull: false, reg: null, msg: '' },
     rewardClass: { canNull: false, reg: null, msg: '' },
     rewardName: { canNull: false, reg: null, msg: '' },
-<<<<<<< HEAD
     instructor: { canNull: true, reg: null, msg: ''},
-=======
     instructor: { canNull: true, reg: null, msg: '' },
->>>>>>> e5df99798295830fea2f9854d2bd17b7e0592a74
     seniorSid: { canNull: true, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
     seniorName: { canNull: true, reg: null, msg: '' },
     principal: { canNull: true, reg: null, msg: '' },
