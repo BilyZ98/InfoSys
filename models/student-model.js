@@ -690,6 +690,13 @@ exports.getFailedStudents = async (data) => {
   return queryDB(query,value)
 }
 
+exports.getWinners = async(data) => {
+  let query = 
+  "select sid, name, rewardName, organizer, comClass,rewardClass from winners where sid = ?;";
+  let value = [data.sid]
+  return queryDB(query,value)
+}
+
 
 exports.getFilePath = async (data,table) => {
   let query =
