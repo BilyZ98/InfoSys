@@ -124,17 +124,17 @@ export default {
           alert(message)
           return
         }
+        if($('#winners-id').val()) winners['equal']['id'] = $('#winners-id').val()
         if ($('#winners-name').val()) winners['equal']['name'] = $('#winners-name').val()
-        if ($('#winners-ancesHome').val()) winners['equal']['ancesHome'] = $('#winners-ancesHome').val()
-        if ($('#winners-interest').val()) winners['equal']['interest'] = $('#winners-interest').val()
-        if ($('#winners-religion').val()) winners['equal']['religion'] = $('#winners-religion').val()
-        if ($('#winners-mail').val()) winners['equal']['mail'] = $('#winners-mail').val()
-        if ($('#winners-wechat').val()) winners['equal']['wechat'] = $('#winners-wechat').val()
-        if ($('#winners-homeAddress').val()) winners['equal']['homeAddress'] = $('#winners-homeAddress').val()
-        if ($('#winners-ecoContact').val()) winners['equal']['ecoContact'] = $('#winners-ecoContact').val()
-        if ($('#winners-ecoTel').val()) winners['equal']['ecoTel'] = $('#winners-ecoTel').val()
-        if ($('#winners-winnersIDNum').val()) winners['equal']['winnersIDNum'] = $('#winners-winnersIDNum').val()
-        if ($('#winners-homePermitNum').val()) winners['equal']['homePermitNum'] = $('#winners-homePermitNum').val()
+        if ($('#winners-organizer').val()) winners['equal']['organizer'] = $('#winners-organizer').val()
+        if ($('#winners-comClass').val()) winners['equal']['comClass'] = $('#winners-comClass').val()
+        if ($('#winners-rewardClass').val()) winners['equal']['rewardClass'] = $('#winners-rewardClass').val()
+        if ($('#winners-rewardName').val()) winners['equal']['rewardName'] = $('#winners-rewardName').val()
+        if ($('#winners-instructor').val()) winners['equal']['instructor'] = $('#winners-instructor').val()
+        if ($('#winners-seniorSid').val()) winners['equal']['seniorSid'] = $('#winners-seniorSid').val()
+        if ($('#winners-seniorName').val()) winners['equal']['seniorName'] = $('#winners-seniorName').val()
+        if ($('#winners-principal').val()) winners['equal']['principal'] = $('#winners-principal').val()
+        if ($('#winners-principalTel').val()) winners['equal']['principalTel'] = $('#winners-principalTel').val()
       }
       if (JSON.stringify(winners['equal']) != emptyCell) data['where']['equal']['winners'] = winners['equal']
       if (JSON.stringify(winners['range']) != emptyCell) data['where']['range']['winners'] = winners['range']
@@ -183,7 +183,7 @@ export default {
       var routeData = this.$router.resolve({
         name: 'detail',
         query: {
-          sid: event.currentTarget.getAttribute('sid')
+          id: event.currentTarget.getAttribute('id')
         }
       })
       window.open(routeData.href, '_blank')
