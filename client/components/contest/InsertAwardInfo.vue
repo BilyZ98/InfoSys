@@ -3,7 +3,7 @@
   <div class="text-header">获奖信息插入</div>
   <hr>
   <div class="container-input">
-    <div class="container-record" v-for="record in table.records">
+    <div class="container-record" v-for="record in table.records" v-if="record.display!=false">
       <span>{{record.name}}:</span>
       <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
         <option></option>

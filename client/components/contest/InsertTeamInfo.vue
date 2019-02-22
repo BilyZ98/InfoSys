@@ -12,6 +12,16 @@
       <input type="text" v-else v-bind:id="tableId+'-'+record.id">
     </div>
   </div>
+  <div class="container-input" id="append">
+    <div class="container-record">
+      <span>研究生学长数量:</span>
+      <input type="text" id="seniornum" @change="seniorNumChange">
+    </div>
+    <div class="container-record">
+      <span>队员数量:</span>
+      <input type="text" id="teammembernum" @change="teamMemberNumChange">
+    </div>
+  </div>
   <pre id="warning"></pre>
   <button type="button" class="button-insert" @click="insertClick">提交</button>
 </div>
@@ -24,11 +34,30 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'basicInfo',
-      table: tableData['basicInfo']
+      tableId: 'competition',
+      table: tableData['competition'],
+      teamMemberNum: 0,
+      SeniorNum: 0
     }
   },
   methods: {
+    seniorNumChange: function() {
+      this.SeniorNum = $('#seniornum').val()
+      for(var i=0;i<this.SeniorNum;i++){
+        $('#append').append("<div class='container-record'>" + "<span>学长"+i+"学号:</span>" + "<input type='text' id='sid-senior"+i+"'>" +"</div>")
+       
+        $('#append').append("<div class='container-record'>" + "<span>学长"+i+"姓名:</span>" + "<input type='text' id='name-senior"+i+"'>" + "</div>")
+        
+      }
+    },
+    teamMemberNumChange: function() {
+      this.teamMemberNum = $('#teammembernum').val()
+      for(var i=0;i<this.teamMemberNum;i++){
+        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"学号:</span>" + "<input type='text' id='sid-team"+i+"'>" +"</div>")
+       
+        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"姓名:</span>" + "<input type='text' id='name-team"+i+"'>" + "</div>")
+      }
+    },
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
