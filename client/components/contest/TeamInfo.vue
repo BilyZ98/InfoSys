@@ -4,93 +4,39 @@
     <div class="container-header">
       <p class="header-text">参赛队伍信息</p>
       <div class="header-button">
-        <!--span @click="sendEmailClick">发送警告</span-->
       </div>
     </div>
-    <!--查询输入-->
-    <!--div class="container-card-list">
-      <div class="container-record" v-for="record in table.records">
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
-          <option></option>
-          <option v-for="option in record.options">{{option}}</option>
-        </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'course-'+record.id">
-        <span>{{record.name}}:</span>
-        <span class="text-range">最小值 </span>
-        <input type="text" class="min"><span class="text-range">最大值 </span>
-        <input type="text" class="max">
-        </span>
-      </div>
-      <button class="manager-button" @click="queryClick">查询</button>
-    </div-->
     <!--显示数据-->
     <div class="container-card-list">
       <table border="1">
-        <!--tr class="table-head">
+        <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
-          <th>队长学号</th>
-          <th>队长姓名</th>
-          <th>参赛项目名</th>
-          <th>主办方</th>
-        </tr-->
-        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
+          <th v-for="record in table.records">{{record.name}}</th>
+        </tr>
+        <tr v-for="(game, index) in games" @click="comClick(game)">
           <td>{{index+1}}</td>
-          <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
-            <span v-else>-</span>
+          <td v-for="record in table.records" contenteditable="false">
+            <span v-if="game[record.id]!=undefined">{{game[record.id]}}</span>
+            <span v-else>---</span>
           </td>
-        </tr-->
-        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
-          <td>{{index+1}}</td>
-          <td>{{student['sid']}}</td>
-          <td>{{student['nums']}}</td>
-        </tr-->
+        </tr>
       </table>
-      
-      <div v-for="student in students" class="team-info-list" v-bind:leaderSid="student.leaderSid" v-bind:comName="student.comName" @click="comClick">
-        <span>{{student.leaderSid}}</span>
-          <span>{{student.leaderName}}</span>
-          <span>{{student.comName}}</span>
-          <span>{{student.organizer}}</span>
-      </div>
-        <!--div class="team-info-list">
-          <span>学号2</span>
-          <span>姓名2</span>
-          <span>项目名2</span>
-          <span>主办方2</span>
-        </div-->
-      
       <button class="manager-button" @click="addClick">添加参赛队伍</button>
-    </div>
-    <!-- 弹窗 -->
-    <div id="popup" class="popup-background">
-      <!-- 弹窗内容 -->
-      <div class="popup-content">
-        <span id="popup-close" @click="modalCloseClick">&times;</span>
-        <div class="popup-cell" v-for="record in table.records">
-          {{record.name}}
-          <input type="checkbox" v-model:checked="record.display">
-        </div>
-      </div>
     </div>
   </div>
 </template>
 <script>
 import tableData from '../javascripts/tableData.js'
 import formatCheck from '../javascripts/formatCheck.js'
-import downloadModule from '../javascripts/downloadModule.js'
-import importModule from '../javascripts/importModule.js'
-import statModule from '../javascripts/statisticModule.js'
+
 var empty = JSON.stringify({ equal: {}, range: {}, fuzzy: {} })
 var emptyCell = JSON.stringify({})
 
 export default {
   data: function() {
     return {
-      table: tableData['course'],
-      students: []
+      table: tableData['competition'],
+      games: []
     }
   },
   created: function() {
@@ -104,7 +50,7 @@ export default {
     }
     var postData = JSON.stringify(data)
     var _self = this
-      // replace getPost with your data fetching util / API wrapper
+    // replace getPost with your data fetching util / API wrapper
     $.ajax({
       type: 'POST',
       url: '/students/getCompetitionBySid',
@@ -113,14 +59,13 @@ export default {
       dataType: 'json',
       timeout: 5000,
       success: function(result, xhr) {
-        _self.students = result.content;
+        _self.games = result.content;
         console.log(result.content)
-        ///alert(_self.students[0]['sid']);
       },
       error: function(result, xhr) {
-          //连接错误
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
+        //连接错误
+        //console.log(result)
+        alert('服务器连接错误: ' + xhr)
       }
     })
   },
@@ -128,29 +73,22 @@ export default {
     addClick: function() {
       this.$router.push({ name: 'insertTeamInfo' })
     },
-    comClick: function() {
+    comClick: function(game) {
       var routeData = this.$router.resolve({
         name: 'gameDetail',
         query: {
-          leaderSid: event.currentTarget.getAttribute('leaderSid'),
-          comName: event.currentTarget.getAttribute('comName')
+          leaderSid: game.leaderSid,
+          comName: game.comName
         }
       })
       window.open(routeData.href, '_blank')
     },
-    //onchange时调用这个函数实现文件选择后上传
-    importUpload: function() {
-      importModule.importClick($('#button-import').prop('files')[0], 'course')
-    },
-    modalCloseClick: function() {
-      $('#popup').hide()
-    }
   }
 }
 </script>
 <style scoped>
 .team-info-list {
-  
+
   margin-top: 10px;
   text-align: center;
   border-radius: 15px;
@@ -160,6 +98,7 @@ export default {
   padding-bottom: 10px;
   font-size: 16px;
 }
+
 .container-header {
   height: 70px;
   line-height: 70px;

@@ -4,8 +4,10 @@
   <hr>
   <div class="container-input">
     <div class="container-record" v-for="record in table.records" v-if="record.display!=false">
-      <span>{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
+      <span class="record-title">{{record.name}}:</span>
+      <div class="record-unchangable" v-if="record.id=='comName'">{{comName}}</div>
+      <div class="record-unchangable" v-else-if="record.id=='leaderSid'">{{leaderSid}}</div>
+      <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
         <option></option>
         <option v-for="option in record.options">{{option}}</option>
       </select>
@@ -24,9 +26,15 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
+      comName: null,
+      leaderSid: null,
       tableId: 'comMeeting',
       table: tableData['comMeeting']
     }
+  },
+  created: function() {
+    this.leaderSid = this.$route.query.leaderSid
+    this.comName = this.$route.query.comName
   },
   methods: {
     insertClick: function() {
@@ -119,11 +127,20 @@ export default {
   margin-left: 20px;
 }
 
-#container-insert-basicInfo .container-record span {
+.record-title {
   display: inline-block;
   text-align: right;
   width: 200px;
   font-size: 16px;
+}
+
+.record-unchangable {
+  display: inline-block;
+  text-align: right;
+  margin-left: 10px;
+  width: 250px;
+  height: 30px;
+  padding: 5px;
 }
 
 #container-insert-basicInfo .container-record select, #container-insert-basicInfo .container-record input {

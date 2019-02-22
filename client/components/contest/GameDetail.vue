@@ -11,13 +11,13 @@
           <div class="clearfix" v-if="game[table.id]!=undefined&&game[table.id].length!=0&&table.id=='competition'">
             <div class="table-array" v-for="tableArr in game[table.id]">
               <span class="info-text" v-for="record in table.records">
-              <span class="record-name">{{record.name}}:</span>
-              <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-                <option></option>
-                <option v-for="option in record.options">{{option}}</option>
-              </select>
-              <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
-              <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <span class="record-name">{{record.name}}:</span>
+                <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                  <option></option>
+                  <option v-for="option in record.options">{{option}}</option>
+                </select>
+                <input v-bind:style="{width: 20 + (tableArr[record.id]).toString().length*12+'px'}" v-else-if="tableArr[record.id]!=undefined" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
+                <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
               </span>
             </div>
           </div>
@@ -34,7 +34,7 @@
             </tr>
           </table>
           <!--空-->
-          <div v-else-if="table.id=='competition'||table.id=='seniorsGroup'||table.id=='teamMember'||table.id=='comMeeting'" class="table-empty" >---</div>
+          <div v-else-if="table.id=='competition'||table.id=='seniorsGroup'||table.id=='teamMember'||table.id=='comMeeting'" class="table-empty">---</div>
         </div>
       </div>
     </div>
@@ -123,7 +123,13 @@ export default {
       return data
     },
     addMeetingClick: function() {
-      this.$router.push({ name: 'insertMeeting' })
+      this.$router.push({
+        name: 'insertMeeting',
+        query: {
+          comName: this.comName,
+          leaderSid: this.leaderSid
+        }
+      })
     },
     updateClick: function() {
       if ($('#info-update').attr('button-type') == 'begin') {
@@ -361,7 +367,8 @@ export default {
   transition: background-color 0.4s;
 }
 
-#info-update, #info-print {
+#info-update,
+#info-print {
   right: 30px;
   bottom: 66px;
   width: 80px;
@@ -381,11 +388,15 @@ export default {
   bottom: 8px;
 }
 
-#info-addMeeting:hover, #info-update:hover, #info-print:hover {
+#info-addMeeting:hover,
+#info-update:hover,
+#info-print:hover {
   background-color: rgb(0, 132, 255);
 }
 
-#info-addMeeting:active, #info-update:active, #info-print:active {
+#info-addMeeting:active,
+#info-update:active,
+#info-print:active {
   background-color: rgb(0, 255, 255);
 }
 </style>

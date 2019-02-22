@@ -204,7 +204,7 @@ const router = new VueRouter({
     { name: 'gameDetail', path: '/gameDetail', component: GameDetail },
     { name: 'insertAwardInfo', path: '/insertAwardInfo', component: InsertAwardInfo },
     { name: 'insertTeamInfo', path: '/insertTeamInfo', component: InsertTeamInfo },
-    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting },
+    { name: 'insertMeeting', path: '/insertMeeting', component: InsertMeeting },
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
