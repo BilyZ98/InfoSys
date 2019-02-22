@@ -30,9 +30,9 @@
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true" v-bind:leaderSid ="record['leaderSid']" v-bind:comName ="record['comName']">{{record.name}}</th>
+          <th v-for="record in table.records" v-if="record['display']==true" >{{record.name}}</th>
         </tr>
-        <tr v-for="(award, index) in awards" @click="studentClick">
+        <tr v-for="(award, index) in awards" v-bind:leaderSid="award.leaderSid" v-bind:comName="award.comName" @click="comClick">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
             <span v-if="award[record.id]!=undefined">{{award[record.id]}}</span>
@@ -226,13 +226,12 @@ export default {
       $('#popup-diy').hide()
     },
     //查询点击事件
-    studentClick: function(event) {
-      //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
+    comClick: function() {
       var routeData = this.$router.resolve({
-        name: 'competitionDetail',
+        name: 'gameDetail',
         query: {
-          comName: event.currentTarget.getAttribute('comName'),
-          leaderSid: event.currentTarget.getAttribute('leaderSid')
+          leaderSid: event.currentTarget.getAttribute('leaderSid'),
+          comName: event.currentTarget.getAttribute('comName')
         }
       })
       window.open(routeData.href, '_blank')
@@ -357,9 +356,9 @@ export default {
 
 .container-record {
   float: left;
-  width: 360px;
+  width: 100%;
   height: 35px;
-  text-align: right;
+  text-align: center;
 }
 
 .container-record .text-range {
@@ -402,7 +401,7 @@ export default {
 
 .container-card-list {
   margin: 25px;
-  text-align: left;
+  text-align: center;
   padding: 20px;
   /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
