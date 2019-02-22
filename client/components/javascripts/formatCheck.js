@@ -242,7 +242,7 @@ export default {
   comMeeting: {
     id: { canNull: false, reg: null, msg: ''},
     comName: { canNull: false, reg: null, msg: ''},
-    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
     time: { canNull: false, reg: /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/, msg: '日期格式应为YYYY/MM/DD'},
     location: { canNull: false, reg: null, msg: ''},
     attenders: { canNull: false, reg: null, msg: ''},
@@ -254,20 +254,20 @@ export default {
     comClass: { canNull: false, reg: null, msg: ''},
     instructor: { canNull: true, reg: null, msg: ''},
     leaderName: { canNull: false, reg: null, msg: ''},
-    leaderSid: { canNull: false, reg: null, msg: ''},
+    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
     leaderTel: { canNull: false, reg: /^[1-9][\d]{10}$/, msg: '电话号填写有误' },
     comInfo: { canNull: false, reg: null, msg: ''}
   },
   seniorsGroup: {
     comName: { canNull: false, reg: null, msg: ''},
-    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
-    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学长学号格式错误' },
     name: { canNull: false, reg: null, msg: ''}
   },
   teamMember: {
     comName: { canNull: false, reg: null, msg: ''},
-    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
-    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队员学号格式错误' },
     name: { canNull: false, reg: null, msg: ''},
     duty: { canNull: false, reg: null, msg: ''}
   }

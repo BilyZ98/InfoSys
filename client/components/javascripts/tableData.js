@@ -361,8 +361,8 @@ export default {
     records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
-      sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
+      sid: { name: '学长学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      name: { name: '学长姓名', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   },
   teamMember: {
@@ -372,9 +372,9 @@ export default {
     records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
-      name: { name: '姓名', id: 'name', isPrimary: false, display: true, value:'', studentChangAble: false, valueType: 'input'},
-      sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      duty: { name: '职责', id: 'duty', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
+      name: { name: '队员姓名', id: 'name', isPrimary: false, display: true, value:'', studentChangAble: false, valueType: 'input'},
+      sid: { name: '队员学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      duty: { name: '队员职责', id: 'duty', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   }
 }
