@@ -10,14 +10,14 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in competitionTable.records" v-if="record.id!='leaderTel'&&record.id!='comInfo'">
+      <div class="container-record" v-for="record in table.records" v-if="record.id=='comClass'">
         <span>{{record.name}}:</span>
-        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'HMT-'+record.id">
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-'+record.id">
+        <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'competition-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'competition-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'HMT-'+record.id">
+        <span class="hide-container" v-if="record.valueType=='range'" v-bind:id="'competition-'+record.id">
         <span class="text-range">最小值 </span>
         <input type="text" class="min"><span class="text-range">最大值 </span>
         <input type="text" class="max">
@@ -30,37 +30,37 @@
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in competitionTable.records" v-if="record['display']==true">{{record.name}}</th>
+          <th v-for="record in table.records" v-if="record['display']==true" v-bind:leaderSid ="record['leaderSid']" v-bind:comName ="record['comName']">{{record.name}}</th>
         </tr>
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['HMT']['sid']">
+        <tr v-for="(award, index) in awards" @click="studentClick">
           <td>{{index+1}}</td>
-          <td v-for="record in competitionTable.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['HMT'][record.id]!=undefined">{{student['HMT'][record.id]}}</span>
+          <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
+            <span v-if="award[record.id]!=undefined">{{award[record.id]}}</span>
             <span v-else>---</span>
           </td>
         </tr>
       </table>
     </div>
     <!--统计-->
-    <div class="container-card-list">
-      <div class="stat-record" v-for="record in competitionTable.records" v-if="record.id!='leaderTel'&&record.id!='comInfo'">
+<!--     <div class="container-card-list">
+      <div class="stat-record" v-for="record in table.records" v-if="record.id!='leaderTel'&&record.id!='comInfo'">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
-        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-stat-'+record.id">
+        <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'competition-stat-'+record.id">
           <option></option>
           <option v-for="option in record.options">{{option}}</option>
         </select>
-        <input class="hide-container" type="text" v-else v-bind:id="'HMT-stat-'+record.id">
+        <input class="hide-container" type="text" v-else v-bind:id="'competition-stat-'+record.id">
       </div>
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
       <span id="stat-chart-pie"></span>
-    </div>
+    </div> -->
     <!-- 弹窗 -->
     <div id="popup-diy" class="popup-background">
       <!-- 弹窗内容 -->
       <div class="popup-content">
         <span id="popup-close" @click="modalCloseClick">&times;</span>
-        <div class="popup-cell" v-for="record in competitionTable.records">
+        <div class="popup-cell" v-for="record in table.records">
           {{record.name}}
           <input type="checkbox" v-model:checked="record.display">
         </div>
@@ -81,67 +81,113 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
-      competitionTable: tableData['competition'],
-      seniorsGroupTable: tableData['seniorsGroup'],
-      teamMemberTable: tableData['teamMember'],
-      comMeetingTable: tableData['comMeeting'],
-      students: []
+      table: tableData['competition'],
+      leaderSid: null,
+      // seniorsGroupTable: tableData['seniorsGroup'],
+      // teamMemberTable: tableData['teamMember'],
+      // comMeetingTable: tableData['comMeeting'],
+      awards: []
     }
+  },
+  created: function() {
+    var data = {
+      tables: ['competition'],
+    }
+    var postData = JSON.stringify(data)
+    var _self = this
+    $.ajax({
+      type: 'POST',
+      url: '/students/getAllCompetition',
+      data: postData,
+      contentType: 'application/json;charset=utf-8',
+      dataType: 'json',
+      timeout: 5000,
+      success: function(result, xhr) {
+        for (let key in result) {
+          if (key == 'content') {
+            console.log(result['content'])
+            _self.awards = _self.dataMakeup(result['content'])
+          } else if (key == 'err') {
+            alert('请求详细信息错误: ' + result[key]['sqlMessage'])
+          }
+        }
+      },
+      error: function(result, xhr) {
+        //连接错误
+        //console.log(result)
+        alert('服务器连接错误: ' + xhr)
+      }
+    })
   },
   methods: {
     // insertClick: function() {
     //   this.$router.push({
-    //     name: 'HMTInsert'
+    //     name: 'competitionInsert'
     //   })
     // },
+    dataMakeup: function(data) {
+      //把数据中不全的表中没有的字段全部赋值为空
+      for (let table in tableData) {
+        if (data[table] != undefined) {
+          for (let i = 0; i < data[table].length; i++) {
+            for (let record in tableData[table]['records']) {
+              if (data[table][i][record] == undefined) {
+                data[table][i][record] = ''
+              }
+            }
+          }
+        }
+      }
+      return data
+    },
     queryClick: function() {
-      var HMT = { equal: {}, range: {}, fuzzy: {} }
+      var competition = { equal: {}, range: {}, fuzzy: {} }
       var data = {
-        select: ['HMT'],
+        select: ['competition'],
         where: {
           equal: {},
           range: {},
           fuzzy: {}
         }
       }
-      if ($('#HMT-sid').val()) {
-        var sid = $('#HMT-sid').val()
-        if (!formatCheck['HMT']['sid']['reg'].test(sid)) {
-          alert(formatCheck['HMT']['sid']['msg'])
+      if ($('#competition-sid').val()) {
+        var sid = $('#competition-sid').val()
+        if (!formatCheck['competition']['sid']['reg'].test(sid)) {
+          alert(formatCheck['competition']['sid']['msg'])
           return
         } else {
-          HMT['equal']['sid'] = sid
+          competition['equal']['sid'] = sid
         }
       } else {
         //验证格式
-        var message = ''
-        for (let item in formatCheck['HMT']) {
-          if (formatCheck['HMT'][item]['reg'] != null) {
-            let record = $('#HMT-' + item).val()
-            if (record != '' && !formatCheck['HMT'][item]['reg'].test(record)) {
-              message = message + formatCheck['HMT'][item]['msg']
-            }
-          }
-        }
-        if (message != '') {
-          alert(message)
-          return
-        }
-        if ($('#HMT-name').val()) HMT['equal']['name'] = $('#HMT-name').val()
-        if ($('#HMT-ancesHome').val()) HMT['equal']['ancesHome'] = $('#HMT-ancesHome').val()
-        if ($('#HMT-interest').val()) HMT['equal']['interest'] = $('#HMT-interest').val()
-        if ($('#HMT-religion').val()) HMT['equal']['religion'] = $('#HMT-religion').val()
-        if ($('#HMT-mail').val()) HMT['equal']['mail'] = $('#HMT-mail').val()
-        if ($('#HMT-wechat').val()) HMT['equal']['wechat'] = $('#HMT-wechat').val()
-        if ($('#HMT-homeAddress').val()) HMT['equal']['homeAddress'] = $('#HMT-homeAddress').val()
-        if ($('#HMT-ecoContact').val()) HMT['equal']['ecoContact'] = $('#HMT-ecoContact').val()
-        if ($('#HMT-ecoTel').val()) HMT['equal']['ecoTel'] = $('#HMT-ecoTel').val()
-        if ($('#HMT-HMTIDNum').val()) HMT['equal']['HMTIDNum'] = $('#HMT-HMTIDNum').val()
-        if ($('#HMT-homePermitNum').val()) HMT['equal']['homePermitNum'] = $('#HMT-homePermitNum').val()
+        // var message = ''
+        // for (let item in formatCheck['competition']) {
+        //   if (formatCheck['competition'][item]['reg'] != null) {
+        //     let record = $('#competition-' + item).val()
+        //     if (record != '' && !formatCheck['competition'][item]['reg'].test(record)) {
+        //       message = message + formatCheck['competition'][item]['msg']
+        //     }
+        //   }
+        // }
+        // if (message != '') {
+        //   alert(message)
+        //   return
+        // }
+        if ($('#competition-name').val()) competition['equal']['name'] = $('#competition-name').val()
+        if ($('#competition-ancesHome').val()) competition['equal']['ancesHome'] = $('#competition-ancesHome').val()
+        if ($('#competition-interest').val()) competition['equal']['interest'] = $('#competition-interest').val()
+        if ($('#competition-religion').val()) competition['equal']['religion'] = $('#competition-religion').val()
+        if ($('#competition-mail').val()) competition['equal']['mail'] = $('#competition-mail').val()
+        if ($('#competition-wechat').val()) competition['equal']['wechat'] = $('#competition-wechat').val()
+        if ($('#competition-homeAddress').val()) competition['equal']['homeAddress'] = $('#competition-homeAddress').val()
+        if ($('#competition-ecoContact').val()) competition['equal']['ecoContact'] = $('#competition-ecoContact').val()
+        if ($('#competition-ecoTel').val()) competition['equal']['ecoTel'] = $('#competition-ecoTel').val()
+        if ($('#competition-competitionIDNum').val()) competition['equal']['competitionIDNum'] = $('#competition-competitionIDNum').val()
+        if ($('#competition-homePermitNum').val()) competition['equal']['homePermitNum'] = $('#competition-homePermitNum').val()
       }
-      if (JSON.stringify(HMT['equal']) != emptyCell) data['where']['equal']['HMT'] = HMT['equal']
-      if (JSON.stringify(HMT['range']) != emptyCell) data['where']['range']['HMT'] = HMT['range']
-      if (JSON.stringify(HMT['fuzzy']) != emptyCell) data['where']['fuzzy']['HMT'] = HMT['fuzzy']
+      if (JSON.stringify(competition['equal']) != emptyCell) data['where']['equal']['competition'] = competition['equal']
+      if (JSON.stringify(competition['range']) != emptyCell) data['where']['range']['competition'] = competition['range']
+      if (JSON.stringify(competition['fuzzy']) != emptyCell) data['where']['fuzzy']['competition'] = competition['fuzzy']
       var postData = JSON.stringify(data)
       console.log(postData)
       //post
@@ -179,14 +225,14 @@ export default {
     modalCloseClick: function() {
       $('#popup-diy').hide()
     },
-    //查询学生点击事件
+    //查询点击事件
     studentClick: function(event) {
-      //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
       var routeData = this.$router.resolve({
-        name: 'detail',
+        name: 'getCompetitionInfo',
         query: {
-          sid: event.currentTarget.getAttribute('sid')
+          comName: event.currentTarget.getAttribute('comName'),
+          leaderSid: event.currentTarget.getAttribute('leaderSid')
         }
       })
       window.open(routeData.href, '_blank')
@@ -195,15 +241,15 @@ export default {
     statButtonToggle: function(event) {
       if (event.currentTarget.className == 'stat-checkbox') {
         event.currentTarget.className = 'stat-checkbox-selected'
-        $('#HMT-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
+        $('#competition-stat-range-' + event.currentTarget.getAttribute('record-id')).show()
       } else if (event.currentTarget.className == 'stat-checkbox-selected') {
         event.currentTarget.className = 'stat-checkbox'
-        $('#HMT-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
+        $('#competition-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
       }
     },
     statClick: function() {
       var data = {
-        table: 'HMT',
+        table: 'competition',
         fields: [],
         condition: {}
       }
@@ -212,15 +258,15 @@ export default {
         if ($(this).prop("checked")) {
           var recordId = $(this).attr('record-id')
           data['fields'].push(recordId)
-          if ($('#HMT-stat-' + recordId).val() != '') {
-            data['condition'][recordId] = $('#HMT-stat-' + recordId).val()
+          if ($('#competition-stat-' + recordId).val() != '') {
+            data['condition'][recordId] = $('#competition-stat-' + recordId).val()
           }
         }
         */
         var recordId = $(this).attr('record-id')
         data['fields'].push(recordId)
-        if ($('#HMT-stat-' + recordId).val() != '') {
-          data['condition'][recordId] = $('#HMT-stat-' + recordId).val()
+        if ($('#competition-stat-' + recordId).val() != '') {
+          data['condition'][recordId] = $('#competition-stat-' + recordId).val()
         }
       })
       if (data['fields'].length == 0) {
@@ -247,7 +293,7 @@ export default {
                 {gender: '男', major: '数学', statistic: 1}
               ]*/
               console.log(result[key])
-              statModule.createCharts('HMT', result[key], 'stat-chart-bar', 'stat-chart-pie')
+              statModule.createCharts('competition', result[key], 'stat-chart-bar', 'stat-chart-pie')
             } else if (key == 'err') {
               //操作错误
               alert('统计错误: ' + result[key]['sqlMessage'])
