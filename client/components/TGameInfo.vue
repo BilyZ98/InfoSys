@@ -229,7 +229,7 @@ export default {
     studentClick: function(event) {
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
       var routeData = this.$router.resolve({
-        name: 'getCompetitionInfo',
+        name: 'competitionDetail',
         query: {
           comName: event.currentTarget.getAttribute('comName'),
           leaderSid: event.currentTarget.getAttribute('leaderSid')
