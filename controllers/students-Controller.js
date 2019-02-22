@@ -9,7 +9,7 @@ const fs = require('fs')
 const util = require('util')
 const readFile = util.promisify(fs.readFile);
 var uploadDir = path.resolve(__dirname,'..')
-uploadDir = path.join(uploadDir,'/uploads')
+uploadDir = path.join(uploadDir, '/uploads')
 
 var uploadDirForInterStu = path.resolve(__dirname,'..')
 uploadDirForInterStu = path.join(uploadDirForInterStu,'/uploadsForInterStu')
@@ -160,13 +160,13 @@ exports.addBasicInfo = async (req,res,next) =>{
   }
   else
   {
-      if(!preCheck1)
-      {
-        resBody.fail(res,441, 'conflict_check_fail');
-      }
-      else {
-        resBody.fail(res,442,'validation_check_fail');
-      }
+    if(!preCheck1)
+    {
+      resBody.fail(res,441, 'conflict_check_fail');
+    }
+    else {
+      resBody.fail(res,442,'validation_check_fail');
+    }
   }
 }
 
@@ -203,9 +203,10 @@ exports.addHMT = async (req,res,next) => {
 }
 
 //插入国际生要上传照片，一个人的签证照片可能有多张，新建一个表，以国际生的学号为外键。
-exports.addInterStu = async (req,res,next) => {
+exports.addInterStu = async (req, res, next) => {
   //template(req,res,next, StudentsModel.addInterStu,"internationalStudent")
-  try{
+  var hasError = false
+  try {
     var form = new formidable.IncomingForm();
     form.multiples = true
     form.uploadDir = uploadDirForInterStu
@@ -214,45 +215,87 @@ exports.addInterStu = async (req,res,next) => {
 
     let fileExt
 
-    form.parse(req,async function(err, fields, files){
+    form.parse(req, async function(err, fields, files) {
       //let data = fields
-      let data
+      let data = {}
       data.sid = fields.sid
+      console.log('start to insert copys into db: ', data)
+      //console.log(files.dormRegistryCopy)
       if(files.dormRegistryCopy){
-        for(let i in files.dormRegistryCopy){
-          if(!checkExtension(files.dormRegistryCopy[i].path)) {
-            continue
+        for(let i in files.dormRegistryCopy) {
+          // 无法通过.length获取File数组的长度，只能hack判断若只有一个文件，会获取到第一个domain字段的方法
+          if (i == 'domain') {
+            // 一个文件
+            if(!checkExtension(files.dormRegistryCopy.path)) {
+              break
+            }
+            data.filePath = files.dormRegistryCopy.path
+            console.log('insert into dormRegistryCopy: ', data)
+            await StudentsModel.addDormRegistryCopy(data)
+            break
+          } else {
+            // 多个文件
+            if(!checkExtension(files.dormRegistryCopy[i].path)) {
+              continue
+            }
+            data.filePath = files.dormRegistryCopy[i].path
+            console.log('insert into dormRegistryCopy: ', data)
+            await StudentsModel.addDormRegistryCopy(data)
           }
-          data.filePath = files.dormRegistryCopy[i]
-          await StudentsModel.addDormRegistryCopy(data)
         }
       }
       if(files.visaCopy) {
-        for(let i in files.visaCopy){
-          if(!checkExtension(files.visaCopy[i].path)){
-            continue
+        for(let i in files.visaCopy) {
+          if (i == 'domain') {
+              if(!checkExtension(files.visaCopy.path)){
+              break
+            }
+            data.filePath = files.visaCopy.path
+            console.log('insert into visaCopy: ', data)
+            await StudentsModel.addVisaCopy(data)
+            break
+          } else {
+            if(!checkExtension(files.visaCopy[i].path)){
+              continue
+            }
+            data.filePath = files.visaCopy[i].path
+            console.log('insert into visaCopy: ', data)
+            await StudentsModel.addVisaCopy(data)
           }
-          data.filePath = files.visaCopy[i]
-          await StudentsModel.addVisaCopy(data)
         }
       }
-      if(files.passportCopy){
-        for(let i in files.passportCopy){
-          if(!checkExtension(files.passportCopy[i].path)){
-            continue
+      if(files.passportCopy) {
+        for(let i in files.passportCopy) {
+          if (i == 'domain') {
+            if(!checkExtension(files.passportCopy.path)){
+              break
+            }
+            data.filePath = files.passportCopy.path
+            console.log('insert into passportCopy: ', data)
+            await StudentsModel.addPassportCopy(data)
+            break
+          } else {
+            if(!checkExtension(files.passportCopy[i].path)){
+              continue
+            }
+            data.filePath = files.passportCopy[i].path
+            console.log('insert into passportCopy: ', data)
+            await StudentsModel.addPassportCopy(data)
           }
-          data.filePath = files.passportCopy[i]
-          await StudentsModel.addPassportCopy(data)
         }
       }
       data = fields
-      await StudentsModel.addInterStu(data)  
-      })
-    }
-  catch(err){
-    console.log(err)
-    resBody.error(res,err)
+      console.log('inert into normal interStu db: ', data)
+      await StudentsModel.addInterStu(data)
+    })
   }
+  catch(err) {
+    hasError = true
+    console.log(err)
+    //resBody.error(res, err)
+  }
+  if (hasError) resBody.error(res)
+  else resBody.success(res)
 }
 /*
 检测文件类型是否为照片
@@ -272,25 +315,43 @@ function checkExtension(filePath){
 只返回照片，返回文字再次请求
 
 */
-exports.getInterStudentPics = async (req,res,next) =>{
-  let copyTables = ['dormRegistryCopy','visaCopy','passportCopy'];
-  let data = req.body;
-  let returnData;
-  let err;
-  try{
-    for(let i in copyTables){
-      let copies = await StudentsModel.getFilePath(data,copyTables[i]);
-      for(let j in copies){
-        [err, returnData[copyTables[i]][j]] = await readFile(copies[j]) //前面已经promisify了
-        console.log(err,returnData[copyTables[i]][j])
+exports.getInterStudentPics = async (req, res, next) => {
+  let copyTables = ['dormRegistryCopy', 'visaCopy', 'passportCopy']
+  //console.log(req.query.sid)
+  let sid = req.query.sid
+  let returnData = {
+    dormRegistryCopy: [],
+    visaCopy: [],
+    passportCopy: []
+  }
+  let err = null
+  try {
+    var ppp = ''
+    for(let i in copyTables) {
+      let copies = await StudentsModel.getFilePath(sid, copyTables[i])
+      for(let j in copies) {
+        console.log(copies[j].filePath)
+        ppp = copies[0].filePath
+        //[ err, tmpFile ] = await readFile(copies[j].filePath) //前面已经promisify了
+        returnData[copyTables[i]][j] = await readFile(copies[j].filePath)
       }
     }
-    resBody.success(res,returnData)
+    //resBody.success(res,returnData)
+    //res.sendFile(ppp)
+    res.download(ppp, 'report.pdf', function(err){
+      if (err) {
+        // Handle error, but keep in mind the response may be partially-sent
+        // so check res.headersSent
+        console.log('eee')
+      } else {
+        // decrement a download credit, etc.
+        console.log('ooo')
+      }
+    })
   }
-  catch(err){
+  catch(err) {
     console.log(err)
   }
-  
 }
 
 exports.statistic = async (req,res,next) => {
@@ -327,7 +388,7 @@ data format
 }
 */
 //发送邮件
-exports.sendMail =async  (req,res,next) =>{
+exports.sendMail = async (req,res,next) =>{
   try{
     var form  = new formidable.IncomingForm();
     form.multiples = true
@@ -335,7 +396,7 @@ exports.sendMail =async  (req,res,next) =>{
     form.keepExtensions = true
     form.encoding = 'utf-8'
     console.log()
-    form.parse(req,async function(err,fields,files){
+    form.parse(req,async function(err, fields, files){
       console.log(files);
       console.log(fields);
       StudentsModel.getMails(JSON.parse(fields['sid'])).then(async (mails)=>{
@@ -443,6 +504,7 @@ exports.addCompetition = async (req,res,next) =>{
 }
 
 exports.addWinners = async (req,res,next) => {
+  //console.log(req.body)
   try{
     await StudentsModel.addWinners(req.body)
     resBody.success(res)
@@ -451,3 +513,15 @@ exports.addWinners = async (req,res,next) => {
     console.log(err)
   }
 }
+
+exports.getWinners = async (req,res,next) => {
+  //console.log(req.body)
+  try{
+    let result = await StudentsModel.getWinners(req.body)
+    resBody.success(res,result)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
