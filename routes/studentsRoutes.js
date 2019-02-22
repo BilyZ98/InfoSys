@@ -45,6 +45,8 @@ router.post('/insert/competition',studentsController.addCompetition);
 
 router.post('/insert/winners',studentsController.addWinners);
 
+router.post('/insert/comMeeting',studentsController.addComMeeting);
+
 router.post('/getWinners', studentsController.getWinners);
 
 router.post('/getCompetitionInfo',studentsController.getCompetitionInfo);
@@ -52,6 +54,9 @@ router.post('/getCompetitionInfo',studentsController.getCompetitionInfo);
 router.post('/getCompetition',studentsController.getCompetition);
 
 router.post('/getAllCompetition',studentsController.getAllCompetition);
+
+router.post('/getCompetitionBySid',studentsController.getCompetitionBySid);
+
 
 //router.get('/competition',studentsController.get)
 

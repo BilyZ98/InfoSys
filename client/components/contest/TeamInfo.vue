@@ -49,18 +49,20 @@
           <td>{{student['nums']}}</td>
         </tr-->
       </table>
-      <div class="team-info-list" sid="sid" comName="comName" @click="comClick">
-        <span>学号</span>
-        <span>姓名</span>
-        <span>项目名</span>
-        <span>主办方</span>
+      
+      <div v-for="student in students" class="team-info-list" v-bind:sid="sid" comName="comName" @click="comClick">
+        <span>{{student.leaderSid}}</span>
+          <span>{{student.leaderName}}</span>
+          <span>{{student.comName}}</span>
+          <span>{{student.organizer}}</span>
       </div>
-      <div class="team-info-list">
-        <span>学号2</span>
-        <span>姓名2</span>
-        <span>项目名2</span>
-        <span>主办方2</span>
-      </div>
+        <!--div class="team-info-list">
+          <span>学号2</span>
+          <span>姓名2</span>
+          <span>项目名2</span>
+          <span>主办方2</span>
+        </div-->
+      
       <button class="manager-button" @click="addClick">添加参赛队伍</button>
     </div>
 
@@ -103,19 +105,19 @@ export default {
   created: function() {
     //alert(window.innerWidth)
     //1536*728
-    /*var date = new Date()
-    var year = date.getFullYear();
-    var month = date.getMonth()+1;
-    if(month<=6) year = year-1;
+    var sid = this.$store.getters.getUserAccount;
+    //alert(window.innerWidth)
+    //1536*728
+    
     var data = {
-      year: year
+      leaderSid: sid
     }
     var postData = JSON.stringify(data)
     var _self = this
       // replace getPost with your data fetching util / API wrapper
     $.ajax({
       type: 'POST',
-      url: '/students/FailedStudents',
+      url: '/students/getCompetitionBySid',
       data: postData,
       contentType: 'application/json;charset=utf-8',
       dataType: 'json',
@@ -130,7 +132,7 @@ export default {
           //console.log(result)
           alert('服务器连接错误: ' + xhr)
       }
-    })*/
+    })
   },
   methods: {
     

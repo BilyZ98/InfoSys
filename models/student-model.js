@@ -708,10 +708,20 @@ exports.getFilePath = async (data,table) => {
 exports.addCompetition = async(data) => {
   let query = 
   "insert into competition \n"+
-  "(comName,orgnizer, comClass, instructor, leaderName,leaderSid, leaderTel, comInfo) \n" +
+  "(comName,organizer, comClass, instructor, leaderName,leaderSid, leaderTel, comInfo) \n" +
   "values (?, ?, ?, ?, ?, ?, ?, ?)";
-  let values = [data.comName, data.orgnizer, data.comClass,
+  let values = [data.comName, data.organizer, data.comClass,
   data.instructor, data.leaderName, data.leaderSid, data.leaderTel, data.comInfo]
+  return queryDB(query,values)
+}
+
+exports.addComMeeting = async (data) => {
+  //console.log(data)
+  let query = 
+  "insert into comMeeting \n" +
+  "(comName, leaderSid, time, location, attenders, record) values" + 
+  "(?,?,?,?,?,?)"
+  let values = [data.comName, data.leaderSid, data.time, data.location, data.attenders, data.record]
   return queryDB(query,values)
 }
 
@@ -751,6 +761,13 @@ exports.getCompetition = async(data) => {
   let query = 
   "select * from competition where leaderSid = ? and comName = ?;"
   let values = [data.leaderSid,data.comName]
+  return queryDB(query,values)
+}
+
+exports.getCompetitionBySid = async(data) => {
+  let query = 
+  "select * from competition where leaderSid = ?;"
+  let values = [data.leaderSid]
   return queryDB(query,values)
 }
 
