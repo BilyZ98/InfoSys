@@ -60,13 +60,13 @@ import InternationalStudent from './components/teacherSpecialInfoPages/Internati
 import TeacherSpecialInfoDetail from './components/teacherSpecialInfoPages/TeacherSpecialInfoDetail.vue'
 import HMTInsert from './components/teacherSpecialInfoPages/HMTInsert.vue'
 import InternationalStudentInsert from './components/teacherSpecialInfoPages/InternationalStudentInsert.vue'
-/* AcademicWaring*/
+/* AcademicWaring */
 import AcademicWarning from './components/teacherBasicInfoPages/Warning.vue'
-
-/* Teacher Game Manage*/
+/* Teacher Game Manage */
 import TeacherGameManage from './components/TeacherGameManage.vue'
 import TGameInfo from './components/TGameInfo.vue'
 import TGameAward from './components/TGameAward.vue'
+
 
 /*Contest Info*/
 import GameManage from './components/GameManage.vue'
@@ -74,7 +74,8 @@ import TeamInfo from './components/contest/TeamInfo.vue'
 import AwardInfo from './components/contest/AwardInfo.vue'
 import InsertAwardInfo from './components/contest/InsertAwardInfo.vue'
 import InsertTeamInfo from './components/contest/InsertTeamInfo.vue'
-import InsertMeeting from './components/contest/InsertMeeting.vue'
+
+
 
 /* StudentBasicInfo for students */
 import StudentBasicInfo from './components/StudentBasicInfo.vue'
@@ -91,6 +92,12 @@ import StudentInternationalStudentInsert from './components/studentSpecialInfoIn
 import Guideline from './components/Guideline.vue'
 import Leave from './components/guideline/Leave.vue'
 import QuitClass from './components/guideline/QuitClass.vue'
+/* student game manage */
+import GameManage from './components/GameManage.vue'
+import TeamInfo from './components/contest/TeamInfo.vue'
+import AwardInfo from './components/contest/AwardInfo.vue'
+import InsertAwardInfo from './components/contest/InsertAwardInfo.vue'
+import InsertTeamInfo from './components/contest/InsertTeamInfo.vue'
 
 /* email component */
 import Email from './components/teacherBasicInfoPages/modules/Email.vue'
@@ -177,8 +184,15 @@ const router = new VueRouter({
     /* 学生路由 */
     { name: 'studentMain', path: '/studentMain', component: StudentMain },
     { name: 'studentBasicInfo', path: '/studentBasicInfo', component: StudentBasicInfo },
+    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert },
+    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert },
+    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert },
+    { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
+    { name: 'studentHMTInsert', path: '/studentHMTInsert', component: StudentHMTInsert },
+    { name: 'studentInternationalStudentInsert', path: '/studentInternationalStudentInsert', component: StudentInternationalStudentInsert },
     { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
     {
+<<<<<<< HEAD
       name: 'gameManage',
       path: '/gameManage',
       component: GameManage,
@@ -188,9 +202,9 @@ const router = new VueRouter({
       ]
     },
     { name: 'insertAwardInfo', path: 'insertAwardInfo', component: InsertAwardInfo},
-    { name: 'insertTeamInfo', path: 'insertTeamInfo', component: InsertTeamInfo},
-    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting},
+    { name: 'insertTeamInfo', path: 'insertTeamInfo', component: InsertTeamInfo}
     {
+
       name: 'guideline',
       path: '/guideline',
       component: Guideline,
@@ -199,12 +213,17 @@ const router = new VueRouter({
         { name: 'quitClass', path: 'quitClass', component: QuitClass}
       ]
     },
-    { name: 'studentBasicInfoInsert', path: '/studentBasicInfoInsert', component: StudentBasicInfoInsert },
-    { name: 'studentFamilyInsert', path: '/studentFamilyInsert', component: StudentFamilyInsert },
-    { name: 'studentCadreInsert', path: '/studentCadreInsert', component: StudentCadreInsert },
-    { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
-    { name: 'studentHMTInsert', path: '/studentHMTInsert', component: StudentHMTInsert },
-    { name: 'studentInternationalStudentInsert', path: '/studentInternationalStudentInsert', component: StudentInternationalStudentInsert },
+    {
+      name: 'gameManage',
+      path: '/gameManage',
+      component: GameManage,
+      children: [
+        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
+        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
+      ]
+    },
+    { name: 'insertAwardInfo', path: '/insertAwardInfo', component: InsertAwardInfo},
+    { name: 'insertTeamInfo', path: '/insertTeamInfo', component: InsertTeamInfo},
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
