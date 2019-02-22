@@ -29,7 +29,6 @@ export default {
     $('#info-account').text(this.$store.getters.getUserAccount)
   },
   methods: {
-    
     addGameTeamClick: function() {
       this.$router.push({ name: 'teamInfo' })
     },

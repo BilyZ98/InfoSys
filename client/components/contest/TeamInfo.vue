@@ -10,7 +10,6 @@
     <!--查询输入-->
     <!--div class="container-card-list">
       <div class="container-record" v-for="record in table.records">
-        
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'course-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'course-'+record.id">
           <option></option>

@@ -1,32 +1,53 @@
 <template>
-<div id="container-insert-basicInfo">
-  <div class="text-header">队伍信息插入</div>
-  <hr>
-  <div class="container-input">
-    <div class="container-record" v-for="record in table.records">
-      <span>{{record.name}}:</span>
-      <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
-        <option></option>
-        <option v-for="option in record.options">{{option}}</option>
-      </select>
-      <input type="text" v-else v-bind:id="tableId+'-'+record.id">
+  <div id="container-insert-basicInfo">
+    <div class="text-header">队伍信息插入</div>
+    <hr>
+    <div class="container-input">
+      <div class="container-record" v-for="record in table.records">
+        <span>{{record.name}}:</span>
+        <select v-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id">
+          <option></option>
+          <option v-for="option in record.options">{{option}}</option>
+        </select>
+        <input type="text" v-else v-bind:id="tableId+'-'+record.id">
+      </div>
     </div>
+    <!-- 动态绑定学长数量 -->
+    <div class="container-input">
+      <div class="container-record">
+        <span>研究生学长数量:</span>
+        <input type="number" v-model.number="seniorNum">
+      </div>
+      <div v-for="iSenior in seniorNum">
+        <div class="container-record">
+          <span>学长{{iSenior}}学号:</span>
+          <input type="text" :id="'sid-senior'+iSenior">
+        </div>
+        <div class="container-record">
+          <span>学长{{iSenior}}姓名:</span>
+          <input type="text" :id="'name-senior'+iSenior">
+        </div>
+      </div>
+      <!-- 动态绑定队员数量 -->
+      <div class="container-record">
+        <span>队员数量:</span>
+        <input type="number" v-model.number="teamMemberNum">
+      </div>
+      <div v-for="iTeam in teamMemberNum">
+        <div class="container-record">
+          <span>队员{{iTeam}}学号:</span>
+          <input type="text" :id="'sid-team'+iTeam">
+        </div>
+        <div class="container-record">
+          <span>队员{{iTeam}}姓名:</span>
+          <input type="text" :id="'name-team'+iTeam">
+        </div>
+      </div>
+    </div>
+    <pre id="warning"></pre>
+    <button type="button" class="button-insert" @click="insertClick">提交</button>
   </div>
-  <div class="container-input" id="append">
-    <div class="container-record">
-      <span>研究生学长数量:</span>
-      <input type="text" id="seniornum" @change="seniorNumChange">
-    </div>
-    <div class="container-record">
-      <span>队员数量:</span>
-      <input type="text" id="teammembernum" @change="teamMemberNumChange">
-    </div>
-  </div>
-  <pre id="warning"></pre>
-  <button type="button" class="button-insert" @click="insertClick">提交</button>
-</div>
 </template>
-
 <script>
 import tableData from '../javascripts/tableData.js'
 import formatCheck from '../javascripts/formatCheck.js'
@@ -36,39 +57,20 @@ export default {
     return {
       tableId: 'competition',
       table: tableData['competition'],
-      teamMemberNum: 0,
-      SeniorNum: 0
+      seniorNum: 0,
+      teamMemberNum: 0
     }
   },
   methods: {
-    seniorNumChange: function() {
-      this.SeniorNum = $('#seniornum').val()
-      for(var i=0;i<this.SeniorNum;i++){
-        $('#append').append("<div class='container-record'>" + "<span>学长"+i+"学号:</span>" + "<input type='text' id='sid-senior"+i+"'>" +"</div>")
-       
-        $('#append').append("<div class='container-record'>" + "<span>学长"+i+"姓名:</span>" + "<input type='text' id='name-senior"+i+"'>" + "</div>")
-        
-      }
-    },
-    teamMemberNumChange: function() {
-      this.teamMemberNum = $('#teammembernum').val()
-      for(var i=0;i<this.teamMemberNum;i++){
-        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"学号:</span>" + "<input type='text' id='sid-team"+i+"'>" +"</div>")
-       
-        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"姓名:</span>" + "<input type='text' id='name-team"+i+"'>" + "</div>")
-
-        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"职责:</span>" + "<input type='text' id='duty-team"+i+"'>" + "</div>")
-      }
-    },
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
-      for(let item in tableData[this.tableId]['records']) {
+      for (let item in tableData[this.tableId]['records']) {
         let record = $('#' + this.tableId + '-' + item).val()
-        if(!formatTable[item]['canNull'] && record == '') {
+        if (!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
           message = message + tableData[this.tableId]['records'][item]['name'] + '不能为空\n'
-        } else if(record != '' && formatTable[item]['reg']!= null && !formatTable[item]['reg'].test(record)){
+        } else if (record != '' && formatTable[item]['reg'] != null && !formatTable[item]['reg'].test(record)) {
           //检查格式合法
           message = message + formatTable[item]['msg'] + '\n'
         }
@@ -81,13 +83,13 @@ export default {
         var data = {
           table: this.tableId
         }
-        for(let item in tableData[this.tableId]['records']){
-          if($('#' + this.tableId + '-' + item).val() != ''){
+        for (let item in tableData[this.tableId]['records']) {
+          if ($('#' + this.tableId + '-' + item).val() != '') {
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
         var temp1 = []
-        for(var i=0;i<this.SeniorNum;i++){
+        for (var i = 0; i < this.seniorNum; i++) {
           var temp = {
             comName: $('#' + this.tableId + '-' + 'comName').val(),
             leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
@@ -97,9 +99,8 @@ export default {
           temp1.push(temp)
         }
         data['seniorsGroup'] = temp1
-
         var temp2 = []
-        for(var i=0;i<this.teamMemberNum;i++){
+        for (var i = 0; i < this.teamMemberNum; i++) {
           var temp = {
             comName: $('#' + this.tableId + '-' + 'comName').val(),
             leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
@@ -122,11 +123,11 @@ export default {
           //timeous 5s
           timeout: 5000,
           success: function(result, xhr) {
-            for(let key in result){
-              if(key == 'content'){
+            for (let key in result) {
+              if (key == 'content') {
                 //操作成功
                 alert('插入成功！')
-              } else if (key == 'err'){
+              } else if (key == 'err') {
                 //操作错误
                 alert('插入错误: ' + result[key]['sqlMessage'])
               }
@@ -143,7 +144,6 @@ export default {
   }
 }
 </script>
-
 <style>
 #container-insert-basicInfo {
   margin: 25px;
@@ -181,7 +181,8 @@ export default {
   font-size: 16px;
 }
 
-#container-insert-basicInfo .container-record select, #container-insert-basicInfo .container-record input {
+#container-insert-basicInfo .container-record select,
+#container-insert-basicInfo .container-record input {
   margin-left: 10px;
   width: 250px;
   height: 30px;
@@ -214,9 +215,12 @@ export default {
   border: none;
   border-radius: 3px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-insert-basicInfo .button-insert:hover {
