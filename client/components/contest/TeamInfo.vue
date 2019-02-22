@@ -49,7 +49,7 @@
         </tr-->
       </table>
       
-      <div v-for="student in students" class="team-info-list" v-bind:sid="sid" comName="comName" @click="comClick">
+      <div v-for="student in students" class="team-info-list" v-bind:sid="student.leaderSid" v-bind:comName="student.comName" @click="comClick">
         <span>{{student.leaderSid}}</span>
           <span>{{student.leaderName}}</span>
           <span>{{student.comName}}</span>
