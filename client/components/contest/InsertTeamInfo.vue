@@ -42,6 +42,10 @@
           <span>队员{{iTeam}}姓名:</span>
           <input type="text" :id="'name-team'+iTeam">
         </div>
+        <div class="container-record">
+          <span>队员{{iTeam}}职责:</span>
+          <input type="text" :id="'duty-team'+iTeam">
+        </div>
       </div>
     </div>
     <pre id="warning"></pre>
@@ -65,6 +69,7 @@ export default {
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
+      // table competition
       for (let item in tableData[this.tableId]['records']) {
         let record = $('#' + this.tableId + '-' + item).val()
         if (!formatTable[item]['canNull'] && record == '') {
@@ -73,6 +78,32 @@ export default {
         } else if (record != '' && formatTable[item]['reg'] != null && !formatTable[item]['reg'].test(record)) {
           //检查格式合法
           message = message + formatTable[item]['msg'] + '\n'
+        }
+      }
+      // table seniorsGroup
+      for (let i = 1; i <= this.seniorNum; i++) {
+        for (let item in tableData['seniorsGroup']['records']) {
+          if (item == 'comName' || item == 'leaderSid')
+            continue
+          var record = $('#' + item + '-senior' + i).val()
+          if (!formatCheck['seniorsGroup'][item]['canNull'] && record == '') {
+            message = message + tableData['seniorsGroup']['records'][item]['name'] + i + '不能为空\n'
+          } else if (record != '' && formatCheck['seniorsGroup'][item]['reg'] != null && !formatCheck['seniorsGroup'][item]['reg'].test(record)) {
+            message = message + formatCheck['seniorsGroup'][item]['msg'] + i + '\n'
+          }
+        }
+      }
+      // table teamMember
+      for (let i = 1; i <= this.teamMemberNum; i++) {
+        for (let item in tableData['teamMember']['records']) {
+          if (item == 'comName' || item == 'leaderSid')
+            continue
+          var record = $('#' + item + '-team' + i).val()
+          if (!formatCheck['teamMember'][item]['canNull'] && record == '') {
+            message = message + tableData['teamMember']['records'][item]['name'] + i + '不能为空\n'
+          } else if (record != '' && formatCheck['teamMember'][item]['reg'] != null && !formatCheck['teamMember'][item]['reg'].test(record)) {
+            message = message + formatCheck['teamMember'][item]['msg'] + i + '\n'
+          }
         }
       }
       if (message != '') {
@@ -89,7 +120,7 @@ export default {
           }
         }
         var temp1 = []
-        for (var i = 0; i < this.seniorNum; i++) {
+        for (var i = 1; i <= this.seniorNum; i++) {
           var temp = {
             comName: $('#' + this.tableId + '-' + 'comName').val(),
             leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
@@ -100,7 +131,7 @@ export default {
         }
         data['seniorsGroup'] = temp1
         var temp2 = []
-        for (var i = 0; i < this.teamMemberNum; i++) {
+        for (var i = 1; i <= this.teamMemberNum; i++) {
           var temp = {
             comName: $('#' + this.tableId + '-' + 'comName').val(),
             leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
