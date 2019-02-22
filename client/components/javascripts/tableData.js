@@ -306,39 +306,6 @@ export default {
       notCompleteReason: { name: '材料不齐全的原因', id: 'notCompleteReason', isPrimary: false, display: true, value: '', studentChangAble: true, valueType: 'input'}
     }
   },
-  winners: {
-    name: '学生科技竞赛获奖记录',
-    id: 'winners',
-    tableStudentChangable: true,
-    records: {
-      id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
-      name: { name: '名字', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      organizer: { name: '主办单位', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      comClass: { name: '竞赛类别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
-      rewardClass: { name: '获奖等级', id: 'rewardClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      rewardName: { name: '奖项', id: 'rewardName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      instructor: { name: '指导老师', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      seniorSid: { name: '研究生学长学号', id: 'seniorSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      seniorName: { name: '研究生学长姓名', id: 'seniorName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      principal: { name: '对接企业及负责人', id: 'principal', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      principalTel: {name: '企业负责人电话', id: 'principalTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
-    }
-  },
-  comMeeting: {
-    name: '会议记录表',
-    id: 'comMeeting',
-    tableStudentChangable: true,
-    records: {
-      id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
-      comName: { name: '竞赛名称', id: 'comName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      time: { name: '会议时间', id: 'time', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      location: { name: '会议地点', id: 'location', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      attenders: { name: '参与人员', id: 'attenders', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      record: { name: '会议内容', id: 'record', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
-    }
-  },
   competition: {
     name: '参赛信息表',
     id: 'competition',
@@ -375,6 +342,39 @@ export default {
       name: { name: '队员姓名', id: 'name', isPrimary: false, display: true, value:'', studentChangAble: false, valueType: 'input'},
       sid: { name: '队员学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       duty: { name: '队员职责', id: 'duty', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
+    }
+  },
+  comMeeting: {
+    name: '会议记录表',
+    id: 'comMeeting',
+    tableStudentChangable: true,
+    records: {
+      id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
+      comName: { name: '竞赛名称', id: 'comName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      time: { name: '会议时间', id: 'time', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      location: { name: '会议地点', id: 'location', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      attenders: { name: '参与人员', id: 'attenders', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      record: { name: '会议内容', id: 'record', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
+    }
+  },
+  winners: {
+    name: '学生科技竞赛获奖记录',
+    id: 'winners',
+    tableStudentChangable: true,
+    records: {
+      id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
+      name: { name: '名字', id: 'name', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      organizer: { name: '主办单位', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      comClass: { name: '竞赛类别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
+      rewardClass: { name: '获奖等级', id: 'rewardClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      rewardName: { name: '奖项', id: 'rewardName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      instructor: { name: '指导老师', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      seniorSid: { name: '研究生学长学号', id: 'seniorSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      seniorName: { name: '研究生学长姓名', id: 'seniorName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      principal: { name: '对接企业及负责人', id: 'principal', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      principalTel: {name: '企业负责人电话', id: 'principalTel', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'}
     }
   }
 }

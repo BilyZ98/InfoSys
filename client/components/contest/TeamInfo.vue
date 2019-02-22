@@ -49,7 +49,7 @@
         </tr-->
       </table>
       
-      <div v-for="student in students" class="team-info-list" v-bind:sid="student.leaderSid" v-bind:comName="student.comName" @click="comClick">
+      <div v-for="student in students" class="team-info-list" v-bind:leaderSid="student.leaderSid" v-bind:comName="student.comName" @click="comClick">
         <span>{{student.leaderSid}}</span>
           <span>{{student.leaderName}}</span>
           <span>{{student.comName}}</span>
@@ -75,10 +75,6 @@
         </div>
       </div>
     </div>
-    <!-- 发邮件 -->
-    <div id="popup-email" class="popup-background">
-      <email :emailSid="emailSid"></email>
-    </div>
   </div>
 </template>
 <script>
@@ -94,8 +90,7 @@ export default {
   data: function() {
     return {
       table: tableData['course'],
-      students: [],
-      emailSid: []
+      students: []
     }
   },
   created: function() {
@@ -104,7 +99,6 @@ export default {
     var sid = this.$store.getters.getUserAccount;
     //alert(window.innerWidth)
     //1536*728
-    
     var data = {
       leaderSid: sid
     }
@@ -131,7 +125,6 @@ export default {
     })
   },
   methods: {
-    
     addClick: function() {
       this.$router.push({ name: 'insertTeamInfo' })
     },
@@ -145,49 +138,13 @@ export default {
       })
       window.open(routeData.href, '_blank')
     },
-    
-    
-    
     //onchange时调用这个函数实现文件选择后上传
     importUpload: function() {
       importModule.importClick($('#button-import').prop('files')[0], 'course')
     },
-    
     modalCloseClick: function() {
       $('#popup').hide()
-    },
-    //发送邮件函数
-    sendEmailClick: function() {
-      $('#popup-email').show()
-      //加载收件人学号
-      this.emailSid = []
-      for (let i = 0; i < this.students.length; i++) {
-        if(this.emailSid.indexOf(this.students[i]['course']['sid']) == -1)
-          this.emailSid.push(this.students[i]['course']['sid'])
-      }
-    },
-    studentClick: function(event) {
-      //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
-      //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
-      var routeData = this.$router.resolve({
-        name: 'detail',
-        query: {
-          sid: event.currentTarget.getAttribute('sid')
-        }
-      })
-      window.open(routeData.href, '_blank')
-    },
-    //统计
-    /*statButtonToggle: function(event) {
-      if (event.currentTarget.className == 'stat-checkbox') {
-        event.currentTarget.className = 'stat-checkbox-selected'
-        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).css('display', 'block')
-      } else if (event.currentTarget.className == 'stat-checkbox-selected') {
-        event.currentTarget.className = 'stat-checkbox'
-        $('#course-stat-range-' + event.currentTarget.getAttribute('record-id')).hide()
-      }
-    },*/
-    
+    }
   }
 }
 </script>

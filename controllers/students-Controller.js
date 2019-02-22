@@ -610,7 +610,7 @@ exports.getCompetitionInfo = async(req,res,next) => {
     let comMeeting = await StudentsModel.getComMeeting(req.body)
     let data = {
       competition: competition,
-      seniorGroup: seniorGroup,
+      seniorsGroup: seniorGroup,
       teamMember: teamMember,
       comMeeting: comMeeting
     }

@@ -1,15 +1,15 @@
 <template>
   <div id="container-detail">
     <div class="container" id="pdfDom">
-      <h3 class="text-center heading">学生信息</h3>
+      <h3 class="text-center heading">参赛详情</h3>
       <div class="info col-md-12">
         <!--以表循环-->
         <div v-for="table in tables">
-          <div class="info-heading">{{table.name}}</div>
+          <div class="info-heading" v-if="table.id=='competition'||table.id=='seniorsGroup'||table.id=='teamMember'||table.id=='comMeeting'">{{table.name}}</div>
           <!--若表中有数据，以字段循环-->
           <!--一个人最多有一条数据的表-->
-          <div class="clearfix" v-if="student[table.id]!=undefined&&student[table.id].length!=0&&(table.id=='basicInfo'||table.id=='family'||table.id=='schoolRoll'||table.id=='partyInfo'||table.id=='HMT'||table.id=='internationalStudent')">
-            <div class="table-array" v-for="tableArr in student[table.id]">
+          <div class="clearfix" v-if="game[table.id]!=undefined&&game[table.id].length!=0&&table.id=='competition'">
+            <div class="table-array" v-for="tableArr in game[table.id]">
               <span class="info-text" v-for="record in table.records">
               <span class="record-name">{{record.name}}:</span>
               <select v-bind:style="{width: 40 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined&&record['valueType']=='select'" class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
@@ -22,11 +22,11 @@
             </div>
           </div>
           <!--一个人有多条数据的表-->
-          <table border="1" v-else-if="student[table.id]!=undefined&&student[table.id].length!=0">
+          <table border="1" v-else-if="game[table.id]!=undefined&&game[table.id].length!=0&&(table.id=='seniorsGroup'||table.id=='teamMember'||table.id=='comMeeting')">
             <tr>
               <th v-for="record in table.records" class="record-table-head">{{record.name}}</th>
             </tr>
-            <tr v-for="tableArr in student[table.id]">
+            <tr v-for="tableArr in game[table.id]">
               <td v-for="record in table.records">
                 <input v-bind:style="{width: 15 + (tableArr[record.id]).toString().length*12+'px'}" v-if="tableArr[record.id]!=undefined" class="record-changable" disabled="disabled" v-model:text="tableArr[record.id]">
                 <input style="width: 20px" v-else class="record-changable" disabled="true" v-model:text="tableArr[record.id]">
@@ -34,11 +34,12 @@
             </tr>
           </table>
           <!--空-->
-          <div v-else class="table-empty">---</div>
+          <div v-else-if="table.id=='competition'||table.id=='seniorsGroup'||table.id=='teamMember'||table.id=='comMeeting'" class="table-empty" >---</div>
         </div>
       </div>
     </div>
     <div class="btn-show">
+      <button class="btn btn-info btn-sm" id="info-addMeeting" button-type="begin" @click="addMeetingClick">添加会议记录</button>
       <button class="btn btn-info btn-sm" id="info-update" button-type="begin" @click="updateClick">修改</button>
       <button class="btn btn-info btn-sm" id="info-print" @click="getPDF()">导出PDF</button>
     </div>
@@ -53,11 +54,10 @@ export default {
     return {
       leaderSid: null,
       comName: null,
-      sid: null,
       tables: tableData,
-      student: {},
+      game: {},
       //backup用于更新数据后判断哪些被更新了
-      studentBackup: {}
+      gameBackup: {}
     }
   },
   created: function() {
@@ -80,17 +80,15 @@ export default {
       timeout: 5000,
       success: function(result, xhr) {
         console.log(result, xhr)
-        /*
         for (let key in result) {
           if (key == 'content') {
-            _self.student = _self.dataMakeup(result['content'])
+            _self.game = _self.dataMakeup(result['content'])
             //深复制，才能起到backup之用
-            _self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+            _self.gameBackup = JSON.parse(JSON.stringify(_self.game))
           } else if (key == 'err') {
             alert('请求详细信息错误: ' + result[key]['sqlMessage'])
           }
         }
-        */
       },
       error: function(result, xhr) {
         //连接错误
@@ -124,6 +122,9 @@ export default {
       }
       return data
     },
+    addMeetingClick: function() {
+      this.$router.push({ name: 'insertMeeting' })
+    },
     updateClick: function() {
       if ($('#info-update').attr('button-type') == 'begin') {
         //开始修改
@@ -144,11 +145,11 @@ export default {
         //处理数据变化并验证格式
         var data = {}
         var message = ''
-        for (let table in this.student) {
-          for (let i = 0; i < this.student[table].length; i++) {
-            let tableArr = this.student[table][i]
+        for (let table in this.game) {
+          for (let i = 0; i < this.game[table].length; i++) {
+            let tableArr = this.game[table][i]
             for (let record in tableArr) {
-              if (tableArr[record] != this.studentBackup[table][i][record]) {
+              if (tableArr[record] != this.gameBackup[table][i][record]) {
                 //检查格式，只检查更改了的字段
                 if (!formatCheck[table][record]['canNull'] && tableArr[record] == '') {
                   //检查不能为空的字段是否为空
@@ -166,7 +167,7 @@ export default {
                     //把这个表的主键写入
                     for (let recordInOld in tableData[table]['records']) {
                       if (tableData[table]['records'][recordInOld]['isPrimary']) {
-                        data[table]['primary'][recordInOld] = this.studentBackup[table][i][recordInOld]
+                        data[table]['primary'][recordInOld] = this.gameBackup[table][i][recordInOld]
                       }
                     }
                   }
@@ -179,7 +180,7 @@ export default {
         if (message != '') {
           alert('更新数据失败！\n' + message)
           //还原数据
-          this.student = JSON.parse(JSON.stringify(this.studentBackup))
+          this.game = JSON.parse(JSON.stringify(this.gameBackup))
           return
         }
         var postData = JSON.stringify(data)
@@ -200,12 +201,12 @@ export default {
             for (let key in result) {
               if (key == 'content') {
                 //成功后backup变为现在的数据
-                _self.studentBackup = JSON.parse(JSON.stringify(_self.student))
+                _self.gameBackup = JSON.parse(JSON.stringify(_self.game))
                 alert('更新数据成功！')
               } else if (key == 'err') {
                 alert('更新数据失败: ' + result[key]['sqlMessage'])
                 //失败，还原更新前的数据，也需要深复制
-                _self.student = JSON.parse(JSON.stringify(_self.studentBackup))
+                _self.game = JSON.parse(JSON.stringify(_self.gameBackup))
               }
             }
           },
@@ -344,8 +345,23 @@ export default {
   text-align: center;
 }
 
-#container-detail #info-update,
-#container-detail #info-print {
+#info-addMeeting {
+  bottom: 124px;
+  right: 30px;
+  width: 80px;
+  height: 50px;
+  font-size: 11px;
+  font-weight: bold;
+  color: white;
+  align-items: center;
+  padding: 4px 8px 4px 8px;
+  position: fixed;
+  background-color: rgb(0, 100, 200);
+  cursor: pointer;
+  transition: background-color 0.4s;
+}
+
+#info-update, #info-print {
   right: 30px;
   bottom: 66px;
   width: 80px;
@@ -361,17 +377,15 @@ export default {
   transition: background-color 0.4s;
 }
 
-#container-detail #info-print {
+#info-print {
   bottom: 8px;
 }
 
-#container-detail #info-update:hover,
-#container-detail #info-print:hover {
+#info-addMeeting:hover, #info-update:hover, #info-print:hover {
   background-color: rgb(0, 132, 255);
 }
 
-#container-detail #info-update:active,
-#container-detail #info-print:active {
+#info-addMeeting:active, #info-update:active, #info-print:active {
   background-color: rgb(0, 255, 255);
 }
 </style>

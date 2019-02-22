@@ -224,30 +224,6 @@ export default {
     passportCopy: { canNull: true, reg: null, msg: ''},
     notCompleteReason: { canNull: true, reg: null, msg: '' }
   },
-  winners: {
-    id: {canNull: false, reg: null, msg: ''},
-    name: { canNull: false, reg: null, msg: '' },
-    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
-    organizer: { canNull: false, reg: null, msg: '' },
-    comClass: { canNull: false, reg: null, msg: '' },
-    rewardClass: { canNull: false, reg: null, msg: '' },
-    rewardName: { canNull: false, reg: null, msg: '' },
-    instructor: { canNull: true, reg: null, msg: ''},
-    instructor: { canNull: true, reg: null, msg: '' },
-    seniorSid: { canNull: true, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
-    seniorName: { canNull: true, reg: null, msg: '' },
-    principal: { canNull: true, reg: null, msg: '' },
-    principalTel: { canNull: true, reg: /^[1-9][\d]{10}$/, msg: '电话号填写有误' }
-  },
-  comMeeting: {
-    id: { canNull: false, reg: null, msg: ''},
-    comName: { canNull: false, reg: null, msg: ''},
-    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
-    time: { canNull: false, reg: /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/, msg: '日期格式应为YYYY/MM/DD'},
-    location: { canNull: false, reg: null, msg: ''},
-    attenders: { canNull: false, reg: null, msg: ''},
-    record: { canNull: false, reg: null, msg: ''}
-  },
   competition: {
     comName: { canNull: false, reg: null, msg: ''},
     organizer: { canNull: false, reg: null, msg: ''},
@@ -270,5 +246,29 @@ export default {
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队员学号格式错误' },
     name: { canNull: false, reg: null, msg: ''},
     duty: { canNull: false, reg: null, msg: ''}
+  },
+  comMeeting: {
+    id: { canNull: false, reg: null, msg: ''},
+    comName: { canNull: false, reg: null, msg: ''},
+    leaderSid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '队长学号格式错误' },
+    time: { canNull: false, reg: /^[0-9]{4}\/[0-9]{2}\/[0-9]{2}/, msg: '日期格式应为YYYY/MM/DD'},
+    location: { canNull: false, reg: null, msg: ''},
+    attenders: { canNull: false, reg: null, msg: ''},
+    record: { canNull: false, reg: null, msg: ''}
+  },
+  winners: {
+    id: {canNull: false, reg: null, msg: ''},
+    name: { canNull: false, reg: null, msg: '' },
+    sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    organizer: { canNull: false, reg: null, msg: '' },
+    comClass: { canNull: false, reg: null, msg: '' },
+    rewardClass: { canNull: false, reg: null, msg: '' },
+    rewardName: { canNull: false, reg: null, msg: '' },
+    instructor: { canNull: true, reg: null, msg: ''},
+    instructor: { canNull: true, reg: null, msg: '' },
+    seniorSid: { canNull: true, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
+    seniorName: { canNull: true, reg: null, msg: '' },
+    principal: { canNull: true, reg: null, msg: '' },
+    principalTel: { canNull: true, reg: /^[1-9][\d]{10}$/, msg: '电话号填写有误' }
   }
 }
