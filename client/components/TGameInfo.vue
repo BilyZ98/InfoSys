@@ -356,9 +356,9 @@ export default {
 
 .container-record {
   float: left;
-  width: 360px;
+  width: 100%;
   height: 35px;
-  text-align: right;
+  text-align: center;
 }
 
 .container-record .text-range {
@@ -401,7 +401,7 @@ export default {
 
 .container-card-list {
   margin: 25px;
-  text-align: left;
+  text-align: center;
   padding: 20px;
   /*alert($('.container-card-list').width())不包含margin，但是会减去padding
   固定了width，才能在内部元素超出宽度时出现滚动条*/
