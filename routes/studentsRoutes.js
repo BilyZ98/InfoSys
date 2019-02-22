@@ -51,6 +51,8 @@ router.post('/getCompetitionInfo',studentsController.getCompetitionInfo);
 
 router.post('/getCompetition',studentsController.getCompetition);
 
+router.post('/getAllCompetition',studentsController.getAllCompetition);
+
 //router.get('/competition',studentsController.get)
 
 
