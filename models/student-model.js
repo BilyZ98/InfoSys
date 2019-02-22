@@ -754,6 +754,12 @@ exports.getCompetition = async(data) => {
   return queryDB(query,values)
 }
 
+exports.getAllCompetition = async(data) => {
+  let query = 
+  "select * from competition;"
+  return queryDB(query)
+}
+
 exports.getSeniorGroup = async(data) => {
   let query = 
   "select * from seniorsGroup where leaderSid = ? and comName = ?;"
