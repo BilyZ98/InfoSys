@@ -56,6 +56,8 @@ export default {
         $('#append').append("<div class='container-record'>" + "<span>队员"+i+"学号:</span>" + "<input type='text' id='sid-team"+i+"'>" +"</div>")
        
         $('#append').append("<div class='container-record'>" + "<span>队员"+i+"姓名:</span>" + "<input type='text' id='name-team"+i+"'>" + "</div>")
+
+        $('#append').append("<div class='container-record'>" + "<span>队员"+i+"职责:</span>" + "<input type='text' id='duty-team"+i+"'>" + "</div>")
       }
     },
     insertClick: function() {
@@ -66,8 +68,6 @@ export default {
         if(!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
           message = message + tableData[this.tableId]['records'][item]['name'] + '不能为空\n'
-        } else if(record != '' && record.length > 30){
-          message = message + tableData[this.tableId]['records'][item]['name'] + '长度不能超过30个字符\n'
         } else if(record != '' && formatTable[item]['reg']!= null && !formatTable[item]['reg'].test(record)){
           //检查格式合法
           message = message + formatTable[item]['msg'] + '\n'
@@ -86,6 +86,30 @@ export default {
             data[item] = $('#' + this.tableId + '-' + item).val()
           }
         }
+        var temp1 = []
+        for(var i=0;i<this.SeniorNum;i++){
+          var temp = {
+            comName: $('#' + this.tableId + '-' + 'comName').val(),
+            leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
+            sid: $('#sid-senior' + i).val(),
+            name: $('#name-senior' + i).val()
+          }
+          temp1.push(temp)
+        }
+        data['seniorsGroup'] = temp1
+
+        var temp2 = []
+        for(var i=0;i<this.teamMemberNum;i++){
+          var temp = {
+            comName: $('#' + this.tableId + '-' + 'comName').val(),
+            leaderSid: $('#' + this.tableId + '-' + 'leaderSid').val(),
+            sid: $('#sid-team' + i).val(),
+            name: $('#name-team' + i).val(),
+            duty: $('#duty-team' + i).val()
+          }
+          temp2.push(temp)
+        }
+        data['teamMember'] = temp2
         var postData = JSON.stringify(data)
         console.log(postData)
         var _self = this

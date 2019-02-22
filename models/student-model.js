@@ -717,20 +717,22 @@ exports.addCompetition = async(data) => {
 
 
 exports.addSeniorsGroup = async (data) => {
+  //console.log(data)
   let query = 
   "insert into seniorsGroup \n" +
   "(comName, leaderSid, sid, name) values" + 
   "(?,?,?,?)"
   let values = [data.comName, data.leaderSid, data.sid, data.name]
-  return queryDB(query,value)
+  return queryDB(query,values)
 }
 
 
 exports.addTeamMember = async (data) => {
+  //console.log(data)
   let query = 
   "insert into teamMember \n" + 
   "(comName, leaderSid, name, sid, duty) \n"+ 
-  "values (?, ?, ?, ?, ?,)"
+  "values (?, ?, ?, ?, ?)"
   let values = [data.comName, data.leaderSid, data.name, data.sid, data.duty]
   return queryDB(query,values)
 }

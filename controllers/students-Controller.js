@@ -488,13 +488,17 @@ function checkIDValid(body) {
 */
 exports.addCompetition = async (req,res,next) =>{
   let data= req.body;
+  //console.log(req.body)
+  //resBody.fail(res,443,'时间段设置错误')
   try{
     await StudentsModel.addCompetition(data)
     for(let i in data.seniorsGroup){
-      await StudentsModel.addSeniorsGroup(data)
+      //console.log(data.seniorsGroup[i])
+      await StudentsModel.addSeniorsGroup(data.seniorsGroup[i])
     }
     for(let i in data.teamMember){
-      await StudentsModel.addTeamMember(data)
+      //console.log(data.teamMember[i])
+      await StudentsModel.addTeamMember(data.teamMember[i])
     }
     resBody.success(res)
   }
