@@ -10,7 +10,7 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in table.records">
+      <div class="container-record" v-for="record in competitionTable.records" v-if="record.id!='leaderTel'&&record.id!='comInfo'">
         <span>{{record.name}}:</span>
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'HMT-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-'+record.id">
@@ -30,11 +30,11 @@
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
+          <th v-for="record in competitionTable.records" v-if="record['display']==true">{{record.name}}</th>
         </tr>
         <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['HMT']['sid']">
           <td>{{index+1}}</td>
-          <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
+          <td v-for="record in competitionTable.records" v-if="record['display']==true" contenteditable="false">
             <span v-if="student['HMT'][record.id]!=undefined">{{student['HMT'][record.id]}}</span>
             <span v-else>---</span>
           </td>
@@ -43,7 +43,7 @@
     </div>
     <!--统计-->
     <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records">
+      <div class="stat-record" v-for="record in competitionTable.records" v-if="record.id!='leaderTel'&&record.id!='comInfo'">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'HMT-stat-'+record.id">
           <option></option>
@@ -60,7 +60,7 @@
       <!-- 弹窗内容 -->
       <div class="popup-content">
         <span id="popup-close" @click="modalCloseClick">&times;</span>
-        <div class="popup-cell" v-for="record in table.records">
+        <div class="popup-cell" v-for="record in competitionTable.records">
           {{record.name}}
           <input type="checkbox" v-model:checked="record.display">
         </div>
@@ -81,7 +81,10 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
-      table: tableData['HMT'],
+      competitionTable: tableData['competition'],
+      seniorsGroupTable: tableData['seniorsGroup'],
+      teamMemberTable: tableData['teamMember'],
+      comMeetingTable: tableData['comMeeting'],
       students: []
     }
   },

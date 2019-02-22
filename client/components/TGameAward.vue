@@ -10,7 +10,7 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in table.records" v-if="record['display']==true">
+      <div class="container-record" v-for="record in table.records" v-if="record['display']==true&&record.id!='principalTel'">
         <span>{{record.name}}:</span>
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'winners-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-'+record.id">
@@ -43,7 +43,7 @@
     </div>
     <!--统计-->
     <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records" v-if="record['display']==true">
+      <div class="stat-record" v-for="record in table.records" v-if="record['display']==true&&record.id!='principalTel'">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-stat-'+record.id">
           <option></option>
