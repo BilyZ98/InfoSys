@@ -1,30 +1,29 @@
 <template>
-<div id="container-insert-internationalStudent">
-  <div class="text-header">国际生信息填写</div>
-  <hr>
-  <div class="container-input">
-    <div class="container-record" v-for="record in table.records">
-      <span class="record-name">{{record.name}}:</span>
-      <div v-if="!record.studentChangAble&&record.id=='sid'" class="span-uninputable">{{sid}}</div>
-      <span v-else-if="!record.studentChangAble" class="span-uninputable">没有填写权限</span>
-      <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
-        <option></option>
-        <option v-for="option in record.options">{{option}}</option>
-      </select>
-      <input type="text" v-else-if="record.valueType!='file'" v-bind:id="tableId+'-'+record.id" class="record-content">
-      <!--文件选择-->
-      <div v-else class="record-content">
-        <input type="file" :id="'file-input-'+record.id" name="file-input" multiple="multiple" accept="image/jpeg,image/jpg,image/png,image/gif,application/pdf" @change="fileUpolad(record.id)" style="display: none;">
-        <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择文件</button>
-        <span class="file-area">{{showFileNum(record.id)}}个文件</span>
+  <div id="container-insert-internationalStudent">
+    <div class="text-header">国际生信息填写</div>
+    <hr>
+    <div class="container-input">
+      <div class="container-record" v-for="record in table.records">
+        <span class="record-name">{{record.name}}:</span>
+        <div v-if="!record.studentChangAble&&record.id=='sid'" class="span-uninputable">{{sid}}</div>
+        <span v-else-if="!record.studentChangAble" class="span-uninputable">没有填写权限</span>
+        <select v-else-if="record.valueType=='select'" v-bind:id="tableId+'-'+record.id" class="record-content">
+          <option></option>
+          <option v-for="option in record.options">{{option}}</option>
+        </select>
+        <input type="text" v-else-if="record.valueType!='file'" v-bind:id="tableId+'-'+record.id" class="record-content">
+        <!--文件选择-->
+        <div v-else class="record-content">
+          <input type="file" :id="'file-input-'+record.id" name="file-input" multiple="multiple" accept="image/jpeg,image/jpg,image/png,image/gif,application/pdf" @change="fileUpolad(record.id)" style="display: none;">
+          <button class="file-btn" :record-id="record.id" @click="selectFileClick">选择文件</button>
+          <span class="file-area">{{showFileNum(record.id)}}个文件</span>
+        </div>
       </div>
     </div>
+    <pre id="warning"></pre>
+    <button type="button" class="button-insert" @click="insertClick">提交</button>
   </div>
-  <pre id="warning"></pre>
-  <button type="button" class="button-insert" @click="insertClick">提交</button>
-</div>
 </template>
-
 <script>
 import tableData from '../javascripts/tableData.js'
 import formatCheck from '../javascripts/formatCheck.js'
@@ -46,11 +45,11 @@ export default {
     },
     fileUpolad: function(id) {
       console.log(event.currentTarget.files)
-      if(id == 'dormRegistryCopy') {
+      if (id == 'dormRegistryCopy') {
         this.dormRegistryCopys = event.currentTarget.files
-      } else if(id == 'visaCopy') {
+      } else if (id == 'visaCopy') {
         this.visaCopys = event.currentTarget.files
-      } else if(id == 'passportCopy') {
+      } else if (id == 'passportCopy') {
         this.passportCopys = event.currentTarget.files
       }
     },
@@ -68,26 +67,30 @@ export default {
     */
     showFileNum: function(id) {
       if (id == 'dormRegistryCopy') {
-        return this.dormRegistryCopys==null?0:this.dormRegistryCopys.length
+        return this.dormRegistryCopys == null ? 0 : this.dormRegistryCopys.length
       } else if (id == 'visaCopy') {
-        return this.visaCopys==null?0:this.visaCopys.length
+        return this.visaCopys == null ? 0 : this.visaCopys.length
       } else if (id == 'passportCopy') {
-        return this.passportCopys==null?0:this.passportCopys.length
+        return this.passportCopys == null ? 0 : this.passportCopys.length
       }
     },
     insertClick: function() {
       var formatTable = formatCheck[this.tableId]
       var message = ''
-      for(let item in tableData[this.tableId]['records']) {
-        if(!tableData[this.tableId]['records'][item]['studentChangAble'])
+      for (let item in tableData[this.tableId]['records']) {
+        // 跳过无法更改的项
+        if (!tableData[this.tableId]['records'][item]['studentChangAble'])
+          continue
+        // 跳过三个附件项
+        if (item == 'dormRegistryCopy' || item == 'visaCopy' || item == 'passportCopy')
           continue
         let record = $('#' + this.tableId + '-' + item).val()
-        if(!formatTable[item]['canNull'] && record == '') {
+        if (!formatTable[item]['canNull'] && record == '') {
           //检查不能为空的字段是否为空
           message = message + tableData[this.tableId]['records'][item]['name'] + '不能为空\n'
-        } else if(record != '' && record.length > 30){
+        } else if (record != '' && record.length > 30) {
           message = message + tableData[this.tableId]['records'][item]['name'] + '长度不能超过30个字符\n'
-        } else if(record != '' && formatTable[item]['reg']!= null && !formatTable[item]['reg'].test(record)){
+        } else if (record != '' && formatTable[item]['reg'] != null && !formatTable[item]['reg'].test(record)) {
           //检查格式合法
           message = message + formatTable[item]['msg'] + '\n'
         }
@@ -97,34 +100,48 @@ export default {
         return
       } else {
         $('#warning').text('')
-        var data = {
-          table: this.tableId
-        }
-        data['sid'] = this.sid
-        for(let item in tableData[this.tableId]['records']){
-          if(!tableData[this.tableId]['records'][item]['studentChangAble']) {
-            //
-          } else if($('#' + this.tableId + '-' + item).val() != ''){
-            data[item] = $('#' + this.tableId + '-' + item).val()
+        var formData = new FormData()
+        //字段
+        formData.append('sid', this.sid)
+        for (let item in tableData[this.tableId]['records']) {
+          if (item == 'dormRegistryCopy') {
+            if (this.dormRegistryCopys != null && this.dormRegistryCopys.length != 0) {
+              //formData.append('dormRegistryCopy[]', this.dormRegistryCopys)
+              for (let i = 0; i < this.dormRegistryCopys.length; i++) {
+                formData.append('dormRegistryCopy', this.dormRegistryCopys[i])
+              }
+            }
+          } else if (item == 'visaCopy') {
+            if (this.visaCopys != null && this.visaCopys.length != 0) {
+              for (let i = 0; i < this.visaCopys.length; i++) {
+                formData.append('visaCopy', this.visaCopys[i])
+              }
+            }
+          } else if (item == 'passportCopy') {
+            if (this.passportCopys != null && this.passportCopys.length != 0) {
+              for (let i = 0; i < this.passportCopys.length; i++) {
+                formData.append('passportCopy', this.passportCopys[i])
+              }
+            }
+          } else if (tableData[this.tableId]['records'][item]['studentChangAble'] &&
+            $('#' + this.tableId + '-' + item).val() != '') {
+            formData.append(item, $('#' + this.tableId + '-' + item).val())
           }
         }
-        var postData = JSON.stringify(data)
-        console.log(postData)
         var _self = this
         $.ajax({
-          type: "POST",
-          url: "/students/insert/" + _self.tableId,
-          contentType: "application/json; charset=utf-8",
-          data: postData,
-          dataType: "json",
-          //timeous 5s
-          timeout: 5000,
+          type: 'POST',
+          url: '/students/insert/' + _self.tableId,
+          data: formData,
+          cache: false,
+          contentType: false,
+          processData: false,
           success: function(result, xhr) {
-            for(let key in result){
-              if(key == 'content'){
+            for (let key in result) {
+              if (key == 'content') {
                 //操作成功
                 alert('插入成功！')
-              } else if (key == 'err'){
+              } else if (key == 'err') {
                 //操作错误
                 alert('插入错误: ' + result[key]['sqlMessage'])
               }
@@ -141,7 +158,6 @@ export default {
   }
 }
 </script>
-
 <style scoped>
 #container-insert-internationalStudent {
   margin: 25px;
@@ -232,9 +248,12 @@ export default {
   border: none;
   border-radius: 3px;
   transition: 0.3s;
-  -moz-transition: 0.3s;  /* Firefox 4 */
-  -webkit-transition: 0.3s; /* Safari 和 Chrome */
-  -o-transition: 0.3s;  /* Opera */
+  -moz-transition: 0.3s;
+  /* Firefox 4 */
+  -webkit-transition: 0.3s;
+  /* Safari 和 Chrome */
+  -o-transition: 0.3s;
+  /* Opera */
 }
 
 #container-insert-internationalStudent .button-insert:hover {

@@ -29,7 +29,9 @@
                     <span class="file-area">{{showFileNum(record.id)}}个文件</span>
                   </span>
                   <span v-else>
-                    <button class="file-btn" :record-id="record.id" @click="downloadFileClick">下载</button>
+                    <button class="file-btn" :record-id="record.id" @click="downloadFileClick(record.id)">
+                      <a :href="downloadUrl" download>下载</a>
+                    </button>
                   </span>
                 </div>
               </span>
@@ -61,7 +63,8 @@ export default {
       studentBackup: {},
       dormRegistryCopys: null,
       visaCopys: null,
-      passportCopys: null
+      passportCopys: null,
+      downloadUrl: null
     }
   },
   created: function() {
@@ -139,36 +142,8 @@ export default {
         return this.passportCopys==null?0:this.passportCopys.length
       }
     },
-    downloadFileClick: function() {
-      var _self = this
-      $.ajax({
-        type: 'GET',
-        url: '/students/interStuPics?sid=' + _self.sid,
-        'Content-Type': 'application/octet-stream',
-        'Content-Disposition': 'attachment',
-        timeout: 5000,
-        success: function(result, xhr) {
-          //console.log(result, xhr)
-          /*
-          for (let key in result) {
-            if (key == 'content') {
-              //成功后backup变为现在的数据
-              _self.dormRegistryCopys = result[key]['dormRegistryCopy']
-              _self.visaCopys = result[key]['visaCopy']
-              _self.passportCopys = result[key]['passportCopy']
-              alert('获取文件buffer成功！')
-            } else if (key == 'err') {
-              alert('获取数据失败: ' + result[key]['sqlMessage'])
-            }
-          }
-          */
-        },
-        error: function(result, xhr) {
-          console.log(result, xhr)
-          //console.log(result)
-          alert('服务器连接错误: ' + xhr)
-        }
-      })
+    downloadFileClick: function(id) {
+      this.downloadUrl = '/students/interStuPics?tableId=' + id + '&' + 'sid=' + this.sid
     },
     dataMakeup: function(data) {
       //把数据中不全的表中没有的字段全部赋值为空
@@ -377,6 +352,10 @@ export default {
 
 #container-detail .file-btn {
   width: 40px;
+}
+
+#container-detail .file-btn a {
+  color: black;
 }
 
 #container-detail .file-area {

@@ -1,19 +1,20 @@
-const resBody = require('../utils/resBody.js');
-var StudentsModel = require('../models/student-model.js');
-var asynchronous = require('async');
+const resBody = require('../utils/resBody.js')
+var StudentsModel = require('../models/student-model.js')
+var asynchronous = require('async')
 const mailer = require('../utils/mailer.js')
 var formidable = require('formidable')
 const path = require('path')
 const fs = require('fs')
 //import {promisify} from 'util'
 const util = require('util')
-const readFile = util.promisify(fs.readFile);
+const readFile = util.promisify(fs.readFile)
+const archiver = require('archiver')
+
 var uploadDir = path.resolve(__dirname,'..')
 uploadDir = path.join(uploadDir, '/uploads')
 
 var uploadDirForInterStu = path.resolve(__dirname,'..')
 uploadDirForInterStu = path.join(uploadDirForInterStu,'/uploadsForInterStu')
-
 
 //根据学生的id 进行查询
 exports.getStudentsInfo = async (req,res,next) => {
@@ -219,7 +220,7 @@ exports.addInterStu = async (req, res, next) => {
       //let data = fields
       let data = {}
       data.sid = fields.sid
-      console.log('start to insert copys into db: ', data)
+      //console.log('start to insert copys into db: ', data)
       //console.log(files.dormRegistryCopy)
       if(files.dormRegistryCopy){
         for(let i in files.dormRegistryCopy) {
@@ -318,6 +319,7 @@ function checkExtension(filePath){
 exports.getInterStudentPics = async (req, res, next) => {
   let copyTables = ['dormRegistryCopy', 'visaCopy', 'passportCopy']
   //console.log(req.query.sid)
+  let tableId = req.query.tableId
   let sid = req.query.sid
   let returnData = {
     dormRegistryCopy: [],
@@ -326,6 +328,7 @@ exports.getInterStudentPics = async (req, res, next) => {
   }
   let err = null
   try {
+    /*
     var ppp = ''
     for(let i in copyTables) {
       let copies = await StudentsModel.getFilePath(sid, copyTables[i])
@@ -336,21 +339,46 @@ exports.getInterStudentPics = async (req, res, next) => {
         returnData[copyTables[i]][j] = await readFile(copies[j].filePath)
       }
     }
-    //resBody.success(res,returnData)
-    //res.sendFile(ppp)
+    */
+    /* single file
     res.download(ppp, 'report.pdf', function(err){
       if (err) {
         // Handle error, but keep in mind the response may be partially-sent
         // so check res.headersSent
-        console.log('eee')
       } else {
         // decrement a download credit, etc.
-        console.log('ooo')
       }
     })
+    */
+    var output = fs.createWriteStream(uploadDirForInterStu + '/' + sid + tableId + '.zip')
+    var archive = archiver('zip', {
+        gzip: true,
+        zlib: { level: 9 } // Sets the compression level.
+    })
+    // listen for all archive data to be written
+    // 'close' event is fired only when a file descriptor is involved
+    output.on('close', function() {
+      console.log('archiver has been finalized and the output file descriptor has closed.')
+      res.download(uploadDirForInterStu + '/' + sid + tableId + '.zip')
+    })
+    archive.on('error', function(err) {
+      throw err
+    })
+    // pipe archive data to the output file
+    archive.pipe(output)
+    // append files
+    let copies = await StudentsModel.getFilePath(sid, tableId)
+    for(let j in copies) {
+      //console.log(copies[j].filePath)
+      archive.file(copies[j].filePath)
+    }
+    // append files from a sub-directory, putting its contents at the root of archive
+    //archive.directory('/haha', false)
+    archive.finalize()
   }
   catch(err) {
     console.log(err)
+    resBody.error(err)
   }
 }
 
