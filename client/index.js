@@ -85,6 +85,7 @@ import QuitClass from './components/guideline/QuitClass.vue'
 /* student game manage */
 import GameManage from './components/GameManage.vue'
 import TeamInfo from './components/contest/TeamInfo.vue'
+import GameDetail from './components/contest/GameDetail.vue'
 import AwardInfo from './components/contest/AwardInfo.vue'
 import InsertAwardInfo from './components/contest/InsertAwardInfo.vue'
 import InsertTeamInfo from './components/contest/InsertTeamInfo.vue'
@@ -183,19 +184,6 @@ const router = new VueRouter({
     { name: 'studentInternationalStudentInsert', path: '/studentInternationalStudentInsert', component: StudentInternationalStudentInsert },
     { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
     {
-      name: 'gameManage',
-      path: '/gameManage',
-      component: GameManage,
-      children: [
-        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
-        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
-      ]
-    },
-    { name: 'insertAwardInfo', path: 'insertAwardInfo', component: InsertAwardInfo},
-    { name: 'insertTeamInfo', path: 'insertTeamInfo', component: InsertTeamInfo},
-    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting},
-    {
-
       name: 'guideline',
       path: '/guideline',
       component: Guideline,
@@ -215,6 +203,7 @@ const router = new VueRouter({
     },
     { name: 'insertAwardInfo', path: '/insertAwardInfo', component: InsertAwardInfo},
     { name: 'insertTeamInfo', path: '/insertTeamInfo', component: InsertTeamInfo},
+    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting},
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]
