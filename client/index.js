@@ -182,14 +182,14 @@ const router = new VueRouter({
     { name: 'studentSpecialInfo', path: '/studentSpecialInfo', component: StudentSpecialInfo },
     { name: 'studentHMTInsert', path: '/studentHMTInsert', component: StudentHMTInsert },
     { name: 'studentInternationalStudentInsert', path: '/studentInternationalStudentInsert', component: StudentInternationalStudentInsert },
-    { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
+    { name: 'studentWarning', path: '/studentWarning', component: StudentWarning },
     {
       name: 'guideline',
       path: '/guideline',
       component: Guideline,
       children: [
         { name: 'leave', path: 'leave', component: Leave },
-        { name: 'quitClass', path: 'quitClass', component: QuitClass}
+        { name: 'quitClass', path: 'quitClass', component: QuitClass }
       ]
     },
     {
@@ -197,13 +197,14 @@ const router = new VueRouter({
       path: '/gameManage',
       component: GameManage,
       children: [
-        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
-        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
+        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo },
+        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo }
       ]
     },
-    { name: 'insertAwardInfo', path: '/insertAwardInfo', component: InsertAwardInfo},
-    { name: 'insertTeamInfo', path: '/insertTeamInfo', component: InsertTeamInfo},
-    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting},
+    { name: 'gameDetail', path: '/gameDetail', component: GameDetail },
+    { name: 'insertAwardInfo', path: '/insertAwardInfo', component: InsertAwardInfo },
+    { name: 'insertTeamInfo', path: '/insertTeamInfo', component: InsertTeamInfo },
+    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting },
     /* 所有未匹配的路径都会加载404页面组件 */
     { name: 'invalid', path: '*', component: Invalid }
   ]

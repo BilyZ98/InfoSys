@@ -2,12 +2,9 @@
   <div>
     <aside class="app-bar-display">
       <div class="info-side">
-        <!--<label id="info-account"></label>
-        <p>数据科学与计算机学院</p>-->
         <p>竞赛信息管理</p>
       </div>
-      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='addGameTeam'}" @click="addGameTeamClick">参赛队伍</div>
-      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='addGameNote'}" @click="addGameNoteClick">添加会议记录</div>
+      <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='addGameTeam'}" @click="addGameTeamClick">参赛信息</div>
       <div class="button-side" v-bind:class="{'button-clicked': $router.currentRoute.name=='addAward'}" @click="addAwardClick">获奖记录</div>
     </aside>
     <div class="container-studentsBasic-display">
@@ -38,17 +35,6 @@ export default {
     addAwardClick: function() {
       this.$router.push({ name: 'awardInfo' })
     }
-    /*
-    queryClick: function() {
-      this.$router.push({ name: 'query' })
-    },
-    insertClick: function() {
-      this.$router.push({ name: 'insert' })
-    },
-    importClick: function() {
-      this.$router.push({ name: 'import' })
-    }
-    */
   }
 }
 </script>

@@ -585,35 +585,41 @@ exports.getAllCompetition = async (req,res,next) => {
     let result = await StudentsModel.getAllCompetition(req.body)
     resBody.success(res,result)
   }
-  catch(err){
+  catch(err) {
     console.log(err)
   }
 }
 
 exports.getCompetitionBySid = async (req,res,next) => {
   //console.log(req.body)
-  try{
+  try {
     let result = await StudentsModel.getCompetitionBySid(req.body)
     resBody.success(res,result)
   }
-  catch(err){
+  catch(err) {
     console.log(err)
   }
 }
 
 exports.getCompetitionInfo = async(req,res,next) => {
   //comName leaderSid
-  let competition = await StudentsModel.getCompetition(req.body)
-  let seniorGroup = await StudentsModel.getSeniorGroup(req.body)
-  let teamMember = await StudentsModel.getTeamMember(req.body)
-  let comMeeting = await StudentsModel.getComMeeting(req.body)
-  let data = {
-    competition: competition,
-    seniorGroup: seniorGroup,
-    teamMember: teamMember,
-    comMeeting: comMeeting
+  try {
+    let competition = await StudentsModel.getCompetition(req.body)
+    let seniorGroup = await StudentsModel.getSeniorGroup(req.body)
+    let teamMember = await StudentsModel.getTeamMember(req.body)
+    let comMeeting = await StudentsModel.getComMeeting(req.body)
+    let data = {
+      competition: competition,
+      seniorGroup: seniorGroup,
+      teamMember: teamMember,
+      comMeeting: comMeeting
+    }
+    resBody.success(res,data)
   }
-  resBody.success(res,data)
+  catch(err) {
+    console.log(err)
+    resBody.error(err)
+  }
 }
 
 

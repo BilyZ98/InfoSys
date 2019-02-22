@@ -2,7 +2,7 @@
   <div>
     <!--顶部菜单-->
     <div class="container-header">
-      <p class="header-text">队伍信息</p>
+      <p class="header-text">参赛队伍信息</p>
       <div class="header-button">
         <!--span @click="sendEmailClick">发送警告</span-->
       </div>
@@ -64,9 +64,6 @@
       
       <button class="manager-button" @click="addClick">添加参赛队伍</button>
     </div>
-
-
-    
     <!-- 弹窗 -->
     <div id="popup" class="popup-background">
       <!-- 弹窗内容 -->
@@ -139,8 +136,14 @@ export default {
       this.$router.push({ name: 'insertTeamInfo' })
     },
     comClick: function() {
-      alert(event.currentTarget.getAttribute('comName'))
-      alert(event.currentTarget.getAttribute('sid'))
+      var routeData = this.$router.resolve({
+        name: 'gameDetail',
+        query: {
+          leaderSid: event.currentTarget.getAttribute('leaderSid'),
+          comName: event.currentTarget.getAttribute('comName')
+        }
+      })
+      window.open(routeData.href, '_blank')
     },
     
     
