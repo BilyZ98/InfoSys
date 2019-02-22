@@ -225,7 +225,7 @@ export default {
     notCompleteReason: { canNull: true, reg: null, msg: '' }
   },
   winners: {
-    id: {canNull: false, reg: /^[0-9]/, msg: 'error in id'},
+    id: {canNull: false, reg: null, msg: ''},
     name: { canNull: false, reg: null, msg: '' },
     sid: { canNull: false, reg: /^[1-9][\d]{7}$/, msg: '学号格式错误' },
     organizer: { canNull: false, reg: null, msg: '' },

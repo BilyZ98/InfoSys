@@ -10,7 +10,7 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in table.records">
+      <div class="container-record" v-for="record in table.records" v-if="record['display']==true">
         <span>{{record.name}}:</span>
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'winners-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-'+record.id">
@@ -43,7 +43,7 @@
     </div>
     <!--统计-->
     <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records">
+      <div class="stat-record" v-for="record in table.records" v-if="record['display']==true">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-stat-'+record.id">
           <option></option>
@@ -124,7 +124,7 @@ export default {
           alert(message)
           return
         }
-        if($('#winners-id').val()) winners['equal']['id'] = $('#winners-id').val()
+        // if($('#winners-id').val()) winners['equal']['id'] = $('#winners-id').val()
         if ($('#winners-name').val()) winners['equal']['name'] = $('#winners-name').val()
         if ($('#winners-organizer').val()) winners['equal']['organizer'] = $('#winners-organizer').val()
         if ($('#winners-comClass').val()) winners['equal']['comClass'] = $('#winners-comClass').val()
@@ -180,13 +180,13 @@ export default {
     studentClick: function(event) {
       //alert('您点击的学生学号是：' +  event.currentTarget.getAttribute('sid'))
       //跳转,在跳转完成后再请求数据,使用query在url内传参，这样不会有刷新就丢失的问题
-      var routeData = this.$router.resolve({
-        name: 'detail',
-        query: {
-          id: event.currentTarget.getAttribute('id')
-        }
-      })
-      window.open(routeData.href, '_blank')
+      // var routeData = this.$router.resolve({
+      //   name: 'detail',
+      //   query: {
+      //     id: event.currentTarget.getAttribute('id')
+      //   }
+      // })
+      // window.open(routeData.href, '_blank')
     },
     // 统计
     statButtonToggle: function(event) {
