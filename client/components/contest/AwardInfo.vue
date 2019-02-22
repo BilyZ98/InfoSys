@@ -30,22 +30,22 @@
       <table border="1">
         <tr class="table-head">
           <th>#</th>
-          <!--th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th-->
-          <th>队长学号</th>
+          <th v-for="record in table.records" v-if="record['display']==true">{{record.name}}</th>
+          <!--th>队长学号</th>
           <th>队长姓名</th>
           <th>竞赛名称</th>
           <th>主办单位</th>
           <th>竞赛类级</th>
-          <th>获奖等级</th>
+          <th>获奖等级</th-->
         </tr>
-        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['course']['sid']">
+        <tr v-for="(student, index) in students">
           <td>{{index+1}}</td>
           <td v-for="record in table.records" v-if="record['display']==true" contenteditable="false">
-            <span v-if="student['course'][record.id]!=undefined">{{student['course'][record.id]}}</span>
+            <span v-if="student[record.id]!=undefined">{{student[record.id]}}</span>
             <span v-else>-</span>
           </td>
-        </tr-->
-        <tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
+        </tr>
+        <!--tr v-for="(student, index) in students" @click="studentClick" v-bind:sid="student['sid']">
           <td>{{index+1}}</td>
           <td>{{student['sid']}}</td>
           <td>{{student['name']}}</td>
@@ -53,7 +53,7 @@
           <td>{{student['organizer']}}</td>
           <td>{{student['comClass']}}</td>
           <td>{{student['rewardClass']}}</td>
-        </tr>
+        </tr-->
       </table>
       <button class="manager-button" @click="addClick">添加获奖记录</button>
     </div>
@@ -87,7 +87,7 @@ var emptyCell = JSON.stringify({})
 export default {
   data: function() {
     return {
-      table: tableData['course'],
+      table: tableData['winners'],
       students: [],
       emailSid: []
     }
