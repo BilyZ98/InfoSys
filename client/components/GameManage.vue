@@ -33,7 +33,7 @@ export default {
       this.$router.push({ name: 'teamInfo' })
     },
     addGameNoteClick: function() {
-      this.$router.push({ name: 'awardInfo' })
+      this.$router.push({ name: 'insertMeeting' })
     },
     addAwardClick: function() {
       this.$router.push({ name: 'awardInfo' })

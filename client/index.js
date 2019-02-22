@@ -88,6 +88,7 @@ import TeamInfo from './components/contest/TeamInfo.vue'
 import AwardInfo from './components/contest/AwardInfo.vue'
 import InsertAwardInfo from './components/contest/InsertAwardInfo.vue'
 import InsertTeamInfo from './components/contest/InsertTeamInfo.vue'
+import InsertMeeting from './components/contest/InsertMeeting.vue'
 
 /* email component */
 import Email from './components/teacherBasicInfoPages/modules/Email.vue'
@@ -182,6 +183,19 @@ const router = new VueRouter({
     { name: 'studentInternationalStudentInsert', path: '/studentInternationalStudentInsert', component: StudentInternationalStudentInsert },
     { name: 'studentWarning', path: '/studentWarning', component: StudentWarning},
     {
+      name: 'gameManage',
+      path: '/gameManage',
+      component: GameManage,
+      children: [
+        {name: 'teamInfo', path: 'teamInfo', component: TeamInfo},
+        {name: 'awardInfo', path: 'awardInfo', component: AwardInfo}
+      ]
+    },
+    { name: 'insertAwardInfo', path: 'insertAwardInfo', component: InsertAwardInfo},
+    { name: 'insertTeamInfo', path: 'insertTeamInfo', component: InsertTeamInfo},
+    { name: 'insertMeeting', path: 'insertMeeting', component: InsertMeeting},
+    {
+
       name: 'guideline',
       path: '/guideline',
       component: Guideline,

@@ -546,6 +546,17 @@ exports.addWinners = async (req,res,next) => {
   }
 }
 
+exports.addComMeeting = async (req,res,next) => {
+  //console.log(req.body)
+  try{
+    await StudentsModel.addComMeeting(req.body)
+    resBody.success(res)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
 exports.getWinners = async (req,res,next) => {
   //console.log(req.body)
   try{
@@ -572,6 +583,17 @@ exports.getAllCompetition = async (req,res,next) => {
   //console.log(req.body)
   try{
     let result = await StudentsModel.getAllCompetition(req.body)
+    resBody.success(res,result)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
+exports.getCompetitionBySid = async (req,res,next) => {
+  //console.log(req.body)
+  try{
+    let result = await StudentsModel.getCompetitionBySid(req.body)
     resBody.success(res,result)
   }
   catch(err){

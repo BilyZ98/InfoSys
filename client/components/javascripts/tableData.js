@@ -332,7 +332,7 @@ export default {
     records: {
       id: { name: '序号', id: 'id', isPrimary: true, display: false, value: '', studentChangAble: false, valueType: 'input'},
       comName: { name: '竞赛名称', id: 'comName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
+      leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       time: { name: '会议时间', id: 'time', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       location: { name: '会议地点', id: 'location', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       attenders: { name: '参与人员', id: 'attenders', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
@@ -346,7 +346,7 @@ export default {
     records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
       organizer: { name: '参赛主办方', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      comClass: { name: '参赛级别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      comClass: { name: '参赛级别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
       instructor: { name: '指导教师（团队）', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       leaderName: { name: '队长姓名', id: 'leaderName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
