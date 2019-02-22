@@ -557,6 +557,17 @@ exports.getWinners = async (req,res,next) => {
   }
 }
 
+exports.getCompetition = async (req,res,next) => {
+  //console.log(req.body)
+  try{
+    let result = await StudentsModel.getCompetition(req.body)
+    resBody.success(res,result)
+  }
+  catch(err){
+    console.log(err)
+  }
+}
+
 exports.getCompetitionInfo = async(req,res,next) => {
   //comName leaderSid
   let competition = await StudentsModel.getCompetition(req.body)
@@ -571,4 +582,5 @@ exports.getCompetitionInfo = async(req,res,next) => {
   }
   resBody.success(res,data)
 }
+
 
