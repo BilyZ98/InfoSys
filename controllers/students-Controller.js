@@ -557,3 +557,18 @@ exports.getWinners = async (req,res,next) => {
   }
 }
 
+exports.getCompetitionInfo = async(req,res,next) => {
+  //comName leaderSid
+  let competition = await StudentsModel.getCompetition(req.body)
+  let seniorGroup = await StudentsModel.getSeniorGroup(req.body)
+  let teamMember = await StudentsModel.getTeamMember(req.body)
+  let comMeeting = await StudentsModel.getComMeeting(req.body)
+  let data = {
+    competition: competition,
+    seniorGroup: seniorGroup,
+    teamMember: teamMember,
+    comMeeting: comMeeting
+  }
+  resBody.success(res,data)
+}
+

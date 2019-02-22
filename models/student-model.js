@@ -746,3 +746,31 @@ exports.addWinners =  async(data) => {
   data.rewardName, data.instructor, data.seniorSid, data.seniorName, data.principal, data.principalTel]
   return queryDB(query,values)
 }
+
+exports.getCompetition = async(data) => {
+  let query = 
+  "select * from competition where leaderSid = ? and comName = ?;"
+  let values = [data.leaderSid,data.comName]
+  return queryDB(query,values)
+}
+
+exports.getSeniorGroup = async(data) => {
+  let query = 
+  "select * from seniorsGroup where leaderSid = ? and comName = ?;"
+  let values = [data.leaderSid,data.comName]
+  return queryDB(query,values)
+}
+
+exports.getTeamMember = async(data) => {
+  let query = 
+  "select * from teamMember where leaderSid = ? and comName = ?;"
+  let values = [data.leaderSid,data.comName]
+  return queryDB(query,values)
+}
+
+exports.getComMeeting = async(data) => {
+  let query = 
+  "select * from comMeeting where leaderSid = ? and comName = ?;"
+  let values = [data.leaderSid,data.comName]
+  return queryDB(query,values)
+}
