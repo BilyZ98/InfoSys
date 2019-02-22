@@ -10,7 +10,7 @@
     </div>
     <!--查询输入-->
     <div class="container-card-list">
-      <div class="container-record" v-for="record in table.records" v-if="record['display']==true&&record.id!='principalTel'">
+      <div class="container-record" v-for="record in table.records" v-if="record['display']==true">
         <span>{{record.name}}:</span>
         <input type="text" class="hide-container" v-if="record.valueType=='input'" v-bind:id="'winners-'+record.id">
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-'+record.id">
@@ -42,8 +42,8 @@
       </table>
     </div>
     <!--统计-->
-    <div class="container-card-list">
-      <div class="stat-record" v-for="record in table.records" v-if="record['display']==true&&record.id!='principalTel'">
+<!--     <div class="container-card-list">
+      <div class="stat-record" v-for="record in table.records" v-if="record['display']==true">
         <button class="stat-checkbox" v-bind:record-id="record.id" @click="statButtonToggle">{{record.name}}</button>
         <select class="hide-container" v-if="record.valueType=='select'" v-bind:id="'winners-stat-'+record.id">
           <option></option>
@@ -54,7 +54,7 @@
       <button class="manager-button" @click="statClick">统计</button>
       <span id="stat-chart-bar"></span>
       <span id="stat-chart-pie"></span>
-    </div>
+    </div> -->
     <!-- 弹窗 -->
     <div id="popup-diy" class="popup-background">
       <!-- 弹窗内容 -->

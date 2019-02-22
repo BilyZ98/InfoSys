@@ -346,7 +346,7 @@ export default {
     records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
       organizer: { name: '参赛主办方', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
-      comClass: { name: '参赛级别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
+      comClass: { name: '参赛级别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'select', options: ['国际级', '国家级', '省级', '市级', '校级']},
       instructor: { name: '指导教师（团队）', id: 'instructor', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       leaderName: { name: '队长姓名', id: 'leaderName', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
