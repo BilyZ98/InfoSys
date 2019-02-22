@@ -692,7 +692,7 @@ exports.getFailedStudents = async (data) => {
 
 exports.getWinners = async(data) => {
   let query = 
-  "select sid, name, rewardName, organizer, comClass,rewardClass from winners where sid = ?;";
+  "select * from winners where sid = ?;";
   let value = [data.sid]
   return queryDB(query,value)
 }
