@@ -343,7 +343,7 @@ export default {
     name: '参赛信息表',
     id: 'competition',
     tableStudentChangable: true,
-    record: {
+    records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: true, display: true, value: '', studentChangAble: false, valueType: 'input'},
       organizer: { name: '参赛主办方', id: 'organizer', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
       comClass: { name: '参赛级别', id: 'comClass', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
@@ -358,7 +358,7 @@ export default {
     name: '研究生学长团队',
     id: 'seniorsGroup',
     tableStudentChangable: true,
-    record: {
+    records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       sid: { name: '学号', id: 'sid', isPrimary: false, display: true, value: '', studentChangAble: false, valueType: 'input'},
@@ -369,7 +369,7 @@ export default {
     name: '团队成员',
     id: 'teamMember',
     tableStudentChangable: true,
-    record: {
+    records: {
       comName: { name: '参赛项目名称', id: 'comName', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       leaderSid: { name: '队长学号', id: 'leaderSid', isPrimary: false, display: false, value: '', studentChangAble: false, valueType: 'input'},
       name: { name: '姓名', id: 'name', isPrimary: false, display: true, value:'', studentChangAble: false, valueType: 'input'},

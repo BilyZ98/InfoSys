@@ -49,7 +49,7 @@
           <td>{{student['nums']}}</td>
         </tr-->
       </table>
-      <div class="team-info-list">
+      <div class="team-info-list" sid="sid" comName="comName" @click="comClick">
         <span>学号</span>
         <span>姓名</span>
         <span>项目名</span>
@@ -135,7 +135,11 @@ export default {
   methods: {
     
     addClick: function() {
-
+      this.$router.push({ name: 'insertTeamInfo' })
+    },
+    comClick: function() {
+      alert(event.currentTarget.getAttribute('comName'))
+      alert(event.currentTarget.getAttribute('sid'))
     },
     
     

@@ -24,8 +24,10 @@ import formatCheck from '../javascripts/formatCheck.js'
 export default {
   data: function() {
     return {
-      tableId: 'basicInfo',
-      table: tableData['basicInfo']
+      tableId: 'competition',
+      table: tableData['competition'],
+      teamMemberNum: 0,
+      SeniorNum: 0
     }
   },
   methods: {
